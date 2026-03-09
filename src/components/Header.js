@@ -11,16 +11,16 @@ function Header() {
     <header>
      {/* 상단 네비게이션 */}
       <nav className="top-nav">
-        <div class="nav-item has-dropdown">
+        <div className="nav-item has-dropdown">
           <Link to="/"><span>AUDITION</span></Link>
         </div>
         <span>오디션방식</span>
         <span>오디션일정</span>        
         <span>아이돌 굿즈샵</span>
         <span>VIDEO</span>
-        <div class="nav-item has-dropdown">
+        <div className="nav-item has-dropdown">
           <span>마이페이지</span>
-          <div class="dropdown-menu">
+          <div className="dropdown-menu">
             <Link to="/Mypage">북마크관리</Link>
           </div>
         </div>
