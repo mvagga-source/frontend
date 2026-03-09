@@ -1,0 +1,16 @@
+    
+.content{
+    margin:0 auto;
+    max-width: 1100px;    
+}
+
+.info-notice-box {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    border-radius: 20px;
+    padding: 30px 30px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 50px;
+    backdrop-filter: blur(10px);
+}

@@ -1,0 +1,96 @@
+
+.logo{
+  width:500px;
+  height:auto;
+}
+
+
+/* 상단 네비게이션 */
+.top-nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 12px 40px;
+  border-radius: 50px;
+  display: flex;
+  gap: 30px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+}
+
+.top-nav a {
+  text-decoration: none; /* 밑줄을 완전히 제거합니다 */
+  color: inherit;        /* 부모 요소의 글자색(흰색)을 그대로 따릅니다 */
+  display: inline-block; /* 클릭 영역 확보를 위해 권장 */
+}
+
+
+/* --- 드롭다운 핵심 스타일 시작 --- */
+.nav-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+/* 드롭다운 메뉴 안의 링크도 같이 깔끔하게 만드려면 */
+.dropdown-menu a {
+  text-decoration: none;
+  color: #333;           /* 드롭다운은 배경이 밝으니 어두운색으로 */
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* 네비바 바로 아래 생성 */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: white; /* 사진처럼 흰색 배경 */
+  border-radius: 15px;
+  padding: 15px 0;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  
+  /* 초기 상태: 숨김 */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+/* 마우스 올렸을 때 나타남 */
+.nav-item:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-menu Link {
+  padding: 12px 25px;
+  color: #333; /* 어두운 글자색 */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.dropdown-menu Link:hover {
+  background: #f5f5f5;
+  color: var(--neon-blue);
+}
+
+/* 말풍선 꼬리표 (선택 사항) */
+.dropdown-menu::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+}
+/* --- 드롭다운 핵심 스타일 끝 --- */

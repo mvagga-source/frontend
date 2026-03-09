@@ -1,0 +1,38 @@
+.center-content { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  position: relative; 
+}
+
+.scroll-section {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  z-index: 10;
+}
+
+.scroll-section.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 중앙 문구 */
+.hero-text {
+  margin-top: 15vh;
+  text-align: center;
+}
+
+.hero-text h1 {
+  font-size: 3.5rem;
+  line-height: 1.4;
+  font-weight: 200;
+}
+
+.hero-text span {
+  color: var(--neon-blue);
+  font-weight: bold;
+  text-shadow: 0 0 15px var(--neon-blue);
+}
