@@ -1,16 +1,16 @@
-import axiosInstance from "./axiosInstance";
+// import axiosInstance from "./axiosInstance";
 
-export const userLogin = (id,pw) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/login`,{id,pw});
-}
+// export const userLogin = (id,pw) => {
+//   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/login`,{id,pw});
+// }
 
-export const userLogout = () => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/logout`);
-}
+// export const userLogout = () => {
+//   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/logout`);
+// }
 
-export const userSession = () => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/auth/userSession`);
-}
+// export const userSession = () => {
+//   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/auth/userSession`);
+// }
 
 
 

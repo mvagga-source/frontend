@@ -1,0 +1,50 @@
+
+.fc {
+  width:1200px;
+  margin:0 auto;
+  padding-top:50px;
+  pointer-events: auto;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: rgba(0, 242, 255, 0.2);
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.fc-day-today {
+  border: 2px solid #ff0000 !important;
+}
+
+
+.fc .fc-button {
+  background: transparent;
+  border: 1px solid #e9e9e7;
+  color: #efefef;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.fc .fc-button:hover {
+  background: #606060;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: #f1f1ef;
+  border-color: #e9e9e7;
+}
+
+.modal{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:white;
+  padding:20px;
+  border-radius:8px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  pointer-events: auto;
+}

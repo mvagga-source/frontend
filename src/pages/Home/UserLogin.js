@@ -1,33 +1,40 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { userLogin } from "../../api/userApi";
+import { userLoginApi } from "./UserLoginApi";
+import "./UserLogin.css";
 
 function UserLogin() {
 
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
 
   const handleLogin = async () => {
 
-    const res = await userLogin(
-      username,
-      password
-    );
+    try {
+      const res = await userLoginApi(id,pw);  
+      login(res.data);
 
-    login(res.data);
+      navigate("/");
+    } catch (error) {
+      alert("아이디 또는 비밀번호가 불일치 합니다.")
+    }
 
-    navigate("/");
   };
 
   return (
-    <div>
-      <input onChange={e => setUsername(e.target.value)} placeholder="아이디" />
-      <input type="password" onChange={e => setPassword(e.target.value)} placeholder="비밀번호" />
-      <button onClick={handleLogin}>로그인</button>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Login</h2>
+
+        <input type="text" onChange={(e)=>setId(e.target.value)} placeholder="아이디" />
+        <input type="password" onChange={(e)=>setPw(e.target.value)} placeholder="비밀번호" />
+
+        <button onClick={handleLogin}>로그인</button>
+      </div>
     </div>
   );
 }

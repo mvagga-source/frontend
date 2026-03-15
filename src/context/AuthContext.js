@@ -1,43 +1,56 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { userSessionApi, userLogoutApi } from "../pages/Home/UserLoginApi";
 
-import { userLogout, userSession } from "../api/userApi";
-
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   const login = (userData) => {
+    console.log("login : ",userData);
+    localStorage.setItem("user", JSON.stringify(userData));    
     setUser(userData);
   };
 
   const logout = async () => {
 
-    await userLogout();
-
-    setUser(null);
+    const res = await userLogoutApi();
+    if(res.data){
+      localStorage.removeItem("user");
+      setUser(null);
+    }
   };
 
   useEffect(() => {
 
-    (async () => {
-        try {
-            const res = await userSession();
-            setUser(res.data);
-        } catch (error) {
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
-    })();
+      const sessionCheck = async () => {
 
-  }, []);
+        const res = await userSessionApi();
+
+        if (res.data != null ){
+          console.log("auth ok!! : ",res.data);          
+          setUser(res.data);
+          localStorage.setItem("user", JSON.stringify(res.data));
+
+        }else{
+          console.log("auth error");
+          setUser(null);
+          localStorage.removeItem("user");
+        }
+      };
+
+      sessionCheck();
+
+  }, [children]);  
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
