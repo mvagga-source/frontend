@@ -4,14 +4,14 @@ import "./MVideo.css";
 function MVideo() {
 
     const members = [
-        { id: 1, name: "Turner", hit:"1", url:"https://www.youtube.com/watch?v=32si5cfrCNc" },
-        { id: 2, name: "Watson", hit:"10", url:"https://www.youtube.com/watch?v=CjZqVsgy95g" },
-        { id: 3, name: "John Smith", hit:"21", url:"https://www.youtube.com/watch?v=BVwAVbKYYeM" },
-        { id: 4, name: "Lisa Kim", hit:"31", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 5, name: "Lisa Kim", hit:"12", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 6, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 7, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 8, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 1, name: "임길동", hit:"1", url:"https://www.youtube.com/watch?v=32si5cfrCNc" },
+        { id: 2, name: "고길동", hit:"10", url:"https://www.youtube.com/watch?v=CjZqVsgy95g" },
+        { id: 3, name: "선우용여", hit:"21", url:"https://www.youtube.com/watch?v=BVwAVbKYYeM" },
+        { id: 4, name: "최길동", hit:"31", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 5, name: "박길동", hit:"12", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 6, name: "이길동", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 7, name: "김길동", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 8, name: "나길동", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
         { id: 9, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
         { id: 10, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
         { id: 11, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
@@ -48,10 +48,10 @@ function MVideo() {
         console.log("slider : ",slider);
         const maxScroll = slider.scrollWidth - slider.clientWidth;
 
-        // console.log("slider.scrollWidth : ",slider.scrollWidth);        
-        // console.log("slider.clientWidth : ",slider.clientWidth);    
-        // console.log("slider.scrollLeft : ",slider.scrollLeft);
-        // console.log("maxScroll : ",maxScroll);
+        console.log("slider.scrollWidth : ",slider.scrollWidth);        
+        console.log("slider.clientWidth : ",slider.clientWidth);    
+        console.log("slider.scrollLeft : ",slider.scrollLeft);
+        console.log("maxScroll : ",maxScroll);
 
         if (slider.scrollLeft >= maxScroll - 10) {
             // 끝이면 처음으로 이동
@@ -61,7 +61,7 @@ function MVideo() {
             });
         } else {
             slider.scrollBy({
-            left: 1560,
+            left: 1530,
             behavior: "smooth"
             });
         }
@@ -79,7 +79,7 @@ function MVideo() {
             });
         } else {
             slider.scrollBy({
-            left: -1560,
+            left: -1530,
             behavior: "smooth"
             });
         }
@@ -104,27 +104,28 @@ function MVideo() {
                     <div className="slider-wrapper">
                         <button className="slider-btn left" onClick={scrollLeft}>❮</button>
                         <div className="slider" ref={sliderRef}>
+
                             {members.map((member,index) => (
-                                <div className="scroll-card" key={member.id}>
+                            <div className="scroll-card" key={member.id}>
 
-                                    <div className="scroll-card rank">{index + 1}</div>
-                                    <img
-                                        src={getYoutubeThumbnail(member.url)}
-                                        onClick={() => window.open(member.url, "_blank")}
-                                        className="scroll-img"
-                                    />
-
-                                    {/* <div className="play-btn">▶</div> */}
-{/* 
-                                    <div className="scroll-info">
-                                        <p style={{textAlign:"right"}}>like : 10,000, hit : 5,000</p>
-                                        <p style={{textAlign:"center"}}>{member.name}</p>
-                                    </div> */}
-                                    <div className="progress-container">
-                                        <div className="progress-bar" style={{ width: "50%" }}></div>
+                                {/* <div className="scroll-card rank">{index + 1}</div> */}
+                                <img
+                                    src={getYoutubeThumbnail(member.url)}
+                                    onClick={() => window.open(member.url, "_blank")}
+                                />
+                                <div className="scroll-info">
+                                    <div className="scroll-rank">
+                                        {index + 1}
+                                    </div>
+                                    <div className="scroll-infos">
+                                        {/* <div>{member.name}</div>
+                                        <div>5,000</div>
+                                        <div>10,000</div> */}
                                     </div>
                                 </div>
+                            </div>
                             ))}
+
                         </div>
                         <button className="slider-btn right" onClick={scrollRight}>❯</button>
                     </div>

@@ -38,7 +38,7 @@
 }
 
 .sidebar-divider{
-  width:1550px;
+  width:100%;
   margin:0 auto;
   height: 1px;
   background: var(--border-color);
@@ -68,11 +68,13 @@
 
 .slider{
   display:flex;
-  gap:10px;
-  height:300px;
+  gap:6px;
+  height:270px;
+  box-sizing: border-box;
   overflow-x:auto;
   scroll-behavior:smooth;
   scrollbar-width:none;
+  
   /* border: 1px solid #fff; */
 }
 
@@ -80,48 +82,49 @@
   display:none;
 }
 
-.scroll-card{
-  position:relative;
-  /* overflow:hidden; */
-  /* border-top-left-radius: 15px; */
-  /* border-top-right-radius: 15px; */
-  flex-shrink:0;
-  width: 400px;
-  height:200px;
-}
-
-.scroll-info {
-  margin-top: 8px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.rank{
-  position:absolute;
-  text-align:center;
-  top:0;
-  left:0;
-  width:40px;
-  height:40px;
-  background: rgba(180, 65, 148, 0.98);
-  font-size:20px;
-  border-bottom-right-radius: 15px;
-}
-
-
-
-
-.scroll-card iframe{
-  width:100%;
-  height:100%;
-}
-
 .scroll-card img{
   width:100%;
-  height:100%;
   object-fit: cover;
   cursor: pointer;
 }
+
+.scroll-card{
+  /* position:relative; */
+  /* overflow:hidden; */
+  /* border-top-left-radius: 15px; */
+  /* border-top-right-radius: 15px; */
+  box-sizing: border-box;
+  padding:10px;
+  border:1px solid var(--border-color);
+  flex-shrink:0;
+  width: 300px;
+  height:100%;
+}
+
+.scroll-info {
+  /* border:1px solid #fff; */
+  box-sizing: border-box;
+  font-size: 16px;
+  display:flex;
+  height:50px;
+}
+
+.scroll-rank{
+  text-align:center;
+  width:100px;
+  height:90px;
+  background: rgba(121, 43, 99, 0.2);
+  line-height:80px;
+  font-size:50px;
+  font-weight: bold;  
+ }
+
+.scroll-infos {
+  padding:0 15px;
+  font-size:18px;
+  font-weight: bold;
+}
+
 
 /* 플레이 버튼 */
 
@@ -160,16 +163,15 @@
   bottom:0;
   width:100px;
   background:rgba(0,0,0,0.0);
-  /* background: var(--border-color); */
   border:none;
   color:var(--border-color);
   font-size:40px;
   cursor:pointer;
 }
 
-/* .slider-btn:hover{
-  background:rgba(0,0,0,0.5);
-} */
+.slider-btn:hover{
+  color:#fff;
+}
 
 .left{
   left:-100px;
@@ -179,23 +181,6 @@
   right:-90px;
 }
 
-/* 바깥 컨테이너 */
-.progress-container {
-  width: 100%;
-  height: 20px;
-  background-color: #eee;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-/* 실제 진행 바 */
-.progress-bar {
-  height: 100%;
-  background-color: #3b82f6;
-  width: 0%; /* 초기값 */
-  border-radius: 10px 0 0 10px;
-  transition: width 0.3s ease;
-}
 
 /* 
   뮤비 리스트
@@ -242,9 +227,10 @@
 
 .card{
   /* background:white; */
-    /* border:1px solid rgba(0, 242, 255, 0.2); */
+    border:1px solid rgba(0, 242, 255, 0.2);
     /* padding:20px; */
     /* border-radius:10px; */
+    background:#1a253bff;
     text-align:center;
     box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
