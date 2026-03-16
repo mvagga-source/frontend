@@ -16,7 +16,7 @@ function Header() {
 
         <span>오디션방식</span>
 
-        <Link to="/ActionCalendar"><span>오디션일정</span></Link>
+        <Link to="/Calendar"><span>오디션일정</span></Link>
 
         <span>아이돌 굿즈샵</span>
 
@@ -26,7 +26,7 @@ function Header() {
           <span>마이페이지</span>
           <div class="dropdown-menu">
             <Link to="/Mypage">북마크관리</Link>
-            <Link to="/Mypage">투표관리</Link>
+            <Link to="/Vote">투표관리</Link>
             <Link to="/Mypage">구매관리</Link>
             <Link to="/Mypage">판매관리</Link>                        
           </div>

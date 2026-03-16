@@ -1,0 +1,19 @@
+
+.card-box {
+    border:1px solid rgba(0, 242, 255, 0.2);
+    border-Radius:10px;
+    padding:15px;
+    margin-Bottom:10px;
+    display:flex;
+    justify-Content:space-between;
+    /* height:"600px" */
+}
+
+.delete_btn{
+    background:#ff4d4f;
+    color:#fff;
+    border:none;
+    padding:8px 15px;
+    border-Radius:5px;
+    cursor:pointer;
+}

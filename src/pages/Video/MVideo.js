@@ -86,33 +86,56 @@ function MVideo() {
     };
 
     return(
-        <div className="container">
 
-            <div className="container-title">
-                <h2> 인기 아이돌 뮤직비디오 </h2>
-            </div>
+        <div className="main-container">
 
-            <div className="container-scroll">
-                <div className="slider-wrapper">
-                    <button className="slider-btn left" onClick={scrollLeft}>❮</button>
-                    <div className="slider" ref={sliderRef}>
-                        {members.map((member,index) => (
-                            <div className="scroll-card" key={member.id}>
-                                 <img
-                                    src={getYoutubeThumbnail(member.url)}
-                                    onClick={() => window.open(member.url, "_blank")}
-                                />
-
-                                <div className="scroll-card rank">{index + 1}</div>
-                                <div className="play-btn">▶</div>
-                            </div>
-                        ))}
-                    </div>
-                    <button className="slider-btn right" onClick={scrollRight}>❯</button>
+            <div className="main-head">
+                <div className="main-title">
+                <h1>Music Video</h1>
                 </div>
             </div>
 
-            <div className="container-list">
+            <div className="main-scroll">
+
+                {/* <div className="sidebar-divider"></div> */}
+
+                {/* 상단 스크롤 */}
+                <div className="container-scroll">
+                    <div className="slider-wrapper">
+                        <button className="slider-btn left" onClick={scrollLeft}>❮</button>
+                        <div className="slider" ref={sliderRef}>
+                            {members.map((member,index) => (
+                                <div className="scroll-card" key={member.id}>
+
+                                    <div className="scroll-card rank">{index + 1}</div>
+                                    <img
+                                        src={getYoutubeThumbnail(member.url)}
+                                        onClick={() => window.open(member.url, "_blank")}
+                                        className="scroll-img"
+                                    />
+
+                                    {/* <div className="play-btn">▶</div> */}
+{/* 
+                                    <div className="scroll-info">
+                                        <p style={{textAlign:"right"}}>like : 10,000, hit : 5,000</p>
+                                        <p style={{textAlign:"center"}}>{member.name}</p>
+                                    </div> */}
+                                    <div className="progress-container">
+                                        <div className="progress-bar" style={{ width: "50%" }}></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="slider-btn right" onClick={scrollRight}>❯</button>
+                    </div>
+                </div>
+
+                {/* <div className="sidebar-divider"></div> */}
+
+            </div>
+
+            {/* start main-list */}
+            <div className="main-list">
 
                 <select onChange={(e)=>setCategory(e.target.value)} className="moden-select">
                 {categories.map((item) => (
@@ -144,6 +167,8 @@ function MVideo() {
                     </div>
                 </div>
             </div>
+            {/* end main-list */}
+           
         </div>
     );
 }
