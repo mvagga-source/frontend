@@ -1,0 +1,24 @@
+desc member;
+select * from member;
+
+commit;
+
+desc event;
+select * from event;
+select * from bookmark;
+
+delete from event;
+
+
+update event set startdate = '2026-03-02', enddate = '2026-03-07' where eno = 1;
+
+insert into event values (ISEQ$$_80353.nextval,sysdate,'김길동, 이길동, 박길동, 최길동','2026-03-05','2026-03-01','1차 오디션',sysdate);
+insert into event values (ISEQ$$_80353.nextval,sysdate,'양길동, 홍길동, 구길동, 임길동','2026-03-14','2026-03-09','2차 오디션',sysdate);
+insert into event values (ISEQ$$_80353.nextval,sysdate,'김길동, 이길동, 박길동, 최길동','2026-03-28','2026-03-23','4차 오디션',sysdate);
+insert into event values (ISEQ$$_80353.nextval,sysdate,'차길동, 박길동, 주길동, 최길동','2026-03-21','2026-03-16','3차 오디션',sysdate);
+
+insert into event values (ISEQ$$_80353.nextval,sysdate,'차길동, 박길동, 주길동, 최길동','2026-03-08','2026-03-03','1차 오디션 재대결',sysdate);
+
+rollback;
+
+insert into member values ('aaa','aaa@naver.com','M','수영',sysdate,'고길동','010-1234-5678','1111');
