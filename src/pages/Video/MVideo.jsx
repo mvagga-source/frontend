@@ -1,25 +1,29 @@
 import { useRef, useEffect, useState } from "react";
 import "./MVideo.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faCrown, faHeart } from '@fortawesome/free-solid-svg-icons'
+
 
 function MVideo() {
 
     const members = [
-        { id: 1, name: "임길동", hit:"1", url:"https://www.youtube.com/watch?v=32si5cfrCNc" },
-        { id: 2, name: "고길동", hit:"10", url:"https://www.youtube.com/watch?v=CjZqVsgy95g" },
-        { id: 3, name: "선우용여", hit:"21", url:"https://www.youtube.com/watch?v=BVwAVbKYYeM" },
-        { id: 4, name: "최길동", hit:"31", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 5, name: "박길동", hit:"12", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 6, name: "이길동", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 7, name: "김길동", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 8, name: "나길동", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 9, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 10, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 11, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 12, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 13, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 14, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 15, name: "Lisa Kim", hit:"15", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 1, name: "임길동 - Love You Like A Love Song - Selena...", status:"1", hit:"1", url:"https://www.youtube.com/watch?v=32si5cfrCNc" },
+        { id: 2, name: "고길동", status:"0", hit:"10", url:"https://www.youtube.com/watch?v=CjZqVsgy95g" },
+        { id: 3, name: "선우용여", status:"0", hit:"21", url:"https://www.youtube.com/watch?v=BVwAVbKYYeM" },
+        { id: 4, name: "최길동", status:"1", hit:"31", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
+        { id: 5, name: "박길동", status:"0", hit:"12", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
+        { id: 6, name: "이길동", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
+        { id: 7, name: "김길동", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
+        { id: 8, name: "나길동", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
+        { id: 9, name: "Lisa Kim", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
+        { id: 10, name: "Lisa Kim", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
+        { id: 11, name: "Lisa Kim", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" }
     ];
+
+    const statusText = {
+        "1": "오디션 통과",
+        "0": "오디션 탈락"
+    };
 
     const categories = [
         { value: "date", label: "최신순" },
@@ -97,7 +101,7 @@ function MVideo() {
 
             <div className="main-scroll">
 
-                {/* <div className="sidebar-divider"></div> */}
+                <div className="sidebar-divider"></div>
 
                 {/* 상단 스크롤 */}
                 <div className="container-scroll">
@@ -106,24 +110,38 @@ function MVideo() {
                         <div className="slider" ref={sliderRef}>
 
                             {members.map((member,index) => (
-                            <div className="scroll-card" key={member.id}>
+                                
+                                <div className={`scroll-card ${member.status === "1" ? "status-ongoing-bg" : "" }`}  key={member.id}>
+                                    <img
+                                        src={getYoutubeThumbnail(member.url)}
+                                        onClick={() => window.open(member.url, "_blank")}
+                                    />
+                                    
 
-                                {/* <div className="scroll-card rank">{index + 1}</div> */}
-                                <img
-                                    src={getYoutubeThumbnail(member.url)}
-                                    onClick={() => window.open(member.url, "_blank")}
-                                />
-                                <div className="scroll-info">
-                                    <div className="scroll-rank">
-                                        {index + 1}
-                                    </div>
-                                    <div className="scroll-infos">
-                                        {/* <div>{member.name}</div>
-                                        <div>5,000</div>
-                                        <div>10,000</div> */}
+                                    <div className="scroll-info-body">
+                                        <div className="scroll-rank">
+                                            {/* <div className={`${member.status === "1" ? "status-ongoing-ft" : "status-ended-ft" }`}>{index + 1}</div> */}
+                                            <div className={`scroll-info-status-mv ${member.status === "1" ? "status-ongoing-mv" : "status-upcoming-mv" }`}>
+                                                {statusText[member.status]}
+                                            </div>
+                                            <div className="scroll-info-status-mv status-ended-bk">
+                                                북마크
+                                            </div>
+                                            <div className="scroll-info-status-mv status-ended-bk">
+                                                프로필
+                                            </div>                                            
+                                        </div>
+                                        <div className="scroll-info">
+                                            <h3 className="scroll-info-name">{member.name}</h3>
+                                            <p className="scroll-info-hit">
+                                                <FontAwesomeIcon icon={faEye} />
+                                                <FontAwesomeIcon icon={faCrown} />
+                                                <FontAwesomeIcon icon={faHeart} />
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
                             ))}
 
                         </div>
@@ -137,7 +155,7 @@ function MVideo() {
 
             {/* start main-list */}
             <div className="main-list">
-
+                
                 <select onChange={(e)=>setCategory(e.target.value)} className="moden-select">
                 {categories.map((item) => (
                     <option key={item.value} value={item.value}>
