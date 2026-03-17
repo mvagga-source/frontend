@@ -89,6 +89,7 @@ function Calendar() {
           <h1>Audition Calendar</h1>
         </div>
       </div>
+      <div className="sidebar-divider"></div>
 
 
       <div className="main-list">

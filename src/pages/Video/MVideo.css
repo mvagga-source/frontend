@@ -31,7 +31,7 @@
 }
 
 .main-list {
-  padding-top:30px;
+  padding:50px;
   width:1200px;
   margin:0 auto;
   text-align: right;
@@ -39,7 +39,7 @@
 }
 
 .sidebar-divider{
-  width:1530px;
+  width:100%;
   margin:0 auto;
   height: 1px;
   background: var(--border-color);
@@ -48,7 +48,7 @@
 
 
 /* 
-  뮤비 스크롤
+  상단 스크롤
 */
 
 .container-scroll{
@@ -99,6 +99,17 @@
   cursor: pointer;
 }
 
+.scroll-hit-like{
+  /* border:1px solid #fff; */
+  width:170px;
+  text-align:right;
+}
+
+.scroll-hit-like span{
+  text-align:right;
+  margin-left:10px;
+}
+
 .scroll-info-body {
   /* border:1px solid #fff; */
   box-sizing: border-box;
@@ -112,26 +123,31 @@
   /* color: #ff7a8a; */
   /* line-height:80px; */  
   text-align:center;
-  width:120px;
+  width:90px;
   font-size:40px;
   font-weight: bold;  
  }
 
+ .scroll-rank-bg{
+  background: rgba(0, 242, 255, 0.12);
+ }
+
 .scroll-info {
   /* border:1px solid #fff;   */
-  width:130px;
+  width:155px;
   padding:0 15px;
 }
 
 .scroll-info-name{
   font-weight: bold; 
   margin: 10px 0 8px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .scroll-info-hit{
   color: #666;
   font-size: 14px;
+
 }
 
 .scroll-info-status-mv {
@@ -275,7 +291,7 @@
     box-sizing: border-box;
 } */
 
-.moden-select{
+.mv-select{
   margin:20px 0;
   padding:8px 35px 8px 12px;
   border:1px solid rgba(0, 242, 255, 0.2);
@@ -288,7 +304,7 @@
   /* transition:all 0.2s; */
 }
 
-.row-box{
+.ml-row-box{
     /* border:1px solid rgba(0, 242, 255, 0.2); */
     width:100%;
     /* padding:20px; */
@@ -296,61 +312,64 @@
     justify-content:center;
 }
 
-.row{
+.ml-row{
   display:flex;
   flex-wrap:wrap;
   gap:25px;  
 }
 
-.column{
+.ml-column{
   width:220px;
 }
 
-.card{
-  /* background:white; */
-    border:1px solid rgba(0, 242, 255, 0.2);
-    /* padding:20px; */
-    /* border-radius:10px; */
-    background:#1a253bff;
+.ml-card{
+    /* border:1px solid rgba(0, 242, 255, 0.2);
+    background:#1a253bff; */
     text-align:center;
     box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-.img-container{
-  position:relative;
+.ml-info-box{
+  /* position:relative; */
+  box-sizing: border-box;
   overflow:hidden;
   width:100%;
-  /* border-radius:10px; */
+  padding:5px;
 }
 
-.img-container img{
+.ml-info-box img{
   width:100%;
-  /* border-radius:10px; */
+  object-fit: cover;
+  cursor: pointer;
 }
 
-.list-play-btn{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  
-  width:30px;
-  height:30px;
-
-  border-radius:50%;
-  background:rgba(0,0,0,0.5);
-
-  color:white;
-  font-size:12px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  pointer-events:none;
+.row-hit-like{
+  /* border:1px solid #fff; */
+  width:100%;
+  text-align:right;
 }
 
-.list-scroll-card:hover .play-btn{
-  background:rgba(0,0,0,0.7);
-  transform:translate(-50%,-50%) scale(1.1);
+.row-hit-like span{
+  margin-right:10px;
+}
+
+.row-info-name{
+  padding:0 5px;
+  text-align: left;
+  font-weight: bold;
+  height:80px;
+  font-size: 16px;
+}
+
+.ml-info-box ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; 
+  gap: 10px;     
+}
+
+.ml-info-box ul li{
+  flex: 1;  
+  text-align: center; 
 }
