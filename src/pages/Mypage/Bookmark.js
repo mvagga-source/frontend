@@ -1,8 +1,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { getBookmarkPageApi, deleteMyBookmarkApi } from "./MypageApi";
+import { getBookmarkPageApi, deleteMyBookmarkApi } from "./BookmarkApi";
 import dayjs from "dayjs";
-import "./Mypage.css";
+import "./Bookmark.css";
 
 function MyPage () {
 

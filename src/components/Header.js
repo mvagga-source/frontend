@@ -25,10 +25,10 @@ function Header({ onSidebarOpen }) {
         <div class="nav-item has-dropdown">
           <span>마이페이지</span>
           <div class="dropdown-menu">
-            <Link to="/Mypage">북마크관리</Link>
+            <Link to="/Bookmark">북마크관리</Link>
             <Link to="/Vote">투표관리</Link>
-            <Link to="/Mypage">구매관리</Link>
-            <Link to="/Mypage">판매관리</Link>                        
+            <Link to="/Bookmark">구매관리</Link>
+            <Link to="/Bookmark">판매관리</Link>                        
           </div>
         </div>
 
