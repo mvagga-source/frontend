@@ -20,6 +20,7 @@ function Calendar() {
 
   const [events, setEvents] = useState([]);
   const {user} = useAuth();
+  const pageType = "BK"; // 페이지구분
 
   useEffect(() => {
 
@@ -56,7 +57,7 @@ function Calendar() {
   const toggleBookmark = async (eno) => {
     
     try {
-        const res = await toggleBookmarkApi(eno, user.id);
+        const res = await toggleBookmarkApi(eno, user.id, pageType);
         const bookmarked = res.data;
 
         setEvents(prev =>

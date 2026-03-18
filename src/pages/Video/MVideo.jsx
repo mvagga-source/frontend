@@ -39,8 +39,8 @@ function MVideo() {
     }
 
     function getYoutubeThumbnail(url){
-    const id = url.split("v=")[1];
-    return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+        const id = url.split("v=")[1];
+        return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
     }
 
     const sliderRef = useRef(null);
@@ -91,51 +91,51 @@ function MVideo() {
 
     return(
 
-        <div className="main-container">
+        <div className="mv-main-container">
 
-            <div className="main-head">
-                <div className="main-title">
-                <h1>Music Video</h1>
+            <div className="mv-main-head">
+                <div className="mv-main-title">
+                    <h1>Music Video</h1>
                 </div>
             </div>
 
-            <div className="main-scroll">
+            <div className="mv-main-scroll">
 
                 {/* <div className="sidebar-divider"></div> */}
 
                 {/* 상단 스크롤 */}
-                <div className="container-scroll">
-                    <div className="slider-wrapper">
-                        <button className="slider-btn left" onClick={scrollLeft}>❮</button>
-                        <div className="slider" ref={sliderRef}>
+                <div className="mv-container-scroll">
+                    <div className="mv-slider-wrapper">
+                        <button className="mv-slider-btn mv-left" onClick={scrollLeft}>❮</button>
+                        <div className="mv-slider" ref={sliderRef}>
 
                             {members.map((member,index) => (
                                 
-                                <div className={`scroll-card ${member.status === "1" ? "status-ongoing-bg" : "" }`}  key={member.id}>
+                                <div className="mv-scroll-card" key={member.id}>
                                     <img
                                         src={getYoutubeThumbnail(member.url)}
                                         onClick={() => window.open(member.url, "_blank")}
                                     />
 
-                                    <div className="scroll-info-body">
-                                        <div className="scroll-rank">
-                                            <div className={`${member.status === "1" ? "status-ongoing-bg" : "status-ended-bg" }`}>
-                                                <div className={`${member.status === "1" ? "status-ongoing-ft" : "status-ended-ft" }`}>{index + 1}</div>
-                                                <div className={`scroll-info-status-mv ${member.status === "1" ? "status-ongoing-ft" : "status-upcoming-ft" }`}>
+                                    <div className="mv-scroll-info-body">
+                                        <div className="mv-scroll-rank">
+                                            <div className={`${member.status === "1" ? "mv-ongoing-bb" : "mv-ended-bb" }`}>
+                                                <div className={`${member.status === "1" ? "mv-ongoing-fc" : "mv-ended-fc" }`}>{index + 1}</div>
+                                                <div className={`mv-scroll-status ${member.status === "1" ? "mv-ongoing-fc" : "mv-upcoming-fc" }`}>
                                                     {statusText[member.status]}
                                                 </div>
                                             </div>
-                                            <div className="scroll-info-status-mv status-ended-bk">
+                                            <div className="mv-scroll-status mv-ended-all">
                                                 북마크
                                             </div>
                                         </div>
-                                        <div className="scroll-info">
-                                            <div className="scroll-hit-like">
+                                        <div className="mv-scroll-info">
+                                            <div className="mv-scroll-hit-like">
                                                 <span><FontAwesomeIcon icon={faEye} /> 55</span>
                                                 <span><FontAwesomeIcon icon={faHeart} /> 101</span>
                                                 {/* <FontAwesomeIcon icon={faCrown} /> */}
                                             </div>
-                                            <div className="scroll-info-name">{member.name}</div>
+                                            <div className="mv-scroll-name">{member.name}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@ function MVideo() {
                             ))}
 
                         </div>
-                        <button className="slider-btn right" onClick={scrollRight}>❯</button>
+                        <button className="mv-slider-btn mv-right" onClick={scrollRight}>❯</button>
                     </div>
                 </div>
 
@@ -151,10 +151,10 @@ function MVideo() {
 
             </div>
 
-            <div className="sidebar-divider"></div>
+            <div className="mv-sidebar-divider"></div>
 
             {/* start main-list */}
-            <div className="main-list">
+            <div className="mv-main-list">
                 
                 <select onChange={(e)=>setCategory(e.target.value)} className="mv-select">
                 {categories.map((item) => (
@@ -164,27 +164,28 @@ function MVideo() {
                 ))}
                 </select>
 
-                <div className="ml-row-box">
-                    <div className="ml-row">
+                <div className="mv-row-box">
+                    <div className="mv-row">
                         {members.map(member => (
 
-                            <div className="ml-column" key={member.id}>
-                                <div className="ml-card">
-                                    <div className={`ml-info-box ${member.status === "1" ? "status-ongoing-bk" : "status-ended-bk" }`} >
+                            <div className="mv-column" key={member.id}>
+                                <div className="mv-card">
+                                    <div className={`mv-info-box ${member.status === "1" ? "mv-ongoing-bb" : "mv-ended-bb" }`}>
                                         
                                         <img
                                             src={getYoutubeThumbnail(member.url)}
                                             onClick={() => window.open(member.url, "_blank")}
                                         />
-                                        <div className="row-hit-like">
+                                        <div className="mv-row-hitlike">
                                             <span><FontAwesomeIcon icon={faEye} /> 55</span>
                                             <span><FontAwesomeIcon icon={faHeart} /> 101</span>
                                             {/* <FontAwesomeIcon icon={faCrown} /> */}
                                         </div>
-                                        <div className="row-info-name">{member.name}</div>
+                                        <div className="mv-row-info-name">{member.name}</div>
                                         <ul>
                                             <li></li>
-                                            <li className="scroll-info-status-mv status-ended-bk">북마크</li>
+                                            <li></li>
+                                            <li className="mv-scroll-status mv-ended-all">북마크</li>
                                         </ul>
                                     </div>
                                 </div>

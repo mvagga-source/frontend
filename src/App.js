@@ -7,7 +7,6 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import Home from "./pages/Home/Home";
 import UserLogin from "./pages/Home/UserLogin";
 import Bookmark from "./pages/Mypage/Bookmark";
-import Vote from "./pages/Mypage/Vote";
 import Calender from "./pages/Calendar/Calendar";
 import MVideo from "./pages/Video/MVideo";
 
@@ -26,7 +25,6 @@ function App() {
           <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>
 
           <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>          
-          <Route path="/Vote" element={<ProtectedRoute><Layout><Vote/></Layout></ProtectedRoute>}/>          
 
         </Routes>
       </BrowserRouter>

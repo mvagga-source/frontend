@@ -12,7 +12,7 @@ export const getMyBookmarkApi = (userId) => {
 }
 
 // 나의 북마크 설정 또는 취소
-export const toggleBookmarkApi = (eno,userId) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/Calendar/toggleBookmark`,{eno:eno,userId:userId});
+export const toggleBookmarkApi = (eno,userId,pageType) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/Calendar/toggleBookmark`,{eno:eno,userId:userId,pageType,pageType});
 }
 

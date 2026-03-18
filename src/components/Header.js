@@ -32,14 +32,6 @@ function Header({ onSidebarOpen }) {
           </div>
         </div>
 
-        {user? 
-          (<>
-            <span>{user.name}님</span>
-            <button onClick={logout}>로그아웃</button>
-          </>):(
-            <Link to="/UserLogin"><span>로그인</span></Link>
-          )}
-
           {/* 사이드바 열기 버튼 */}
           <button className="nav-sidebar-btn" onClick={onSidebarOpen} aria-label="메뉴 열기">
             ☰
