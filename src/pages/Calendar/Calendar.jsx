@@ -74,7 +74,7 @@ function Calendar() {
           )
         );
 
-        {bookmarked ? alert("북마크에 등록되었습니다.\n\n'마이페이지'에서 확인 가능합니다.") : alert("북마크 등록이 삭제 되었습니다.");}
+        {bookmarked ? alert("북마크에 등록되었습니다.\n\n'마이페이지'에서 확인 가능합니다.") : alert("북마크 등록이 취소 되었습니다.");}
 
       }catch (err) {
         console.error(err);

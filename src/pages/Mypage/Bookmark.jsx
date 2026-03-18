@@ -108,7 +108,7 @@ function MyPage () {
                   <li style={{width:"10%"}} className="bk-center">{dayjs(event.createdAt).format("YYYY-MM-DD")}</li>
                   <li style={{width:"15%"}} className="bk-center">
                     <button className="bk-move_btn bk-status-ongoing">
-                      알림 진행중.
+                      알림중.
                     </button>
                     <button className="bk-delete_btn bk-status-upcoming" onClick={() => deleteEvent(event.id)}>
                       삭제
@@ -122,7 +122,7 @@ function MyPage () {
                 <p>{dayjs(event.createdAt).format("YYYY-MM-DD")}</p> */}
       
               </div>
-              <div className="sidebar-divider"></div>
+              <div className="bk-sidebar-divider"></div>
             </div>
 
             
@@ -130,9 +130,9 @@ function MyPage () {
         </div>
 
         {/* 스크롤 감지 영역 */}
-        <div ref={loader} style={{height:"50px", textAlign:"center"}}>
+        {/* <div ref={loader} style={{height:"50px", textAlign:"center"}}> */}
           {/* {hasMore ? "로딩중..." : "마지막 데이터"} */}
-        </div>
+        {/* </div> */}
 
     </div>
   );

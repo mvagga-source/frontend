@@ -7,23 +7,28 @@ import { faEye, faCrown, faHeart } from '@fortawesome/free-solid-svg-icons'
 function MVideo() {
 
     const members = [
-        { id: 1, name: "임길동 - Love You Like A Love Song - Selena...", status:"1", hit:"1", url:"https://www.youtube.com/watch?v=32si5cfrCNc" },
-        { id: 2, name: "고길동 - Love You Like A Love Song - Selena...", status:"0", hit:"10", url:"https://www.youtube.com/watch?v=CjZqVsgy95g" },
-        { id: 3, name: "선우용여 - Love You Like A Love Song - Selena...", status:"0", hit:"21", url:"https://www.youtube.com/watch?v=BVwAVbKYYeM" },
-        { id: 4, name: "최길동", status:"1", hit:"31", url:"https://www.youtube.com/watch?v=RKhsHGfrFmY" },
-        { id: 5, name: "박길동", status:"0", hit:"12", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
-        { id: 6, name: "이길동", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
-        { id: 7, name: "김길동", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
-        { id: 8, name: "나길동", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
-        { id: 9, name: "Lisa Kim", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
-        { id: 10, name: "Lisa Kim", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" },
-        { id: 11, name: "Lisa Kim", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=eT-NRpqc48w" }
+        { id: 1, name: "25번 연습생", title:"Love You Like A Love Song - Selena...", status:"1", hit:"1", url:"https://www.youtube.com/watch?v=32si5cfrCNc" },
+        { id: 2, name: "5번 연습생", title:"Love You Like A Love Song - Selena...", status:"1", hit:"10", url:"https://www.youtube.com/watch?v=CjZqVsgy95g" },
+        { id: 3, name: "101번 연습생", title:"Love You Like A Love Song - Selena...", status:"0", hit:"21", url:"https://www.youtube.com/watch?v=BVwAVbKYYeM" },
+        { id: 4, name: "85번 연습생", title:"에스파 'Pink Hoodie' (Official Audio)", status:"1", hit:"31", url:"https://www.youtube.com/watch?v=ekr2nIex040" },
+        { id: 5, name: "26번 연습생",title:"Love You Like A Love Song - Selena...", status:"0", hit:"12", url:"https://www.youtube.com/watch?v=jWQx2f-CErU" },
+        { id: 6, name: "1번 연습생",title:"Love You Like A Love Song - Selena...", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=q6_CfyZgF-s" },
+        { id: 7, name: "78번 연습생",title:"Love You Like A Love Song - Selena...", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=ekr2nIex040" },
+        { id: 8, name: "88번 연습생",title:"Love You Like A Love Song - Selena...", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=mrV8kK5t0V8" },
+        { id: 9, name: "91번 연습생",title:"Love You Like A Love Song - Selena...", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=U-itOp4PgBs" },
+        { id: 10, name: "56번 연습생",title:"Love You Like A Love Song - Selena...", status:"1", hit:"15", url:"https://www.youtube.com/watch?v=jWQx2f-CErU" },
+        { id: 11, name: "35번 연습생",title:"Love You Like A Love Song - Selena...", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=jWQx2f-CErU" }
     ];
 
     const statusText = {
         "1": "오디션 통과",
         "0": "오디션 탈락"
     };
+
+    const statusSign = {
+        "1": "●",
+        "0": ""
+    };    
 
     const categories = [
         { value: "date", label: "최신순" },
@@ -101,7 +106,7 @@ function MVideo() {
 
             <div className="mv-main-scroll">
 
-                {/* <div className="sidebar-divider"></div> */}
+                <div className="mv-sidebar-divider"></div>
 
                 {/* 상단 스크롤 */}
                 <div className="mv-container-scroll">
@@ -136,6 +141,7 @@ function MVideo() {
                                                 {/* <FontAwesomeIcon icon={faCrown} /> */}
                                             </div>
                                             <div className="mv-scroll-name">{member.name}</div>
+                                            <div className="mv-scroll-title">{member.title}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +176,7 @@ function MVideo() {
 
                             <div className="mv-column" key={member.id}>
                                 <div className="mv-card">
-                                    <div className={`mv-info-box ${member.status === "1" ? "mv-ongoing-bb" : "mv-ended-bb" }`}>
+                                    <div className={`mv-info-box ${member.status === "1" ? "mv-passed-bb" : "mv-ended-bb" }`}>
                                         
                                         <img
                                             src={getYoutubeThumbnail(member.url)}
@@ -182,10 +188,11 @@ function MVideo() {
                                             {/* <FontAwesomeIcon icon={faCrown} /> */}
                                         </div>
                                         <div className="mv-row-info-name">{member.name}</div>
+                                        <div className="mv-row-info-title">{member.title}</div>
                                         <ul>
+                                            <li className="mv-row-status mv-ongoing-fc">{statusSign[member.status]}</li>
                                             <li></li>
-                                            <li></li>
-                                            <li className="mv-scroll-status mv-ended-all">북마크</li>
+                                            <li className="mv-row-status mv-ended-all">북마크</li>
                                         </ul>
                                     </div>
                                 </div>

@@ -69,12 +69,18 @@
   border: 1px solid rgba(255, 122, 138, 0.25);
 }
 
+.mv-passed-bb {
+  background: rgba(10, 16, 28, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 /* ============ end font color */
 
 
 .mv-main-container {
   width:100%;
-  margin:0 auto;
+  min-height: 100vh;
+  padding-bottom:50px;
 }
 
 .mv-main-head {
@@ -117,6 +123,7 @@
   margin:0 auto;
   height: 1px;
   background: var(--border-color);
+  /* background: rgba(255, 255, 255, 0.06); */
   flex-shrink: 0;
 }
 
@@ -189,6 +196,8 @@
   box-sizing: border-box;
   font-size: 16px;
   display:flex;
+  border-bottom: 1px solid rgba(0, 242, 255, 0.3);
+  border-right: 1px solid rgba(0, 242, 255, 0.3);
 }
 
 .mv-scroll-rank{
@@ -213,6 +222,12 @@
 }
 
 .mv-scroll-name{
+  font-weight: bold; 
+  margin: 10px 0 8px;
+  font-size: 18px;
+}
+
+.mv-scroll-title{
   /* font-weight: bold;  */
   margin: 10px 0 8px;
   font-size: 16px;
@@ -322,7 +337,14 @@
   padding:0 5px;
   text-align: left;
   /* font-weight: bold; */
-  height:80px;
+  height:30px;
+  font-size: 14px;
+}
+.mv-row-info-title{
+  padding:0 5px;
+  text-align: left;
+  /* font-weight: bold; */
+  height:50px;
   font-size: 14px;
 }
 
@@ -337,4 +359,13 @@
 .mv-info-box ul li{
   flex: 1;  
   text-align: center; 
+}
+
+.mv-row-status {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  letter-spacing: 0.5px;
+  border-radius: 15px;
+  margin:0 5px 5px 0;
 }

@@ -1,12 +1,6 @@
 
-.logo{
-  width:500px;
-  height:auto;
-}
-
-
 /* 상단 네비게이션 */
-.top-nav {
+.hd-top-nav {
   position: fixed;
   top: 20px;
   left: 50%;
@@ -22,20 +16,20 @@
   border: 1px solid var(--border-color);
 }
 
-.top-nav a {
+.hd-top-nav a {
   text-decoration: none; /* 밑줄을 완전히 제거합니다 */
   color: inherit;        /* 부모 요소의 글자색(흰색)을 그대로 따릅니다 */
   display: inline-block; /* 클릭 영역 확보를 위해 권장 */
 }
 
 /* hover */
-.top-nav a:hover{
+.hd-top-nav a:hover{
   color:#ff7a8a;
 }
 
 
 /* --- 드롭다운 핵심 스타일 시작 --- */
-.nav-item {
+.hd-nav-item {
   position: relative;
   height: 100%;
   display: flex;
@@ -43,9 +37,13 @@
   cursor: pointer;
 }
 
+.hd-nav-item.active {
+  color: #ff7a8a;
+}
+
 /* 카드형 드롭다운 */
 
-.dropdown-menu{
+.hd-dropdown-menu{
   position:absolute;
   top:100%;
   left:0;
@@ -63,7 +61,7 @@
 }
 
 /* 메뉴 */
-.dropdown-menu a{
+.hd-dropdown-menu a{
   text-decoration:none;
   /* background:white; */
   padding:3px 15px;
@@ -75,20 +73,20 @@
 }
 
 /* hover */
-.dropdown-menu a:hover{
+.hd-dropdown-menu a:hover{
   background:#1f2937;
   color:#ff7a8a;
 }
 
 /* hover 시 표시 */
-.has-dropdown:hover .dropdown-menu{
+.has-dropdown:hover .hd-dropdown-menu{
   display:flex;
   opacity:1;
   transform:translateY(0);  
 }
 
 /* 사이드바 열기 버튼 */
-.nav-sidebar-btn {
+.hd-nav-sidebar-btn {
   background: rgba(0, 242, 255, 0.08) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: 20px !important;
@@ -99,7 +97,7 @@
   transition: background 0.2s;
   line-height: 1;
 }
-.nav-sidebar-btn:hover {
+.hd-nav-sidebar-btn:hover {
   background: rgba(0, 242, 255, 0.18) !important;
   color: var(--neon-blue) !important;
 }
