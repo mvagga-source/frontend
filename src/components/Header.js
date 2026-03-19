@@ -14,28 +14,41 @@ function Header({ onSidebarOpen }) {
           ACTION101
         </NavLink>
 
-        <span className="hd-nav-item">오디션방식</span>
+        <div className="hd-nav-item has-dropdown">
+          <span>오디션</span>
+          <div className="hd-dropdown-menu">
+            <NavLink>오디션방식</NavLink>
+            <NavLink to="/Calendar">오디션일정</NavLink>            
+            <NavLink to="/Audition/idols">참가자</NavLink>
+            <NavLink to="/Audition/ranking">실시간랭킹</NavLink>
+          </div>          
+        </div>
 
-        <NavLink to="/Calendar" className="hd-nav-item">
-          오디션일정
+        <NavLink to="/Audition/vote" className="hd-nav-item">
+          투표참여
         </NavLink>
 
-        <span className="nav-item">아이돌 굿즈샵</span>
+        <NavLink to="/Audition/contest" className="hd-nav-item">
+          경연결과
+        </NavLink>        
+
+        <span className="nav-item">굿즈샵</span>
 
         <NavLink to="/MVideo" className="hd-nav-item">
-          아이돌 동영상
+          뮤직비디오
         </NavLink>
 
         <div className="hd-nav-item has-dropdown">
           <span>마이페이지</span>
           <div className="hd-dropdown-menu">
             <NavLink to="/Bookmark">북마크관리</NavLink>
-            <NavLink to="/Vote">투표관리</NavLink>
+            <NavLink to="/Bookmark">투표관리</NavLink>
             <NavLink to="/Bookmark">구매관리</NavLink>
             <NavLink to="/Bookmark">판매관리</NavLink>                        
           </div>
         </div>
-
+        
+        {/* 사이드바 열기 버튼 */}
         <button className="hd-nav-sidebar-btn" onClick={onSidebarOpen}>
           ☰
         </button>

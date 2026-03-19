@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { userSessionApi, userLogoutApi } from "../pages/Home/UserLoginApi";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 

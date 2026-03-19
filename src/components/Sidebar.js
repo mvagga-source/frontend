@@ -70,7 +70,7 @@ function Sidebar({ isOpen, onClose }) {
         ) : (
           <div className="sb-auth">
             <Link to="/UserLogin" className="sb-btn-login"  onClick={onClose}>로그인</Link>
-            <Link to="/UserLogin" className="sb-btn-signup" onClick={onClose}>회원가입</Link>
+            <Link to="/UserSignUp" className="sb-btn-signup" onClick={onClose}>회원가입</Link>
           </div>
         )}
 
