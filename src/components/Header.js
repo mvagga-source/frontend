@@ -47,6 +47,10 @@ function Header({ onSidebarOpen }) {
             <NavLink to="/Bookmark">판매관리</NavLink>                        
           </div>
         </div>
+
+        <NavLink className="hd-nav-item">
+          게시판
+        </NavLink>        
         
         {/* 사이드바 열기 버튼 */}
         <button className="hd-nav-sidebar-btn" onClick={onSidebarOpen}>
