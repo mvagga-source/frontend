@@ -86,7 +86,7 @@
 .mv-main-head {
   width:100%;
   margin:0 auto;
-  padding:100px 0 0 0;
+  padding-top:70px;
   text-align: center;
   background: rgba(10, 16, 28, 0.98);
 }
@@ -94,12 +94,12 @@
 .mv-main-title {
   /* border:1px solid black; */
   width:1400px;
-  height:70px;
+  height:50px;
   margin:0 auto;
 }
 
 .mv-main-title h1{
-  font-size: 40px;
+  font-size: 30px;
   letter-spacing: 4px;
   color: var(--neon-blue);
   text-shadow: 0 0 16px rgba(0, 242, 255, 0.4);

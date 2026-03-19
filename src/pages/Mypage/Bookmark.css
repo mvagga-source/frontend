@@ -36,7 +36,7 @@
 }
 
 .bk-ongoing-b {
-  border: 3px solid rgba(0, 242, 255, 0.3);
+  border: 1px solid rgba(0, 242, 255, 0.3);
 }
 
 .bk-ended-b {
@@ -118,19 +118,28 @@
 
 .bk-main-head ul li{
     /* border:1px solid #fff; */
+    position: relative;
     width:150px;
     padding: 12px 5px;
-    background: transparent;
-    color: rgba(232, 244, 248, 0.85);
+    /* background: transparent; */
+    /* color: rgba(232, 244, 248, 0.85); */
     font-size: 14px;
 }
 
-.bk-main-head ul li:hover {
-  border-color: var(--neon-blue);
+.bk-main-head ul li span{
+  position: absolute;
+  top: 16px;
+  left: 25px;
   color: var(--neon-blue);
+  font-size: 8px;
 }
 
-.bk-main-head ul li a {
+/* .bk-main-head ul li:hover {
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);
+} */
+
+a {
   text-decoration: none;
   color: inherit;
 }
@@ -162,11 +171,6 @@
   margin-bottom: 15px;
 }
 
-.bk-card-row-title li:last-child {
-  /* border: none;
-  background: none; */
-}
-
 .bk-sidebar-divider{
   width:100%;
   margin:0 auto;
@@ -192,7 +196,7 @@
   margin: 0;
   display: flex;
   font-size : 14px;
-  gap:5px;
+  gap:4px;
 }
 
 .bk-card-row-list li{

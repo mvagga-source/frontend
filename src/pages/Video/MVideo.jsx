@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import "./MVideo.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faCrown, faHeart } from '@fortawesome/free-solid-svg-icons'
+import bg from "../../assets/images/singer_bg.png";
 
 
 function MVideo() {
@@ -98,9 +99,14 @@ function MVideo() {
 
         <div className="mv-main-container">
 
-            <div className="mv-main-head">
+            <div className="mv-main-head" style={{
+          backgroundImage: `url(${bg})`,
+          backgroundSize: "auto 100%",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "70% 0"
+          }}>
                 <div className="mv-main-title">
-                    <h1>Music Video</h1>
+                    <h1>Video</h1>
                 </div>
             </div>
 

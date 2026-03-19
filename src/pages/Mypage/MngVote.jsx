@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import "./Bookmark.css";
 import bg from "../../assets/images/singer_bg.png";
 
-function Bookmark () {
+function MngVote () {
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -90,8 +90,8 @@ function Bookmark () {
             </div>
             <div className="bk-sidebar-divider"></div>
             <ul>
-                <Link to="/Bookmark"><li className="bk-ongoing-bc"><span>●</span> 북마크 관리</li></Link>
-                <Link to="/MngVote"><li>투표 관리</li></Link>
+                <Link to="/Bookmark"><li>북마크 관리</li></Link>
+                <Link to="/MngVote"><li className="bk-ongoing-bc"><span>●</span>투표 관리</li></Link>
                 <li>구매내역</li>
                 <li>판매내역</li>
             </ul>            
@@ -153,4 +153,4 @@ function Bookmark () {
   );
 }
 
-export default Bookmark;
+export default MngVote;

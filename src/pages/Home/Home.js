@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
+import bg from "../../assets/logo/101LOGO.png";
 
 // 실제 데이터 대신 사용할 더미 데이터들
 const VOTE_DATA = [
@@ -76,8 +77,14 @@ const Home = () => {
   return (
     <div className="home-wrap">
       <section className="home-hero">
+        {/* style={{
+          backgroundImage: `url(${bg})`,
+          backgroundSize: "auto 500px",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "50% 200px"
+          }}> */}
         <span className="hero-bg-text" aria-hidden="true">ACTION</span>
-        <p className={`hero-eyebrow${revealed ? " reveal" : ""}`}>AUDITION PLATFORM</p>
+        <p className={`hero-eyebrow${revealed ? " reveal" : ""}`}>AUDITION PLATFORM</p> 
         <h1 className={`hero-title${revealed ? " reveal" : ""}`}>
           디렉터 여러분들,<br />
           당신의 손으로<br />

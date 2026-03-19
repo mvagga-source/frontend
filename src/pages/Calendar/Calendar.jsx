@@ -87,7 +87,7 @@ function Calendar() {
 
       <div className="main-head">
         <div className="main-title">
-          <h1>Audition Calendar</h1>
+          <h1>Audition Schedule</h1>
         </div>
       </div>
       <div className="sidebar-divider"></div>
