@@ -5,7 +5,7 @@ import axios from "axios";
 // 기본 URL, 타임아웃 등 설정
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // Spring Boot 기본 API URL
-  timeout: parseInt(process.env.REACT_APP_TIMEOUT, 10) || 5000,
+  //timeout: parseInt(process.env.REACT_APP_TIMEOUT, 10) || 5000,
   withCredentials:true //브라우저가 쿠키(세션) 자동 전송
 });
 
@@ -23,7 +23,12 @@ axiosInstance.interceptors.request.use(
 
 // 응답 인터셉터 (예: 공통 에러 처리)
 axiosInstance.interceptors.response.use(
-  response => response,
+  (response) => {
+    if (response.data && response.data.success === false) {
+      alert(response.data.message);    //유효성체크 BaCdException에러들 alert띄우기
+    }
+    return response;
+  },
   error => {
     console.error("API 에러 발생:", error.response?.data || error.message);
     return Promise.reject(error);

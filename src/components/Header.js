@@ -48,9 +48,13 @@ function Header({ onSidebarOpen }) {
           </div>
         </div>
 
-        <NavLink className="hd-nav-item">
-          게시판
-        </NavLink>        
+        <div className="hd-nav-item has-dropdown">
+          <span>커뮤니티</span>
+          <div className="hd-dropdown-menu">
+            <Link to="/BoardList">자유게시판</Link>
+            <Link to="/QnA">문의/아이디어제안/신고</Link>
+          </div>
+        </div>   
         
         {/* 사이드바 열기 버튼 */}
         <button className="hd-nav-sidebar-btn" onClick={onSidebarOpen}>

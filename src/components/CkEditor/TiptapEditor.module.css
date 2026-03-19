@@ -1,0 +1,253 @@
+/* 에디터 전체 컨테이너 */
+.editor {
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.05);
+  overflow: hidden; /* 내부 요소가 넘치지 않게 */
+}
+
+/* 툴바 구역 */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background: rgba(10, 25, 41, 0.9);
+  border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+/* 버튼 및 셀렉트 공통 */
+.toolbar button, 
+.toolbar select {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  color: #00f2ff;
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.toolbar button:hover, 
+.toolbar select:hover {
+  background: rgba(0, 242, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 242, 255, 0.4);
+  border-color: #00f2ff;
+}
+
+/* 활성화 상태 */
+.toolbar button.active {
+  background: rgba(0, 242, 255, 0.3);
+  color: #fff;
+  text-shadow: 0 0 5px #fff;
+  border-color: #00f2ff;
+}
+
+/* 컬러 피커 */
+.toolbar input[type="color"] {
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  background: none;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.toolbar input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.toolbar input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
+
+/* 버튼 그룹 구분선 */
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* SVG 아이콘 */
+.toolbar svg {
+  width: 16px;
+  height: 16px;
+  stroke: #00f2ff;
+}
+
+/* 🔥 Tiptap 내부 클래스 (핵심: :global 사용) */
+.editor :global(.ProseMirror) {
+  min-height: 400px;
+  padding: 25px;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-y: auto;    /* 세로 스크롤 활성화 */
+  resize: vertical;    /* 세로 방향으로만 드래그 조절 가능 */
+}
+
+.editor :global(.ProseMirror) p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  pointer-events: none;
+  height: 0;
+}
+
+.editor :global(.ProseMirror) table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  width: 100%;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.editor :global(.ProseMirror) td, 
+.editor :global(.ProseMirror) th {
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  padding: 10px;
+  min-width: 1em;
+}
+
+.editor :global(.ProseMirror) img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.editor :global(.ProseMirror) a {
+  color: #00f2ff;
+  text-decoration: underline;
+}
+
+/* ... 기존 스타일 유지 ... */
+
+/* 표 삽입 버튼이 들어있는 컨테이너 */
+.tableWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* 표 생성 팝업 */
+.tablePickerPopup {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  z-index: 100;
+  background: #0a1929;
+  border: 1px solid #00f2ff;
+  padding: 12px;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.tablePickerInputGroup {
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #00f2ff;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tablePickerInputGroup input {
+  width: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 242, 255, 0.5);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.tableCreateBtn {
+  width: 100%;
+  background: rgba(0, 242, 255, 0.2);
+  color: #00f2ff;
+  border: 1px solid #00f2ff;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.tableCreateBtn:hover {
+  background: #00f2ff;
+  color: #000;
+}
+
+/* 표 선택 시 나타나는 미니 툴바 */
+.tableMiniToolbar {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.deleteBtn {
+  color: #ff4d4d !important;
+  border-color: rgba(255, 77, 77, 0.3) !important;
+}
+
+.deleteBtn:hover {
+  background: rgba(255, 77, 77, 0.1) !important;
+  border-color: #ff4d4d !important;
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.4) !important;
+}
+
+/* HTML 모달 오버레이 */
+.htmlModalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.htmlModal {
+  width: 80%;
+  max-width: 900px;
+  height: 70%;
+  background: #0a1929;
+  border: 1px solid #00f2ff;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+}
+
+.htmlModalHeader {
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  color: #00f2ff;
+  font-weight: bold;
+}
+
+.htmlTextArea {
+  flex: 1;
+  background: #050b14;
+  color: #00f2ff;
+  border: none;
+  padding: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+}
+
+.htmlModalFooter {
+  padding: 10px;
+  text-align: right;
+  border-top: 1px solid rgba(0, 242, 255, 0.2);
+}

@@ -1,0 +1,28 @@
+/* Title.module.css */
+
+.mainContainer {
+  width: 100%;
+  margin: 0 auto;
+  /* background를 여기서 제거하거나, 페이지 전체 배경색과 맞춥니다. */
+}
+
+.mainHead {
+  width:100%;
+  margin:0 auto;
+  padding:100px 0 0 0;
+  text-align: center;
+  background: rgba(10, 16, 28, 0.98);
+}
+
+.mainTitle {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1px;
+}
+
+.mainTitle h1{
+  font-size: 40px;
+  letter-spacing: 4px;
+  color: var(--neon-blue);
+  text-shadow: 0 0 16px rgba(0, 242, 255, 0.4);
+}

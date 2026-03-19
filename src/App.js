@@ -20,6 +20,11 @@ import Contest from "./pages/Audition/Contest";
 // My pages
 import Bookmark from "./pages/Mypage/Bookmark";
 
+//게시판
+import BoardList from "./pages/Board/BoardList";
+import BoardWrite from "./pages/Board/BoardWrite";
+import BoardView from "./pages/Board/BoardView";
+
 function App() {
 
   return (
@@ -42,7 +47,9 @@ function App() {
 
           <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>          
           
-
+          <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>
+          <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/>
+          <Route path="/BoardView/:bno" element={<Layout><BoardView/></Layout>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

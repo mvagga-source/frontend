@@ -1,0 +1,24 @@
+/* Input.module.css */
+.neonInput {
+  background: rgba(0, 20, 40, 0.8);
+  color: #fff;
+  border: 1px solid #00f3ff;
+  padding: 12px 20px;
+  font-size: 16px; 
+  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 243, 255, 0.3);
+  max-width: 100%;
+  transition: 0.3s;
+  box-sizing: border-box; /* 높이 어긋남 방지 */
+}
+
+.neonInput:focus {
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+  border-color: #00f3ff;
+  background: rgba(0, 30, 60, 0.9);
+}
+
+.neonInput::placeholder {
+  color: rgba(0, 243, 255, 0.5);
+}

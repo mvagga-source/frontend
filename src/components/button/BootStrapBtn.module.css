@@ -1,0 +1,76 @@
+/* 기본 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    padding: 8px 25px;
+    transition: 0.3s;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    outline: none;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 네온 테마 (기존 neon-board-container 스타일) */
+.neon {
+    background: transparent;
+    border: 1px solid #00f2ff;
+    color: #00f2ff;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+}
+
+.neon:hover:not(:disabled) {
+    background: #00f2ff;
+    color: #0a192f;
+    box-shadow: 0 0 20px #00f2ff;
+}
+
+/* 사이즈 정의 */
+.sm { padding: 4px 12px; font-size: 0.875rem; }
+.md { padding: 8px 25px; font-size: 1rem; }
+.lg { padding: 12px 35px; font-size: 1.25rem; }
+
+/* 필요 시 부트스트랩 색상 시뮬레이션 */
+/* Primary */
+.primary { background-color: #0d6efd; color: #fff; }
+.primary:hover:not(:disabled) { background-color: #0b5ed7; border-color: #0a58ca; }
+
+/* Secondary */
+.secondary { background-color: #6c757d; color: #fff; }
+.secondary:hover:not(:disabled) { background-color: #5c636a; border-color: #565e64; }
+
+/* Success */
+.success { background-color: #198754; color: #fff; }
+.success:hover:not(:disabled) { background-color: #157347; border-color: #146c43; }
+
+/* Danger */
+.danger { background-color: #dc3545; color: #fff; }
+.danger:hover:not(:disabled) { background-color: #bb2d3b; border-color: #b02a37; }
+
+/* Warning */
+.warning { background-color: #ffc107; color: #000; }
+.warning:hover:not(:disabled) { background-color: #ffca2c; border-color: #ffc720; }
+
+/* Info */
+.info { background-color: #0dcaf0; color: #000; }
+.info:hover:not(:disabled) { background-color: #31d2f2; border-color: #25cff2; }
+
+/* Light */
+.light { background-color: #f8f9fa; color: #000; border-color: #f8f9fa; }
+.light:hover:not(:disabled) { background-color: #f9fafb; border-color: #f9fafb; }
+
+/* Dark */
+.dark { background-color: #212529; color: #fff; }
+.dark:hover:not(:disabled) { background-color: #1c1f23; border-color: #1a1e21; }
+
+/* --- Outline 버전 (필요 시) --- */
+.outline_primary { background-color: transparent; border-color: #0d6efd; color: #0d6efd; }
+.outline_primary:hover:not(:disabled) { background-color: #0d6efd; color: #fff; }
+/* ... 필요한 색상 추가 */

@@ -1,0 +1,44 @@
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: transparent; 
+}
+
+.container {
+  width: 100%;
+  max-width: 850px;
+  border: 1px solid rgba(0, 242, 255, 0.3); /* 은은한 네온 테두리 */
+  border-radius: 8px;
+  padding: 50px;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+}
+
+.headerTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: #00f2ff;
+  /* 제목 강한 네온 효과 */
+  text-shadow: 0 0 5px #00f2ff, 0 0 15px rgba(0, 242, 255, 0.6);
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+.formGroup {
+  margin-bottom: 30px;
+}
+
+/* 🔥 네온 라벨 스타일 */
+.label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #00f2ff; /* 기본 색상 */
+  margin-bottom: 12px;
+  /* 텍스트 네온 광채: 여러 층의 그림자로 빛 번짐 표현 */
+  text-shadow: 0 0 2px #fff, 0 0 8px rgba(0, 242, 255, 0.8), 0 0 12px rgba(0, 242, 255, 0.4);
+  letter-spacing: 1px;
+}

@@ -54,6 +54,14 @@ export const DelBtn = ({...props }) => (
     </BootStrapBtn>
 );
 
+export const NeonBtn = ({...props }) => (
+    <div className="neon-board-container">
+    <BootStrapBtn variant="neon" {...props}>
+        {props.children?props.children:'검색'}
+    </BootStrapBtn>
+    </div>
+);
+
 /**
  * @description default로 이벤트들 등록 후 나중에 props에서 onClick={undefined}로 이벤트 제거나 다른 이벤트로 교체 가능
  * 주로 해당 컴포넌트에 onClick이벤트들이 똑같이 자주 사용된다면 추가해도 됨

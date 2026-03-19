@@ -3,7 +3,7 @@ import { useNavigate  } from "react-router";
 import axios from 'axios';
 import { TestBtn, CancelBtn } from "../../components/button/Button";
 
-function UserLogin() {
+function TestLogin() {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -39,4 +39,4 @@ function UserLogin() {
   );
 }
 
-export default UserLogin;
+export default TestLogin;

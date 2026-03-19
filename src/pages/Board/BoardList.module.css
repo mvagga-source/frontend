@@ -1,0 +1,94 @@
+/* BoardList.module.css */
+
+.neonBoardContainer {
+    padding: 40px 20px;
+    color: #fff;
+    background-color: transparent;
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* 상단 제목 및 글쓰기 버튼 영역 */
+.headerSection {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-bottom: 15px; /* 테이블과의 간격을 좁게 하여 연관성 강조 */
+}
+
+.neonTitle {
+    color: #00f2ff;
+    font-size: 2rem;
+    font-weight: 800;
+    text-shadow: 0 0 10px #00f2ff, 0 0 20px rgba(0, 242, 255, 0.5);
+    margin: 0;
+}
+
+/* 검색 영역 레이아웃 */
+.searchSection {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* 자식 요소들의 높이를 통일 */
+    gap: 10px;
+    margin-bottom: 50px; /* 테이블과의 간격 확보 */
+}
+
+/* 테이블 컨테이너 및 스타일 */
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto; /* 반응형 대응 */
+    background: transparent;
+}
+
+.neonTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: rgba(10, 25, 47, 0.6);
+    border: 1px solid #00f2ff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.neonTable thead th {
+    background-color: rgba(0, 242, 255, 0.1);
+    color: #00f2ff;
+    text-shadow: 0 0 5px #00f2ff;
+    border-bottom: 2px solid #00f2ff;
+    padding: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.neonTable tbody td {
+    padding: 15px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.neonTable tbody tr:hover td {
+    background-color: rgba(0, 242, 255, 0.05); /* 행 호버 효과 */
+}
+
+/* 제목 링크 스타일 */
+.neonLink {
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.neonLink:hover {
+    color: #00f2ff;
+    text-shadow: 0 0 10px #00f2ff;
+}
+
+.textStart {
+    text-align: left !important;
+}
+
+.noData {
+    padding: 60px 0;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
