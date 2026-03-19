@@ -1,0 +1,190 @@
+/* 1. 기본 레이아웃 및 버튼 (기존 유지) */
+.content {
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 60px 20px;
+}
+
+.process-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.nav-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    color: #00f2ff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn.active {
+    background: #00f2ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+}
+
+/* 2. 본문 박스 제거 및 이미지 효과 복구 */
+.ps-info-notice-box {
+    position: relative; /* 이미지 배치를 위한 기준점 유지 */
+    width: 100%;
+    margin-bottom: 100px;
+    color: #fff;
+    
+    /* ㅡㅡ 박스 디자인 제거 ㅡㅡ */
+    background: transparent; 
+    border: none;
+    backdrop-filter: none;
+    
+    /* 스크롤바 제거 */
+    overflow: visible; 
+    max-height: none;
+}
+
+/* ㅡㅡ 사라졌던 이미지 효과 다시 켭니다! ㅡㅡ */
+.ps-info-notice-box::before {
+    content: "";
+    /* 1. 화면에 꽉 차게 고정 (스크롤해도 따라옴) */
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); /* 중앙 배치 및 기본 크기 */
+    
+    /* 2. 이미지 설정 (크기를 100%로 키우고 중앙 배치) */
+    width: 100vw;
+    height: 100vh;
+    background-image: url('노래남자.png'); 
+    background-repeat: no-repeat;
+    background-position: center center; 
+    background-size: contain; /* 이미지가 잘리지 않게 꽉 채움 */
+    
+    /* 3. 등장 효과: 탭 누를 때마다 서서히 나타나며 커짐 */
+    opacity: 0;
+    z-index: -1; /* 모든 글자 뒤로 */
+    pointer-events: none;
+    display: block;
+    
+    /* 0.3초 뒤부터 1.5초 동안 서서히 커지며 나타남 */
+    animation: imageScaleUp 1.5s ease-out forwards;
+    animation-delay: 0.3s; 
+}
+
+/* 이미지 전용 애니메이션 정의 */
+@keyframes imageScaleUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9); /* 살짝 작은 상태에서 시작 */
+    }
+    to {
+        opacity: 0.2; /* 너무 진하면 글자가 안 보이니 0.2 정도로 설정 */
+        transform: translate(-50%, -50%) scale(1.0); /* 1.1배까지 서서히 커짐 */
+    }
+}
+
+/* 3. 헤더 및 본문 중앙 정렬 (크게크게!) */
+.process-detail-header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.process-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 0;
+}
+
+.process-scroll-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 120px; /* 시원시원한 간격 */
+    padding: 60px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.scroll-item {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: calc(var(--item-index) * 0.2s);
+}
+
+.highlight-text {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.sub-text {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.process-result {
+    position: relative;
+    z-index: 1;
+    margin-top: 60px;
+    padding: 25px;
+    background: rgba(0, 242, 255, 0.1);
+    border-radius: 10px;
+    color: #00f2ff;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* 영상 컨테이너 */
+.process-video-wrapper {
+    width: 100%;
+    max-width: 900px; /* 텍스트 너비와 맞춰서 크게 배치 */
+    margin: 60px auto;
+    display: flex;
+    justify-content: center;
+    
+    /* 영상도 아래에서 위로 올라오게 */
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.6s;
+}
+
+.process-video {
+    width: 100%;
+    border-radius: 20px; /* 모서리를 둥글게 해서 세련되게 */
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.2); /* 은은한 민트색 광채 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+}
+
+/* 영상 하단 설명 텍스트 */
+.process-result-label {
+    text-align: center;
+    color: #00f2ff;
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 30px;
+    text-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+}

@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import UserLogin from "./pages/Home/UserLogin";
 import UserSignUp from "./pages/Home/UserSignUp";
 
+
 import Calender from "./pages/Calendar/Calendar";
 import MVideo from "./pages/Video/MVideo";
 
@@ -25,6 +26,8 @@ import BoardList from "./pages/Board/BoardList";
 import BoardWrite from "./pages/Board/BoardWrite";
 import BoardView from "./pages/Board/BoardView";
 
+import Process from "./pages/Process/Process";
+
 function App() {
 
   return (
@@ -41,9 +44,13 @@ function App() {
           <Route path="/Audition/ranking" element={<Layout><LeaderBoard/></Layout>}/>
           <Route path="/Audition/contest" element={<Layout><Contest/></Layout>}/>
 
-          <Route path="/Calendar" element={<ProtectedRoute><Layout><Calender/></Layout></ProtectedRoute>}/>          
+          <Route path="/Process" element={<Layout><Process/></Layout>}/>
 
           <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>
+
+          <Route path="/Calendar" element={<ProtectedRoute><Layout><Calender/></Layout></ProtectedRoute>}/>          
+
+
 
           <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>          
           

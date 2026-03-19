@@ -17,7 +17,7 @@ function Header({ onSidebarOpen }) {
         <div className="hd-nav-item has-dropdown">
           <span>오디션</span>
           <div className="hd-dropdown-menu">
-            <NavLink>오디션방식</NavLink>
+            <NavLink to="/Process">오디션방식</NavLink>
             <NavLink to="/Calendar">오디션일정</NavLink>            
             <NavLink to="/Audition/idols">참가자</NavLink>
             <NavLink to="/Audition/ranking">실시간랭킹</NavLink>
