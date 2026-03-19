@@ -32,7 +32,7 @@ function Header({ onSidebarOpen }) {
           경연결과
         </NavLink>        
 
-        <span className="nav-item">굿즈샵</span>
+        <span className="nav-item">굿즈상점</span>
 
         <NavLink to="/MVideo" className="hd-nav-item">
           뮤직비디오
