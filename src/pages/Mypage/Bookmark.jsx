@@ -1,10 +1,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { getBookmarkPageApi, deleteMyBookmarkApi } from "./BookmarkApi";
+import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import dayjs from "dayjs";
 import "./Bookmark.css";
 
-function MyPage () {
+function Bookmark () {
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -75,14 +77,22 @@ function MyPage () {
 
   return (
 
-    <div className="bk-main-container">
+    <div className="bk-main-container" >
 
         <div className="bk-main-head">
             <div className="bk-main-title">
-              <h1>Bookmark</h1>
+              <h1>MYPAGE</h1>
             </div>
+            <div className="bk-sidebar-divider"></div>
+            <ul>
+                <li className="bk-ongoing-bc">● <Link to="/Bookmark">북마크 관리</Link></li>
+                <li>● <span className="bk-ongoing-bc">투표 관리</span></li>
+                <li>● 구매내역</li>
+                <li>● 판매내역</li>
+            </ul>            
+            <div className="bk-sidebar-divider"></div>
         </div>
-        <div className="sidebar-divider"></div>
+        
 
         <div className="bk-main-list">
 
@@ -138,4 +148,4 @@ function MyPage () {
   );
 }
 
-export default MyPage;
+export default Bookmark;

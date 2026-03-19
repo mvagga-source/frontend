@@ -60,7 +60,7 @@
     /* 2. 이미지 설정 (크기를 100%로 키우고 중앙 배치) */
     width: 100vw;
     height: 100vh;
-    background-image: url('노래남자.png'); 
+    background-image: url('./노래남자.png'); 
     background-repeat: no-repeat;
     background-position: center center; 
     background-size: contain; /* 이미지가 잘리지 않게 꽉 채움 */

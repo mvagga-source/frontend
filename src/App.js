@@ -19,6 +19,7 @@ import LeaderBoard from "./pages/Audition/LeaderBoard";
 import Contest from "./pages/Audition/Contest";
 
 // My pages
+// import Mypage from "./pages/Mypage/Mypage";
 import Bookmark from "./pages/Mypage/Bookmark";
 
 //게시판
@@ -49,8 +50,6 @@ function App() {
           <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>
 
           <Route path="/Calendar" element={<ProtectedRoute><Layout><Calender/></Layout></ProtectedRoute>}/>          
-
-
 
           <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>          
           

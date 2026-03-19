@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import "./Header.css";
+import logo from "../assets/logo/23.png"
 
 function Header({ onSidebarOpen }) {
 
@@ -11,48 +12,38 @@ function Header({ onSidebarOpen }) {
       <nav className="hd-top-nav">
 
         <NavLink to="/" className="hd-nav-item">
+          {/* <img src={logo} style={{height:'50px',marginTop:'8px'}} /> */}
           ACTION101
         </NavLink>
 
         <div className="hd-nav-item has-dropdown">
-          <span>오디션</span>
+          <span>AUDITION</span>
           <div className="hd-dropdown-menu">
-            <NavLink to="/Process">오디션방식</NavLink>
-            <NavLink to="/Calendar">오디션일정</NavLink>            
-            <NavLink to="/Audition/idols">참가자</NavLink>
-            <NavLink to="/Audition/ranking">실시간랭킹</NavLink>
+            <NavLink to="/Process">INTRO.</NavLink>
+            <NavLink to="/Calendar">SCHEDULE</NavLink>            
+            <NavLink to="/Audition/idols">MEMBER</NavLink>
+            {/* <NavLink to="/Audition/ranking">LIVE</NavLink> */}
           </div>          
         </div>
 
-        <NavLink to="/Audition/vote" className="hd-nav-item">
-          투표참여
-        </NavLink>
-
-        <NavLink to="/Audition/contest" className="hd-nav-item">
-          경연결과
-        </NavLink>        
-
-        <span className="nav-item">굿즈상점</span>
-
-        <NavLink to="/MVideo" className="hd-nav-item">
-          뮤직비디오
-        </NavLink>
-
         <div className="hd-nav-item has-dropdown">
-          <span>마이페이지</span>
+          <span>VOTE</span>
           <div className="hd-dropdown-menu">
-            <NavLink to="/Bookmark">북마크관리</NavLink>
-            <NavLink to="/Bookmark">투표관리</NavLink>
-            <NavLink to="/Bookmark">구매관리</NavLink>
-            <NavLink to="/Bookmark">판매관리</NavLink>                        
+            <Link to="/Audition/vote">PICK ME</Link>            
+            <Link to="/Audition/contest">RANKING</Link>
           </div>
-        </div>
+        </div>   
+
+        <span className="nav-item">SHOP</span>
 
         <div className="hd-nav-item has-dropdown">
-          <span>커뮤니티</span>
+          <span>ENJOY</span>
           <div className="hd-dropdown-menu">
-            <Link to="/BoardList">자유게시판</Link>
-            <Link to="/QnA">문의/아이디어제안/신고</Link>
+            <Link to="/MVideo">VIDEO</Link>            
+            <Link to="/BoardList">COMMUNITY</Link>
+
+            {/* <Link to="/BoardList">자유게시판</Link>
+            <Link to="/QnA">문의/아이디어제안/신고</Link> */}
           </div>
         </div>   
         

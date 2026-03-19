@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Process.css";
 import myVideo from "../../assets/101.mp4";
+import bg from '../../assets/images/singer_bg.png';
 
 function Process() {
   const [activeTab, setActiveTab] = useState(0);
@@ -55,7 +56,7 @@ function Process() {
         ))}
       </div>
 
-      <div className="ps-info-notice-box" key={activeTab}> {/* 탭 전환 시 애니메이션 재시작을 위해 key 추가 */}
+      <div className="ps-info-notice-box" key={activeTab} style={{backgroundImage: `url(${bg})`, backgroundRepeat: 'no-repeat'}}> {/* 탭 전환 시 애니메이션 재시작을 위해 key 추가 */}
         <div className="process-detail-header">
           <span className="process-num">⯌</span>
           <h2 className="process-title">{processData[activeTab].title}</h2>
