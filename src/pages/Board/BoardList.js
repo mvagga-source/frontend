@@ -9,6 +9,7 @@ import { getBoardListApi } from "./BoardApi";
 import { SearchInput } from "../../components/input/Input";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import Content from "../../components/Title/ContentComp";
+import { useAuth } from "../../context/AuthContext";
 
 function BoardList() {
     const [list, setList] = useState([]);
@@ -18,6 +19,10 @@ function BoardList() {
     const [endPage, setEndPage] = useState(1);
     const postsPerPage = 10;
     const formRef = useRef();
+    const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
+
+    // 검색 조건을 저장할 상태 추가(검색버튼 누른 입력값만 페이징 등 사용)
+    const params = useRef();
 
     // 검색 옵션 데이터
     const searchOptions = [
@@ -27,9 +32,7 @@ function BoardList() {
         //{ value: "test", label: "test21314" }
     ];
 
-    const getList = async (page) => {
-        const formData = new FormData(formRef.current);
-        const searchParams = Object.fromEntries(formData.entries());
+    const getList = async (page, searchParams) => {
         getBoardListApi(page, postsPerPage, searchParams)
         .then((res) => {
             if (res.data && res.data.success) {
@@ -43,12 +46,15 @@ function BoardList() {
     };
 
     const searchData = async (e) => {
+        const formData = new FormData(formRef.current);
+        const newParams = Object.fromEntries(formData.entries());
+        params.current = newParams; // 검색 조건 저장
         setCurrentPage(1);      //검색시 1페이지부터
-        getList(currentPage);
+        getList(currentPage, params.current);
     };
 
     useEffect(() => {
-        getList(currentPage);
+        getList(currentPage, params.current);
     }, [currentPage]);
 
     return (
@@ -63,12 +69,13 @@ function BoardList() {
                             <SearchBtn onClick={searchData}>검색</SearchBtn>
                         </div>
                     </form>
-
-                    <div className={styles.headerSection}>
-                        <NavLink to="/BoardWrite" style={{ textDecoration: 'none' }}>
-                            <SearchBtn>글쓰기</SearchBtn>
-                        </NavLink>
-                    </div>
+                    {user && user.id && (
+                        <div className={styles.headerSection}>
+                            <NavLink to="/BoardWrite" style={{ textDecoration: 'none' }}>
+                                <SearchBtn>글쓰기</SearchBtn>
+                            </NavLink>
+                        </div>
+                    )}
 
                     {/* 테이블 영역 */}
                     <div className={styles.tableWrapper}>

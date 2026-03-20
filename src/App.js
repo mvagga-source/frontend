@@ -25,6 +25,7 @@ import Bookmark from "./pages/Mypage/Bookmark";
 //게시판
 import BoardList from "./pages/Board/BoardList";
 import BoardWrite from "./pages/Board/BoardWrite";
+import BoardUpdate from "./pages/Board/BoardUpdate";
 import BoardView from "./pages/Board/BoardView";
 import BoardPreview from "./pages/Board/BoardPreview";
 
@@ -57,6 +58,7 @@ function App() {
           <Route path="/MngVote" element={<ProtectedRoute><Layout><MngVote/></Layout></ProtectedRoute>}/>
           
           <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>
+          <Route path="/BoardUpdate/:bno" element={<ProtectedRoute><Layout><BoardUpdate/></Layout></ProtectedRoute>}/>
           <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/>
           <Route path="/BoardView/:bno" element={<Layout><BoardView/></Layout>}/>
           <Route path="/BoardPreview" element={<Layout><BoardPreview /></Layout>} />

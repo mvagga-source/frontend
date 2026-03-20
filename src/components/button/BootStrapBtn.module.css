@@ -13,6 +13,15 @@
     outline: none;
 }
 
+/* 특정 버튼만 직각으로 만들고 싶을 때 쓸 수 있는 유틸리티 클래스 */
+.square {
+    border-radius: 0px !important;
+}
+
+.fontNormal {
+    font-weight: normal !important;
+}
+
 .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -70,6 +79,11 @@
 }
 
 /* 사이즈 정의 */
+/* 초소형 (Extra Small) - 댓글창 전용 */
+.xsm { 
+    padding: 4px 10px;
+    font-size: 0.75rem;
+}
 .sm { padding: 4px 12px; font-size: 0.875rem; }
 .md { padding: 8px 25px; font-size: 1rem; }
 .lg { padding: 12px 35px; font-size: 1.25rem; }
@@ -98,6 +112,21 @@
 .danger:hover:not(:disabled) {
     border-color: rgba(255, 77, 77, 0.5); /* 연한 레드 */
     color: rgba(255, 77, 77, 0.5); 
+    cursor: pointer;
+}
+
+/* 보조/취소 버튼 (Secondary) 스타일 */
+.secondary {
+    background: transparent;
+    border: 1px solid rgba(148, 163, 184, 0.3); /* 슬레이트 그레이 계열 */
+    color: rgba(148, 163, 184, 0.7);
+}
+
+/* 호버 시: 저장 버튼(sky)과 같은 계열인 네온 블루로 강조 */
+.secondary:hover:not(:disabled) {
+    border-color: #00f2ff; 
+    color: #00f2ff;
+    background: rgba(0, 242, 255, 0.05);
     cursor: pointer;
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BoardComment.module.css";
-import { SaveBtn } from "../../components/button/Button";
+import { CancelBtn, SaveBtn } from "../../components/button/Button";
 import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "./BoardApi";
 import { useAuth } from "../../context/AuthContext";
 
@@ -175,15 +175,15 @@ function BoardComment({ bno }) {
 
                 {/* 2. 내용 또는 수정창 */}
                 {editingCno === c.cno ? (
-                  <div className={styles.editBox}>
+                  <div className={styles.replyInputBox}>
                     <textarea 
-                      className={styles.editTextarea}
                       value={editContent} 
                       onChange={(e) => setEditContent(e.target.value)} 
+                      placeholder="댓글을 수정하세요."
                     />
-                    <div className={styles.editBtns}>
-                      <button onClick={() => setEditingCno(null)}>취소</button>
-                      <SaveBtn onClick={() => handleUpdate(c.cno)} className={styles.saveBtn}>저장</SaveBtn>
+                    <div className={styles.replyBtns}>
+                      <CancelBtn size="xsm" square={true} bold={false} onClick={() => setEditingCno(null)}>취소</CancelBtn>
+                      <SaveBtn size="xsm" square={true} bold={false} onClick={() => handleUpdate(c.cno)}>저장</SaveBtn>
                     </div>
                   </div>
                 ) : (
@@ -195,8 +195,7 @@ function BoardComment({ bno }) {
                   <button className={styles.footerBtn} onClick={() => setReplyingTo(c.cno)}>답글</button>
                   {user && user.id === c.member?.id && (
                     <>
-                      <button className={styles.footerBtn} onClick={() => {
-                        setEditingCno(c.cno);
+                      <button className={styles.footerBtn} onClick={() => {setEditingCno(c.cno);
                         setEditContent(c.ccontent);
                       }}>수정</button>
                       <button className={styles.footerBtn} onClick={() => handleDelete(c.cno)}>삭제</button>
@@ -215,8 +214,8 @@ function BoardComment({ bno }) {
                   placeholder="답글을 남겨보세요"
                 />
                 <div className={styles.replyBtns}>
-                  <button onClick={() => setReplyingTo(null)}>취소</button>
-                  <button onClick={() => handleReplySave(c)}>등록</button>
+                  <CancelBtn size="xsm" square={true} bold={false} onClick={() => setReplyingTo(null)}>취소</CancelBtn>
+                  <SaveBtn size="xsm" square={true} bold={false} onClick={() => handleReplySave(c)}>저장</SaveBtn>
                 </div>
               </div>
             )}

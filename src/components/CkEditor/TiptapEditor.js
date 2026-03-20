@@ -49,7 +49,7 @@ const FontSize = Extension.create({
   },
 })
 
-export default function TiptapEditor({ onChange }) {
+export default function TiptapEditor({ content, onChange }) {
   const fileRef = useRef();
   const [showTablePicker, setShowTablePicker] = useState(false);
   const [grid, setGrid] = useState({ rows: 3, cols: 3 });
@@ -138,7 +138,7 @@ export default function TiptapEditor({ onChange }) {
 
       FontSize,
     ],
-    content: '',
+    content: content || '',
     onUpdate: ({ editor }) => {
       onChange?.(editor.getHTML())
     },

@@ -12,7 +12,7 @@
 
 /* 헤더: 구분선을 더 은은하게 */
 .header {
-  border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+  /*border-bottom: 1px solid rgba(0, 242, 255, 0.1);*/
   padding-bottom: 28px;
   margin-bottom: 40px;
 }
@@ -25,11 +25,61 @@
   margin-bottom: 16px;
 }
 
+/* 정보 전체 컨테이너 */
 .info {
   display: flex;
-  gap: 24px;
-  color: rgba(232, 244, 248, 0.4); /* 보조 정보 투명도 조절 */
-  font-size: 0.95rem;
+  justify-content: space-between; /* 양 끝 정렬 */
+  align-items: flex-end;         /* 하단 라인 정렬 */
+  padding: 20px 5px 12px;        /* 위 간격 넓히고 아래는 구분선과 가깝게 */
+  border-bottom: 1px solid rgba(0, 242, 255, 0.15); /* 구분선 강조 */
+}
+
+/* 왼쪽 영역 (작성자) */
+.infoLeft {
+  display: flex;
+  flex-direction: column; /* 작성자도 위아래 구조로 변경 가능성을 위해 column */
+  gap: 4px;
+}
+
+.author {
+  color: #e8f4f8; /* 작성자 이름을 조금 더 밝게 */
+  font-size: 1rem;
+  font-weight: 600;
+}
+/* "작성자 :" 텍스트만 흐리게 하고 싶다면 별도 span 처리가 필요하지만 
+   현재 구조에선 전체적으로 가독성을 높였습니다. */
+
+/* 오른쪽 영역 (날짜 + 수치) */
+.infoRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px; /* 날짜와 수치 사이 간격 확대 */
+}
+
+/* 날짜 스타일 (상단) */
+.dateRow {
+  font-size: 0.8rem;
+  color: rgba(232, 244, 248, 0.4);
+  font-family: 'Courier New', Courier, monospace; /* 숫자 가독성을 위한 고정폭 느낌 */
+  margin-right: 5px;
+}
+
+/* 수치 정보 스타일 (하단) */
+.statsRow {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* 항목 간 간격 살짝 넓힘 */
+  font-size: 0.85rem;
+  color: rgba(232, 244, 248, 0.6);
+  background: rgba(0, 242, 255, 0.05); /* 살짝 배경을 깔아 영역 구분 */
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.divider {
+  color: rgba(0, 242, 255, 0.2);
+  font-size: 0.7rem;
 }
 
 /* 본문 영역 */
@@ -70,6 +120,13 @@
   background: rgba(0, 242, 255, 0.1);
   border-color: var(--neon-blue, #00f3ff);
   color: #e8f4f8;
+}
+
+.voteCount {
+  font-weight: bold;
+  margin-left: 4px;
+  font-size: 0.9em;
+  opacity: 0.8;
 }
 
 /* 추천/비추천 활성화 시 광원 대신 테두리와 배경으로 강조 */

@@ -5,6 +5,8 @@ import styles from './BootStrapBtn.module.css';
  */
 const VARIANTS = {
   primary: styles.primary,
+  secondary: styles.secondary,
+  success: styles.success,
   danger: styles.danger,
   neon: styles.neon, // 네온 스타일 추가
   verify: styles.verify,
@@ -13,6 +15,7 @@ const VARIANTS = {
 };
 
 const SIZES = {
+  xsm: styles.xsm,
   sm: styles.sm,
   md: styles.md,
   lg: styles.lg,
@@ -26,14 +29,18 @@ const BootStrapBtn = ({
   className = '', 
   onClick, 
   disabled = false,
+  square = false,
+  bold = true,
   ...props
 }) => {
   // 모듈 클래스 결합 (undefined 방지)
   const variantClass = VARIANTS[variant] || '';
   const sizeClass = SIZES[size] || '';
+  const squareClass = square ? styles.square : '';
+  const boldClass = !bold ? styles.fontNormal : '';
   
   // 외부에서 들어오는 className과 모듈 클래스를 합침
-  const combinedClassName = `${styles.btn} ${variantClass} ${sizeClass} ${className}`.trim();
+  const combinedClassName = `${styles.btn} ${variantClass} ${sizeClass} ${squareClass} ${boldClass} ${className}`.trim();
 
   return (
     <button

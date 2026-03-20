@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkIdApi, checkNicknameApi, userSignupApi } from "./UserLoginApi";
 import "./UserSignUp.css";
@@ -51,6 +51,8 @@ export default function UserSignup() {
   /* 약관 */
   const [terms, setTerms] = useState([false, false, false]);
 
+  const formRef = useRef(null);
+
   /* 가입하기 버튼 활성 조건 */
   const canSubmit =
     idOk && nickOk &&
@@ -66,12 +68,20 @@ export default function UserSignup() {
     else                 setIdMsg({ text: "중복확인을 해주세요", type: "info" });
   };
 
-  const handleCheckId = async () => {
+  const handleCheckId = async (e) => {
     if (!validateId(id)) { setIdMsg({ text: "올바른 형식의 아이디를 입력해주세요", type: "error" }); return; }
     try {
-      await checkIdApi(id);
-      setIdOk(true);
-      setIdMsg({ text: "사용 가능한 아이디예요", type: "success" });
+      e.preventDefault();
+      const formData = new FormData(formRef.current);
+      const param = Object.fromEntries(formData.entries());
+      const res = await checkIdApi(param);
+      if (res.data.success) {
+        setIdOk(true);
+        setIdMsg({ text: "사용 가능한 아이디예요", type: "success" });
+      }else{
+        setIdOk(false);
+        setIdMsg({ text: "이미 사용 중인 아이디이에요", type: "error" });
+      }
     } catch {
       setIdOk(false);
       setIdMsg({ text: "이미 사용 중인 아이디예요", type: "error" });
@@ -107,12 +117,20 @@ export default function UserSignup() {
     else                  setNickMsg({ text: "중복확인을 해주세요", type: "info" });
   };
 
-  const handleCheckNick = async () => {
+  const handleCheckNick = async (e) => {
     if (!validateNick(nick)) { setNickMsg({ text: "2~12자로 입력해주세요", type: "error" }); return; }
     try {
-      await checkNicknameApi(nick);
-      setNickOk(true);
-      setNickMsg({ text: "사용 가능한 닉네임이에요", type: "success" });
+      e.preventDefault();
+      const formData = new FormData(formRef.current);
+      const param = Object.fromEntries(formData.entries());
+      const res = await checkNicknameApi(param);
+      if (res.data.success) {
+        setNickOk(true);
+        setNickMsg({ text: "사용 가능한 닉네임이에요", type: "success" });
+      }else{
+        setNickOk(false);
+        setNickMsg({ text: "이미 사용 중인 닉네임이에요", type: "error" });
+      }
     } catch {
       setNickOk(false);
       setNickMsg({ text: "이미 사용 중인 닉네임이에요", type: "error" });
@@ -134,12 +152,21 @@ export default function UserSignup() {
     setTerms([!allOn, !allOn, !allOn]);
   };
 
-  const handleSignup = async () => {
+  const handleSignup = async (e) => {
     if (!canSubmit) return;
     try {
-      await userSignupApi({ id, pw, nickname: nick, email });
-      alert("회원가입이 완료됐어요! 로그인해주세요.");
-      navigate("/UserLogin");
+      e.preventDefault();
+      const mDto = {
+        id: id,
+        pw: pw,
+        nickname: nick,
+        email: email
+      };
+      const res = await userSignupApi(pw2, mDto);
+      if (res.data.success) {
+        alert("회원가입이 완료됐어요! 로그인해주세요.");
+        navigate("/UserLogin");
+      }
     } catch {
       alert("회원가입 중 오류가 발생했어요. 다시 시도해주세요.");
     }
@@ -158,7 +185,7 @@ export default function UserSignup() {
         </div>
 
         <h2 className="us-title">회원가입</h2>
-
+        <form ref={formRef}>
         {/* 아이디 */}
         <div className="us-field">
           <label className="us-label">아이디 <span className="us-req">*</span></label>
@@ -169,8 +196,10 @@ export default function UserSignup() {
               placeholder="4~20자 영문, 숫자"
               value={id}
               onChange={(e) => handleIdChange(e.target.value)}
+              name="id"
             />
             <button
+              type="button"
               className={`us-check-btn${idOk ? " ok" : ""}`}
               onClick={handleCheckId}
             >
@@ -190,6 +219,7 @@ export default function UserSignup() {
               placeholder="8자 이상, 영문+숫자+특수문자"
               value={pw}
               onChange={(e) => handlePwChange(e.target.value)}
+              name="pw"
             />
             <button className="us-pw-toggle" type="button" onClick={() => setShowPw((v) => !v)}>
               {showPw ? "🙈" : "👁"}
@@ -219,6 +249,7 @@ export default function UserSignup() {
               placeholder="비밀번호를 다시 입력하세요"
               value={pw2}
               onChange={(e) => handlePw2Change(e.target.value)}
+              name="pw2"
             />
             <button className="us-pw-toggle" type="button" onClick={() => setShowPw2((v) => !v)}>
               {showPw2 ? "🙈" : "👁"}
@@ -237,8 +268,10 @@ export default function UserSignup() {
               placeholder="2~12자"
               value={nick}
               onChange={(e) => handleNickChange(e.target.value)}
+              name="nickname"
             />
             <button
+              type="button"
               className={`us-check-btn${nickOk ? " ok" : ""}`}
               onClick={handleCheckNick}
             >
@@ -257,6 +290,7 @@ export default function UserSignup() {
             placeholder="example@email.com"
             value={email}
             onChange={(e) => handleEmailChange(e.target.value)}
+            name="email"
           />
           <p className={`us-msg ${emailMsg.type}`}>{emailMsg.text}</p>
         </div>
@@ -288,6 +322,7 @@ export default function UserSignup() {
             </div>
           ))}
         </div>
+        </form>
 
         <button
           className="us-btn"

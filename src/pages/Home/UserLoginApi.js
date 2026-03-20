@@ -13,16 +13,16 @@ export const userSessionApi = () => {
 }
 
 // 아이디 중복확인
-export const checkIdApi = (id) => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/auth/checkId?id=${id}`);
+export const checkIdApi = (param={}) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/checkId`, param);
 };
 
 // 닉네임 중복확인
-export const checkNicknameApi = (nickname) => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/auth/checkNickname?nickname=${nickname}`);
+export const checkNicknameApi = (param={}) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/checkNickname`,param);
 };
 
 // 회원가입
-export const userSignupApi = (formData) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/signup`, formData);
+export const userSignupApi = (pw2, formData) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/auth/signup?pw2=${encodeURIComponent(pw2)}`, formData);
 };

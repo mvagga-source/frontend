@@ -9,15 +9,37 @@ export const getBoardListApi = (page = 1, size = 10, searchParams = {}) => {
 
 //게시글 상세조회
 export const getBoardViewApi = (searchParams = {}) => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/board/bview`, {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/board/view`, {
+    params: { ...searchParams }
+  });
+};
+
+//게시글 상세(조회수X)
+export const getBoardDetailApi = (searchParams = {}) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/board/detail`, {
     params: { ...searchParams }
   });
 };
 
 //게시글쓰기
 export const BoardWriteApi = (param) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/board/bwrite`,param);
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/board/save`,param);
 }
+
+//게시글수정
+export const BoardUpdateApi = (param) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/board/update`,param);
+}
+
+//게시글삭제
+export const BoardDeleteApi = (param = {}) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/board/delete`, param);
+}
+
+//게시글 추천,비추천
+export const BoardLikeSaveApi = (param = {}) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/boardlike/save`, param);
+};
 
 // 댓글 목록 가져오기 (더보기/무한스크롤용)
 export const getCommentListApi = (bno, size = 10, lastCno = 0) => {

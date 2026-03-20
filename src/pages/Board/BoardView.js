@@ -4,7 +4,9 @@ import styles from "./BoardView.module.css";
 import { DelBtn, SaveBtn, SearchBtn } from "../../components/button/Button";
 import BoardComment from "./BoardComment";
 import Content from "../../components/Title/ContentComp";
-import { getBoardViewApi } from "./BoardApi";
+import { getBoardViewApi, BoardDeleteApi, BoardLikeSaveApi } from "./BoardApi";
+import dayjs from "dayjs";
+import { useAuth } from "../../context/AuthContext";
 
 function BoardView() {
   const { bno } = useParams();
@@ -12,6 +14,7 @@ function BoardView() {
   const [board, setBoard] = useState(null);
   // 1. 추천/비추천 상태 관리 (null: 미선택, 'up': 추천, 'down': 비추천)
   const [postVote, setPostVote] = useState(null); 
+  const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
   
   const getBoardView = async () => {
     getBoardViewApi({ bno })
@@ -31,15 +34,35 @@ function BoardView() {
   };
 
   const handleDelete = () => {
-    // 삭제 로직 구현
-    console.log("삭제 클릭:", bno);
+    if (window.confirm("삭제하시겠습니까?")) {
+      const formData = new FormData();
+      formData.append("bno", bno);
+      BoardDeleteApi(formData).then((res) => {
+        if (res.data.success) {
+          alert("삭제되었습니다.");
+          navigate("/BoardList");
+        }
+      });
+    }
   };
 
   // 2. 버튼 클릭 시 상태를 바꿔주는 함수
-  const handlePostVote = (type) => {
-    // 이미 누른 버튼을 다시 누르면 취소(null), 아니면 해당 타입('up'/'down') 설정
-    setPostVote(prev => (prev === type ? null : type));
-    console.log(`게시글 ${bno}번에 ${type === 'up' ? '추천' : '비추천'} 클릭`);
+  const handleBoardLike = (type) => {
+    // 서버로 보낼 데이터 구성 (BoardLikeDto 구조에 맞춤)
+    const voteData = {
+      board: { bno: bno }, // ManyToOne 관계이므로 객체 구조
+      isLike: type === 'up' ? 1 : -1
+    };
+
+    BoardLikeSaveApi(voteData).then((res) => {
+      if (res.data.success) {
+        // 서버에서 "등록", "취소", "변경" 메시지가 옴
+        console.log(res.data.message);
+        setBoard(res.data.board);
+        setPostVote(prev => (prev === type ? null : type));
+        console.log(`게시글 ${bno}번에 ${type === 'up' ? '추천' : '비추천'} 클릭`);
+      }
+    });
   };
 
   if (!board) {
@@ -54,9 +77,24 @@ function BoardView() {
         <div className={styles.header}>
           <h2 className={styles.title}>{board.btitle}</h2>
           <div className={styles.info}>
-            <span>작성자: {board.member?.id || "알 수 없음"}</span>
-            <span>날짜: {board.bdate}</span>
-            <span>조회수: {board.bhit}</span>
+            {/* 왼쪽: 작성자 */}
+            <div className={styles.infoLeft}>
+              <span className={styles.author}>작성자 : {board.member?.id || "알 수 없음"}</span>
+            </div>
+
+            {/* 오른쪽: 날짜(위) + 수치(아래) */}
+            <div className={styles.infoRight}>
+              <div className={styles.dateRow}>
+                {dayjs(board.bdate).format("YYYY-MM-DD HH:mm:ss")}
+              </div>
+              <div className={styles.statsRow}>
+                <span>조회수 {board.bhit}</span>
+                <span className={styles.divider}>|</span>
+                <span style={{color:'#facc15'}}>추천 {board.likeCount || 0}</span>
+                <span className={styles.divider}>|</span>
+                <span style={{color:'#ff7a8a'}}>비추천 {board.dislikeCount || 0}</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -70,25 +108,27 @@ function BoardView() {
         <div className={styles.postVoteArea}>
           <button 
             className={`${styles.postVoteBtn} ${postVote === 'up' ? styles.activeUp : ''}`}
-            onClick={() => handlePostVote('up')}
+            onClick={() => handleBoardLike('up')}
           >
-            👍 추천
+            👍 추천 <span className={styles.voteCount}>{board.likeCount || 0}</span>
           </button>
           <button 
             className={`${styles.postVoteBtn} ${postVote === 'down' ? styles.activeDown : ''}`}
-            onClick={() => handlePostVote('down')}
+            onClick={() => handleBoardLike('down')}
           >
-            👎 비추천
+            👎 비추천 <span className={styles.voteCount}>{board.dislikeCount || 0}</span>
           </button>
         </div>
 
         {/* 버튼 영역 */}
         <div className={styles.btnArea}>
           <SearchBtn onClick={() => navigate("/BoardList")}>목록으로</SearchBtn>
-          <div className={styles.rightBtns}>
-            <SaveBtn color="purple" onClick={handleUpdate}>수정</SaveBtn>
-            <DelBtn color="red" onClick={handleDelete}>삭제</DelBtn>
-          </div>
+          {user && user.id === board.member?.id && (
+            <div className={styles.rightBtns}>
+              <SaveBtn onClick={handleUpdate}>수정</SaveBtn>
+              <DelBtn onClick={handleDelete}>삭제</DelBtn>
+            </div>
+          )}
         </div>
 
         {/* 이전글 / 다음글 네비게이션 */}
