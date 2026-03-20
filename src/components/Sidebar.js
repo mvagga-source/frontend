@@ -62,7 +62,7 @@ function Sidebar({ isOpen, onClose }) {
               </div>
             </div>
             <div className="sb-user-btns">
-              <Link to="/Bookmark" className="sb-user-btn" onClick={onClose}>마이페이지</Link>
+              <Link to="/MyMain" className="sb-user-btn" onClick={onClose}>마이페이지</Link>
               <button className="sb-user-btn" onClick={onClose}>🔔 알림</button>
               <button className="sb-user-btn sb-user-btn-logout" onClick={handleLogout}>로그아웃</button>
             </div>

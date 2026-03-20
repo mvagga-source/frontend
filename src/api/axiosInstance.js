@@ -5,7 +5,6 @@ import axios from "axios";
 // 기본 URL, 타임아웃 등 설정
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // Spring Boot 기본 API URL
-  //timeout: parseInt(process.env.REACT_APP_TIMEOUT, 10) || 5000,
   withCredentials:true //브라우저가 쿠키(세션) 자동 전송
 });
 

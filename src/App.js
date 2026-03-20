@@ -19,8 +19,9 @@ import LeaderBoard from "./pages/Audition/LeaderBoard";
 import Contest from "./pages/Audition/Contest";
 
 // My pages
-import MngVote from "./pages/Mypage/MngVote";
-import Bookmark from "./pages/Mypage/Bookmark";
+import MngVote from "./pages/MyPage/MyVote";
+import Bookmark from "./pages/MyPage/MyBookmark";
+import MyMain from "./pages/MyPage/MyMain";
 
 //게시판
 import BoardList from "./pages/Board/BoardList";
@@ -56,6 +57,7 @@ function App() {
 
           <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>
           <Route path="/MngVote" element={<ProtectedRoute><Layout><MngVote/></Layout></ProtectedRoute>}/>
+          <Route path="/MyMain" element={<ProtectedRoute><Layout><MyMain/></Layout></ProtectedRoute>}/>
           
           <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>
           <Route path="/BoardUpdate/:bno" element={<ProtectedRoute><Layout><BoardUpdate/></Layout></ProtectedRoute>}/>

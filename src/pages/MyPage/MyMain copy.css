@@ -1,0 +1,136 @@
+/* MyPage.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mypage-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 배경 실루엣 이미지 */
+.background-image {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 200, 255, 0.1), transparent);
+  mask-image: linear-gradient(to left, black, transparent);
+  -webkit-mask-image: linear-gradient(to left, black, transparent);
+}
+
+/* 상단 네비게이션 */
+.top-nav {
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background: rgba(20, 20, 40, 0.8);
+  padding: 15px 30px;
+  border-radius: 50px;
+  border: 1px solid rgba(100, 100, 150, 0.3);
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #00d4ff;
+}
+
+.menu-btn {
+  background: rgba(0, 200, 255, 0.2);
+  border: 1px solid #00d4ff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menu-btn:hover {
+  background: rgba(0, 200, 255, 0.4);
+}
+
+.hamburger-icon {
+  color: #00d4ff;
+  font-size: 16px;
+}
+
+/* 페이지 타이틀 */
+.page-title {
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  font-style: italic;
+  color: #00d4ff;
+  margin: 60px 0 50px;
+  text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+  letter-spacing: 8px;
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(100, 100, 150, 0.3);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 20px 40px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tab-btn:hover {
+  color: #ffffff;
+}
+
+.tab-btn.active {
+  color: #00ffff;
+  background: linear-gradient(to bottom, rgba(0, 255, 255, 0.1), transparent);
+  border-bottom: 2px solid #00ffff;
+}
+
+.tab-indicator {
+  font-size: 10px;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+/* 탭 컨텐츠 */
+.tab-content {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  color: #ffffff;
+  text-align: center;
+}
