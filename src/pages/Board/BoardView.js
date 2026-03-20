@@ -20,7 +20,11 @@ function BoardView() {
     getBoardViewApi({ bno })
     .then((res) => {
       if (res.data.success) {
-        setBoard(res.data.board);
+        setBoard(res.data.map.board);
+        const myLike = res.data.map.myLike;
+        if (myLike === 1) setPostVote('up');
+        else if (myLike === -1) setPostVote('down');
+        else setPostVote(null);
       }
     });
   };
@@ -56,11 +60,12 @@ function BoardView() {
 
     BoardLikeSaveApi(voteData).then((res) => {
       if (res.data.success) {
-        // 서버에서 "등록", "취소", "변경" 메시지가 옴
-        console.log(res.data.message);
+        console.log(res.data);
         setBoard(res.data.board);
-        setPostVote(prev => (prev === type ? null : type));
-        console.log(`게시글 ${bno}번에 ${type === 'up' ? '추천' : '비추천'} 클릭`);
+        const myLike = res.data.myLike;
+        if (myLike === 1) setPostVote('up');
+        else if (myLike === -1) setPostVote('down');
+        else setPostVote(null);
       }
     });
   };
