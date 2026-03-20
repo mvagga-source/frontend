@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./context/ProtectedRoute";
@@ -26,13 +26,15 @@ import Bookmark from "./pages/Mypage/Bookmark";
 import BoardList from "./pages/Board/BoardList";
 import BoardWrite from "./pages/Board/BoardWrite";
 import BoardView from "./pages/Board/BoardView";
+import BoardPreview from "./pages/Board/BoardPreview";
 
 import Process from "./pages/Process/Process";
 
+import ServerError from "./pages/ErrorPage/ServerError";
+import NotFound from "./pages/ErrorPage/NotFound";
+
 function App() {
-
   return (
-
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -57,6 +59,10 @@ function App() {
           <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>
           <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/>
           <Route path="/BoardView/:bno" element={<Layout><BoardView/></Layout>}/>
+          <Route path="/BoardPreview" element={<Layout><BoardPreview /></Layout>} />
+
+          <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
+          <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>

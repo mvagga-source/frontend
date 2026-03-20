@@ -1,10 +1,9 @@
 import React, { useRef,useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NeonBtn } from "../../components/button/Button";
+import { SaveBtn, SearchBtn } from "../../components/button/Button";
 import { BoardWriteApi } from "./BoardApi";
 // CSS Module import
 import { SearchInput } from "../../components/input/Input";
-import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import styles from "./BoardWrite.module.css"; 
 import Content from "../../components/Title/ContentComp";
 import TiptapEditor from "../../components/CkEditor/TiptapEditor";
@@ -30,6 +29,23 @@ function BoardWrite() {
       });
     }
   };
+
+  // [추가] 미리보기 함수
+  const handlePreview = () => {
+    const formData = new FormData(formRef.current);
+    const previewData = {
+      btitle: formData.get("btitle") || "제목 없음",
+      bcontent: editorData,
+      bdate: new Date().toLocaleDateString(),
+      member: { id: "작성자(미리보기)" },
+      bhit: 0
+    };
+    // 로컬 스토리지에 임시 저장
+    localStorage.setItem("board_preview", JSON.stringify(previewData));
+    
+    // 새 창 열기 (Route는 아래 2번 단계에서 설정)
+    window.open("/BoardPreview", "_blank", "width=1100,height=900,scrollbars=yes");
+  }
 
   return (
     <Content TitleName="Community Board Write">
@@ -61,13 +77,17 @@ function BoardWrite() {
           </div>
 
           <div className={styles.btnWrapper}>
-            <NeonBtn 
+            {/* 미리보기 버튼 */}
+            <SearchBtn type="button" color="purple" onClick={handlePreview}>
+              미리보기
+            </SearchBtn>
+            <SaveBtn 
               type="button" 
               className={styles.saveButton}
               onClick={handleSave}
             >
               저장하기
-            </NeonBtn>
+            </SaveBtn>
           </div>
         </form>
       </div>

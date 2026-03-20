@@ -3,7 +3,6 @@
   border: 1px solid rgba(0, 242, 255, 0.3);
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 242, 255, 0.05);
-  overflow: hidden; /* 내부 요소가 넘치지 않게 */
 }
 
 /* 툴바 구역 */
@@ -13,7 +12,7 @@
   align-items: center;
   gap: 4px;
   padding: 8px;
-  background: rgba(10, 25, 41, 0.9);
+  background: rgba(76, 118, 163, 0.2);
   border-bottom: 1px solid rgba(0, 242, 255, 0.2);
 }
 
@@ -84,6 +83,7 @@
 /* 🔥 Tiptap 내부 클래스 (핵심: :global 사용) */
 .editor :global(.ProseMirror) {
   min-height: 400px;
+  height: 400px;     /* 처음 보여줄 높이 */
   padding: 25px;
   outline: none;
   font-size: 16px;

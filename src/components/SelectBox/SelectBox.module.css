@@ -1,61 +1,63 @@
 /* SelectBox.module.css */
 
-/* 전체 컨테이너 */
 .neonSelectContainer {
   position: relative; 
   display: inline-block;
-  margin-right: 10px;
-  vertical-align: middle; 
+  vertical-align: middle;
+  max-width: 200px; /* 적절한 기본 너비 */
 }
 
-/* 셀렉트 박스 */
 .neonSelect {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none; 
   
-  background-color: rgba(0, 20, 40, 0.85);
-  color: #00f3ff;
-  border: 1px solid #00f3ff;
-  border-radius: 4px;
+  /* 배경 & 테두리: 로그인 폼과 통일 */
+  background: rgba(0, 242, 255, 0.05);
+  border: 1px solid var(--border-color, rgba(0, 242, 255, 0.2));
+  border-radius: 10px;
   
-  /* 입력창(16px)과 동일한 폰트 크기 */
-  font-size: 16px; 
+  /* 폰트 & 컬러 */
+  font-size: 14px; 
+  color: #e8f4f8;
+  font-family: 'Pretendard', sans-serif;
   
-  /* 입력창(12px 20px)과 높이를 맞추기 위한 패딩 */
-  padding: 12px 45px 12px 20px; 
-  
-  width: auto; 
-  min-width: 120px;
-  
+  /* 패딩: 오른쪽은 화살표 공간(40px) 확보 */
+  padding: 11px 40px 11px 14px; 
+  width: 100%;
   outline: none;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  box-sizing: border-box; /* 높이 어긋남 방지 */
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-/* 화살표 아이콘 위치 설정 */
+/* 화살표 아이콘 위치 */
 .selectArrow {
   position: absolute;
   top: 50%;
-  right: 18px; 
+  right: 14px; 
   transform: translateY(-50%);
   pointer-events: none; 
   display: flex;
   align-items: center;
+  opacity: 0.5; /* 평소엔 은은하게 */
+  transition: opacity 0.2s;
 }
 
-/* 호버 시 효과 */
-.neonSelectContainer:hover .neonSelect {
-  box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-  border-color: #00f3ff;
-  background-color: rgba(0, 30, 60, 0.9);
+/* 호버 및 포커스 시 효과 */
+.neonSelectContainer:hover .neonSelect,
+.neonSelect:focus {
+  border-color: var(--neon-blue, #00f3ff);
+  background: rgba(0, 242, 255, 0.08);
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.15);
 }
 
-/* 옵션 배경색 (브라우저 기본 스타일 한계가 있지만 최대한 맞춤) */
+.neonSelectContainer:hover .selectArrow {
+  opacity: 1; /* 호버 시 화살표 선명하게 */
+}
+
+/* 옵션 창 스타일 (OS/브라우저마다 제한적이지만 배경색 지정) */
 .neonSelect option {
-  background-color: #0a192f;
-  color: #00f3ff;
+  background-color: #0d1321; /* 로그인 배경색과 유사한 어두운 톤 */
+  color: #e8f4f8;
 }

@@ -30,3 +30,13 @@ export const getCommentListApi = (bno, size = 10, lastCno = 0) => {
 export const CommentWriteApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/comment/save`, commentData);
 };
+
+// 댓글 수정하기 (필요시 추가)
+export const CommentUpdateApi = (commentData) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/comment/update`, commentData);
+};
+
+// 댓글 삭제하기 (필요시 추가)
+export const CommentDeleteApi = (commentData) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/comment/delete`, commentData);
+};

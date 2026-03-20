@@ -7,6 +7,8 @@ const VARIANTS = {
   primary: styles.primary,
   danger: styles.danger,
   neon: styles.neon, // 네온 스타일 추가
+  verify: styles.verify,
+  sky: styles.sky,
   // 필요한 테마를 module.css의 클래스명과 매핑하세요
 };
 

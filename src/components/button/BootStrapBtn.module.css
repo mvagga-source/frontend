@@ -32,6 +32,43 @@
     box-shadow: 0 0 20px #00f2ff;
 }
 
+/* 중복확인(Verify) 전용 스타일 */
+.verify {
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid rgba(232, 244, 248, 0.15); /* 기존 var(--border-color) 느낌 */
+  color: rgba(232, 244, 248, 0.6);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 호버 시 네온 블루 */
+.verify:hover:not(:disabled) {
+  border-color: #00f2ff;
+  color: #00f2ff;
+  background: rgba(0, 242, 255, 0.05);
+}
+
+/* 중복확인 통과(Success) 상태 - 고유 클래스 */
+.verify_success {
+  border-color: #4ade80 !important;
+  color: #4ade80 !important;
+  background: rgba(74, 138, 222, 0.08) !important;
+}
+
+/* 하늘색(Sky) 전용 스타일: 중복확인 버튼과 유사한 로직 */
+.sky {
+    background: transparent;
+    border: 1px solid rgba(30, 176, 230, 0.3); 
+    color: rgba(232, 244, 248, 0.7); /* 기본 글자색 */
+}
+
+/* 호버 시: 하늘색 네온 느낌으로 강조 */
+.sky:hover:not(:disabled) {
+    border-color: #056aee; /* 연한 하늘색 */
+    color: #056aee;
+}
+
 /* 사이즈 정의 */
 .sm { padding: 4px 12px; font-size: 0.875rem; }
 .md { padding: 8px 25px; font-size: 1rem; }
@@ -50,9 +87,19 @@
 .success { background-color: #198754; color: #fff; }
 .success:hover:not(:disabled) { background-color: #157347; border-color: #146c43; }
 
-/* Danger */
-.danger { background-color: #dc3545; color: #fff; }
-.danger:hover:not(:disabled) { background-color: #bb2d3b; border-color: #b02a37; }
+/* Danger 삭제스타일 */
+.danger {
+    background: transparent;
+    border: 1px solid rgba(30, 176, 230, 0.3); 
+    color: rgba(232, 244, 248, 0.7); /* 기본 글자색 */
+}
+
+/* 호버 시: 연한 레드 */
+.danger:hover:not(:disabled) {
+    border-color: rgba(255, 77, 77, 0.5); /* 연한 레드 */
+    color: rgba(255, 77, 77, 0.5); 
+    cursor: pointer;
+}
 
 /* Warning */
 .warning { background-color: #ffc107; color: #000; }

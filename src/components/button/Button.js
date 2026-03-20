@@ -10,7 +10,7 @@ import BootStrapBtn from "./BootStrapBtn";
 export const SaveBtn = ({...props }) => {
     return (
         <BootStrapBtn 
-            variant="primary"
+            variant="sky"
             {...props}
         >
           {props.children?props.children:'저장'}
@@ -60,6 +60,12 @@ export const NeonBtn = ({...props }) => (
         {props.children?props.children:'검색'}
     </BootStrapBtn>
     </div>
+);
+
+export const SearchBtn = ({...props }) => (
+    <BootStrapBtn variant="verify" {...props}>
+        {props.children?props.children:'검색'}
+    </BootStrapBtn>
 );
 
 /**

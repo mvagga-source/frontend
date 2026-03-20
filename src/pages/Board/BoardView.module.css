@@ -1,157 +1,186 @@
-/* 컨테이너: 배경색을 제거하고 은은한 테두리만 남김 */
+/* BoardView.module.css */
+
 .viewContainer {
   max-width: 1000px;
   margin: 48px auto;
-  padding: 40px 32px;
-  background: transparent; /* 배경색 제거 */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* 매우 은은한 테두리 */
-  border-radius: 16px;
+  padding: 50px 40px;
+  /* 로그인/게시판 카드와 동일한 배경 및 테두리 */
+  background: rgba(0, 242, 255, 0.03);
+  border: 1px solid var(--border-color, rgba(0, 242, 255, 0.15));
+  border-radius: 20px;
 }
 
-/* 헤더: 하단 구분선을 이미지의 리스트 구분선처럼 얇게 설정 */
+/* 헤더: 구분선을 더 은은하게 */
 .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 32px;
-  margin-bottom: 48px;
+  border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+  padding-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .title {
-  font-size: 2.4rem;
-  color: #ffffff; /* 깔끔한 화이트 */
+  font-size: 2rem;
+  color: #e8f4f8; /* 밝은 텍스트 */
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
 }
 
 .info {
   display: flex;
-  gap: 28px;
-  color: #71717a; /* 보조 정보는 차분한 회색 */
-  font-size: 1rem;
-  font-weight: 500;
+  gap: 24px;
+  color: rgba(232, 244, 248, 0.4); /* 보조 정보 투명도 조절 */
+  font-size: 0.95rem;
 }
 
 /* 본문 영역 */
 .contentBox {
   min-height: 320px;
-  line-height: 1.85;
-  font-size: 1.15rem;
-  color: #e4e4e7; /* 본문 가독성을 위한 밝은 회색 */
-  margin-bottom: 56px;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: rgba(232, 244, 248, 0.85); /* 본문 가독성 */
+  margin-bottom: 50px;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-/* 버튼 영역 */
-.btnArea {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 56px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.rightBtns {
-  display: flex;
-  gap: 16px;
-}
-
-/* 이전글/다음글: 배경색 없이 구분선으로만 영역 구분 */
-.navSection {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 0;
-  margin-bottom: 68px;
-}
-
-.navRow {
-  display: flex;
-  padding: 16px 0;
-  align-items: center;
-}
-
-/* 행 사이 구분선 (이미지 리스트 느낌) */
-.navRow:first-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.navLabel {
-  width: 110px;
-  color: #3b82f6; /* 포인트 컬러 (파랑) */
-  font-weight: 600;
-}
-
-.navLink {
-  color: #d4d4d8;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.navLink:hover {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-.noNav {
-  color: #52525b;
-}
-
-.loading {
-  text-align: center;
-  padding: 64px 0;
-  color: #71717a;
-}
-
-/* [추가] 게시글 추천/비추천 컨테이너 */
+/* 추천/비추천 영역 */
 .postVoteArea {
   display: flex;
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: center;
   gap: 16px;
-  margin: 48px 0 64px; /* 본문과 버튼 사이 여백 */
+  margin: 40px 0 60px;
 }
 
-/* 추천/비추천 공통 버튼 */
 .postVoteBtn {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 30px; /* 둥근 캡슐 형태 */
+  background: rgba(0, 242, 255, 0.05);
+  border: 1px solid rgba(0, 242, 255, 0.1);
+  border-radius: 12px; /* 둥근 사각형으로 통일감을 줌 */
   padding: 12px 24px;
-  color: #a1a1aa;
-  font-size: 1.05rem;
+  color: rgba(232, 244, 248, 0.5);
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .postVoteBtn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+  background: rgba(0, 242, 255, 0.1);
+  border-color: var(--neon-blue, #00f3ff);
+  color: #e8f4f8;
 }
 
-/* 추천 활성화 (노란색 포인트) */
+/* 추천/비추천 활성화 시 광원 대신 테두리와 배경으로 강조 */
 .activeUp {
   border-color: #facc15 !important;
   color: #facc15 !important;
-  background: rgba(250, 204, 21, 0.05) !important;
+  background: rgba(250, 204, 21, 0.1) !important;
 }
 
-/* 비추천 활성화 (빨간색 포인트) */
 .activeDown {
-  border-color: #ef4444 !important;
-  color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: #ff7a8a !important;
+  color: #ff7a8a !important;
+  background: rgba(255, 122, 138, 0.1) !important;
 }
 
+/* 하단 버튼 영역 */
+.btnArea {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 242, 255, 0.1);
+}
 
+.rightBtns {
+  display: flex;
+  gap: 12px;
+}
+
+/* 이전글/다음글 네비게이션 */
+.navSection {
+  border-top: 1px solid rgba(0, 242, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+  padding: 8px 0;
+  margin-bottom: 60px;
+}
+
+.navRow {
+  display: flex;
+  padding: 14px 0;
+  align-items: center;
+  font-size: 14px;
+}
+
+.navRow:first-child {
+  border-bottom: 1px solid rgba(0, 242, 255, 0.05);
+}
+
+.navLabel {
+  width: 100px;
+  color: var(--neon-blue, #00f3ff); /* 포인트 컬러 통일 */
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.navLink {
+  color: rgba(232, 244, 248, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: #fff;
+}
+
+.noNav {
+  color: rgba(232, 244, 248, 0.2);
+}
+
+/* 반응형 */
 @media (max-width: 600px) {
   .viewContainer {
-    padding: 24px 16px;
-    border: none; /* 모바일에서는 테두리 제거해서 더 넓게 사용 */
+    padding: 30px 20px;
+    margin: 20px auto;
   }
   .title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
+}
+
+/* 본문 내 이미지 정렬 보정 */
+
+/* 1. 이미지를 감싸는 span/div(wrapperstyle) 대응 */
+.contentBox [wrapperstyle] {
+  display: flex !important;
+}
+
+/* 2. 이미지 자체 또는 컨테이너(containerstyle) 대응 */
+.contentBox [containerstyle] {
+  display: block !important; /* block이어야 마진 정렬이 먹힙니다 */
+}
+/* 중앙 정렬: margin: 0px auto 또는 margin: auto 포함 시 */
+.contentBox [containerstyle*="auto"] {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 오른쪽 정렬: margin: 0px 0px 0px auto (사용자님이 올린 코드 형태) */
+.contentBox [containerstyle*="0px 0px 0px auto"] {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* 왼쪽 정렬: margin: 0px auto 0px 0px 또는 기본값 */
+.contentBox [containerstyle*="0px auto 0px 0px"] {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* 추가: 에디터에서 들어온 이미지가 너무 크면 본문을 넘지 않게 조절 */
+.contentBox img {
+  max-width: 100%;
+  height: auto;
 }

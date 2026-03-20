@@ -31,6 +31,14 @@ axiosInstance.interceptors.response.use(
   },
   error => {
     console.error("API 에러 발생:", error.response?.data || error.message);
+    if (error.response?.status === 401) {
+      //navigate("/UserLogin");
+      window.location.href = "/UserLogin";
+    } else if (!error.response || error.response?.status === 500) {
+      // 서버 오류
+      //navigate("/500");
+      window.location.href = "/500";
+    }
     return Promise.reject(error);
   }
 );

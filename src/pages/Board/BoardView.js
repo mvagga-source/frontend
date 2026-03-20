@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "./BoardView.module.css";
-import { NeonBtn } from "../../components/button/Button";
+import { DelBtn, SaveBtn, SearchBtn } from "../../components/button/Button";
 import BoardComment from "./BoardComment";
 import Content from "../../components/Title/ContentComp";
 import { getBoardViewApi } from "./BoardApi";
@@ -14,10 +14,12 @@ function BoardView() {
   const [postVote, setPostVote] = useState(null); 
   
   const getBoardView = async () => {
-    const res = await getBoardViewApi({ bno });
-    if (res.data.success) {
-      setBoard(res.data.board);
-    }
+    getBoardViewApi({ bno })
+    .then((res) => {
+      if (res.data.success) {
+        setBoard(res.data.board);
+      }
+    });
   };
   
   useEffect(() => {
@@ -61,7 +63,7 @@ function BoardView() {
         {/* 본문 */}
         <div 
           className={styles.contentBox} 
-          dangerouslySetInnerHTML={{ __html: board.bcontent }} 
+          dangerouslySetInnerHTML={{ __html: board.bcontent}} 
         />
 
         {/* 추천/비추천 버튼 섹션 */}
@@ -82,10 +84,10 @@ function BoardView() {
 
         {/* 버튼 영역 */}
         <div className={styles.btnArea}>
-          <NeonBtn onClick={() => navigate("/BoardList")}>목록으로</NeonBtn>
+          <SearchBtn onClick={() => navigate("/BoardList")}>목록으로</SearchBtn>
           <div className={styles.rightBtns}>
-            <NeonBtn color="purple" onClick={handleUpdate}>수정</NeonBtn>
-            <NeonBtn color="red" onClick={handleDelete}>삭제</NeonBtn>
+            <SaveBtn color="purple" onClick={handleUpdate}>수정</SaveBtn>
+            <DelBtn color="red" onClick={handleDelete}>삭제</DelBtn>
           </div>
         </div>
 

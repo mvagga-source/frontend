@@ -10,50 +10,56 @@
 }
 
 .pageButton {
-    background-color: rgba(10, 25, 47, 0.8);
-    border: 1px solid rgba(0, 242, 255, 0.3);
-    color: #00f2ff;
-    padding: 8px 14px;
-    min-width: 40px;
-    height: 40px;
-    border-radius: 4px;
+    /* 배경: 인풋창과 동일한 은은한 푸른빛 */
+    background: rgba(0, 242, 255, 0.05);
+    border: 1px solid var(--border-color, rgba(0, 242, 255, 0.2));
+    color: rgba(232, 244, 248, 0.7); /* 평소엔 조금 차분하게 */
+    
+    padding: 8px 12px;
+    min-width: 38px;
+    height: 38px;
+    /* 모서리: 10px로 통일 */
+    border-radius: 10px;
+    
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
     outline: none;
+    box-sizing: border-box;
 }
 
-/* 마우스 호버 시 (비활성 상태일 때만) */
+/* 마우스 호버 시 */
 .pageButton:hover:not(.active):not(:disabled) {
-    background-color: rgba(0, 242, 255, 0.2);
-    border-color: #00f2ff;
-    box-shadow: 0 0 12px rgba(0, 242, 255, 0.4);
+    background-color: rgba(0, 242, 255, 0.1);
+    border-color: var(--neon-blue, #00f3ff);
+    color: var(--neon-blue, #00f3ff);
     transform: translateY(-2px);
 }
 
-/* 현재 선택된 페이지 (Active) */
+/* 현재 선택된 페이지 (로그인 버튼과 유사한 스타일) */
 .active {
-    background-color: #00f2ff;
-    border-color: #00f2ff;
-    color: #0a192f;
-    box-shadow: 0 0 15px #00f2ff;
+    background-color: var(--neon-blue, #00f3ff);
+    border-color: var(--neon-blue, #00f3ff);
+    color: #0d1321; /* 배경색과 대비되는 어두운 색 */
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
     font-weight: 700;
 }
 
-/* 비활성화 상태 (처음/끝 페이지일 때 화살표 버튼) */
+/* 비활성화 상태 */
 .pageButton:disabled {
-    background-color: rgba(10, 25, 47, 0.4);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.2);
+    background-color: transparent;
+    border-color: rgba(232, 244, 248, 0.05);
+    color: rgba(232, 244, 248, 0.15);
     cursor: not-allowed;
 }
 
-/* 처음/끝 이동 버튼 강조 (선택 사항) */
+/* 이동 버튼 강조 */
 .moveButton {
-    font-weight: bold;
+    font-size: 12px;
     letter-spacing: -1px;
+    color: rgba(0, 242, 255, 0.5);
 }
