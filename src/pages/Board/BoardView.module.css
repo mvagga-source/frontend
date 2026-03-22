@@ -206,38 +206,3 @@
     font-size: 1.5rem;
   }
 }
-
-/* 본문 내 이미지 정렬 보정 */
-
-/* 1. 이미지를 감싸는 span/div(wrapperstyle) 대응 */
-.contentBox [wrapperstyle] {
-  display: flex !important;
-}
-
-/* 2. 이미지 자체 또는 컨테이너(containerstyle) 대응 */
-.contentBox [containerstyle] {
-  display: block !important; /* block이어야 마진 정렬이 먹힙니다 */
-}
-/* 중앙 정렬: margin: 0px auto 또는 margin: auto 포함 시 */
-.contentBox [containerstyle*="auto"] {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* 오른쪽 정렬: margin: 0px 0px 0px auto (사용자님이 올린 코드 형태) */
-.contentBox [containerstyle*="0px 0px 0px auto"] {
-  margin-left: auto !important;
-  margin-right: 0 !important;
-}
-
-/* 왼쪽 정렬: margin: 0px auto 0px 0px 또는 기본값 */
-.contentBox [containerstyle*="0px auto 0px 0px"] {
-  margin-left: 0 !important;
-  margin-right: auto !important;
-}
-
-/* 추가: 에디터에서 들어온 이미지가 너무 크면 본문을 넘지 않게 조절 */
-.contentBox img {
-  max-width: 100%;
-  height: auto;
-}

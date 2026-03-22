@@ -1,0 +1,352 @@
+/* GoodsView.module.css */
+.viewContainer {
+  max-width: 1100px; /* 상품 페이지는 조금 더 넓게 사용 */
+  margin: 48px auto;
+  padding: 50px 40px;
+  background: rgba(0, 242, 255, 0.03);
+  border: 1px solid rgba(0, 242, 255, 0.15);
+  border-radius: 20px;
+}
+
+.topSection {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.imageArea {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  height: 400px;
+}
+
+.imageArea img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.goodsTitle {
+  font-size: 2rem;
+  color: #fff;
+  margin: 10px 0 20px;
+}
+
+.price {
+  font-size: 1.8rem;
+  color: #00f2ff; /* 포인트 컬러 */
+  font-weight: bold;
+}
+
+/* 주문 버튼 커스텀 (카카오페이 테마) */
+.buyBtn {
+  width: 100%;
+  padding: 18px;
+  background: #fee500; /* 카카오 노란색 */
+  color: #191919;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.buyBtn:hover {
+  transform: translateY(-2px);
+  background: #fada00;
+}
+
+.buyBtn:disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* 게시판과 통일감을 주는 구분선 */
+.dividerLine {
+  height: 1px;
+  background: rgba(0, 242, 255, 0.1);
+  margin: 40px 0;
+}
+
+/* 기존 BoardView의 btnArea 스타일 재사용 가능 */
+.btnArea {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  border-top: 1px solid rgba(0, 242, 255, 0.1);
+  padding-top: 24px;
+}
+
+/* 상단 레이아웃 (2컬럼) */
+.goodsTop {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.imageBox {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 242, 255, 0.1);
+  height: 450px;
+}
+
+.imageBox img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.infoBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sellerTag { color: #00f2ff; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600; }
+.goodsName { font-size: 2.2rem; color: #fff; margin-bottom: 24px; }
+
+.priceArea {
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex; align-items: center; gap: 20px;
+}
+.priceLabel { color: #64748b; }
+.priceVal { font-size: 1.8rem; color: #fff; font-weight: 700; }
+
+.deliveryInfo {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 20px; border-radius: 10px;
+  font-size: 0.9rem; color: #cbd5e1; line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+/* 수량 및 결제버튼 영역 */
+.orderArea {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+.qtySelector {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 내부 요소 전체 중앙 정렬 */
+  background: #1e293b;
+  width: 130px; /* 전체 폭을 조금 넓게 고정 */
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.1);
+  overflow: hidden;
+}
+
+.qtySelector button {
+  flex: 1; /* 버튼이 동일한 비율로 차지 */
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: none;
+  color: #00f2ff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qtySelector button:hover {
+  background: rgba(0, 242, 255, 0.15);
+}
+
+.qtySelector input {
+  width: 50px; /* 숫자가 두 자리가 되어도 넉넉한 너비 */
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  font-size: 1.1rem;
+  font-weight: 600;
+  outline: none;
+  padding: 0; /* 내부 여백 제거하여 치우침 방지 */
+  
+  /* 스핀 버튼(화살표) 제거 */
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.qtySelector input::-webkit-outer-spin-button,
+.qtySelector input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.totalPriceInfo {
+  text-align: right;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.totalPriceInfo strong {
+  color: #00f2ff;
+  font-size: 1.3rem;
+  margin-left: 10px;
+  text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
+}
+
+.kakaoPayBtn {
+  background: #fee500; color: #191919; border: none;
+  padding: 18px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;
+  cursor: pointer; transition: 0.3s;
+}
+.kakaoPayBtn:hover { background: #fada00; transform: translateY(-2px); }
+
+/* 탭 메뉴 스타일 */
+.tabWrapper {
+  display: flex; border-bottom: 1px solid rgba(0, 242, 255, 0.1); margin-bottom: 30px;
+}
+.tabWrapper button {
+  flex: 1; padding: 15px; background: none; border: none; color: #64748b;
+  font-size: 1rem; cursor: pointer; position: relative;
+}
+.activeTab { color: #00f2ff !important; font-weight: bold; }
+.activeTab::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; width: 100%;
+  height: 2px; background: #00f2ff; box-shadow: 0 0 10px #00f2ff;
+}
+
+.tabContent { min-height: 300px; color: #cbd5e1; line-height: 1.8; }
+.policyText h4 { color: #fff; margin-top: 20px; }
+
+.detailText p {
+  margin-bottom: 10px;
+}
+
+.detailText img {
+    max-width: 100%; /* 부모 너비를 넘지 않도록 */
+    height: auto;    /* 비율 유지 */
+    display: block;  /* 하단 미세 여백 제거 */
+    margin: 20px auto; /* 중앙 정렬 */
+}
+
+.statusArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+/* 공통 배지 스타일 */
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* 판매중 (네온 블루/그린) */
+/* 상태별 클래스 분리 */
+.onSale {
+  background: rgba(0, 242, 255, 0.1);
+  color: #00f2ff;
+  border: 1px solid #00f2ff;
+  box-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+}
+/* 품절 (레드) */
+.soldOut {
+  background: rgba(255, 68, 68, 0.1);
+  color: #ff4444;
+  border: 1px solid #ff4444;
+  box-shadow: 0 0 8px rgba(255, 68, 68, 0.3);
+}
+/* 숨김 (그레이) */
+.hidden {
+  background: rgba(100, 116, 139, 0.1);
+  color: #64748b;
+  border: 1px solid #64748b;
+}
+
+.stockInfo {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.stockInfo strong {
+  color: #facc15; /* 재고 숫자는 강조색(노랑) */
+}
+
+.sellerBookmarkRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 핵심: 양 끝 정렬 */
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* 경계선 추가 */
+}
+
+.sellerArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sellerTitle {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.sellerId {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* 북마크 버튼 스타일 */
+.topBookmark {
+  background: rgba(255, 255, 255, 0.03); /* 은은한 배경 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: rgba(255, 255, 255, 0.4); /* 기본 SVG 색상 */
+}
+
+.topBookmark:hover {
+  background: rgba(0, 242, 255, 0.1);
+  border-color: #00f2ff;
+  color: #00f2ff;
+  transform: scale(1.05);
+}
+
+.topBookmark.active {
+  background: rgba(0, 242, 255, 0.15);
+  border-color: #00f2ff;
+  color: #00f2ff; /* 활성 상태 SVG 색상 */
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+  animation: bookmarkPop 0.3s ease-out;
+}
+
+/* 이미지 박스 수정 (기존 relative/overly 북마크 제거) */
+.imageBox {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 242, 255, 0.1);
+}

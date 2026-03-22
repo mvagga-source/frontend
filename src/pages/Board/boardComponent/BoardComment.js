@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BoardComment.module.css";
-import { CancelBtn, SaveBtn } from "../../components/button/Button";
-import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "./BoardApi";
-import { useAuth } from "../../context/AuthContext";
+import { CancelBtn, SaveBtn } from "../../../components/button/Button";
+import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "../BoardApi";
+import { useAuth } from "../../../context/AuthContext";
 
 function BoardComment({ bno }) {
   const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
@@ -26,8 +26,13 @@ function BoardComment({ bno }) {
   useEffect(() => {
     if (bno) {
       getList(0, false); // 처음 로드이므로 lastCno는 0, append는 false
+      
+      // 이전 글에서 작성 중이던 상태값들 초기화
+      setNewComment("");
+      setEditingCno(null);
+      setReplyingTo(null);
     }
-  }, []);
+  }, [bno]);
 
   // 댓글 리스트 가져오기 (처음 로드나 저장 후 새로 불러오기)
   const getList = async (lastCno = 0, append = true) => {
@@ -108,16 +113,20 @@ function BoardComment({ bno }) {
 
   // 수정 저장
   const handleUpdate = async (cno) => {
-    if (!editContent.trim()) return;
     const formData = new URLSearchParams();
     formData.append("cno", cno);
     formData.append("ccontent", editContent);
     CommentUpdateApi(formData)
     .then((res) => {
       if (res.data?.success) {
-        alert("수정되었습니다.");
+        //alert("수정되었습니다.");
         setEditingCno(null); // 수정 모드 종료
-        getList(0, false);   // 목록 새로고침
+        //더보기 방식은 길어질 경우 사용자 불편이 있을 수 있어서
+        const updatedComment = res.data.comment;
+        setComments((prev) =>
+          prev.map((c) => (c.cno === cno ? { ...c, ...updatedComment } : c))
+        );
+        //getList(0, false);   // 목록 새로고침
       }
     });
   };
@@ -130,8 +139,12 @@ function BoardComment({ bno }) {
     CommentDeleteApi(formData)
     .then((res) => {
       if (res.data?.success) {
-        alert("삭제되었습니다.");
-        getList(0, false);   // 목록 새로고침
+        //alert("삭제되었습니다.");
+        //더보기 방식은 길어질 경우 사용자 불편이 있을 수 있어서
+        setComments((prev) =>
+          prev.map((c) => (c.cno === cno ? { ...c, delYn: 'y' } : c))
+        );
+        //getList(0, false);   // 목록 새로고침(적용해도 됨)
       }
     });
   };
@@ -225,8 +238,18 @@ function BoardComment({ bno }) {
 
       {/* 더보기 버튼 */}
       {hasMore && (
-        <div className={styles.moreBtnBar} onClick={handleMore}>
-          {loading ? "로딩 중..." : "더보기"}
+        <div 
+          className={`${styles.moreBtnBar} ${loading ? styles.loading : ""}`} 
+          onClick={handleMore}
+        >
+          {loading ? (
+            <>
+              <div className={styles.spinner}></div>
+              <span className={styles.loadingText}>LOADING...</span>
+            </>
+          ) : (
+            "더보기"
+          )}
         </div>
       )}
     </div>

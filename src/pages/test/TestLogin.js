@@ -2,6 +2,9 @@
 import { useNavigate  } from "react-router";
 import axios from 'axios';
 import { TestBtn, CancelBtn } from "../../components/button/Button";
+//import GoodsView from "./pages/Goods/GoodsView";
+//import GoodsWrite from "./pages/Goods/GoodsWrite";
+//import GoodsList from "./pages/Goods/GoodsList";
 
 function TestLogin() {
     const navigate = useNavigate();
@@ -36,6 +39,9 @@ function TestLogin() {
       <TestBtn type="button" variant="danger"/>
       <CancelBtn onClick={()=>alert("취소입니다.")}/>
     </div>
+    //<Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
+    //<Route path="/GoodsView" element={<Layout><GoodsView/></Layout>} />
+    //<Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
   );
 }
 

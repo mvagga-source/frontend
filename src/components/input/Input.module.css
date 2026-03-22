@@ -41,3 +41,122 @@
   /* 폰트 유지 */
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* 숫자 인풋 전용 스타일 */
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.numberInput {
+  text-align: right; /* 숫자는 오른쪽 정렬이 가독성이 좋습니다 */
+  padding-right: 15px;
+}
+
+/* --- 통합 검색바 전용 스타일 --- */
+/* 검색바 컨테이너: 가로폭 제한 */
+.searchBarContainer {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 242, 255, 0.05);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 50px;
+  padding: 2px 5px 2px 5px; /* 패딩 최소화 */
+  width: 100%;
+  max-width: 700px; /* 너무 길지 않게 고정 */
+}
+
+/* 슬림 가격 인풋: 높이와 폰트 조절 */
+.slimInput {
+  height: 32px !important; /* 일반 인풋보다 낮게 */
+  padding: 0 10px !important;
+  font-size: 13px !important;
+  width: 110px !important; /* 너비 축소 */
+  border-radius: 8px !important;
+}
+
+/* 검색 아이콘 위치 미세 조정 */
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.searchBarContainer {
+  display: flex;
+  align-items: center; /* 모든 내부 요소 수직 중앙 정렬 */
+  background: rgba(0, 242, 255, 0.05);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 50px;
+  padding: 4px 6px; /* 내부 여백 균형 조절 */
+  width: 100%;
+  max-width: 700px;
+  height: 48px; /* 검색바 전체 높이 고정으로 안정감 부여 */
+  box-sizing: border-box;
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+  height: 100%; /* 부모 높이 상속 */
+  display: flex;
+  align-items: center;
+}
+
+/* 돋보기 아이콘 수직 정렬 */
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barInput {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 15px 0 40px; /* 돋보기 공간 확보 */
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* 검색 버튼 크기 최적화 */
+.barBtn {
+  background: #00f2ff;
+  color: #000;
+  border: none;
+  border-radius: 40px;
+  padding: 0 25px;
+  height: 36px; /* 검색바 높이보다 약간 작게 설정하여 여백 미 살림 */
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 가격 필터 슬림 인풋 정렬 수정 */
+.slimInput {
+  height: 36px !important; /* 위 버튼과 높이 통일 */
+  padding: 0 12px !important;
+  font-size: 13px !important;
+  width: 120px !important; 
+  border-radius: 8px !important;
+  background: rgba(0, 242, 255, 0.08) !important;
+}
+
+.barBtn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+}

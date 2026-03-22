@@ -62,10 +62,16 @@ export const NeonBtn = ({...props }) => (
     </div>
 );
 
-export const SearchBtn = ({...props }) => (
+export const MoveBtn = ({...props }) => (
     <BootStrapBtn variant="verify" {...props}>
-        {props.children?props.children:'검색'}
+        {props.children?props.children:'페이지'}
     </BootStrapBtn>
+);
+
+export const SearchBtn = ({...props }) => (
+    <MoveBtn {...props}>
+        {props.children?props.children:'검색'}
+    </MoveBtn>
 );
 
 /**

@@ -14,6 +14,8 @@ import {Color} from '@tiptap/extension-color'
 import {Highlight} from '@tiptap/extension-highlight'
 import {TextAlign} from '@tiptap/extension-text-align'
 import {Placeholder} from '@tiptap/extension-placeholder'
+import { FontFamily } from '@tiptap/extension-font-family'
+import { Underline } from '@tiptap/extension-underline'
 import { Extension } from '@tiptap/core'
 
 import styles from './TiptapEditor.module.css'
@@ -45,6 +47,28 @@ const FontSize = Extension.create({
         size =>
         ({ chain }) =>
           chain().setMark('textStyle', { fontSize: size }).run(),
+    }
+  },
+})
+
+const CustomYoutube = Youtube.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      // 가로, 세로 속성 추가
+      width: {
+        default: 480,
+        renderHTML: attributes => ({ width: attributes.width }),
+      },
+      height: {
+        default: 320,
+        renderHTML: attributes => ({ height: attributes.height }),
+      },
+      // 정렬을 위한 style 속성 추가
+      containerstyle: {
+        default: 'display: block; margin: 0 auto;',
+        renderHTML: attributes => ({ style: attributes.containerstyle }),
+      },
     }
   },
 })
@@ -91,6 +115,7 @@ export default function TiptapEditor({ content, onChange }) {
     Bold: () => <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>,
     Italic: () => <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>,
     Strike: () => <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none"><path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" y1="12" x2="20" y2="12"/></svg>,
+    TextColor: () => (<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none"><path d="M4 20h16" /><path d="m17 16-5-12-5 12" /><path d="M7 12h10" /></svg>),
     Highlighter: () => <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>,
     AlignLeft: () => <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>,
     AlignCenter: () => <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg>,
@@ -111,9 +136,9 @@ export default function TiptapEditor({ content, onChange }) {
       ResizeImage.configure({
         allowBase64: true,
       }),
-      Youtube.configure({
-        width: 480,
-        height: 320,
+      CustomYoutube.configure({
+        //width: 480,
+        //height: 320,
         HTMLAttributes: {
           class: 'resizable-video',
         },
@@ -123,10 +148,13 @@ export default function TiptapEditor({ content, onChange }) {
       TableRow,
       TableHeader,
       TableCell,
-
+      //Underline, // 밑줄 추가
+      FontFamily, // 글꼴 추가
       TextStyle,
       Color,
-      Highlight,
+      Highlight.configure({
+        multicolor: true, // 여러 색상 지원 활성화 (필수!)
+      }),
 
       TextAlign.configure({
         types: ['heading', 'paragraph', 'tableCell', 'image'],
@@ -209,6 +237,18 @@ export default function TiptapEditor({ content, onChange }) {
           <option value="3">제목 3</option>
         </select>
 
+        {/* 글꼴 선택 추가 */}
+        <select 
+          onChange={e => editor.chain().focus().setFontFamily(e.target.value).run()}
+          style={{width: '90px'}}
+        >
+          <option value="Inter">기본 글꼴</option>
+          <option value="Arial">Arial</option>
+          <option value="Courier New">Courier</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Pretendard">Pretendard</option>
+        </select>
+
         {/* 2. 서식 그룹 */}
         <div className={styles.buttonGroup}>
           <button 
@@ -232,6 +272,16 @@ export default function TiptapEditor({ content, onChange }) {
           >
             <Icons.Strike />
           </button>
+          {/* 밑줄 버튼 추가 */}
+          <button 
+            onClick={() => editor.chain().focus().toggleUnderline().run()} 
+            className={editor.isActive('underline') ? styles.active : ''}
+            title="밑줄"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none">
+              <path d="M6 3v7a6 6 0 0 0 12 0V3M4 21h16"/>
+            </svg>
+          </button>
           
           <select onChange={e => editor.chain().focus().setFontSize(e.target.value).run()} style={{width:'70px'}}>
             <option value="14px">14px</option>
@@ -240,15 +290,77 @@ export default function TiptapEditor({ content, onChange }) {
             <option value="24px">24px</option>
           </select>
 
-          <input type="color" defaultValue={"#ffffff"} onChange={e => editor.chain().focus().setColor(e.target.value).run()} title="글자 색상" />
-          
-          <button 
-            onClick={() => editor.chain().focus().toggleHighlight().run()} 
-            className={editor.isActive('highlight') ? styles.active : ''} 
-            title="형광펜"
-          >
-            <Icons.Highlighter />
-          </button>
+          {/* 텍스트 색상 */}
+          <div className={styles.colorPickerWrapper} title="글자 색상">
+            <Icons.TextColor />
+            <div 
+              className={styles.colorIndicator} 
+              style={{ backgroundColor: editor.getAttributes('textStyle').color || '#ffffff' }} 
+            />
+            <input 
+              type="color" 
+              className={styles.invisibleInput}
+              // value값을 현재 에디터 색상과 동기화하면 더 정확합니다.
+              value={editor.getAttributes('textStyle').color || '#ffffff'}
+              onChange={e => editor.chain().focus().setColor(e.target.value).run()} 
+            />
+          </div>
+
+          {/* 형광펜 색상 */}
+          <div className={styles.tableWrapper}>
+            <button 
+              onClick={() => toggleMenu(activeMenu === 'highlight' ? null : 'highlight')}
+              className={editor.isActive('highlight') ? styles.active : ''}
+              title="형광펜"
+            >
+              <Icons.Highlighter />
+              <div 
+                className={styles.colorIndicator} 
+                style={{ backgroundColor: editor.getAttributes('highlight').color || 'transparent' }} 
+              />
+            </button>
+
+            {activeMenu === 'highlight' && (
+              <div className={styles.tablePickerPopup} style={{ minWidth: '150px' }}>
+                <div className={styles.colorPalette}>
+                  {/* 자주 쓰는 색상 팔레트 */}
+                  {['#ffeb3b', '#7cfc00', '#00ffff', '#ffb7ce', '#ffa500'].map(color => (
+                    <div 
+                      key={color}
+                      className={styles.colorDot}
+                      style={{ backgroundColor: color }}
+                      onClick={() => {
+                        editor.chain().focus().setHighlight({ color }).run();
+                        setActiveMenu(null);
+                      }}
+                    />
+                  ))}
+                </div>
+                
+                <div className={styles.divider} />
+                
+                {/* 커스텀 컬러 선택 (기존 input) */}
+                <div className={styles.customColorRow}>
+                  <input 
+                    type="color" 
+                    onChange={(e) => editor.chain().focus().setHighlight({ color: e.target.value }).run()} 
+                  />
+                  <span>직접 선택</span>
+                </div>
+
+                <button 
+                  className={styles.tableCreateBtn} 
+                  style={{ marginTop: '8px', color: '#ff4d4d', borderColor: '#ff4d4d' }}
+                  onClick={() => {
+                    editor.chain().focus().unsetHighlight().run();
+                    setActiveMenu(null);
+                  }}
+                >
+                  형광펜 해제
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* 3. 정렬 및 리스트 */}
@@ -350,13 +462,17 @@ export default function TiptapEditor({ content, onChange }) {
                 <button className={styles.tableCreateBtn} onClick={() => { fileRef.current.click(); setActiveMenu(null); }}>
                   내 컴퓨터에서 업로드
                 </button>
-                <div className={styles.divider}>또는 URL 입력</div>
+                
+                {/* divider 대신 dividerText 사용 */}
+                <div className={styles.dividerText}>또는 URL 입력</div> 
+                
                 <input 
                   className={styles.urlInput} 
                   placeholder="https://..." 
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
                 />
+                
                 <button className={styles.tableCreateBtn} onClick={insertUrlContent}>삽입</button>
               </div>
             )}

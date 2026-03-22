@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "./BoardView.module.css";
-import { DelBtn, SaveBtn, SearchBtn } from "../../components/button/Button";
-import BoardComment from "./BoardComment";
+import { DelBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
+import BoardComment from "./boardComponent/BoardComment";
 import Content from "../../components/Title/ContentComp";
 import { getBoardViewApi, BoardDeleteApi, BoardLikeSaveApi } from "./BoardApi";
 import dayjs from "dayjs";
 import { useAuth } from "../../context/AuthContext";
+import BoardContent from "./boardComponent/BoardContent";
 
 function BoardView() {
   const { bno } = useParams();
@@ -44,7 +45,8 @@ function BoardView() {
       BoardDeleteApi(formData).then((res) => {
         if (res.data.success) {
           alert("삭제되었습니다.");
-          navigate("/BoardList");
+          // replace: true를 추가하여 히스토리 스택에서 현재 페이지를 제거
+          navigate("/BoardList", { replace: true });
         }
       });
     }
@@ -104,10 +106,7 @@ function BoardView() {
         </div>
 
         {/* 본문 */}
-        <div 
-          className={styles.contentBox} 
-          dangerouslySetInnerHTML={{ __html: board.bcontent}} 
-        />
+        <BoardContent content={board.bcontent} />
 
         {/* 추천/비추천 버튼 섹션 */}
         <div className={styles.postVoteArea}>
@@ -127,7 +126,7 @@ function BoardView() {
 
         {/* 버튼 영역 */}
         <div className={styles.btnArea}>
-          <SearchBtn onClick={() => navigate("/BoardList")}>목록으로</SearchBtn>
+          <MoveBtn onClick={() => navigate("/BoardList")}>목록으로</MoveBtn>
           {user && user.id === board.member?.id && (
             <div className={styles.rightBtns}>
               <SaveBtn onClick={handleUpdate}>수정</SaveBtn>
