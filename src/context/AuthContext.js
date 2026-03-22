@@ -29,12 +29,12 @@ export const AuthProvider = ({ children }) => {
         const res = await userSessionApi();
 
         if (res.data != null ){
-          console.log("auth ok!! : ",res.data);          
+          // console.log("auth ok!! : ",res.data);          
           setUser(res.data);
           localStorage.setItem("user", JSON.stringify(res.data));
 
         }else{
-          console.log("auth error");
+          // console.log("auth error");
           setUser(null);
           localStorage.removeItem("user");
         }

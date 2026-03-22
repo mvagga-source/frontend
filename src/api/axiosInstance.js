@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     } else if (!error.response || error.response?.status === 500) {
       // 서버 오류
       //navigate("/500");
-      window.location.href = "/500";
+      //window.location.href = "/500";
     }
     return Promise.reject(error);
   }

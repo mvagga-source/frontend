@@ -9,7 +9,7 @@ import UserLogin from "./pages/Home/UserLogin";
 import UserSignUp from "./pages/Home/UserSignUp";
 
 
-import Calender from "./pages/Calendar/Calendar";
+import Schedule from "./pages/Schedule/Schedule";
 import MVideo from "./pages/Video/MVideo";
 
 // Audition pages
@@ -51,9 +51,9 @@ function App() {
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
 
-          <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>
+          <Route path="/MVideo" element={<ProtectedRoute><Layout><MVideo/></Layout></ProtectedRoute>}/>
 
-          <Route path="/Calendar" element={<ProtectedRoute><Layout><Calender/></Layout></ProtectedRoute>}/>          
+          <Route path="/Schedule" element={<ProtectedRoute><Layout><Schedule/></Layout></ProtectedRoute>}/>          
 
           <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>
           <Route path="/MngVote" element={<ProtectedRoute><Layout><MngVote/></Layout></ProtectedRoute>}/>

@@ -20,7 +20,7 @@ function Header({ onSidebarOpen }) {
           <span>AUDITION</span>
           <div className="hd-dropdown-menu">
             <NavLink to="/Process">INTRO.</NavLink>
-            <NavLink to="/Calendar">SCHEDULE</NavLink>            
+            <NavLink to="/Schedule">SCHEDULE</NavLink>            
             <NavLink to="/Audition/idols">MEMBER</NavLink>
             {/* <NavLink to="/Audition/ranking">LIVE</NavLink> */}
           </div>          

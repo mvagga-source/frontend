@@ -8,30 +8,32 @@ import interactionPlugin from "@fullcalendar/interaction";
 import koLocale from "@fullcalendar/core/locales/ko";
 
 // API
-import { getEventApi,toggleBookmarkApi,getMyBookmarkApi } from "./CalendarApi";
+import { getEventsApi } from "./ScheduleApi";
+import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
 
 // Login(user info)
 import { useAuth } from "../../context/AuthContext";
 
 // CSS
-import "./Calendar.css";
+import "./Schedule.css";
 
-function Calendar() {
+function Schedule() {
 
   const [events, setEvents] = useState([]);
   const {user} = useAuth();
-  const pageType = "BK"; // 페이지구분
+  const pageType = "EVENT"; // 페이지구분
 
-  useEffect(() => {
 
-    const fetchEvents  = async () => {
+  const getEvents  = async () => {
+
       try {
-        const res = await getEventApi();
+        const eventRes = await getEventsApi();
+        console.log("eventRes : ",eventRes);
 
-        const bookmarkRes = await getMyBookmarkApi(user.id);
-        const bookmarkIds = bookmarkRes.data;
+        const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
+        const pageId = bookmarkRes.data.map(b => b.pageId);
 
-        setEvents(res.data.map(e => ({
+        setEvents(eventRes.data.map(e => ({
           id: e.eno,
           title: e.title,
           start: e.startDate,
@@ -40,7 +42,7 @@ function Calendar() {
           borderColor:'rgba(0, 242, 255, 0.1)',
           extendedProps: {
             desc: e.description,            
-            bookmarked: bookmarkIds.includes(e.eno)
+            bookmarked: pageId.includes(e.eno)
           }
         })));
 
@@ -48,16 +50,20 @@ function Calendar() {
         console.error(err);
       }
       
-    };
+  };
 
-    fetchEvents();
+  useEffect(() => {
 
-  }, [user.id]);  
+    getEvents();
+
+  }, []);  
 
   const toggleBookmark = async (eno) => {
+
+    console.log("eno : ",eno);
     
     try {
-        const res = await toggleBookmarkApi(eno, user.id, pageType);
+        const res = await toggleBookmarkApi(user.id, eno, pageType);
         const bookmarked = res.data;
 
         setEvents(prev =>
@@ -133,4 +139,4 @@ function Calendar() {
   );
 }
 
-export default Calendar;
+export default Schedule;

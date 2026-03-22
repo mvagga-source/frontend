@@ -341,11 +341,15 @@
   font-size: 14px;
 }
 .mv-row-info-title{
+  width:100%;
   padding:0 5px;
   text-align: left;
   /* font-weight: bold; */
-  height:50px;
+  /* height:50px; */
   font-size: 14px;
+
+  line-height: 1.4;
+  height: calc(1.4em * 2); /* 2줄 높이 맞추기 */
 }
 
 .mv-info-box ul{
@@ -368,4 +372,20 @@
   letter-spacing: 0.5px;
   border-radius: 15px;
   margin:0 5px 5px 0;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-multi {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 줄 수 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  text-overflow: ellipsis; /* 일부 브라우저 대비 */
+  word-break: break-word;  /* 긴 단어 줄바꿈 */
 }
