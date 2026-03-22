@@ -1,0 +1,146 @@
+/* 전체 컨테이너 */
+.reviewSection { padding: 10px 0; }
+
+/* --- 1. 리뷰 작성 박스 --- */
+.reviewInputBox {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 242, 255, 0.1);
+  margin-bottom: 40px;
+}
+
+/* 별점 영역 */
+.ratingArea {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+.ratingLabel { color: #94a3b8; font-size: 0.95rem; }
+.starActive { 
+  color: #facc15; 
+  cursor: pointer; 
+  font-size: 1.5rem; 
+  text-shadow: 0 0 8px rgba(250, 204, 21, 0.5); 
+  transition: 0.2s;
+}
+.starInactive { color: #475569; cursor: pointer; font-size: 1.5rem; transition: 0.2s; }
+.starActive:hover, .starInactive:hover { transform: scale(1.1); }
+.ratingScore { color: #fff; font-weight: bold; font-size: 1.1rem; margin-left: 8px; }
+
+/* 텍스트 입력창 */
+.textarea {
+  width: 100%; height: 110px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  resize: none; outline: none; transition: 0.3s;
+  font-family: inherit; line-height: 1.6;
+  padding: 15px;
+}
+.textarea:focus { border-color: #00f2ff; background: rgba(0, 242, 255, 0.05); }
+
+/* --- 2. 하단 버튼 및 파일 영역 (수평 정렬) --- */
+.actionRow {
+  display: flex;
+  justify-content: space-between; /* 좌우 끝 배치 */
+  align-items: center;
+  margin-top: 15px;
+}
+
+.fileLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fileLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(0, 242, 255, 0.3);
+  border-radius: 6px;
+  color: #00f2ff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+.fileLabel:hover { background: rgba(0, 242, 255, 0.1); border-color: #00f2ff; }
+.hiddenInput { display: none; }
+
+/* 이미지 미리보기 & 삭제 버튼 */
+.previewWrapper {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+}
+.previewThumb {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #00f2ff;
+}
+.removeBtn {
+  position: absolute;
+  top: -5px; right: -5px;
+  width: 18px; height: 18px;
+  background: #ff4d4d; color: white;
+  border: none; border-radius: 50%;
+  font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+.removeBtn:hover { background: #ff1a1a; }
+
+/* --- 3. 리뷰 리스트 영역 --- */
+.listTitle { font-size: 1.15rem; color: #fff; margin-bottom: 25px; font-weight: 600; }
+.reviewItem {
+  list-style: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 30px 0;
+}
+.reviewHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.userInfo { display: flex; align-items: center; gap: 12px; }
+.author { color: #00f2ff; font-weight: 600; }
+.itemRating { color: #facc15; font-size: 0.95rem; letter-spacing: 2px; }
+.date { color: #64748b; font-size: 0.85rem; }
+
+/* 리뷰 본문 (텍스트 + 이미지) */
+.reviewBody { display: flex; gap: 25px; justify-content: space-between; align-items: flex-start; }
+.content { flex: 1; color: #cbd5e1; line-height: 1.7; white-space: pre-wrap; }
+.reviewThumb img {
+  width: 100px; height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+
+/* 도움돼요 버튼 */
+.reviewActions { margin-top: 15px; display: flex; gap: 10px; }
+.helpBtn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  border-radius: 20px; padding: 6px 14px;
+  color: #94a3b8; font-size: 0.85rem; cursor: pointer;
+}
+.helpBtn.active { background: rgba(250, 204, 21, 0.1); border-color: #facc15; color: #facc15; }
+
+/* 판매자 답글 */
+.sellerReply {
+  margin-top: 25px; margin-left: 30px;
+  background: rgba(0, 242, 255, 0.04);
+  padding: 20px; border-radius: 8px;
+  border-left: 3px solid #00f2ff;
+}
+.sellerBadge {
+  background: rgba(0, 242, 255, 0.15); color: #00f2ff;
+  border: 1px solid #00f2ff; font-size: 0.7rem;
+  padding: 2px 6px; border-radius: 4px; margin-left: 5px;
+}

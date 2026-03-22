@@ -1,0 +1,95 @@
+/* 박스 크기를 200px로 엄격하게 고정 */
+/* 컨테이너 크기 고정 */
+.imagePreviewContainer {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.imageLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed rgba(0, 242, 255, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.imageLabel:hover {
+    border-color: #00f2ff;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.imageWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 캡션: 그라데이션 제거, 단색 반투명 블랙 */
+.imageOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    
+    color: #e8f4f8; 
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    padding: 8px 0;
+    
+    /* 과한 네온 효과 제거 */
+    opacity: 0;
+    transition: 0.2s ease;
+    pointer-events: none;
+}
+
+/* 호버 시 부드럽게 표시 */
+.imageLabel:hover .imageOverlay {
+    opacity: 1;
+}
+
+/* X 버튼 스타일 */
+.imageDeleteBadge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.imagePlaceholder {
+    text-align: center;
+    color: rgba(232, 244, 248, 0.4);
+}
+
+.hiddenInput { display: none; }
+
+.fullWidth {
+    width: 100%;
+    max-width: 100%;
+}

@@ -1,0 +1,106 @@
+/* 1. 기본 레이아웃 */
+.wrapper { width: 100%; display: flex; justify-content: center; padding-bottom: 80px; }
+.contentContainer { width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+/* 2. 상단 슬라이더 */
+.heroSlider {
+    width: 100%; height: 400px; border-radius: 20px; overflow: hidden; margin-bottom: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+.mySwiper { width: 100%; height: 100%; }
+.mainSlide {
+    width: 100%; height: 100%; display: flex; align-items: center; padding: 0 60px;
+    box-sizing: border-box; background-size: cover; background-position: center; position: relative;
+}
+.mainSlide::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 60%); z-index: 1;
+}
+.slideTextContainer { position: relative; z-index: 2; }
+.slideSubTitle { color: #00f2ff; font-weight: 800; font-size: 14px; letter-spacing: 2px; }
+.slideTextContainer h2 { font-size: 48px; color: #fff; margin: 10px 0; font-weight: 900; }
+.slideTextContainer p { color: #ccc; font-size: 18px; }
+
+/* 3. 검색 필터 섹션 */
+.filterSection {
+    position: relative;
+    z-index: 9999; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+    width: 100%;
+    overflow: visible !important;
+}
+.filterBar {
+    display: flex;
+    align-items: center;
+    background: rgba(22, 29, 42, 0.95);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    border-radius: 60px;
+    padding: 8px 10px 8px 25px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: visible !important;
+    max-width: 700px;
+}
+.searchFilterGroup {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    position: relative;
+    overflow: visible !important;
+}
+.innerDivider { width: 1px; height: 14px; background: rgba(255, 255, 255, 0.1); margin: 0 15px; }
+.mainSearchInput {
+    flex-grow: 1; background: transparent !important; border: none !important;
+    color: #fff !important; font-size: 14px; outline: none;
+}
+.inlineSearchBtn {
+    background: #00f2ff !important; color: #000 !important; border: none !important;
+    border-radius: 40px !important; padding: 10px 25px !important;
+    font-weight: 800 !important; cursor: pointer; margin-left: 10px;
+}
+
+/* 4. 리스트 헤더 */
+.listHeader {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px; width: 100%;
+    position: relative; z-index: 1;
+}
+.totalCount { color: #8892b0; font-size: 14px; }
+.totalCount span { color: #00f2ff; font-weight: bold; }
+
+.headerControls { display: flex; align-items: center; gap: 20px; }
+.inlinePriceFilter { display: flex; align-items: center; gap: 8px; }
+.filterLabel { font-size: 13px; color: #00f2ff; font-weight: 700; }
+.tilde { color: #444; margin: 0 2px; }
+
+.miniResetBtn {
+    background: none; border: 1px solid #333; color: #666; font-size: 11px;
+    padding: 3px 8px; border-radius: 4px; cursor: pointer;
+}
+.vDivider { width: 1px; height: 14px; background: rgba(255, 255, 255, 0.1); }
+
+.sortOptions { display: flex; gap: 15px; }
+.sortOptions button { background: none; border: none; color: #555; font-size: 13px; cursor: pointer; }
+.activeSort { color: #00f2ff !important; font-weight: 700 !important; }
+
+/* 5. 상품 그리드 */
+.productGrid { 
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+    gap: 35px 25px; width: 100%; position: relative; z-index: 1;
+}
+.productCard {
+    background: #161d2a; border-radius: 15px; overflow: hidden; cursor: pointer;
+    transition: 0.3s; border: 1px solid transparent;
+}
+.productCard:hover { transform: translateY(-10px); border-color: #00f2ff; }
+.thumbnailBox { position: relative; width: 100%; aspect-ratio: 1/1; background: #242b38; overflow: hidden; }
+.thumbnailBox img { width: 100%; height: 100%; object-fit: cover; }
+.productDesc { padding: 20px; }
+.groupTag { color: #00f2ff; font-size: 11px; font-weight: 700; margin-bottom: 8px; display: block; }
+.productTitle { color: #fff; font-size: 16px; font-weight: 500; height: 44px; overflow: hidden; }
+.productPrice { color: #fff; font-size: 20px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; }

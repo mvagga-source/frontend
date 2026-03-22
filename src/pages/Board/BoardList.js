@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./BoardList.module.css";
 import formStyles from "./BoardView.module.css";
-import { SearchBtn } from "../../components/button/Button";
+import { SearchBtn, MoveBtn } from "../../components/button/Button";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { getBoardListApi } from "./BoardApi";
 import { SearchInput } from "../../components/input/Input";
@@ -72,7 +72,7 @@ function BoardList() {
                     {user && user.id && (
                         <div className={styles.headerSection}>
                             <NavLink to="/BoardWrite" style={{ textDecoration: 'none' }}>
-                                <SearchBtn>글쓰기</SearchBtn>
+                                <MoveBtn>글쓰기</MoveBtn>
                             </NavLink>
                         </div>
                     )}

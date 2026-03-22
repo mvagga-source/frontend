@@ -1,0 +1,205 @@
+/* PriceFilter.module.css */
+
+/* 1. 전체 래퍼 */
+.priceFilterWrapper {
+  position: relative; /* 팝업 위치 기준 */
+  display: inline-block;
+}
+
+/* 2. 필터 버튼 */
+.priceFilterIconBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.priceFilterIconBtn:hover {
+  color: #00f2ff;
+}
+
+/* 활성화 상태 */
+.activeFilter {
+  color: #00f2ff;
+}
+
+/* 3. 팝업 */
+/* 팝업 전체 스타일 */
+.priceFilterPopup {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e8eb;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 텍스트, 입력창, 버튼 사이의 간격 */
+  width: 240px;
+}
+
+/* 💡 적용/초기화 버튼 가로 배치 및 간격 */
+.popupActionButtons {
+  display: flex;
+  gap: 8px; /* 버튼 사이의 간격 (좁아졌던 문제 해결) */
+  margin-top: 4px;
+}
+
+.popupActionButtons button {
+  flex: 1; /* 버튼 크기를 동일하게 */
+  padding: 8px 0;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+}
+
+.applyBtn {
+  background-color: #3182f6;
+  color: white;
+}
+
+.resetBtn {
+  background-color: #f2f4f6;
+  color: #4e5968;
+}
+
+/* 아이콘 버튼 색상 변화 */
+.priceFilterIconBtn.hasValue svg {
+  fill: #3182f6; /* 가격 입력 시 파란색으로 변경 */
+}
+.popupTitle {
+  color: #00f2ff;
+  font-weight: 700;
+  margin-right: 10px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.priceInputs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.priceInputs input {
+  width: 90px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1a212e;
+  color: #fff;
+  font-size: 14px;
+  text-align: right;
+}
+
+.tilde {
+  color: #888;
+  font-weight: 700;
+  user-select: none;
+}
+
+.priceFilterPopup button {
+  background-color: #00f2ff;
+  border: none;
+  color: #000;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.priceFilterPopup button:hover {
+  background-color: #00c0cc;
+}
+
+/* 5. 적용 / 초기화 버튼 */
+.priceFilterPopup {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #161d2a;
+  padding: 15px 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+  z-index: 10000;
+
+  display: flex;              /* 가로 정렬 */
+  align-items: center;        /* 세로 중앙 정렬 */
+  gap: 12px;                  /* 버튼과 입력 사이 간격 */
+  min-width: 320px;           /* 최소 너비 확보 */
+  box-sizing: border-box;
+}
+
+.priceFilterPopup input {
+  width: 100px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1a212e;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.priceFilterPopup button {
+  background-color: #00f2ff;
+  border: none;
+  color: #000;
+  padding: 8px 16px;          /* 버튼 패딩 넉넉히 */
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;        /* 버튼 텍스트 줄바꿈 방지 */
+}
+
+.priceFilterPopup button:hover {
+  background-color: #00c0cc;
+}
+
+.priceFilterIconBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555; /* 초기 색상 */
+  transition: color 0.3s ease;
+}
+
+.priceFilterIconBtn:hover {
+  color: #00f2ff; /* hover 시 아이콘 색상 변경 */
+}
+
+/* 기본 상태 */
+.priceFilterIconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888; /* 기본 아이콘 색상 */
+  transition: color 0.3s ease;
+}
+
+/* 💡 값이 입력되었을 때 (활성화 상태) */
+.priceFilterIconBtn.hasValue {
+  color: #007bff; /* 포인트 컬러 (예: 파란색) */
+}
+
+/* 팝업이 열려있을 때 */
+.activeFilter {
+  transform: scale(1.1);
+}

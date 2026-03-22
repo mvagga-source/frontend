@@ -1,9 +1,9 @@
 import React, { useRef,useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SaveBtn, SearchBtn } from "../../components/button/Button";
+import { SaveBtn, MoveBtn } from "../../components/button/Button";
 import { BoardWriteApi } from "./BoardApi";
 // CSS Module import
-import { SearchInput } from "../../components/input/Input";
+import { SaveInput } from "../../components/input/Input";
 import styles from "./BoardWrite.module.css"; 
 import Content from "../../components/Title/ContentComp";
 import TiptapEditor from "../../components/CkEditor/TiptapEditor";
@@ -54,7 +54,7 @@ function BoardWrite() {
         <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
           <div className={styles.formGroup}>
             <label className={styles.label}>제목</label>
-            <SearchInput 
+            <SaveInput 
               type="text" 
               name="btitle"
               style={{width:"100%"}}
@@ -78,9 +78,9 @@ function BoardWrite() {
 
           <div className={styles.btnWrapper}>
             {/* 미리보기 버튼 */}
-            <SearchBtn type="button" color="purple" onClick={handlePreview}>
+            <MoveBtn type="button" color="purple" onClick={handlePreview}>
               미리보기
-            </SearchBtn>
+            </MoveBtn>
             <SaveBtn 
               type="button" 
               className={styles.saveButton}

@@ -61,3 +61,157 @@
   background-color: #0d1321; /* 로그인 배경색과 유사한 어두운 톤 */
   color: #e8f4f8;
 }
+
+
+/* 검색바 내부 전용 스타일 */
+.barSelectContainer {
+  position: relative;
+  min-width: 100px;
+}
+
+/* 검색바 내부 전용 스타일 수정 */
+.barSelectContainer {
+  position: relative;
+  min-width: 110px;
+  display: flex; /* 내부 select 정렬용 */
+  align-items: center;
+}
+
+/* SelectBox.module.css */
+
+/* --- 검색바 내부 전용 (BarSelect) 수정 핵심 --- */
+.barSelectContainer {
+  position: relative;
+  min-width: 110px;
+  height: 100%; /* 부모 SearchBar의 높이를 100% 따름 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barSelect {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  padding: 0 30px 0 15px;
+  width: 100%;
+  height: 100%; /* 높이를 꽉 채워야 텍스트가 중앙에 옴 */
+  cursor: pointer;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* [중요] 펼쳤을 때 옵션창 배경색 
+   일부 브라우저(크롬/엣지)에서는 작동하지만, 
+   완벽한 커스텀을 위해서는 추후 div 기반 드롭다운 권장
+*/
+.barSelect option {
+  background-color: #161d2a; /* 어두운 배경 고정 */
+  color: #fff;
+  padding: 12px;
+}
+
+/* 호버 시 파란색 배경 방지 시도 */
+.barSelect option:hover,
+.barSelect option:focus {
+  background-color: #00f2ff !important;
+  color: #000 !important;
+}
+
+.barSelectArrow {
+  position: absolute;
+  right: 8px; /* 안쪽으로 살짝 이동 */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+}
+
+.customSelect {
+  position: relative;
+  width: 90px;
+  font-size: 14px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 선택된 영역 */
+.selected {
+  background: transparent;
+  color: #fff;
+  padding: 10px 35px 10px 15px;
+  border-radius: 40px;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+/* 화살표 */
+.selected::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid #00f2ff;
+  border-bottom: 2px solid #00f2ff;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* 드롭다운 */
+.dropdown {
+  position: absolute;
+  top: 100%;            /* ⭐ 핵심 */
+  left: 0;
+  width: 100%;
+  margin-top: 8px;
+  
+  background: #161d2a;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  
+  z-index: 10000;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* 열렸을 때 */
+.customSelect.open .dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 옵션 */
+.dropdown div {
+  padding: 12px 15px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+/* hover */
+.dropdown div:hover {
+  background: #00f2ff;
+  color: #000;
+}
+
+/* 선택된 옵션 강조 */
+.dropdown .active {
+  background: rgba(0, 242, 255, 0.15);
+  color: #00f2ff;
+}

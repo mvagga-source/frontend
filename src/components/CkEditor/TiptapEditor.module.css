@@ -125,6 +125,26 @@
   text-decoration: underline;
 }
 
+/* 에디터 본문 및 HTML 소스창 공통 스크롤바 */
+.editor :global(.ProseMirror)::-webkit-scrollbar,
+.htmlTextArea::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+.editor :global(.ProseMirror)::-webkit-scrollbar-thumb,
+.htmlTextArea::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 242, 255, 0.15);
+  border-radius: 10px;
+  box-shadow: inset 0 0 4px rgba(0, 242, 255, 0.2);
+  cursor: default; /* 일반 화살표 커서 유도 */
+}
+
+.editor :global(.ProseMirror)::-webkit-scrollbar-thumb:hover,
+.htmlTextArea::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 242, 255, 0.4);
+}
+
 /* ... 기존 스타일 유지 ... */
 
 /* 표 삽입 버튼이 들어있는 컨테이너 */
@@ -133,7 +153,7 @@
   display: inline-block;
 }
 
-/* 표 생성 팝업 */
+/* 3. 팝업 너비 최적화 */
 .tablePickerPopup {
   position: absolute;
   top: 35px;
@@ -144,7 +164,7 @@
   padding: 12px;
   box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
   border-radius: 8px;
-  min-width: 120px;
+  min-width: 180px; /* 120px에서 180px로 늘려야 URL창이 안 깨집니다 */
 }
 
 .tablePickerInputGroup {
@@ -250,4 +270,151 @@
   padding: 10px;
   text-align: right;
   border-top: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.colorPickerWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+
+.colorPickerWrapper:hover {
+  border-color: #00f2ff;
+  background: rgba(0, 242, 255, 0.1);
+}
+
+/* 아이콘 위치 고정 */
+.colorPickerWrapper svg {
+  pointer-events: none; /* 아이콘이 클릭을 방해하지 않도록 */
+}
+
+/* 컬러 인디케이터 (아이콘 아래 작은 선) */
+.colorIndicator {
+  position: absolute;
+  bottom: 4px;
+  width: 16px;
+  height: 3px;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+/* 🔥 핵심: 실제 투명 인풋이 전체를 덮음 */
+.invisibleInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* 밑줄(Underline) Extension이 적용되도록 추가 */
+.editor :global(.ProseMirror) u {
+  text-decoration: underline !important;
+}
+
+/* Tiptap 에디터 내부의 mark(하이라이트) 스타일 초기화 */
+.editor :global(.ProseMirror) mark {
+  background-color: var(--highlight-color, #ffff00); /* 선택한 색상이 적용되도록 */
+  color: inherit; /* 글자색은 유지 */
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* 팔레트 그리드 */
+.colorPalette {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.colorDot {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.1s;
+}
+
+.colorDot:hover {
+  transform: scale(1.2);
+  border-color: #00f2ff;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 242, 255, 0.2);
+  margin: 8px 0;
+}
+
+.customColorRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #00f2ff;
+  cursor: pointer;
+}
+
+.customColorRow input[type="color"] {
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* 1. Divider 분리 (선 vs 텍스트) */
+.dividerLine {
+  height: 1px;
+  background: rgba(0, 242, 255, 0.2);
+  margin: 12px 0;
+}
+
+.dividerText {
+  font-size: 11px;
+  color: #8892b0;
+  margin: 10px 0 5px 0;
+  text-align: center;
+  display: block;
+}
+
+/* 2. URL 입력창 스타일 (글자 크기 고정 핵심) */
+.urlInput {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid rgba(0, 242, 255, 0.5) !important;
+  color: #fff !important;
+  padding: 6px 10px !important;
+  border-radius: 4px;
+  margin: 8px 0;
+  font-size: 12px !important; /* 글자 크기 강제 고정 */
+  font-family: sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* --- 추가 스타일 --- */
+
+/* YT Size 인풋 스타일 (툴바에 있는 것) */
+.sizeInput {
+  width: 40px !important;
+  height: 24px !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid rgba(0, 242, 255, 0.5) !important;
+  color: #00f2ff !important;
+  font-size: 11px !important;
+  text-align: center;
+  border-radius: 3px;
 }
