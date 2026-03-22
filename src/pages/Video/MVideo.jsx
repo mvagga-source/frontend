@@ -26,6 +26,7 @@ function MVideo() {
     //     { id: 11, name: "35번 연습생",title:"Love You Like A Love Song - Selena...", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=jWQx2f-CErU" }
     // ];
 
+    const initialState = [];
     const {user} = useAuth();
     const pageType = "VIDEO"; // 페이지구분    
 
@@ -120,8 +121,9 @@ function MVideo() {
 
     const getVideos = async (sortType) => {
 
-        if (loading || !hasNext) return;
+        if (loading && !hasNext) return;
 
+        // 스크롤 감지
         setLoading(true);
 
         try {
@@ -129,26 +131,30 @@ function MVideo() {
             // -- 비디오 전체 리스트
             const videoRes = await getVideosApi(page, pageSize, sortType);
             const vData = await videoRes.data.content;
-
-            console.log("getVideos page ",page);
-            console.log("getVideos vData ",vData);
-            console.log("getVideos vData.length ",vData.length);
-
-            if (vData.length < pageSize) {
-               setHasNext(false);
-            }
+            
+            console.log("% =========================");
+            console.log("% getVideos page ",page);
+            console.log("% getVideos vData ",vData);
+            console.log("% getVideos vData.length ",vData.length);
+            console.log("% =========================");            
 
             if (vData.length > 0) {
-                setVideos(prev => {
-                    const merged = [...prev, ...vData];
-                    const unique = merged.filter(
-                        (item, index, self) =>
-                            index === self.findIndex(v => v.id === item.id)
-                    );
-                    return unique;
-                });
-            }
 
+                setVideos(prev => [...prev, ...vData]);
+
+                // setVideos(prev => {
+                //     const merged = [...prev, ...vData];
+                //     const unique = merged.filter(
+                //         (item, index, self) =>
+                //             index === self.findIndex(v => v.id === item.id)
+                //     );
+                //     return unique;
+                // });
+            }
+            
+            if (vData.length == 0 || vData.length < pageSize) {
+                setHasNext(false); // 더이상 자료 없음
+            }
             
             // -- 북마크 리스트
             const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
@@ -160,20 +166,23 @@ function MVideo() {
             const videoId = likesRes.data.map(l => l.video.id);
             setVideosLike(videoId);
 
-
-            setLoading(false);
-
         }catch (err) {
             console.error(err);
-        }finally {
+        }finally{
+            //스크롤 감지
             setLoading(false);
-        }   
+        }
     };
 
+    // 아이디들 로그 출력(중복여부 확인)
+    useEffect(() => {
+        console.log("** videos 변경됨:", videos.map(v => v.id));
+    }, [videos]);    
+
+    // -- 비디오 전체 리스트(인기순)
     useEffect(() => {
         const getPopular = async () => {
 
-            // -- 비디오 전체 리스트(인기순)
             const PopvideoRes = await getVideosApi(0, 10,"POPULAR");
             const vpData = await PopvideoRes.data.content
 
@@ -181,7 +190,6 @@ function MVideo() {
         };
 
         getPopular();
-
     }, []);
 
     useEffect (()=>{
@@ -189,20 +197,29 @@ function MVideo() {
     },[page]);
 
     useEffect (()=>{
-        setVideos([]);
-        setPage(0);
-        setHasNext(true);
+        setBookmarks(initialState);
+        setVideosLike(initialState);
+        setHasNext(true);  // 처음 부터 다시 로딩
+        setVideos(initialState);        
+        setPage(0);        
     },[sortType]);
 
     const observerRef = useRef();
 
     // 스크롤 감지
     useEffect(() => {
+
+        console.log("loading value : ", loading);
+
         const observer = new IntersectionObserver(entries => {
+           
+            //target.isIntersecting    화면에 보이는지 (true/false)
+            //target.target            실제 DOM 요소
+            //target.intersectionRatio 얼마나 보이는지 (0~1)
             const target = entries[0];
 
-            console.log("observer hasNext : ",hasNext);
-            if (entries[0].isIntersecting && hasNext && !loading) {
+            if (entries[0].isIntersecting && !loading && hasNext) {
+                console.log("## 화면에 보임 page++");
                 observer.unobserve(target.target);
                 setPage(prev => prev + 1);
             }
@@ -211,11 +228,14 @@ function MVideo() {
         });
 
         if (observerRef.current) {
+            console.log("## 감시 대상 요소를 등록");
             observer.observe(observerRef.current);
         }
-        return () => observer.disconnect();
-    }, [hasNext, loading]);    
 
+        return () => observer.disconnect();
+    }, [loading]);    
+
+    // 북마크 토글
     const toggleVideBookmark = async(pageId) => {
 
           try {
@@ -234,6 +254,7 @@ function MVideo() {
           }        
     }
 
+    // 좋아요 처리
     const toggleVideoLike = async(videoId) => {
 
           try {
@@ -268,6 +289,7 @@ function MVideo() {
           }        
     }    
 
+    // 조회수 처리
     const videoViewCount = async(videoId) => {
 
           try {
@@ -426,10 +448,10 @@ function MVideo() {
             </div>
             {/* end main-list */}
 
-                    {/* 스크롤 감지용 */}
-                    <div ref={observerRef} style={{ height: "1px" }}>
-                        {loading && <p>로딩중...</p>}
-                    </div>               
+            {/* 스크롤 감지용 */}
+            <div ref={observerRef} style={{ height: "1px" }}>
+                {loading && <p>로딩중...</p>}
+            </div>               
 
         </div>
     );
