@@ -33,6 +33,7 @@ import BoardPreview from "./pages/Board/BoardPreview";
 import GoodsView from "./pages/Goods/GoodsView";
 import GoodsWrite from "./pages/Goods/GoodsWrite";
 import GoodsList from "./pages/Goods/GoodsList";
+import GoodsPreview from "./pages/Goods/GoodsPreview";
 
 import Process from "./pages/Process/Process";
 
@@ -72,6 +73,7 @@ function App() {
           <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
           <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
           <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
+          <Route path="/GoodsPreview" element={<Layout><GoodsPreview /></Layout>} />
 
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}

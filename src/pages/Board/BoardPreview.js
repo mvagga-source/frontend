@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./BoardView.module.css"; // 기존 상세페이지 CSS 재사용
 import Content from "../../components/Title/ContentComp";
 import dayjs from "dayjs";
+import BoardContent from "./boardComponent/BoardContent";
 
 function BoardPreview() {
   const [board, setBoard] = useState(null);
@@ -43,10 +44,7 @@ function BoardPreview() {
         </div>
 
         {/* 핵심: dangerouslySetInnerHTML와 contentBox 클래스 적용 */}
-        <div 
-          className={styles.contentBox} 
-          dangerouslySetInnerHTML={{ __html: board.bcontent }} 
-        />
+        <BoardContent content={board.bcontent} />
         
         <div style={{ textAlign: 'center', color: '#71717a', marginTop: '50px' }}>
           --- 미리보기 모드에서는 댓글과 버튼이 비활성화됩니다 ---

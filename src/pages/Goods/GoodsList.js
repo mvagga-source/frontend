@@ -34,7 +34,7 @@ function GoodsList() {
     const [startPage, setStartPage] = useState(1);
     const [endPage, setEndPage] = useState(1);
     const [sortDirection, setSortDirection] = useState("DESC"); // 정렬 상태
-    const size = 12;      //서버쪽 페이지 불러올 size
+    const size = 8;      //서버쪽 페이지 불러올 size
     const formRef = useRef();
     // 검색 조건을 저장할 상태 추가(검색버튼 누른 입력값만 페이징 등 사용)
     const params = useRef();

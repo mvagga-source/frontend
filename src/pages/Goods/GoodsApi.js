@@ -23,11 +23,7 @@ export const getGoodsDetailApi = (searchParams = {}) => {
 
 //쓰기
 export const GoodsWriteApi = (param) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goods/save`,param, {
-    headers: {
-      "Content-Type": "multipart/form-data", // 파일 전송을 위한 설정
-    },
-  });
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goods/save`,param);
 }
 
 //수정

@@ -7,7 +7,7 @@ import Content from "../../components/Title/ContentComp";
 import GoodsReview from "./GoodsComponent/GoodsReview";
 import { useAuth } from "../../context/AuthContext";
 import DeliveryModal from "./popup/DeliveryModal";
-import { getGoodsViewApi, GoodsDeleteApi } from "./GoodsApi"; // API 함수 가정
+import { getGoodsViewApi } from "./GoodsApi"; // API 함수 가정
 import GoodsContent from "./GoodsComponent/GoodsContent";
 
 function GoodsView() {
@@ -21,46 +21,19 @@ function GoodsView() {
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
+    useEffect(() => {
+        const data = localStorage.getItem("goods_preview");
+        if (data) {
+            setGoods(JSON.parse(data));
+        }
+    }, []);
+
     // 상태값에 따른 CSS 클래스 매핑
     const STATUS_CLASS_MAP = {
         "판매중": styles.onSale,
         "품절": styles.soldOut,
         "판매중지": styles.hidden
     };
-
-    useEffect(() => {
-        // [가상 데이터 세팅] 
-        // 실제 API 호출 대신 0.5초 뒤에 데이터를 불러오는 것처럼 연출
-        /*const mockData = {
-        success: true,
-        goods: {
-            gno: gno || 1,
-            gname: "[Limited Edition] 공식 굿즈 응원봉 세트\n본 상품은 한정판으로 제작된 공식 응원봉입니다.\n패키지 구성: 응원봉 1개, 포토카드 5종, 스트랩 1개.\n화려한 네온 블루 라이팅을 경험해보세요!",
-            gcontent: "[Limited Edition] 공식 굿즈 응원봉 세트\n본 상품은 한정판으로 제작된 공식 응원봉입니다.\n패키지 구성: 응원봉 1개, 포토카드 5종, 스트랩 1개.\n화려한 네온 블루 라이팅을 경험해보세요!",
-            price: 45000,
-            stockCnt: 100000,
-            status:"판매중",
-            gdelPrice: 3000,
-            gdelType: "일반배송",
-            gdelivAddr: "서울시 강남구 물류센터",
-            gimg: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=1000", // 테스트용 이미지
-            member: {
-            id: "Official_Store"
-            },
-            delYn: "n"
-        }
-        };
-
-        setTimeout(() => {
-        setGoods(mockData.goods);
-        }, 500);*/
-        // 상품 데이터 가져오기 로직 (예시)
-        getGoodsViewApi({gno}).then((res) => {
-            if (res.data.success) {
-                setGoods(res.data.data);
-            }
-        });
-    }, [gno]);
 
     if (!goods) return <div className={commonStyles.loading}>Loading...</div>;
 
@@ -84,43 +57,8 @@ function GoodsView() {
         }
     };
 
-    // 북마크 토글 핸들러
-    const handleBookmark = () => {
-        if (!user) {
-            alert("로그인 후 이용 가능합니다.");
-            return;
-        }
-        setIsBookmarked(!isBookmarked);
-        // 여기에 북마크 저장/삭제 API 호출 로직 추가
-        // saveBookmarkApi(gno, user.id)...
-    };
-
-    // 구매 버튼 클릭 시 실행
-    const handleOpenModal = () => {
-        if (!user) {
-            alert("로그인 후 구매가 가능합니다.");
-            return;
-        }
-        setIsModalOpen(true);
-    };
-
-    const handleDelete = () => {
-        if (window.confirm("삭제하시겠습니까?")) {
-            const formData = new FormData();
-            formData.append("gno", gno);
-            GoodsDeleteApi(formData).then((res) => {
-                if (res.data.success) {
-                    alert("삭제되었습니다.");
-                    // replace: true를 추가하여 히스토리 스택에서 현재 페이지를 제거
-                    navigate("/GoodsList", { replace: true });
-                }
-            });
-        }
-    };
-    
-
     return (
-        <Content TitleName="Goods Detail">
+        <Content TitleName="미리보기 화면입니다.">
         <div className={commonStyles.viewContainer}>
             
             {/* [상단] 상품 핵심 정보 영역 */}
@@ -141,7 +79,6 @@ function GoodsView() {
                     {/* SVG 북마크 버튼 (기존 이미지 위에서 여기로 이동) */}
                     <button 
                     className={`${styles.topBookmark} ${isBookmarked ? styles.active : ""}`}
-                    onClick={handleBookmark}
                     aria-label="북마크"
                     >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill={isBookmarked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
@@ -150,7 +87,7 @@ function GoodsView() {
                     </button>
                 </div>
                 {/* 첫 줄만 제목으로 추출 */}
-                <h2 className={styles.goodsName}>{goods.gname.split('\n')[0]}</h2>
+                <h2 className={styles.goodsName}>{goods.gname}</h2>
                 
                 <div className={styles.priceArea}>
                 <span className={styles.priceLabel}>판매가</span>
@@ -192,7 +129,6 @@ function GoodsView() {
                 <button 
                     className={styles.kakaoPayBtn} 
                     disabled={goods.stockCnt === '품절' || goods.status === '판매중지' || goods.stockCnt <= 0}
-                    onClick={handleOpenModal}
                 >
                 {goods.status === '품절' || goods.stockCnt <= 0 ? "품절된 상품입니다" : 
                 goods.status === '판매중지' ? "판매 중단된 상품입니다" : "카카오페이로 구매하기"}
@@ -222,7 +158,9 @@ function GoodsView() {
                 </div>
             )}
             
-            {activeTab === "review" && <GoodsReview gno={gno} />}
+            {activeTab === "review" && 
+                <div>미리보기에서는 댓글을 보실 수 없습니다.</div>
+            }
             
             {activeTab === "info" && (
                 <div className={styles.policyText}>
@@ -236,18 +174,6 @@ function GoodsView() {
                 </div>
             )}
             </div>
-
-            {/* 관리 버튼 영역 (게시판 스타일 재사용) */}
-            <div className={commonStyles.btnArea}>
-            <MoveBtn onClick={() => navigate("/GoodsList")}>목록으로</MoveBtn>
-            {user && user.id === goods.member?.id && (
-                <div className={commonStyles.rightBtns}>
-                <SaveBtn onClick={() => navigate(`/GoodsUpdate/${gno}`)}>수정</SaveBtn>
-                <DelBtn onClick={handleDelete}>삭제</DelBtn>
-                </div>
-            )}
-            </div>
-
         </div>
         </Content>
     );
