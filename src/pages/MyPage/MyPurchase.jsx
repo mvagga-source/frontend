@@ -1,16 +1,16 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-function MyVote () {
+function MyPurchase () {
 
   return (
 
     <div className="bk-main-container" >
 
-      투표관리
+      구매관리
 
     </div>
   );
 }
 
-export default MyVote;
+export default MyPurchase;

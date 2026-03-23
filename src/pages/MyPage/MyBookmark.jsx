@@ -14,7 +14,8 @@ function MyBookmark () {
 
   const pageTypes = {
     "EVENT":"오디션 일정",
-    "VIDEO":"아이돌 영상"
+    "VIDEO":"아이돌 영상",
+    "GOODS":"아이돌 굿즈"
   }
     
   // 데이터 가져오기
@@ -49,8 +50,6 @@ function MyBookmark () {
 
   return (
 
-        <>
-
         <div className="bk-main-list">
 
           <ul className="bk-card-row-title">
@@ -58,8 +57,8 @@ function MyBookmark () {
             <li style={{width:"10%"}}>생성 일자</li>            
             <li style={{width:"15%"}}>북마크 화면</li>
             <li style={{width:"20%"}}>이름</li>            
-            <li style={{width:"35%"}}>제목</li>
-            <li style={{width:"15%"}}></li>
+            <li style={{width:"40%"}}>제목</li>
+            <li style={{width:"10%"}}></li>
           </ul>                
 
           {events.map((event,index) => (
@@ -72,12 +71,12 @@ function MyBookmark () {
                   <li style={{width:"10%"}} className="bk-center">{dayjs(event.createdAt).format("YYYY-MM-DD")}</li>                  
                   <li style={{width:"15%"}} className="bk-center">{pageTypes[event.pageType]}</li>
                   <li style={{width:"20%"}} className="ellipsis">{event.name}</li>                  
-                  <li style={{width:"35%"}} className="ellipsis">{event.title}</li>
-                  <li style={{width:"15%"}} className="bk-center">
+                  <li style={{width:"40%"}} className="ellipsis">{event.title}</li>
+                  <li style={{width:"10%"}} className="bk-center">
                     {/* <button className="bk-status_btn bk-ongoing-all">
                       알림
                     </button> */}
-                    <button className="bk-status_btn bk-upcoming-all" onClick={() => deleteEvent(event.id)}>
+                    <button className="bk-status_btn my-upcoming-all" onClick={() => deleteEvent(event.id)}>
                       삭제
                     </button>
                   </li>
@@ -91,7 +90,6 @@ function MyBookmark () {
           ))}
         </div>
 
-    </>
   );
 }
 
