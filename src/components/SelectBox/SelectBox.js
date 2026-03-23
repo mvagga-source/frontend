@@ -33,9 +33,9 @@ export const SearchSelect = ({ options, className, ...props }) => {
 };
 
 // 검색바 내부 전용 셀렉트 박스 (기존 것과 별도로 생성)
-export const SearchSelectBar = ({ options = [], placeholder = "선택" }) => {
+export const SearchSelectBar = ({ options = [], placeholder = "전체", name = "category" }) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState("");
   const ref = React.useRef();
 
   const selectedOption = options.find(opt => opt.value === value);
@@ -52,6 +52,7 @@ export const SearchSelectBar = ({ options = [], placeholder = "선택" }) => {
 
   return (
     <div ref={ref} className={`${styles.customSelect} ${open ? styles.open : ""}`}>
+      <input type="hidden" name={name} value={value} />
       <div className={styles.selected} onClick={() => setOpen(!open)}>
         {selectedOption ? selectedOption.label : placeholder}
       </div>

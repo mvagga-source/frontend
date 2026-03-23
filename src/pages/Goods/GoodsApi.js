@@ -1,64 +1,68 @@
 import axiosInstance from "../../api/axiosInstance";
 
-// 게시글 목록 가져오기
+// 목록 가져오기
 export const getGoodsListApi = (page = 1, size = 10, searchParams = {}) => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goods/blist`, {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goods/list`, {
     params: { page, size, ...searchParams }
   });
 };
 
-//게시글 상세조회
+//상세조회
 export const getGoodsViewApi = (searchParams = {}) => {
   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goods/view`, {
     params: { ...searchParams }
   });
 };
 
-//게시글 상세(조회수X)
+//상세
 export const getGoodsDetailApi = (searchParams = {}) => {
   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goods/detail`, {
     params: { ...searchParams }
   });
 };
 
-//게시글쓰기
+//쓰기
 export const GoodsWriteApi = (param) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goods/save`,param);
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goods/save`,param, {
+    headers: {
+      "Content-Type": "multipart/form-data", // 파일 전송을 위한 설정
+    },
+  });
 }
 
-//게시글수정
+//수정
 export const GoodsUpdateApi = (param) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goods/update`,param);
 }
 
-//게시글삭제
+//삭제
 export const GoodsDeleteApi = (param = {}) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goods/delete`, param);
 }
 
-//게시글 추천,비추천
+//굿즈 도움되요
 export const GoodsLikeSaveApi = (param = {}) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodslike/save`, param);
 };
 
-// 댓글 목록 가져오기 (더보기/무한스크롤용)
+// 굿즈 리뷰 댓글 목록 가져오기 (더보기/무한스크롤용)
 export const getCommentListApi = (bno, size = 10, lastCno = 0) => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/comment/list`, {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReview/list`, {
     params: { bno, size, lastCno }
   });
 };
 
-// 댓글 등록하기 (필요시 추가)
+// 굿즈 리뷰 댓글 등록하기
 export const CommentWriteApi = (commentData) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/comment/save`, commentData);
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/save`, commentData);
 };
 
-// 댓글 수정하기 (필요시 추가)
+// 굿즈 리뷰 댓글 수정하기
 export const CommentUpdateApi = (commentData) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/comment/update`, commentData);
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/update`, commentData);
 };
 
-// 댓글 삭제하기 (필요시 추가)
+// 굿즈 리뷰 댓글 삭제하기
 export const CommentDeleteApi = (commentData) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/comment/delete`, commentData);
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/delete`, commentData);
 };

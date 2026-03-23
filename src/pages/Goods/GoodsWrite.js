@@ -8,6 +8,7 @@ import formStyles from "../Board/BoardWrite.module.css";
 import styles from "./GoodsWrite.module.css";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import DaumAddrSearchModal from "../../components/DaumAddrModal/DaumAddrModal";
+import { GoodsWriteApi } from "./GoodsApi";
 
 function GoodsWrite() {
     const navigate = useNavigate();
@@ -49,16 +50,6 @@ function GoodsWrite() {
     };
 
     const handleAddressComplete = (data) => {
-        /*let fullAddress = data.address;
-        let extraAddress = '';
-
-        if (data.addressType === 'R') {
-            if (data.bname !== '') extraAddress += data.bname;
-            if (data.buildingName !== '') extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-        }
-
-        setAddress(fullAddress); // 주소창에 값 셋팅*/
         setAddress(data.address);
         setIsModalOpen(false); // 주소 선택 후 자동 닫기
     };
@@ -68,10 +59,13 @@ function GoodsWrite() {
             const formData = new FormData(formRef.current);
             formData.append("gcontent", editorData); // DTO의 gcontent와 매칭
             if(mainImg) formData.append("gimgFile", mainImg); // 서버에서 처리할 파일 객체
-
+            GoodsWriteApi(formData).then((res) => {
+                if (res.data.success) {
+                    alert("상품이 등록되었습니다.");
+                    navigate("/BoardList");
+                }
+            })
             console.log("전송 데이터 확인:", Object.fromEntries(formData));
-            alert("저장 로직이 호출되었습니다.");
-            // BoardWriteApi 처럼 GoodsWriteApi를 호출하시면 됩니다.
         }
     };
 

@@ -10,6 +10,7 @@ import { SearchInput } from "../../components/input/Input";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import Content from "../../components/Title/ContentComp";
 import { useAuth } from "../../context/AuthContext";
+import dayjs from "dayjs";
 
 function BoardList() {
     const [list, setList] = useState([]);
@@ -17,9 +18,11 @@ function BoardList() {
     const [totalPages, setTotalPages] = useState(1);
     const [startPage, setStartPage] = useState(1);
     const [endPage, setEndPage] = useState(1);
-    const postsPerPage = 10;
+    const [totalCount, setTotalCount] = useState(0);
+    const size = 10;     //서버쪽 페이지 불러올 size
     const formRef = useRef();
     const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
+    const [sortDirection, setSortDirection] = useState("DESC");   //정렬 임시로 고정
 
     // 검색 조건을 저장할 상태 추가(검색버튼 누른 입력값만 페이징 등 사용)
     const params = useRef();
@@ -33,14 +36,15 @@ function BoardList() {
     ];
 
     const getList = async (page, searchParams) => {
-        getBoardListApi(page, postsPerPage, searchParams)
+        getBoardListApi(page, size, searchParams)
         .then((res) => {
             if (res.data && res.data.success) {
-                const { list, maxPage, startPage, endPage } = res.data;
+                const { list, maxPage, startPage, endPage, totalCount } = res.data;
                 setList(list || []);
                 setTotalPages(maxPage || 1);
                 setStartPage(startPage || 1);
                 setEndPage(endPage || 1);
+                setTotalCount(totalCount || 0);
             }
         });
     };
@@ -91,19 +95,23 @@ function BoardList() {
                             </thead>
                             <tbody>
                                 {list.length > 0 ? (
-                                    list.map((post) => (
-                                        <tr key={post.bno}>
-                                            <td>{post.bno}</td>
+                                    list.map((board, index) => {
+                                        // 내림차순 순번 계산: 전체개수 - (현재페이지-1)*페이지당개수 - 현재인덱스
+                                        const rowNum = sortDirection === "DESC" 
+                                        ? totalCount - (currentPage - 1) * size - index // 내림차순
+                                        : (currentPage - 1) * size + index + 1;           // 오름차순
+                                        return (<tr key={board.bno}>
+                                            <td>{rowNum}</td>
                                             <td className={styles.textStart}>
-                                                <NavLink to={`/BoardView/${post.bno}`} className={styles.neonLink}>
-                                                    {post.btitle}
+                                                <NavLink to={`/BoardView/${board.bno}`} className={styles.neonLink}>
+                                                    {board.btitle}
                                                 </NavLink>
                                             </td>
-                                            <td>{post.member.id || ''}</td>
-                                            <td>{post.bdate}</td>
-                                            <td>{post.bhit}</td>
-                                        </tr>
-                                    ))
+                                            <td>{board.member.id || ''}</td>
+                                            <td>{dayjs(board.bdate).format("YYYY-MM-DD")}</td>
+                                            <td>{board.bhit}</td>
+                                        </tr>)
+                                    })
                                 ) : (
                                     <tr>
                                         <td colSpan="5" className={styles.noData}>등록된 게시글이 없습니다.</td>

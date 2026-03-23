@@ -70,7 +70,7 @@ function App() {
           <Route path="/BoardPreview" element={<Layout><BoardPreview /></Layout>} />
 
           <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
-          <Route path="/GoodsView" element={<Layout><GoodsView/></Layout>} />
+          <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
           <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
 
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}

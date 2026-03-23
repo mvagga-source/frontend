@@ -2,7 +2,7 @@ import axiosInstance from "../../api/axiosInstance";
 
 // 게시글 목록 가져오기
 export const getBoardListApi = (page = 1, size = 10, searchParams = {}) => {
-  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/board/blist`, {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/board/list`, {
     params: { page, size, ...searchParams }
   });
 };

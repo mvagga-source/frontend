@@ -55,12 +55,14 @@ function PriceFilter({ minPrice, setMinPrice, maxPrice, setMaxPrice }) {
           <span className={styles.popupTitle}>가격대 설정</span>
           <div className={styles.priceInputs}>
             <NumberInput
+              name="minPrice"
               placeholder="최소 가격"
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
             />
             <span className={styles.tilde}>~</span>
             <NumberInput
+              name="maxPrice"
               placeholder="최대 가격"
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}

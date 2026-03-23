@@ -74,14 +74,6 @@
 .totalCount span { color: #00f2ff; font-weight: bold; }
 
 .headerControls { display: flex; align-items: center; gap: 20px; }
-.inlinePriceFilter { display: flex; align-items: center; gap: 8px; }
-.filterLabel { font-size: 13px; color: #00f2ff; font-weight: 700; }
-.tilde { color: #444; margin: 0 2px; }
-
-.miniResetBtn {
-    background: none; border: 1px solid #333; color: #666; font-size: 11px;
-    padding: 3px 8px; border-radius: 4px; cursor: pointer;
-}
 .vDivider { width: 1px; height: 14px; background: rgba(255, 255, 255, 0.1); }
 
 .sortOptions { display: flex; gap: 15px; }
@@ -104,3 +96,45 @@
 .groupTag { color: #00f2ff; font-size: 11px; font-weight: 700; margin-bottom: 8px; display: block; }
 .productTitle { color: #fff; font-size: 16px; font-weight: 500; height: 44px; overflow: hidden; }
 .productPrice { color: #fff; font-size: 20px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; }
+
+/* 6. 데이터가 없을 때 (No Data) */
+.noDataWrapper {
+    grid-column: 1 / -1; /* 그리드의 첫 번째 줄부터 마지막 줄까지 전체 차지 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+    text-align: center;
+    background: rgba(22, 29, 42, 0.5);
+    border-radius: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.noDataIcon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.noDataWrapper p {
+    color: #8892b0;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.resetBtn {
+    background: transparent !important;
+    color: #00f2ff !important;
+    border: 1px solid #00f2ff !important;
+    padding: 10px 25px !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.resetBtn:hover {
+    background: rgba(0, 242, 255, 0.1) !important;
+    transform: translateY(-2px);
+}
