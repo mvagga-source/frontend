@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import bg from "../../assets/images/singer_bg.png";
 
 import MyBookmark from './MyBookmark';
+import MyVote from './MyVote';
+import MyPurchase from './MyPurchase';
+import MySale from './MySale';
+
 import './MyMain.css';
 
 const MyMain = () => {
@@ -11,7 +15,7 @@ const MyMain = () => {
     { id: 'bookmark', label: '북마크 관리' },
     { id: 'vote', label: '투표 관리' },
     { id: 'purchase', label: '구매내역' },
-    { id: 'sales', label: '판매내역' },
+    { id: 'sale', label: '판매내역' },
   ];
 
   return (
@@ -46,9 +50,9 @@ const MyMain = () => {
         {/* 탭 컨텐츠 영역 */}
         <div className="tab-content">
             {activeTab === 'bookmark' && <MyBookmark/>}
-            {activeTab === 'vote' && <div>투표 관리 컨텐츠</div>}
-            {activeTab === 'purchase' && <div>구매내역 컨텐츠</div>}
-            {activeTab === 'sales' && <div>판매내역 컨텐츠</div>}
+            {activeTab === 'vote' && <div><MyVote/></div>}
+            {activeTab === 'purchase' && <div><MyPurchase/></div>}
+            {activeTab === 'sale' && <div><MySale/></div>}
         </div>        
 
     </div>
