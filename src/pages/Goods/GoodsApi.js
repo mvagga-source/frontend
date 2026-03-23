@@ -42,23 +42,23 @@ export const GoodsLikeSaveApi = (param = {}) => {
 };
 
 // 굿즈 리뷰 댓글 목록 가져오기 (더보기/무한스크롤용)
-export const getCommentListApi = (bno, size = 10, lastCno = 0) => {
+export const getReviewListApi = (gno, size = 10, lastCno = 0) => {
   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReview/list`, {
-    params: { bno, size, lastCno }
+    params: { gno, size, lastCno }
   });
 };
 
 // 굿즈 리뷰 댓글 등록하기
-export const CommentWriteApi = (commentData) => {
+export const ReviewWriteApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/save`, commentData);
 };
 
 // 굿즈 리뷰 댓글 수정하기
-export const CommentUpdateApi = (commentData) => {
+export const ReviewUpdateApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/update`, commentData);
 };
 
 // 굿즈 리뷰 댓글 삭제하기
-export const CommentDeleteApi = (commentData) => {
+export const ReviewDeleteApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/delete`, commentData);
 };

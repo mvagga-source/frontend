@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./GoodsReview.module.css"; // BoardComment와 유사한 스타일 적용
 import { SaveBtn } from "../../../components/button/Button";
 import { useAuth } from "../../../context/AuthContext";
+import { getReviewListApi, ReviewWriteApi, ReviewUpdateApi, ReviewDeleteApi } from "../GoodsApi";
 
 function GoodsReview({ gno }) {
     const { user } = useAuth();
@@ -11,20 +12,55 @@ function GoodsReview({ gno }) {
     const [selectedFile, setSelectedFile] = useState(null); // 실제 파일 객체
     const [previewImg, setPreviewImg] = useState(null);    // 미리보기용 URL
 
+    const [lastGrno, setLastGrno] = useState(0);      //마지막 번호
+    const [totalCount, setTotalCount] = useState(0);    //댓글 삭제와 답글을 제외한 전체개수
+    
+    // 추가 상태: 더 가져올 데이터가 있는지 여부와 로딩 상태
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+
+    // 댓글 리스트 가져오기 (처음 로드나 저장 후 새로 불러오기)
+    const getList = async (lastGrno = 0, append = true) => {
+        setLoading(true);
+        getReviewListApi(gno, 10, lastGrno)
+        .then((res) => {
+            if (res.data?.success) {
+                console.log(res);
+                const newReviews = res.data.list || [];
+                const totalCount = res.data.totalCount || 0; // 댓글 전체 개수
+                const serverLastGroup = res.data.lastGrno || 0; // 다음 기준 그룹
+                const isLastPage = res.data.isLast; // 마지막 페이지 여부
+
+                if (append) {
+                    setReviews((prev) => [...prev, ...newReviews]);
+                } else {
+                    setReviews(newReviews);
+                }
+
+                // 2. 서버에서 받은 다음 그룹 번호와 마지막 여부 저장
+                setLastGrno(serverLastGroup);
+                setHasMore(!isLastPage);
+                
+                // (선택사항) 전체 개수 상태 업데이트
+                setTotalCount(totalCount); 
+            }
+        }).finally(() => {
+        setLoading(false);
+        });
+    };
+
     // 1. 리뷰 목록 가져오기 (기존 getList 로직과 동일)
     useEffect(() => {
         // [가상 데이터 세팅] CSS 테스트용
-        const mockReviews = [
+        /*const mockReviews = [
         {
             grno: 1,
             grcontents: "디자인이 정말 예뻐요! 네온 블루 라이팅이 밤에 켜두면 분위기 대박입니다. 배송도 생각보다 빨랐어요.",
             rating: 5,
             crdt: "2024-03-15T10:00:00",
             member: { id: "NeonFan_99" },
-            // 1. 포토 리뷰 케이스 (이미지 URL 추가)
             reviewImg: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=300", 
             children: [
-            // 2. 판매자 답글 케이스 (대댓글 구조)
             {
                 grno: 101,
                 grcontents: "구매해주셔서 감사합니다! 네온 블루의 매력을 알아봐주셔서 기쁘네요. 예쁘게 사용하세요 💙",
@@ -47,11 +83,9 @@ function GoodsReview({ gno }) {
             rating: 5,
             crdt: "2024-03-12T09:15:00",
             member: { id: "Collector_K" },
-            // 포토 리뷰 케이스 2
             reviewImg: "https://images.unsplash.com/photo-1593305841993-f11277132603?q=80&w=300",
             children: []
         },
-        // 수량 추가 (데이터 늘리기)
         {
             grno: 4,
             grcontents: "생각보다 크기가 작네요. 상세 사이즈를 잘 볼 걸 그랬어요. 그래도 퀄리티는 좋습니다.",
@@ -84,11 +118,14 @@ function GoodsReview({ gno }) {
             children: []
         }
         ];
-
         setTimeout(() => {
         setReviews(mockReviews);
-        }, 300);
-        // getGoodsReviewListApi(gno).then(...)
+        }, 300);*/
+
+        // 리뷰 리스트 새로고침
+        if (gno) {
+            getList(0, false); 
+        }
     }, [gno]);
 
     // 2. 리뷰 저장 (별점 데이터 포함)
@@ -99,8 +136,16 @@ function GoodsReview({ gno }) {
         formData.append("gno", gno);
         formData.append("grcontents", newReview);
         formData.append("rating", rating); // 별점 전송
+        if (selectedFile) formData.append("file", selectedFile);
         
-        // API 호출 후 목록 갱신 로직 (BoardComment와 동일)
+        // 등록
+        ReviewWriteApi(formData).then((res) => {
+            if (res.data?.success) {
+                setNewReview(""); // 리뷰 내용 취소
+                setRating(5); // 별점 초기화
+                getList(0, false); // 새로고침
+            }
+        })
     };
 
     // 파일 선택 핸들러 추가
@@ -144,9 +189,9 @@ function GoodsReview({ gno }) {
             if (r.grno === grno) {
                 const isLiked = !r.isLiked; // 현재 상태 반전
                 return {
-                ...r,
-                isLiked: isLiked,
-                likeCnt: isLiked ? (r.likeCnt || 0) + 1 : Math.max(0, (r.likeCnt || 1) - 1)
+                    ...r,
+                    isLiked: isLiked,
+                    likeCnt: isLiked ? (r.likeCnt || 0) + 1 : Math.max(0, (r.likeCnt || 1) - 1)
                 };
             }
             return r;
