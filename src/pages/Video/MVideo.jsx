@@ -30,8 +30,6 @@ function MVideo() {
     const {user} = useAuth();
     const pageType = "VIDEO"; // 페이지구분    
 
-    const [category, setCategory] = useState("youtube");
-
     function convertYoutube(url){
         const id = url.split("v=")[1];
         return `https://www.youtube.com/embed/${id}`;
@@ -51,53 +49,10 @@ function MVideo() {
         { value: "LATEST", label: "최신순" },
         { value: "LIKE", label: "좋아요순" },
         { value: "VIEW", label: "조회순" },
-        // { value: "POPULAR", label: "인기순" }
+        { value: "POPULAR", label: "인기순" }
     ];    
 
     const sliderRef = useRef(null);
-
-    const scrollLeft = () => {
-
-        const slider = sliderRef.current;
-        console.log("slider : ",slider);
-        const maxScroll = slider.scrollWidth - slider.clientWidth;
-
-        console.log("slider.scrollWidth : ",slider.scrollWidth);        
-        console.log("slider.clientWidth : ",slider.clientWidth);    
-        console.log("slider.scrollLeft : ",slider.scrollLeft);
-        console.log("maxScroll : ",maxScroll);
-
-        if (slider.scrollLeft >= maxScroll - 10) {
-            // 끝이면 처음으로 이동
-            slider.scrollTo({
-            left: 0,
-            behavior: "smooth"
-            });
-        } else {
-            slider.scrollBy({
-            left: 1530,
-            behavior: "smooth"
-            });
-        }
-    };
-
-    const scrollRight = () => {
-        
-        const slider = sliderRef.current;
-
-        if (slider.scrollLeft <= 0) {
-            // 처음이면 끝으로 이동
-            slider.scrollTo({
-            left: slider.scrollWidth,
-            behavior: "smooth"
-            });
-        } else {
-            slider.scrollBy({
-            left: -1530,
-            behavior: "smooth"
-            });
-        }
-    };
 
     const [bookmarks, setBookmarks] = useState([]);
     const [videos, setVideos] = useState([]);
@@ -107,9 +62,8 @@ function MVideo() {
 
     // pageable
     const [page, setPage] = useState(0);
-    const [loading, setLoading] = useState(false);
     const [hasNext, setHasNext] = useState(true);
-    const pageSize = 15;
+    const pageSize = 10;
 
     const isBookmarked = (pageId) => {
         return bookmarks.includes(pageId);
@@ -119,67 +73,53 @@ function MVideo() {
         return videosLike.includes(videoId);
     }        
 
-    const getVideos = async (sortType) => {
-
-        if (loading && !hasNext) return;
-
-        // 스크롤 감지
-        setLoading(true);
+    const getVideos = async (sortType, currentPage) => {
 
         try {
 
-            // -- 비디오 전체 리스트
-            const videoRes = await getVideosApi(page, pageSize, sortType);
+            console.log("% =========================");
+            console.log("% getVideos page ",currentPage);
+            console.log("% getVideos sortType ",sortType);            
+
+            // 비디오 리스트
+            const videoRes = await getVideosApi(currentPage, pageSize, sortType);
             const vData = await videoRes.data.content;
             
-            console.log("% =========================");
-            console.log("% getVideos page ",page);
             console.log("% getVideos vData ",vData);
             console.log("% getVideos vData.length ",vData.length);
             console.log("% =========================");            
 
             if (vData.length > 0) {
-
                 setVideos(prev => [...prev, ...vData]);
-
-                // setVideos(prev => {
-                //     const merged = [...prev, ...vData];
-                //     const unique = merged.filter(
-                //         (item, index, self) =>
-                //             index === self.findIndex(v => v.id === item.id)
-                //     );
-                //     return unique;
-                // });
             }
             
             if (vData.length == 0 || vData.length < pageSize) {
                 setHasNext(false); // 더이상 자료 없음
             }
             
-            // -- 북마크 리스트
-            const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
-            const pageId = bookmarkRes.data.map(b => b.pageId);
-            setBookmarks(pageId);
-
-            // -- 좋아요 리스트
-            const likesRes = await getMyLikesApi(user.id);
-            const videoId = likesRes.data.map(l => l.video.id);
-            setVideosLike(videoId);
-
         }catch (err) {
             console.error(err);
-        }finally{
-            //스크롤 감지
-            setLoading(false);
         }
     };
 
-    // 아이디들 로그 출력(중복여부 확인)
-    useEffect(() => {
-        console.log("** videos 변경됨:", videos.map(v => v.id));
-    }, [videos]);    
+    useEffect (()=>{
+        console.log("1. useEffect sortType ");
+        setHasNext(true);        
+        setVideos([]);
+        setPage(0);
 
-    // -- 비디오 전체 리스트(인기순)
+        getVideos(sortType, 0);
+    },[sortType]);
+
+    useEffect (()=>{
+        console.log("2. useEffect : ",page);
+
+        if (page === 0) return;
+
+        getVideos(sortType, page);
+    },[page]);
+
+    // 비디오 리스트(인기순)
     useEffect(() => {
         const getPopular = async () => {
 
@@ -192,48 +132,27 @@ function MVideo() {
         getPopular();
     }, []);
 
-    useEffect (()=>{
-        getVideos(sortType);
-    },[page]);
-
-    useEffect (()=>{
-        setBookmarks(initialState);
-        setVideosLike(initialState);
-        setHasNext(true);  // 처음 부터 다시 로딩
-        setVideos(initialState);        
-        setPage(0);        
-    },[sortType]);
-
-    const observerRef = useRef();
-
-    // 스크롤 감지
+    // 나의 북마크 리스트
     useEffect(() => {
+        const getMyBookmark = async () => {
 
-        console.log("loading value : ", loading);
+            const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
+            const pageId = bookmarkRes.data.map(b => b.pageId);
+            setBookmarks(pageId);
+        };
+        getMyBookmark();
+    }, []);
 
-        const observer = new IntersectionObserver(entries => {
-           
-            //target.isIntersecting    화면에 보이는지 (true/false)
-            //target.target            실제 DOM 요소
-            //target.intersectionRatio 얼마나 보이는지 (0~1)
-            const target = entries[0];
+    // 나의 좋아요 리스트
+    useEffect(() => {
+        const getMyLikes = async () => {
 
-            if (entries[0].isIntersecting && !loading && hasNext) {
-                console.log("## 화면에 보임 page++");
-                observer.unobserve(target.target);
-                setPage(prev => prev + 1);
-            }
-        }, {
-            threshold: 1.0
-        });
-
-        if (observerRef.current) {
-            console.log("## 감시 대상 요소를 등록");
-            observer.observe(observerRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, [loading]);    
+            const likesRes = await getMyLikesApi(user.id);
+            const videoId = likesRes.data.map(l => l.video.id);
+            setVideosLike(videoId);
+        };
+        getMyLikes();
+    }, []);    
 
     // 북마크 토글
     const toggleVideBookmark = async(pageId) => {
@@ -297,7 +216,15 @@ function MVideo() {
             // 1. UI +1
             const viewed = JSON.parse(localStorage.getItem("viewed") || "[]");
 
+            // localStorage에 값이 있으면 중복 카운트 안되게 처리
             if (!viewed.includes(videoId)) {
+
+                setPopVideos(prev =>
+                    prev.map(v =>
+                        v.id === videoId
+                        ? { ...v, viewCount: v.viewCount + 1 }
+                        : v
+                ));
 
                 setVideos(prev =>
                 prev.map(v =>
@@ -314,7 +241,50 @@ function MVideo() {
           }catch (err) {
             console.error(err);
           }      
-    }    
+    }
+
+    const scrollLeft = () => {
+
+        const slider = sliderRef.current;
+        console.log("slider : ",slider);
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+        console.log("slider.scrollWidth : ",slider.scrollWidth);        
+        console.log("slider.clientWidth : ",slider.clientWidth);    
+        console.log("slider.scrollLeft : ",slider.scrollLeft);
+        console.log("maxScroll : ",maxScroll);
+
+        if (slider.scrollLeft >= maxScroll - 10) {
+            // 끝이면 처음으로 이동
+            slider.scrollTo({
+            left: 0,
+            behavior: "smooth"
+            });
+        } else {
+            slider.scrollBy({
+            left: 1530,
+            behavior: "smooth"
+            });
+        }
+    };
+
+    const scrollRight = () => {
+        
+        const slider = sliderRef.current;
+
+        if (slider.scrollLeft <= 0) {
+            // 처음이면 끝으로 이동
+            slider.scrollTo({
+            left: slider.scrollWidth,
+            behavior: "smooth"
+            });
+        } else {
+            slider.scrollBy({
+            left: -1530,
+            behavior: "smooth"
+            });
+        }
+    };    
 
     return(
 
@@ -346,7 +316,10 @@ function MVideo() {
                                 <div className="mv-scroll-card" key={popVideo.id}>
                                     <img
                                         src={getYoutubeThumbnail(popVideo.url)}
-                                        onClick={() => window.open(popVideo.url, "_blank")}
+                                        onClick={() =>{
+                                            videoViewCount(popVideo.id)
+                                            window.open(popVideo.url, "_blank")
+                                        }}
                                     />
 
                                     <div className="mv-scroll-info-body">
@@ -443,15 +416,16 @@ function MVideo() {
                             </div>
                         ))}
                     </div>
-
                 </div>
+                
+                {hasNext === true && 
+                    <div className="mv-hasnext">
+                        <span onClick={(()=>{setPage(prev => prev + 1)})}
+                            className="mv-hasnext-status mv-ended-all">더보기</span>
+                    </div>
+                }
             </div>
             {/* end main-list */}
-
-            {/* 스크롤 감지용 */}
-            <div ref={observerRef} style={{ height: "1px" }}>
-                {loading && <p>로딩중...</p>}
-            </div>               
 
         </div>
     );

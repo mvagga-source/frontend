@@ -229,6 +229,7 @@
 
 .mv-scroll-title{
   /* font-weight: bold;  */
+  height:45px;
   margin: 10px 0 8px;
   font-size: 16px;
 }
@@ -281,6 +282,10 @@
   color:#fff;
   font-size:14px;
   cursor:pointer;
+}
+
+.mv-select:hover{
+  border:1px solid var(--neon-blue);
 }
 
 .mv-row-box{
@@ -362,7 +367,8 @@
 
 .mv-info-box ul li{
   flex: 1;  
-  text-align: center; 
+  text-align: center;
+  margin-top: 7px;
 }
 
 .mv-row-status {
@@ -373,6 +379,35 @@
   border-radius: 15px;
   margin:0 5px 5px 0;
 }
+
+.mv-info-box ul li:last-child:hover{
+  border:1px solid var(--neon-blue);
+  background: rgba(0, 242, 255, 0.12);
+}
+
+.mv-hasnext {
+  /* border:1px solid #fff;   */
+  width:100%;
+  text-align:center;
+  margin-top: 30px;
+  padding:20px 0;
+}
+
+.mv-hasnext span:hover{
+  border: 1px solid var(--neon-blue);
+  background: rgba(0, 242, 255, 0.12);
+}
+
+.mv-hasnext-status {
+  /* border:1px solid #fff;   */
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 50px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  cursor:pointer;
+}
+
 
 .ellipsis {
   overflow: hidden;
