@@ -30,6 +30,10 @@ import BoardUpdate from "./pages/Board/BoardUpdate";
 import BoardView from "./pages/Board/BoardView";
 import BoardPreview from "./pages/Board/BoardPreview";
 
+import GoodsView from "./pages/Goods/GoodsView";
+import GoodsWrite from "./pages/Goods/GoodsWrite";
+import GoodsList from "./pages/Goods/GoodsList";
+
 import Process from "./pages/Process/Process";
 
 import ServerError from "./pages/ErrorPage/ServerError";
@@ -64,6 +68,10 @@ function App() {
           <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/>
           <Route path="/BoardView/:bno" element={<Layout><BoardView/></Layout>}/>
           <Route path="/BoardPreview" element={<Layout><BoardPreview /></Layout>} />
+
+          <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
+          <Route path="/GoodsView" element={<Layout><GoodsView/></Layout>} />
+          <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
 
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}

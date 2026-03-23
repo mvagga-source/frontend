@@ -34,7 +34,9 @@ function Header({ onSidebarOpen }) {
           </div>
         </div>   
 
+        <NavLink to="/GoodsList" className="hd-nav-item">
         <span className="nav-item">SHOP</span>
+        </NavLink>
 
         <div className="hd-nav-item has-dropdown">
           <span>ENJOY</span>
