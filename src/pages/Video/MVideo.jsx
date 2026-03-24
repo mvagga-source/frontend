@@ -318,8 +318,7 @@ function MVideo() {
 
     return(
 
-        <>
-            <div className="mv-main-container">
+        <div className="mv-main-container">
 
                 <div className="mv-main-head" style={{
             backgroundImage: `url(${bg})`,
@@ -454,7 +453,13 @@ function MVideo() {
                                             <div className="mv-row-info-name">{video.name}</div>
                                             <div className="mv-row-info-title ellipsis-multi">{video.title}</div>
                                             <ul>
-                                                <li className="mv-row-status mv-ongoing-fc">{video.status === "1" ? "●":"" }</li>
+                                                <li>
+                                                    {video.status === "1" ? 
+                                                        <span className="mv-row-status mv-ongoing-fc">●</span>
+                                                        :
+                                                        <span className="mv-row-status mv-upcoming-fc">●</span>
+                                                    }
+                                                </li>
                                                 <li></li>
                                                 <li className={`mv-row-status ${isBookmarked(video.id) ? "mv-ongoing-all" : "mv-ended-all"} `}
                                                     onClick={()=>{toggleVideBookmark(video.id)}} style={{cursor:'pointer'}}
@@ -489,7 +494,6 @@ function MVideo() {
 
             </div>
 
-        </>
     );
 }
 

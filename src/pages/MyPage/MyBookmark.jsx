@@ -53,6 +53,12 @@ function MyBookmark () {
 
         <div className="bk-main-list">
 
+          <select>
+            <option>오디션 일정</option>
+            <option>아이돌 영상</option>
+          </select>
+
+
           <ul className="bk-card-row-title">
             <li style={{width:"5%"}}>순번</li>
             <li style={{width:"10%"}}>북마크 일자</li>            
