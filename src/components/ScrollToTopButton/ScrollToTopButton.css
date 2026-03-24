@@ -1,12 +1,12 @@
 .scrollToTop {
 
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  padding: 10px 15px;
+  bottom: 40px;
+  right: 40px;
+  padding: 13px 15px 10px;
   font-Size: 20px;
   cursor: pointer;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 
 .scrollToTop-ongoing-all {
@@ -14,3 +14,7 @@
   color: var(--neon-blue);
   border: 1px solid rgba(0, 242, 255, 0.3);
 }
+
+/* svg {
+  color: #333;
+} */
