@@ -1,13 +1,16 @@
 import { useRef, useEffect, useState } from "react";
-import "./MVideo.css";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faCrown, faHeart } from '@fortawesome/free-solid-svg-icons'
-import { getVideosApi, toggleVideoLikeApi,videoViewCountApi,getMyLikesApi } from "./MVideoApi";
+
+// Api
+import { getVideosApi, getVideoApi, toggleVideoLikeApi,videoViewCountApi,getMyLikesApi } from "./MVideoApi";
 import { toggleBookmarkApi, getMyBookmarkApi } from "../Common/BookmarkApi";
 
 import { useAuth } from "../../context/AuthContext";
-
+import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton";
 import bg from "../../assets/images/singer_bg.png";
+import "./MVideo.css";
 
 
 function MVideo() {
@@ -45,12 +48,18 @@ function MVideo() {
         "0": "오디션 탈락"
     };
 
-    const categories = [
+    const sorts = [
         { value: "LATEST", label: "최신순" },
         { value: "LIKE", label: "좋아요순" },
         { value: "VIEW", label: "조회순" },
         { value: "POPULAR", label: "인기순" }
     ];    
+
+    const searchTypes = [
+        { value: "ALL", label: "전체" },
+        { value: "NAME", label: "이름" },
+        { value: "TITLE", label: "제목" },
+    ];        
 
     const sliderRef = useRef(null);
 
@@ -59,6 +68,8 @@ function MVideo() {
     const [popVideos, setPopVideos] = useState([]);
     const [videosLike, setVideosLike] = useState([]);
     const [sortType, setSortType] = useState("LATEST");
+    const [search, setSearch] = useState("")
+    const [searchType, setSearchType] = useState("ALL")
 
     // pageable
     const [page, setPage] = useState(0);
@@ -73,28 +84,35 @@ function MVideo() {
         return videosLike.includes(videoId);
     }        
 
+    // 외부 파라메터
+    const { pageId } = useParams();    
+
     const getVideos = async (sortType, currentPage) => {
+
+        if (currentPage === 0 || pageId){
+            setVideos([]);
+        }
 
         try {
 
-            console.log("% =========================");
-            console.log("% getVideos page ",currentPage);
-            console.log("% getVideos sortType ",sortType);            
+            if (pageId) {
+                const videoRes = await getVideoApi(pageId);
+                setVideos([videoRes.data]);
 
-            // 비디오 리스트
-            const videoRes = await getVideosApi(currentPage, pageSize, sortType);
-            const vData = await videoRes.data.content;
-            
-            console.log("% getVideos vData ",vData);
-            console.log("% getVideos vData.length ",vData.length);
-            console.log("% =========================");            
-
-            if (vData.length > 0) {
-                setVideos(prev => [...prev, ...vData]);
-            }
-            
-            if (vData.length == 0 || vData.length < pageSize) {
                 setHasNext(false); // 더이상 자료 없음
+            } else {
+
+                // 비디오 리스트
+                const videoRes = await getVideosApi(currentPage, pageSize, sortType, search, searchType);
+                const vData = await videoRes.data.content;
+                
+                if (vData) {
+                    setVideos(prev => [...prev, ...vData]);
+                }
+
+                if (!vData || vData.length < pageSize) {
+                    setHasNext(false); // 더이상 자료 없음
+                }                
             }
             
         }catch (err) {
@@ -118,6 +136,7 @@ function MVideo() {
 
         getVideos(sortType, page);
     },[page]);
+
 
     // 비디오 리스트(인기순)
     useEffect(() => {
@@ -286,148 +305,188 @@ function MVideo() {
         }
     };    
 
+    const handleSearch = (e) => {
+        if(e.key != "Enter") {
+            return;
+        }
+
+        setHasNext(true);        
+        setVideos([]);
+        setPage(0);
+
+        getVideos(sortType, 0);
+    }
+
     return(
 
-        <div className="mv-main-container">
+        <>
+            <ScrollToTopButton />
 
-            <div className="mv-main-head" style={{
-          backgroundImage: `url(${bg})`,
-          backgroundSize: "auto 100%",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "70% 0"
-          }}>
-                <div className="mv-main-title">
-                    <h1>Video</h1>
+            <div className="mv-main-container">
+
+                <div className="mv-main-head" style={{
+            backgroundImage: `url(${bg})`,
+            backgroundSize: "auto 100%",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "70% 0"
+            }}>
+                    <div className="mv-main-title">
+                        <h1>Video</h1>
+                    </div>
                 </div>
-            </div>
 
-            <div className="mv-main-scroll">
+                <div className="mv-main-scroll">
+
+                    <div className="mv-sidebar-divider"></div>
+
+                    {/* 상단 스크롤 */}
+                    <div className="mv-container-scroll">
+                        <div className="mv-slider-wrapper">
+                            <button className="mv-slider-btn mv-left" onClick={scrollLeft}>❮</button>
+                            <div className="mv-slider" ref={sliderRef}>
+
+                                {popVideos.map((popVideo,index) => (
+                                    
+                                    <div className="mv-scroll-card" key={popVideo.id}>
+                                        <img
+                                            src={getYoutubeThumbnail(popVideo.url)}
+                                            onClick={() =>{
+                                                videoViewCount(popVideo.id)
+                                                window.open(popVideo.url, "_blank")
+                                            }}
+                                        />
+
+                                        <div className="mv-scroll-info-body">
+                                            <div className="mv-scroll-rank">
+                                                <div className={`${popVideo.status === "1" ? "mv-ongoing-bc" : "mv-ended-bc" }`}>
+                                                    <div className={`${popVideo.status === "1" ? "mv-ongoing-fc" : "mv-ended-fc" }`}>{index + 1}</div>
+                                                    <div className={`mv-scroll-status ${popVideo.status === "1" ? "mv-ongoing-fc" : "mv-upcoming-fc" }`}>
+                                                        {statusText[popVideo.status]}
+                                                    </div>
+                                                </div>
+                                                <div className={`mv-scroll-status ${isBookmarked(popVideo.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
+                                                    onClick={()=>{toggleVideBookmark(popVideo.id)}} style={{cursor:'pointer'}}
+                                                >
+                                                    북마크
+                                                </div>
+
+                                            </div>
+                                            <div className="mv-scroll-info">
+                                                <div className="mv-scroll-hit-like">
+                                                    <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
+                                                    <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
+                                                        <FontAwesomeIcon icon={faHeart} color={isLiked(popVideo.id) ? "red" : "gray"}/>
+                                                        {popVideo.likeCount}
+                                                    </span>
+                                                    {/* <FontAwesomeIcon icon={faCrown} /> */}
+                                                </div>
+                                                <div className="mv-scroll-name">{popVideo.name}</div>
+                                                <div className="mv-scroll-title ellipsis-multi">{popVideo.title}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                ))}
+
+                            </div>
+                            <button className="mv-slider-btn mv-right" onClick={scrollRight}>❯</button>
+                        </div>
+                    </div>
+
+                    {/* <div className="sidebar-divider"></div> */}
+
+                </div>
 
                 <div className="mv-sidebar-divider"></div>
 
-                {/* 상단 스크롤 */}
-                <div className="mv-container-scroll">
-                    <div className="mv-slider-wrapper">
-                        <button className="mv-slider-btn mv-left" onClick={scrollLeft}>❮</button>
-                        <div className="mv-slider" ref={sliderRef}>
+                {/* start main-list */}
+                <div className="mv-main-list">
+                    
+                    <ul className="mv-form">
+                        <li>
+                            <select onChange={(e) => setSortType(e.target.value)} className="mv-select">
+                            {sorts.map((item) => (
+                                <option key={item.value} value={item.value}>
+                                {item.label}
+                                </option>
+                            ))}
+                            </select>
+                        </li>
+                        <li></li>
+                        <li>
+                            <select onChange={(e) => setSearchType(e.target.value)} className="mv-select">
+                            {searchTypes.map((item) => (
+                                <option key={item.value} value={item.value}>
+                                {item.label}
+                                </option>
+                            ))}
+                            </select>
+                            <input type="text" class="mv-input" onChange={(e) => setSearch(e.target.value)} onKeyDown={handleSearch} />
 
-                            {popVideos.map((popVideo,index) => (
-                                
-                                <div className="mv-scroll-card" key={popVideo.id}>
-                                    <img
-                                        src={getYoutubeThumbnail(popVideo.url)}
-                                        onClick={() =>{
-                                            videoViewCount(popVideo.id)
-                                            window.open(popVideo.url, "_blank")
-                                        }}
-                                    />
+                        </li>
+                    </ul>
 
-                                    <div className="mv-scroll-info-body">
-                                        <div className="mv-scroll-rank">
-                                            <div className={`${popVideo.status === "1" ? "mv-ongoing-bc" : "mv-ended-bc" }`}>
-                                                <div className={`${popVideo.status === "1" ? "mv-ongoing-fc" : "mv-ended-fc" }`}>{index + 1}</div>
-                                                <div className={`mv-scroll-status ${popVideo.status === "1" ? "mv-ongoing-fc" : "mv-upcoming-fc" }`}>
-                                                    {statusText[popVideo.status]}
-                                                </div>
-                                            </div>
-                                            <div className={`mv-scroll-status ${isBookmarked(popVideo.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
-                                                onClick={()=>{toggleVideBookmark(popVideo.id)}} style={{cursor:'pointer'}}
-                                            >
-                                                북마크
-                                            </div>
+                    <div className="mv-row-box">
+                        <div className="mv-row">
+                            {videos.map(video => (
 
-                                        </div>
-                                        <div className="mv-scroll-info">
-                                            <div className="mv-scroll-hit-like">
-                                                <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
-                                                <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
-                                                    <FontAwesomeIcon icon={faHeart} color={isLiked(popVideo.id) ? "red" : "gray"}/>
-                                                    {popVideo.likeCount}
+                                <div className="mv-column" key={video.id}>
+                                    <div className="mv-card">
+                                        <div className={`mv-info-box ${video.status === "1" ? "mv-passed-bb" : "mv-ended-bb" }`}>
+                                            <img
+                                                src={getYoutubeThumbnail(video.url)}
+                                                onClick={() => {
+                                                    videoViewCount(video.id)
+                                                    window.open(video.url, "_blank")
+                                                }}
+                                            />
+                                            <div className="mv-row-hitlike">
+                                                <span><FontAwesomeIcon icon={faEye} /> {video.viewCount}</span>
+                                                <span onClick={()=> toggleVideoLike(video.id)} style={{cursor:'pointer'}}>
+                                                    <FontAwesomeIcon icon={faHeart} color={isLiked(video.id) ? "red" : "gray"}/>
+                                                    {video.likeCount}
                                                 </span>
                                                 {/* <FontAwesomeIcon icon={faCrown} /> */}
                                             </div>
-                                            <div className="mv-scroll-name">{popVideo.name}</div>
-                                            <div className="mv-scroll-title ellipsis-multi">{popVideo.title}</div>
+                                            <div className="mv-row-info-name">{video.name}</div>
+                                            <div className="mv-row-info-title ellipsis-multi">{video.title}</div>
+                                            <ul>
+                                                <li className="mv-row-status mv-ongoing-fc">{video.status === "1" ? "●":"" }</li>
+                                                <li></li>
+                                                <li className={`mv-row-status ${isBookmarked(video.id) ? "mv-ongoing-all" : "mv-ended-all"} `}
+                                                    onClick={()=>{toggleVideBookmark(video.id)}} style={{cursor:'pointer'}}
+                                                >
+                                                    북마크
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                </div>
 
+                                </div>
                             ))}
-
                         </div>
-                        <button className="mv-slider-btn mv-right" onClick={scrollRight}>❯</button>
                     </div>
-                </div>
+                    
+                    {hasNext === true && 
+                        <div className="mv-hasnext">
+                            <span onClick={(()=>{setPage(prev => prev + 1)})}
+                                className="mv-hasnext-status mv-ended-all">더보기</span>
+                        </div>
+                    }
 
-                {/* <div className="sidebar-divider"></div> */}
+                    {pageId &&
+                        <div className="mv-hasnext">
+                            <Link to="/MyMain">
+                                <span className="mv-hasnext-status mv-ended-all">이전 화면으로</span>
+                            </Link>
+                        </div>                
+                    }
+                </div>
+                {/* end main-list */}
 
             </div>
 
-            <div className="mv-sidebar-divider"></div>
-
-            {/* start main-list */}
-            <div className="mv-main-list">
-                
-                <select onChange={(e) => setSortType(e.target.value)} className="mv-select">
-                {categories.map((item) => (
-                    <option key={item.value} value={item.value}>
-                    {item.label}
-                    </option>
-                ))}
-                </select>
-
-                <div className="mv-row-box">
-                    <div className="mv-row">
-                        {videos.map(video => (
-
-                            <div className="mv-column" key={video.id}>
-                                <div className="mv-card">
-                                    <div className={`mv-info-box ${video.status === "1" ? "mv-passed-bb" : "mv-ended-bb" }`}>
-                                        
-                                        <img
-                                            src={getYoutubeThumbnail(video.url)}
-                                            onClick={() => {
-                                                videoViewCount(video.id)
-                                                window.open(video.url, "_blank")
-                                            }}
-                                        />
-                                        <div className="mv-row-hitlike">
-                                            <span><FontAwesomeIcon icon={faEye} /> {video.viewCount}</span>
-                                            <span onClick={()=> toggleVideoLike(video.id)} style={{cursor:'pointer'}}>
-                                                <FontAwesomeIcon icon={faHeart} color={isLiked(video.id) ? "red" : "gray"}/>
-                                                {video.likeCount}
-                                            </span>
-                                            {/* <FontAwesomeIcon icon={faCrown} /> */}
-                                        </div>
-                                        <div className="mv-row-info-name">{video.name}</div>
-                                        <div className="mv-row-info-title ellipsis-multi">{video.title}</div>
-                                        <ul>
-                                            <li className="mv-row-status mv-ongoing-fc">{video.status === "1" ? "●":"" }</li>
-                                            <li></li>
-                                            <li className={`mv-row-status ${isBookmarked(video.id) ? "mv-ongoing-all" : "mv-ended-all"} `}
-                                                onClick={()=>{toggleVideBookmark(video.id)}} style={{cursor:'pointer'}}
-                                            >
-                                                북마크
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                
-                {hasNext === true && 
-                    <div className="mv-hasnext">
-                        <span onClick={(()=>{setPage(prev => prev + 1)})}
-                            className="mv-hasnext-status mv-ended-all">더보기</span>
-                    </div>
-                }
-            </div>
-            {/* end main-list */}
-
-        </div>
+        </>
     );
 }
 

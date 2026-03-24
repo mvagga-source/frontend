@@ -57,6 +57,7 @@ function App() {
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
 
           <Route path="/MVideo" element={<ProtectedRoute><Layout><MVideo/></Layout></ProtectedRoute>}/>
+          <Route path="/MVideo/:pageId" element={<ProtectedRoute><Layout><MVideo/></Layout></ProtectedRoute>}/>
 
           <Route path="/Schedule" element={<ProtectedRoute><Layout><Schedule/></Layout></ProtectedRoute>}/>          
 

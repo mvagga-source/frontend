@@ -275,7 +275,6 @@
 */
 
 .mv-select{
-  margin:20px 0;
   padding:8px 35px 8px 12px;
   border:1px solid rgba(0, 242, 255, 0.2);
   background:#1a253bff;
@@ -286,6 +285,38 @@
 
 .mv-select:hover{
   border:1px solid var(--neon-blue);
+}
+
+.mv-form{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; 
+  gap: 10px;     
+}
+
+.mv-form li{
+  height:50px;
+  /* border:1px solid #fff;   */
+  flex: 1;  
+}
+
+.mv-form li:first-child{
+  text-align: left;
+}
+
+.mv-input{
+  margin-left: 10px;
+  padding:9px 10px;
+  border:1px solid rgba(0, 242, 255, 0.2);
+  background:#1a253bff;
+  color:#fff;
+  font-size:14px;
+}
+
+.mv-input:focus{
+  border:1px solid var(--neon-blue);  
+  outline: none;
 }
 
 .mv-row-box{

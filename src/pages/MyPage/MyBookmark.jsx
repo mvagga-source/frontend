@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { getBookmarksApi, deleteBookmarkApi } from "./MyBookmarkApi";
 
 import "./MyBookmark.css";
@@ -54,8 +55,8 @@ function MyBookmark () {
 
           <ul className="bk-card-row-title">
             <li style={{width:"5%"}}>순번</li>
-            <li style={{width:"10%"}}>생성 일자</li>            
-            <li style={{width:"15%"}}>북마크 화면</li>
+            <li style={{width:"10%"}}>북마크 일자</li>            
+            <li style={{width:"15%"}}>화면</li>
             <li style={{width:"20%"}}>이름</li>            
             <li style={{width:"40%"}}>제목</li>
             <li style={{width:"10%"}}></li>
@@ -72,10 +73,16 @@ function MyBookmark () {
                   <li style={{width:"15%"}} className="bk-center">{pageTypes[event.pageType]}</li>
                   <li style={{width:"20%"}} className="ellipsis">{event.name}</li>                  
                   <li style={{width:"40%"}} className="ellipsis">{event.title}</li>
-                  <li style={{width:"10%"}} className="bk-center">
-                    {/* <button className="bk-status_btn bk-ongoing-all">
-                      알림
-                    </button> */}
+                  <li style={{width:"5%"}} className="bk-center">
+                    {event.pageType === "VIDEO" &&
+                      <Link to={`/Mvideo/${event.pageId}`}>
+                        <button className="bk-status_btn my-ongoing-all">
+                          이동
+                        </button>                    
+                      </Link>                    
+                    }
+                  </li>
+                  <li style={{width:"5%"}} className="bk-center">
                     <button className="bk-status_btn my-upcoming-all" onClick={() => deleteEvent(event.id)}>
                       삭제
                     </button>

@@ -1,12 +1,23 @@
 import axiosInstance from "../../api/axiosInstance";
 
 // Video 전체 가져오기
-export const getVideosApi = (page, pageSize, sortType) => {
+export const getVideosApi = (page, pageSize, sortType,search, searchType) => {
   return axiosInstance.get("/video/getVideos", {
     params:{
       page : page,
       size: pageSize,
-      sortType :sortType 
+      sortType :sortType, 
+      search : search,
+      searchType : searchType
+    }
+  });
+}
+
+// Video 한건 가져오기
+export const getVideoApi = (pageId) => {
+  return axiosInstance.get("/video/getVideo", {
+    params:{
+      pageId:pageId
     }
   });
 }
