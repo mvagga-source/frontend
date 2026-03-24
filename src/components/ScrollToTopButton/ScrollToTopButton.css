@@ -7,6 +7,7 @@
   font-Size: 20px;
   cursor: pointer;
   /* border-radius: 50%; */
+  z-index: 9999999;
 }
 
 .scrollToTop-ongoing-all {

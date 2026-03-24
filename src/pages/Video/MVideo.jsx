@@ -8,7 +8,6 @@ import { getVideosApi, getVideoApi, toggleVideoLikeApi,videoViewCountApi,getMyLi
 import { toggleBookmarkApi, getMyBookmarkApi } from "../Common/BookmarkApi";
 
 import { useAuth } from "../../context/AuthContext";
-import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton";
 import bg from "../../assets/images/singer_bg.png";
 import "./MVideo.css";
 
@@ -320,8 +319,6 @@ function MVideo() {
     return(
 
         <>
-            <ScrollToTopButton />
-
             <div className="mv-main-container">
 
                 <div className="mv-main-head" style={{
@@ -353,6 +350,9 @@ function MVideo() {
                                             onClick={() =>{
                                                 videoViewCount(popVideo.id)
                                                 window.open(popVideo.url, "_blank")
+                                            }}
+                                            style={{
+                                                filter: popVideo.status === "1" ? "none" : "grayscale(100%)"
                                             }}
                                         />
 
@@ -438,6 +438,9 @@ function MVideo() {
                                                 onClick={() => {
                                                     videoViewCount(video.id)
                                                     window.open(video.url, "_blank")
+                                                }}
+                                                style={{
+                                                filter: video.status === "1" ? "none" : "grayscale(100%)"
                                                 }}
                                             />
                                             <div className="mv-row-hitlike">
