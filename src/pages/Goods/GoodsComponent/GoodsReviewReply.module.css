@@ -1,0 +1,115 @@
+.sellerReply {
+    margin-top: 15px;
+    margin-left: 30px; /* 원글과 계층 구분 */
+    background: rgba(0, 242, 255, 0.04);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 3px solid #00f2ff;
+}
+
+.replyHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.sellerInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.replyIcon { color: #00f2ff; font-weight: bold; }
+.sellerName { color: #fff; font-weight: 600; font-size: 0.9rem; }
+.sellerBadge {
+    background: rgba(0, 242, 255, 0.15);
+    color: #00f2ff;
+    border: 1px solid #00f2ff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+}
+
+.replyDate { color: #64748b; font-size: 0.85rem; }
+
+.replyContent {
+    color: #cbd5e1;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    font-size: 0.95rem;
+}
+
+/* 수정 모드 */
+.editTextarea {
+    width: 100%;
+    height: 80px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    border-radius: 6px;
+    color: #fff;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    /* 파이어폭스 대응 */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 255, 0.3) transparent;
+}
+/* --- 스크롤바 커스텀 (editTextarea 전용) --- */
+
+/* 1. 전체 바 */
+.editTextarea::-webkit-scrollbar {
+    width: 6px !important; /* 가끔 우선순위 밀림 방지 */
+    display: block !important;
+}
+
+/* 2. 트랙 (바탕) */
+.editTextarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 10px;
+}
+
+/* 3. 핸들 (움직이는 부분) */
+.editTextarea::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 255, 0.2) !important; /* 평소 투명도 낮게 */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+/* 4. 핸들 호버 시 */
+.editTextarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 255, 0.5) !important; /* 마우스 올리면 진하게 */
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.4);
+}
+.editBtnGroup {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+.updateBtn {
+    padding: 4px 12px;
+    background: #00f2ff;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.replyActions {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-top: 10px;
+}
+
+/* 수정 모드일 때 textarea 스타일 살짝 보정 */
+.editWrapper {
+    width: 100%;
+    margin-bottom: 5px;
+}

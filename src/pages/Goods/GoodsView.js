@@ -137,17 +137,25 @@ function GoodsView() {
                     <span className={styles.sellerId}>{goods.member?.id}</span>
                     <span className={`${styles.statusBadge} ${STATUS_CLASS_MAP[goods.status] || ""}`}>{goods.status}</span>
                     </div>
-
+                    <div className={styles.actionArea}>
+                    {user && user.id === goods.member?.id && (
+                    <>
+                        <span onClick={() => navigate(`/GoodsUpdate/${gno}`)}>수정</span>
+                        <span className={styles.divider}>|</span>
+                        <span onClick={handleDelete}>삭제</span>
+                    </>
+                    )}
                     {/* SVG 북마크 버튼 (기존 이미지 위에서 여기로 이동) */}
                     <button 
-                    className={`${styles.topBookmark} ${isBookmarked ? styles.active : ""}`}
-                    onClick={handleBookmark}
-                    aria-label="북마크"
+                        className={`${styles.topBookmark} ${isBookmarked ? styles.active : ""}`}
+                        onClick={handleBookmark}
+                        aria-label="북마크"
                     >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill={isBookmarked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
                         <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
                     </svg>
                     </button>
+                    </div>
                 </div>
                 {/* 첫 줄만 제목으로 추출 */}
                 <h2 className={styles.goodsName}>{goods.gname.split('\n')[0]}</h2>
@@ -203,9 +211,16 @@ function GoodsView() {
                     isOpen={isModalOpen} 
                     onClose={() => setIsModalOpen(false)} 
                     totalPrice={goods.price * orderCnt + goods.gdelPrice} 
+                    goods={goods}   //배송팝업의 결제에 넘길 굿즈정보
+                    count={orderCnt} // 선택한 수량 추가
                 />
             </div>
             </div>
+
+            {/* 목록 이동 및 상품 관리 버튼 */}
+            {/* <div className={commonStyles.btnArea} style={{ marginBottom: '20px', borderTop: 'none', borderBottom: '1px solid rgba(0, 242, 255, 0.1)', paddingBottom: '20px' }}>
+                <MoveBtn onClick={() => navigate("/GoodsList")}>목록으로</MoveBtn>
+            </div> */}
 
             {/* [중단] 탭 메뉴 */}
             <div className={styles.tabWrapper}>
@@ -222,7 +237,7 @@ function GoodsView() {
                 </div>
             )}
             
-            {activeTab === "review" && <GoodsReview gno={gno} />}
+            {activeTab === "review" && <GoodsReview gno={gno} sellerId={goods.member?.id} />}
             
             {activeTab === "info" && (
                 <div className={styles.policyText}>
@@ -236,18 +251,6 @@ function GoodsView() {
                 </div>
             )}
             </div>
-
-            {/* 관리 버튼 영역 (게시판 스타일 재사용) */}
-            <div className={commonStyles.btnArea}>
-            <MoveBtn onClick={() => navigate("/GoodsList")}>목록으로</MoveBtn>
-            {user && user.id === goods.member?.id && (
-                <div className={commonStyles.rightBtns}>
-                <SaveBtn onClick={() => navigate(`/GoodsUpdate/${gno}`)}>수정</SaveBtn>
-                <DelBtn onClick={handleDelete}>삭제</DelBtn>
-                </div>
-            )}
-            </div>
-
         </div>
         </Content>
     );

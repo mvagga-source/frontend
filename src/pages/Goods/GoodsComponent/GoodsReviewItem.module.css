@@ -1,0 +1,251 @@
+/* --- 리뷰 리스트 영역 --- */
+.listTitle { font-size: 1.15rem; color: #fff; margin-bottom: 25px; font-weight: 600; }
+.reviewItem {
+  list-style: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 30px 0;
+}
+.reviewHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.userInfo { display: flex; align-items: center; gap: 12px; }
+.author { color: #00f2ff; font-weight: 600; }
+.itemRating { color: #facc15; font-size: 0.95rem; letter-spacing: 2px; }
+.date { color: #64748b; font-size: 0.85rem; }
+
+/* 리뷰 본문 (텍스트 + 이미지) */
+.reviewBody { display: flex; gap: 25px; justify-content: space-between; align-items: flex-start; }
+.content { flex: 1; color: #cbd5e1; line-height: 1.7; white-space: pre-wrap; }
+.reviewThumb img {
+  width: 100px; height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+
+
+/* 도움돼요 버튼 */
+/* 리뷰 하단 액션 바 (도움돼요 + 버튼들) */
+.reviewActions {
+    display: flex;
+    justify-content: space-between; /* 양 끝 정렬 */
+    align-items: center;           /* 세로 중앙 정렬 */
+    margin-top: 16px;
+    padding-top: 12px;
+}
+
+/* 도움돼요 버튼 스타일 */
+.helpBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px; /* 완전 둥글게 */
+    padding: 6px 18px;   /* 좌우 여백을 넓혀서 캡슐 느낌 강조 */
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+}
+
+.helpBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    transform: translateY(-1px); /* 살짝 떠오르는 효과 */
+}
+
+/* 활성화 상태 (누른 후) */
+.helpBtn.active {
+    background: rgba(0, 242, 255, 0.1);
+    /*border-color: #00f2ff;
+    color: #00f2ff;*/
+    /* 게시판과 같은 노란계열 */
+    border-color: #facc15;
+    color: #facc15;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+}
+
+.likeCount {
+    color: inherit;
+    font-weight: 700;
+}
+
+/* 오른쪽 버튼 그룹 (답글|수정|삭제) */
+.rightActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actionBtn {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 2px 4px;
+    transition: color 0.2s;
+}
+
+.actionBtn:hover {
+    color: #00f2ff;
+}
+
+.divider {
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 0.7rem;
+    user-select: none; /* 선택 방지 */
+}
+
+/* 답글완료 뱃지 (선택사항) */
+.replyStatusBadge {
+    font-size: 0.75rem;
+    color: #00f2ff;
+    background: rgba(0, 242, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+
+/* 답글 입력 영역 */
+.replyInputWrapper {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(0, 242, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+.replyTextarea {
+  width: 100%;
+  min-height: 100px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  /* 파이어폭스 대응 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 255, 0.3) transparent;
+}
+
+.replyTextarea:focus {
+  border-color: #00f2ff;
+  background: rgba(0, 242, 255, 0.05);
+}
+
+/* 답글버튼 그룹 정렬 */
+.replyBtnGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.replySaveBtn {
+  padding: 6px 16px;
+  background: #00f2ff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.replySaveBtn:hover {
+  background: #00d8e4;
+  transform: translateY(-1px);
+}
+
+/* 공통 버튼 스타일 */
+.replyCancelBtn, .replySaveBtn {
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 취소 버튼: 차분한 스타일 */
+.replyCancelBtn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #94a3b8;
+}
+
+.replyCancelBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 삭제된 리뷰 아이템 전체 컨테이너 */
+.deletedReview {
+    background-color: rgba(255, 255, 255, 0.02); /* 아주 미세한 배경 차이 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 삭제 메시지 스타일 */
+.deletedMessage {
+    padding: 20px 10px;
+    color: #64748b; /* 흐린 회색 (slate-400) */
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.deletedIcon {
+    filter: grayscale(1); /* 아이콘도 흐리게 */
+    opacity: 0.6;
+}
+
+/* 1. 스크롤바 전체 너비 설정 */
+.textarea::-webkit-scrollbar,
+.replyInputBox textarea::-webkit-scrollbar {
+  width: 5px; /* 너무 두껍지 않게 조절 */
+}
+
+/* 2. 스크롤바 트랙 (바탕선) */
+.textarea::-webkit-scrollbar-track,
+.replyInputBox textarea::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02); /* 거의 투명하게 */
+  border-radius: 10px;
+}
+
+/* 3. 스크롤바 핸들 (움직이는 부분) */
+.textarea::-webkit-scrollbar-thumb,
+.replyInputBox textarea::-webkit-scrollbar-thumb {
+  /* 현재 포인트 컬러인 #00f2ff(청록) 활용 */
+  background: rgba(0, 242, 255, 0.2); 
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  
+  /* 은은한 네온 광원 효과 */
+  box-shadow: 0 0 5px rgba(0, 242, 255, 0.1);
+}
+
+/* 4. 핸들 호버 시 (사용자가 마우스를 올렸을 때) */
+.textarea::-webkit-scrollbar-thumb:hover,
+.replyInputBox textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 255, 0.5); /* 더 선명한 네온색 */
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+  cursor: pointer;
+}
+
+/* 파이어폭스 대응 (표준 속성) */
+.textarea,
+.replyInputBox textarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 255, 0.2) transparent;
+}

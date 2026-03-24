@@ -34,6 +34,7 @@ import GoodsView from "./pages/Goods/GoodsView";
 import GoodsWrite from "./pages/Goods/GoodsWrite";
 import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
+import PaymentResult from "./components/kakaoPay/PaymentResult";
 
 import Process from "./pages/Process/Process";
 
@@ -75,6 +76,10 @@ function App() {
           <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
           <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
           <Route path="/GoodsPreview" element={<Layout><GoodsPreview /></Layout>} />
+
+          <Route path="/payment/success" element={<PaymentResult type="success" />} />
+          <Route path="/payment/fail" element={<PaymentResult type="fail" />} />
+          <Route path="/payment/cancel" element={<PaymentResult type="cancel" />} />
 
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}
