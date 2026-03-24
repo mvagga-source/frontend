@@ -4,14 +4,12 @@
     max-width: 1100px;
     padding: 60px 20px;
 }
-
 .process-nav {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-bottom: 40px;
 }
-
 .nav-btn {
     width: 60px;
     height: 60px;
@@ -24,70 +22,49 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
 .nav-btn.active {
     background: #00f2ff;
     color: #000;
     box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
 }
-
 /* 2. 본문 박스 제거 및 이미지 효과 복구 */
 .ps-info-notice-box {
-    position: relative; /* 이미지 배치를 위한 기준점 유지 */
+    position: relative;
     width: 100%;
     margin-bottom: 100px;
     color: #fff;
-    
-    /* ㅡㅡ 박스 디자인 제거 ㅡㅡ */
-    background: transparent; 
+    background: transparent;
     border: none;
     backdrop-filter: none;
-    
-    /* 스크롤바 제거 */
-    overflow: visible; 
+    overflow: visible;
     max-height: none;
 }
-
-/* ㅡㅡ 사라졌던 이미지 효과 다시 켭니다! ㅡㅡ */
-.ps-info-notice-box::before {
-    content: "";
-    /* 1. 화면에 꽉 차게 고정 (스크롤해도 따라옴) */
-    position: fixed; 
+/* ㅡㅡ 사라졌던 이미지 효과 다시 복구 ㅡㅡ */
+.ps-background-image {
+    position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1); /* 중앙 배치 및 기본 크기 */
-    
-    /* 2. 이미지 설정 (크기를 100%로 키우고 중앙 배치) */
-    width: 100vw;
-    height: 100vh;
-    background-image: url('./노래남자.png'); 
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 90vh;
+    background-image: var(--bg-url);
     background-repeat: no-repeat;
-    background-position: center center; 
-    background-size: contain; /* 이미지가 잘리지 않게 꽉 채움 */
-    
-    /* 3. 등장 효과: 탭 누를 때마다 서서히 나타나며 커짐 */
-    opacity: 0;
-    z-index: -1; /* 모든 글자 뒤로 */
+    background-position: center center;
+    background-size: contain;
+    opacity: 0.2; 
+    z-index: 100; 
     pointer-events: none;
-    display: block;
-    
-    /* 0.3초 뒤부터 1.5초 동안 서서히 커지며 나타남 */
-    animation: imageScaleUp 1.5s ease-out forwards;
-    animation-delay: 0.3s; 
 }
-
-/* 이미지 전용 애니메이션 정의 */
 @keyframes imageScaleUp {
     from {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9); /* 살짝 작은 상태에서 시작 */
+        transform: translate(-50%, -50%) scale(0.9);
     }
     to {
-        opacity: 0.2; /* 너무 진하면 글자가 안 보이니 0.2 정도로 설정 */
-        transform: translate(-50%, -50%) scale(1.0); /* 1.1배까지 서서히 커짐 */
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1.05);
     }
 }
-
 /* 3. 헤더 및 본문 중앙 정렬 (크게크게!) */
 .process-detail-header {
     position: relative;
@@ -95,23 +72,20 @@
     text-align: center;
     margin-bottom: 50px;
 }
-
 .process-title {
     font-size: 3.5rem;
     font-weight: 900;
     margin: 0;
 }
-
 .process-scroll-list {
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    gap: 120px; /* 시원시원한 간격 */
+    align-items: center;
+    gap: 120px;
     padding: 60px 0;
     position: relative;
     z-index: 1;
 }
-
 .scroll-item {
     width: 100%;
     max-width: 900px;
@@ -121,7 +95,6 @@
     animation: fadeInUp 0.8s ease-out forwards;
     animation-delay: calc(var(--item-index) * 0.2s);
 }
-
 .highlight-text {
     font-size: 3rem;
     font-weight: 900;
@@ -129,55 +102,108 @@
     margin-bottom: 20px;
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
 }
-
 .sub-text {
     font-size: 1.4rem;
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.8;
 }
-
 @keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
-.process-result {
-    position: relative;
-    z-index: 1;
-    margin-top: 60px;
-    padding: 25px;
-    background: rgba(0, 242, 255, 0.1);
-    border-radius: 10px;
-    color: #00f2ff;
-    font-size: 1.5rem;
-    text-align: center;
+/* 1. 버튼들을 양옆으로 정렬하는 부모 박스 */
+.ps-result-container {
+    display: flex !important;
+    flex-direction: row !important; /* 강제로 가로 정렬 */
+    justify-content: center !important; /* 가운데로 모음 */
+    align-items: center !important;
+    gap: 20px !important; /* 버튼 사이의 적당한 간격 */
+    width: 100% !important;
+    margin: 50px auto !important; /* 위아래 여백 */
 }
 
+/* 2. 버튼 스타일 (슬림하게 조정) */
+.process-result {
+    position: relative;
+    width: auto !important; /* 고정 너비 대신 글자 길이에 맞춤 */
+    min-width: 240px !important; /* 너무 작아지지 않게 최소치만 설정 */
+    height: 54px !important;
+    padding: 0 30px !important; /* 좌우 여백을 줘서 글자가 숨통 트이게 */
+    
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(0, 242, 255, 0.4) !important;
+    border-radius: 50px !important;
+    backdrop-filter: blur(10px);
+    
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+/* 3. 텍스트 선명도 및 화살표 */
+.process-result .result-text {
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+/* 텍스트 옆에 붙는 깔끔한 꺽쇠 */
+.process-result .result-text::after {
+    content: '〉';
+    margin-left: 10px;
+    font-size: 0.85rem;
+    color: #ffffff;
+    font-weight: 900;
+}
+
+.process-result:hover {
+    transform: translateY(-3px);
+    background: rgba(0, 242, 255, 0.1) !important;
+}
+
+/* 호버 효과는 그대로 유지 */
+.process-result:hover {
+    background: rgba(0, 242, 255, 0.1) !important;
+    border-color: #00f2ff !important;
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 40px rgba(0, 242, 255, 0.3) !important;
+}
+
+/* 4. 장식용 포인트 화살표 (선택사항) */
+.process-result h4::after {
+    content: "〉";
+    font-size: 1.4rem;
+    margin-left: 10px;
+    opacity: 0.8;
+}
 /* 영상 컨테이너 */
 .process-video-wrapper {
     width: 100%;
-    max-width: 900px; /* 텍스트 너비와 맞춰서 크게 배치 */
+    max-width: 900px;
     margin: 60px auto;
     display: flex;
     justify-content: center;
-    
-    /* 영상도 아래에서 위로 올라오게 */
     opacity: 0;
     transform: translateY(40px);
     animation: fadeInUp 0.8s ease-out forwards;
     animation-delay: 0.6s;
 }
-
 .process-video {
     width: 100%;
-    border-radius: 20px; /* 모서리를 둥글게 해서 세련되게 */
-    box-shadow: 0 0 40px rgba(0, 242, 255, 0.2); /* 은은한 민트색 광채 */
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     outline: none;
 }
-
 /* 영상 하단 설명 텍스트 */
 .process-result-label {
     text-align: center;
@@ -187,4 +213,1018 @@
     letter-spacing: 1px;
     margin-top: 30px;
     text-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+}
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+/* Step 1 전용 그리드 레이아웃 */
+.ps-step1-special { padding: 20px 0; }
+.ps-main-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+
+.ps-grid-area { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.ps-grid-card { 
+  background: rgba(255, 255, 255, 0.05); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 15px; 
+  border-radius: 4px;
+}
+.ps-card-title { color: #fff; font-size: 1.1rem; margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px; }
+.ps-card-items { list-style: none; padding: 0; font-size: 0.8rem; color: #ccc; line-height: 1.6; }
+
+/* 오른쪽 알약 모양 리스트 */
+.ps-list-area { display: flex; flex-direction: column; gap: 12px; }
+.ps-pill-row { display: flex; align-items: center; gap: 10px; }
+.ps-pill { 
+  width: 100px; border: 1.5px solid #58a6ff; border-radius: 20px; 
+  text-align: center; color: #fff; font-size: 0.75rem; padding: 4px 0;
+  background: rgba(88, 166, 255, 0.1); flex-shrink: 0;
+}
+.ps-pill-text { font-size: 0.85rem; color: #ddd; margin: 0; }
+
+.ps-mini-video video { width: 100%; border-radius: 4px; margin-top: 10px; border: 1px solid #333; }
+
+/* 공통 에러 방지용 */
+.ps-default-layout { display: flex; flex-direction: column; gap: 20px; }
+
+
+/* --------------------------------------------------------------------------- */
+
+/* Process.css - 하단에 추가 */
+
+/* Step 2 Longform 컨테이너 */
+.ps-step2-longform {
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 80px; /* 블록 간 시원시원한 간격 */
+}
+
+/* 공통 블록 스타일 */
+.ps-block {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 60px;
+}
+.ps-block-title {
+  text-align: center;
+  color: #fff;
+  font-size: 2.2rem;
+  margin-bottom: 50px;
+  text-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+}
+
+/* Block 1: Info Grid (이미지 1) */
+.ps-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.ps-grid-item {
+  background: rgba(22, 27, 34, 0.5);
+  border: 1px solid #30363d;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+.ps-item-header {
+  position: relative;
+  margin-bottom: 15px;
+}
+.ps-item-num {
+  /* 위치 조정 */
+  position: absolute;
+  top: 15px; /* 이미지 안쪽으로 살짝 이동 */
+  left: 15px;
+  z-index: 10;
+
+  /* 크기 및 형태 */
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  /* --- 👇 예시 이미지와 똑같은 스타일 디테일 👇 --- */
+  background: transparent; /* 배경색 없음 */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* 아주 가느다란 흰색/하늘색 보더 */
+  
+  color: #fff; /* 글자색은 깔끔하게 화이트 */
+  font-size: 0.75rem; /* 글씨는 작고 정갈하게 */
+  font-weight: 300; /* 얇은 폰트 두께 */
+  letter-spacing: -0.5px;
+  
+  /* 그림자나 광채 효과 모두 제거 */
+  box-shadow: none;
+}
+.ps-item-img {
+  width: 100%;
+  border-radius: 4px;
+}
+.ps-item-title {
+  color: #c9d1d9;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.ps-item-desc {
+  list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Block 2: Vote Battle (이미지 2) */
+.ps-vote-battle {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  position: relative;
+  padding: 40px 20px;
+  background-image: var(--bg-url);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: contain; /* 실루엣 배경 */
+}
+.ps-battle-col {
+  text-align: center;
+}
+.ps-battle-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  /* CSS 아이콘은 예시입니다. 실제 SVG나 아이콘 폰트로 대체하세요 */
+  border: 1px dashed #58a6ff;
+  border-radius: 10px;
+}
+.ps-battle-title {
+  color: #58a6ff;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+.ps-battle-desc {
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+  color: #c9d1d9;
+  line-height: 1.8;
+}
+
+/* Block 3: Rank Reveal (이미지 3) */
+.ps-rank-reveal {
+  display: flex;
+  gap: 20px;
+}
+.ps-rank-card {
+  flex: 1;
+  background: rgba(22, 27, 34, 0.7);
+  border: 1px solid #30363d;
+  padding: 30px;
+  border-radius: 8px;
+  position: relative;
+  text-align: center;
+}
+.ps-card-num-circle {
+  border: 1px solid #58a6ff;
+  color: #58a6ff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.ps-rank-card-title {
+  color: #c9d1d9;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+.ps-rank-card-desc {
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+  color: #8b949e;
+  line-height: 1.7;
+}
+.ps-main-info-img, .ps-bottom-result-img {
+  width: 100%;
+  max-width: 900px;
+  display: block;
+  margin: 0 auto 30px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ps-vote-battle-bg {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+
+  /* --- 👇 사진의 상하좌우 4면 모서리를 부드럽게 깎는 마스크 👇 --- */
+  mask-image: 
+    linear-gradient(to right, transparent, black 10%, black 90%, transparent),
+    linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: 
+    linear-gradient(to right, transparent, black 10%, black 90%, transparent),
+    linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  
+  /* 마스크가 겹치는 부분만 보이게 설정 (중요) */
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+.ps-battle-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5); /* 텍스트 가독성을 위한 배경 */
+  padding: 20px;
+}
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+
+/* Step 3 전용 전용 롱폼 컨테이너 */
+.ps-step3-longform {
+  display: flex;
+  flex-direction: column;
+  gap: 100px; /* 블록 간 간격 */
+  padding: 40px 0;
+}
+
+.ps3-block-title {
+  text-align: center;
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 70px;
+  text-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+}
+
+/* Block 1: Info Pills (가로 알약형) */
+.ps3-info-pills-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 실루엣 이미지와 리스트 */
+  gap: 30px;
+  align-items: center;
+}
+
+.ps3-sil-img {
+  width: 100%;
+  max-width: 450px;
+  display: block;
+
+  /* 1. 상, 하, 좌, 우 4면을 각각 그라데이션으로 깎음 (가장 확실한 방법) */
+  -webkit-mask-image: 
+    linear-gradient(to right, transparent, black 15%, black 85%, transparent),
+    linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  mask-image: 
+    linear-gradient(to right, transparent, black 40%, black 80%, transparent),
+    linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+
+  /* 마스크 합성 (중첩된 부분만 보여줌) */
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+
+  /* 2. 그림색 아주 진하게 (실루엣 강조) */
+  filter: contrast(2) saturate(0); 
+
+  /* 기존 코드 */
+  color: rgba(0, 0, 0, 0.986) !important;
+}
+
+
+.ps3-pill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ps3-pill-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 30px; /* 알약 모양 */
+  padding: 10px 20px;
+}
+
+.ps3-pill-label {
+  width: 130px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.ps3-pill-desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Block 2: Vote Grid (4분할) */
+.ps3-vote-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.ps3-grid-card {
+  background: rgba(22, 27, 34, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 25px;
+  text-align: center;
+  position: relative;
+}
+
+.ps3-card-num {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
+
+/* 2. 하단 카드 이미지 (투명화 없음, 일반 출력) */
+.ps3-card-img {
+  width: 100%;
+  border-radius: 4px; /* 투명화 대신 살짝 라운드만 */
+  margin: 20px 0;
+  max-height: 140px;
+  object-fit: cover;
+  /* 카드 이미지는 필터를 약하게 주거나 제거하세요 */
+  filter: brightness(1) contrast(1); 
+}
+.ps3-card-title {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.ps3-card-desc {
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* Block 3: Rank Path (3단계 프로세스) */
+.ps3-rank-path-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+.ps3-path-item {
+  flex: 1;
+  max-width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+/* 네온 박스 (아이콘 영역) */
+.ps3-path-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  /* border: 1px solid #58a6ff; */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* 이미지가 박스 밖으로 안 나가게 */
+  position: relative;
+  /* box-shadow: 0 0 10px rgba(88, 166, 255, 0.5); 네온 효과 */
+}
+/* 박스 안의 이미지 전용 효과 */
+.ps3-path-inner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 박스에 꽉 채움 */
+
+  
+
+  
+}
+.ps3-path-title {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.ps3-path-desc {
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+}
+
+/* 화살표 구현 (데이터에는 화살표 없지만 이미지에는 있음) */
+.ps3-path-arrow {
+  position: absolute;
+  top: 40px; /* 아이콘 높이의 절반 */
+  right: -25px; /* 화살표 크기에 맞춰 조절 */
+  width: 50px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* 4차 전용 롱폼 레이아웃 */
+.ps-step4-longform {
+  padding: 20px 0;
+}
+
+.ps4-block {
+  margin-bottom: 80px;
+}
+
+.ps4-block-title {
+  font-size: 2.2rem;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* 4차 그리드 (4분할) */
+.ps4-grid-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 30px !important; /* 간격을 살짝 넓혀 시원하게 배치 */
+    width: 100% !important;
+    padding: 20px 0;
+}
+
+/* 개별 카드: 가로로 배치해서 아이콘을 끝으로 보냄 */
+.ps4-grid-item {
+  display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important; /* 아이콘을 상단이 아닌 중앙 정렬로 변경 (쏠림 방지) */
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(88, 166, 255, 0.15) !important;
+    border-radius: 16px !important;
+    padding: 40px !important; /* 패딩을 늘려 내부 공간 확보 */
+    min-height: 120px !important;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.ps4-grid-item:hover {
+    border-color: rgba(88, 166, 255, 0.5) !important;
+    transform: translateY(-5px);
+}
+/* 3. 왼쪽 영역: 아이콘과 제목 수직 배치 */
+.ps4-grid-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 아이콘과 제목 중앙 맞춤 */
+    width: 150px; /* 제목 너비 고정 */
+    flex-shrink: 0; /* 우측 영역이 넓어져도 줄어들지 않음 */
+}
+
+/* 왼쪽 텍스트 묶음 */
+.ps4-grid-content {
+    flex: 1 !important;
+    text-align: left !important;
+}
+
+.ps4-item-title {
+    color: #58a6ff !important;
+    font-size: 1.4rem !important;
+    margin-bottom: 10px !important;
+    font-weight: bold !important;
+}
+
+/* 4. 오른쪽 영역: 설명 글 우측 끝 배치 (칼정렬) */
+.ps4-grid-right {
+    flex: 1; /* 남은 공간 모두 차지 */
+    padding-left: 20px; /* 왼쪽 제목과의 간격 */
+    display: flex;
+    justify-content: flex-end; /* 중요: 설명 글을 우측 끝으로 밀어붙임 */
+}
+
+.ps4-item-desc {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 250px; /* 설명 글 너비 고정 (칼정렬 핵심) */
+    text-align: left; /* 설명 글 자체는 왼쪽 정렬 */
+}
+
+.ps4-item-desc li {
+    color: #b0b8c1 !important; /* 세련된 그레이 화이트 (탁함 방지) */
+    font-size: 0.95rem !important;
+    line-height: 1.7 !important; /* 줄간격 조절로 가독성 확보 */
+    margin-bottom: 7px !important;
+    position: relative;
+    padding-left: 15px; /* 하이픈 위치 보정 */
+}
+
+/* 리스트 앞의 하이픈(-) 정렬 */
+.ps4-item-desc li::before {
+    content: "- ";
+    position: absolute;
+    left: 0;
+    color: #58a6ff;
+}
+/* 오른쪽 아이콘 박스 */
+.ps4-icon-box {
+    width: 35px !important; /* 아이콘 크기 고정 */
+    height: 35px !important;
+    margin-bottom: 20px !important; /* 제목과의 수직 간격 확보 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ps4-img-content {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 비율 유지 */
+    filter: drop-shadow(0 0 10px rgba(88, 166, 255, 0.8)); /* 선명한 글로우 */
+}
+
+/* 4차 리스트 (알약형) */
+.ps4-pill-row {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 50px;
+  margin-bottom: 15px;
+  padding: 10px 30px;
+}
+
+.ps4-pill-label {
+  width: 150px;
+  color: #58a6ff;
+  font-weight: bold;
+  border-right: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+.ps4-pill-desc {
+  padding-left: 20px;
+  color: #eee;
+}
+
+/* 4차 순위 발표 (카드형) */
+.ps4-rank-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ps4-rank-card {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ps4-img-box {
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.ps4-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8) contrast(1.2);
+}
+
+.ps4-card-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* 하단 버튼 컨테이너 (양옆 정렬) */
+.ps-result-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 25px !important;
+    margin: 80px auto !important;
+}
+
+.process-result {
+    width: 300px !important;
+    height: 56px !important;
+    border-radius: 50px !important;
+    border: 1px solid rgba(0, 242, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.process-result .result-text {
+    color: #fff !important;
+    font-size: 1rem !important;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.8) !important;
+}
+
+/* 텍스트 옆 꺽쇠 */
+.process-result .result-text::after {
+    content: '〉';
+    margin-left: 10px;
+    color: #00f2ff;
+}
+
+/* 전체 컨테이너 */
+.ps-step4-container {
+    padding: 40px 0;
+    width: 100%;
+}
+
+.ps4-section {
+    margin-bottom: 60px;
+}
+
+.ps4-section-title {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* 과제 구성 그리드 */
+.ps4-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.ps4-grid-card {
+    position: relative; /* 아이콘 배치를 위해 필수 */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 40px 30px; /* 넉넉한 패딩 */
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* 아이콘 위치: 우측 상단 끝 */
+.ps4-card-icon {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 40px;
+    height: 40px;
+}
+
+.ps4-card-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.8;
+}
+
+/* 왼쪽 텍스트 섹션 */
+.ps4-text-section {
+    display: flex !important;
+    flex-direction: column !important;
+    text-align: left !important;
+    flex: 1 !important;
+    padding-right: 25px; /* 아이콘과의 최소 간격 */
+}
+
+/* 텍스트 스타일 */
+.ps4-item-title {
+    color: #58a6ff !important;
+    font-size: 1.6rem !important; /* 제목 크기 소폭 확대 */
+    font-weight: 800 !important;
+    margin: 0px 0 25px !important; /* 설명글과의 간격 확대 */
+    letter-spacing: -0.02em;
+}
+
+.ps4-item-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.ps4-item-list li {
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 5px;
+}
+
+.ps4-item-list li::before {
+    content: "- ";
+}
+
+/* 알약형 스타일 (두 번째 섹션) */
+.ps4-pill-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 50px;
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.ps4-pill-badge {
+    min-width: 140px;
+    padding: 5px 15px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ps4-pill-content {
+    padding-left: 20px;
+    color: #ddd;
+    margin: 0;
+}
+.ps4-item-desc li {
+    color: #b0b8c1 !important;
+    font-size: 1rem !important;
+    line-height: 1.8 !important;
+    margin-bottom: 8px !important;
+    position: relative;
+    padding-left: 18px; /* 하이픈 간격 조정 */
+}
+
+.ps4-item-desc li::before {
+    content: "-" !important;
+    position: absolute;
+    left: 0;
+    color: #58a6ff;
+    font-weight: bold;
+}
+
+/* 오른쪽 아이콘 섹션 (비율 및 위치 조정) */
+.ps4-icon-section {
+    width: 85px !important; /* 아이콘 크기 최적화 */
+    height: 85px !important;
+    flex-shrink: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(88, 166, 255, 0.05); /* 아이콘 배경에 은은한 효과 */
+    border-radius: 12px;
+}
+
+.ps4-icon-img {
+    width: 70% !important; /* 박스 내부에서 적당한 비율 유지 */
+    height: 70% !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.6)); /* 글로우 효과 추가 */
+}
+
+
+
+/* ---------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ==========================================================================
+   Step 4 & 5 통합 스타일 (4차 톤앤매너 기준)
+   ========================================================================== */
+
+/* --- 공통 블록 타이틀 (4차 스타일: 밑줄 없음) --- */
+.ps4-step-title {
+    font-size: 2.2rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 50px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    /* 5차에서도 밑줄 안 나오게 강제 적용 */
+    position: relative;
+    padding-bottom: 0 !important;
+}
+.ps4-step-title::after {
+    display: none !important; /* 4차처럼 밑줄 절대 안 나오게 함 */
+}
+
+
+/* ==========================================================================
+   Step 5 과제 (MV 촬영) - 4차 스타일로 완벽 변경
+   ========================================================================== */
+
+/* 1. 레이아웃 컨테이너 */
+.ps-step5-longform {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px 0;
+}
+
+.ps5-block {
+    margin-bottom: 80px;
+}
+
+/* 2. 상단 4열 가로배치 카드 (파이널 무대) */
+.ps5-final-stage {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.ps5-final-card {
+    text-align: center;
+}
+
+.ps5-final-num {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 24px;
+    margin-bottom: 12px;
+}
+
+.ps5-final-img-box {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.ps5-final-img-box:hover {
+    border-color: #58a6ff;
+    transform: translateY(-5px);
+}
+
+.ps5-final-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ps5-final-card-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.ps5-final-card-desc {
+    list-style: none;
+    padding: 0;
+}
+
+.ps5-final-card-desc li {
+    font-size: 0.9rem;
+    color: #aaa;
+    text-align: left;
+    line-height: 1.6;
+    margin-bottom: 4px;
+}
+
+/* 3. 메인 그리드 카드 (불투명도 강화 버전) */
+.ps5-grid-card {
+    position: relative;
+    /* 밤티 제거: 불투명도를 0.8로 높여 묵직하게 변경 */
+    background: rgba(15, 20, 30, 0.85) !important; 
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    border-radius: 12px;
+    padding: 40px 30px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: row; /* 텍스트와 아이콘 가로 배치 */
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 우측 상단 아이콘 섹션 */
+.ps5-icon-section {
+    width: 80px !important;
+    height: 80px !important;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(88, 166, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(88, 166, 255, 0.2);
+}
+
+.ps5-icon-img {
+    width: 60% !important;
+    height: 60% !important;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.6));
+}
+
+/* 왼쪽 텍스트 섹션 */
+.ps5-text-section {
+    flex: 1;
+    text-align: left;
+    padding-right: 20px;
+}
+
+.ps5-item-title {
+    color: #58a6ff !important;
+    font-size: 1.7rem !important; /* 가독성을 위해 더 크게 */
+    font-weight: 900 !important;
+    margin: 0 0 20px 0 !important;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+}
+
+.ps5-item-desc {
+    list-style: none;
+    padding: 0;
+}
+
+.ps5-item-desc li {
+    color: #cbd5e0 !important;
+    font-size: 1.05rem !important;
+    line-height: 1.8 !important;
+    margin-bottom: 10px !important;
+    position: relative;
+    padding-left: 20px;
+}
+
+.ps5-item-desc li::before {
+    content: "-" !important;
+    position: absolute;
+    left: 0;
+    color: #58a6ff;
+    font-weight: bold;
+}
+
+/* 4. 알약형 리스트 (중간 섹션용) */
+.ps5-pill-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    margin-bottom: 15px;
+    padding: 12px 25px;
+}
+
+.ps5-pill-badge {
+    min-width: 140px;
+    color: #58a6ff;
+    font-weight: 800;
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    padding-right: 20px;
+}
+
+.ps5-pill-content {
+    padding-left: 20px;
+    color: #eee;
+    font-size: 1rem;
+    margin: 0;
 }
