@@ -26,7 +26,6 @@ function GoodsReview({ gno }) {
         .then((res) => {
             if (res.data?.success) {
                 console.log(res);
-                console.log("test");
                 const newReviews = res.data.list || [];
                 const totalCount = res.data.totalCount || 0; // 댓글 전체 개수
                 const serverLastGroup = res.data.lastGrno || 0; // 다음 기준 그룹

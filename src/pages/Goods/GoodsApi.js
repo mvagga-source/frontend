@@ -55,7 +55,7 @@ export const ReviewWriteApi = (commentData) => {
 
 // 굿즈 리뷰 댓글 수정하기
 export const ReviewUpdateApi = (commentData) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/update`, commentData);
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/update`, commentData); 
 };
 
 // 굿즈 리뷰 댓글 삭제하기
