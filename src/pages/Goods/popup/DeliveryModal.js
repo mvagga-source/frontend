@@ -65,11 +65,17 @@ const DeliveryModal = ({ isOpen, onClose, totalPrice, goods, count }) => {
                 <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.inputGroup}>
                     <label>받는 사람</label>
-                    <SaveInput name="receiverName" placeholder="이름을 입력하세요" required />
+                    <SaveInput name="receiverName" maxLength="50" placeholder="이름을 입력하세요" required />
                 </div>
                 <div className={styles.inputGroup}>
                     <label>연락처</label>
-                    <SaveInput name="receiverPhone" placeholder="010-0000-0000" required />
+                    <SaveInput name="receiverPhone" 
+                    maxLength="13"
+                    onInput={(e) => {
+                        e.target.value = e.target.value
+                            .replace(/[^0-9]/, '')
+                            .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+                    }} placeholder="010-0000-0000" required />
                 </div>
                 <div className={styles.inputGroup}>
                     <label>배송 주소</label>
@@ -82,11 +88,11 @@ const DeliveryModal = ({ isOpen, onClose, totalPrice, goods, count }) => {
                     />
                     <SearchBtn type="button" onClick={handleAddressSearch}>주소 검색</SearchBtn>
                     </div>
-                    <SaveInput name="detailAddress" placeholder="상세 주소를 입력하세요" required />
+                    <SaveInput name="detailAddress" maxLength="255" placeholder="상세 주소를 입력하세요" required />
                 </div>
                 <div className={styles.inputGroup}>
                     <label>배송 요청사항</label>
-                    <SaveInput name="orderRequest" placeholder="예: 문 앞에 놓아주세요" />
+                    <SaveInput name="orderRequest" maxLength="255" placeholder="예: 문 앞에 놓아주세요" />
                 </div>
                 <div className={styles.paymentBox}>
                     <p>최종 결제 금액 : <span>{totalPrice.toLocaleString()}원</span></p>

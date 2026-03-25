@@ -1,56 +1,22 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import {
+  getIdolsApi,
+  getRankingApi,
+  getVoteStatusApi,
+  submitVoteApi,
+} from "../../api/auditionApi";
 import "./Vote.css";
 
-const MAX_SELECT = 7; // 한 번에 선택할 수 있는 최대 아이돌 수(관리자 조정값)
-
-const ROUND_INFO = {// 현재 진행 중인 오디션 회차 정보
-  round: 2,
-  title: "2차 오디션",
-  period: "2026.02.12 ~ 2026.02.18",
-};
-
-const IDOLS = [// 투표 대상 아이돌 목록
-    { id: 1,  name: "김지수", group: "NOVA",   votes: 89214 },
-    { id: 2,  name: "박민준", group: "STAR",   votes: 72100 },
-    { id: 3,  name: "이서연", group: "LUNA",   votes: 65833 },
-    { id: 4,  name: "최하늘", group: "AURORA", votes: 51302 },
-    { id: 5,  name: "정은비", group: "PRISM",  votes: 44721 },
-    { id: 6,  name: "강태양", group: "BLAZE",  votes: 38490 },
-    { id: 7,  name: "윤하린", group: "HALO",   votes: 33201 },
-    { id: 8,  name: "오세진", group: "NOVA",   votes: 29874 },
-    { id: 9,  name: "백소율", group: "LUNA",   votes: 25430 },
-    { id: 10, name: "임도현", group: "STAR",   votes: 21009 },
-    { id: 11, name: "신아름", group: "PRISM",  votes: 18762 },
-    { id: 12, name: "류찬혁", group: "BLAZE",  votes: 15344 },
-    { id: 13, name: "한소희", group: "LUNA",   votes: 13820 },
-    { id: 14, name: "오지환", group: "HALO",   votes: 12940 },
-    { id: 15, name: "박서준", group: "NOVA",   votes: 12100 },
-    { id: 16, name: "김태리", group: "PRISM",  votes: 11380 },
-    { id: 17, name: "이도현", group: "STAR",   votes: 10750 },
-    { id: 18, name: "전소니", group: "BLAZE",  votes: 10020 },
-    { id: 19, name: "남주혁", group: "AURORA", votes: 9440  },
-    { id: 20, name: "고윤정", group: "LUNA",   votes: 8890  },
-    { id: 21, name: "차은우", group: "HALO",   votes: 8310  },
-    { id: 22, name: "아이유", group: "NOVA",   votes: 7760  },
-    { id: 23, name: "송강",   group: "STAR",   votes: 7200  },
-    { id: 24, name: "김유정", group: "PRISM",  votes: 6650  },
-    { id: 25, name: "변우석", group: "BLAZE",  votes: 6110  },
-    { id: 26, name: "박보영", group: "AURORA", votes: 5580  },
-    { id: 27, name: "위하준", group: "LUNA",   votes: 5040  },
-    { id: 28, name: "손예진", group: "HALO",   votes: 4510  },
-    { id: 29, name: "정해인", group: "NOVA",   votes: 3970  },
-    { id: 30, name: "한지민", group: "STAR",   votes: 3440  },
-];
+// 현재 진행 중인 오디션 ID (추후 API로 동적 처리)
+const CURRENT_AUDITION_ID = 1;
 
 const AVATAR_COLORS = [
   "#1a2c4e","#1e1a2c","#1a2c1e","#2c1a1e",
   "#1a1e2c","#2c2a1a","#1e2c1a","#2a1a2c",
   "#1a2a2c","#2c1a2a","#2a2c1a","#1e2a1e",
 ];
-
-const maxVotes = Math.max(...IDOLS.map((i) => i.votes));
 
 const rankColor = (rank) => {
   if (rank === 1) return "#ffd700";
@@ -62,48 +28,117 @@ const rankColor = (rank) => {
 export default function Vote() {
   const { user } = useAuth();
 
-  const [selected,    setSelected]    = useState([]); // 선택된 id 배열
-  const [voted,       setVoted]       = useState([]); // 투표 완료 id 배열
+  /* ── API 상태 ── */
+  const [idols,        setIdols]        = useState([]);   // 투표 대상 아이돌 목록
+  const [rankingIdols, setRankingIdols] = useState([]);   // 순위표 모달용 랭킹 데이터
+  const [loading,      setLoading]      = useState(true); // 아이돌 목록 로딩
+  const [isDone,       setIsDone]       = useState(false);// 오늘 이미 투표했는지
+
+  /* ── 투표 선택 상태 ── */
+  const [selected,    setSelected]    = useState([]); // 선택된 idolId 배열
   const [searchQuery, setSearchQuery] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [showSearch,  setShowSearch]  = useState(false);
   const [showRanking, setShowRanking] = useState(false);
 
+  // maxVoteCount는 API로 받아올 수 있지만 임시로 7 고정
+  const MAX_SELECT = 7;
+
   const isFull  = selected.length >= MAX_SELECT;
   const hasVote = selected.length > 0;
-  const isDone  = voted.length > 0;
 
+  /* ── 아이돌 목록 + 오늘 투표 여부 로드 ── */
+  useEffect(() => {
+    setLoading(true);
+
+    // 아이돌 목록 조회
+    getIdolsApi(CURRENT_AUDITION_ID)
+      .then((res) => {
+        console.log("✅ 아이돌 목록:", res.data);
+        setIdols(res.data);
+      })
+      .catch((err) => {
+        console.error("❌ 아이돌 목록 실패:", err);
+      })
+      .finally(() => setLoading(false));
+
+    // 로그인 상태일 때만 오늘 투표 여부 확인
+    if (user) {
+      getVoteStatusApi(CURRENT_AUDITION_ID)
+        .then((res) => {
+          console.log("✅ 투표 여부:", res.data);
+          setIsDone(res.data); // true면 오늘 이미 투표함
+        })
+        .catch((err) => {
+          console.error("❌ 투표 여부 확인 실패:", err);
+        });
+    }
+  }, [user]);
+
+  /* ── 순위표 모달 열 때 랭킹 조회 ── */
+  useEffect(() => {
+    if (!showRanking) return;
+    getRankingApi(CURRENT_AUDITION_ID)
+      .then((res) => {
+        console.log("✅ 랭킹:", res.data);
+        // API 응답: [[IdolDto, rawVotes, totalBonus, finalVotes], ...]
+        setRankingIdols(res.data);
+      })
+      .catch((err) => {
+        console.error("❌ 랭킹 조회 실패:", err);
+      });
+  }, [showRanking]);
+
+  /* ── 최대 득표수 계산 (득표 바 기준) ── */
+  const maxVotes = useMemo(() => {
+    if (idols.length === 0) return 1;
+    return Math.max(...idols.map((i) => i.votes ?? 0));
+  }, [idols]);
+
+  /* ── 검색 필터링 ── */
   const filtered = useMemo(() =>
     searchQuery
-      ? IDOLS.filter((i) =>
-          i.name.includes(searchQuery) || i.group.includes(searchQuery)
+      ? idols.filter((i) =>
+          i.name.includes(searchQuery) ||
+          (i.groupName && i.groupName.includes(searchQuery))
         )
-      : IDOLS,
-    [searchQuery]
+      : idols,
+    [idols, searchQuery]
   );
 
-  const sortedIdols = [...IDOLS].sort((a, b) => b.votes - a.votes);
-
-  /* 카드 선택/해제 */
-  const toggle = (id) => {
+  /* ── 카드 선택/해제 ── */
+  const toggle = (idolId) => {
     setSelected((prev) => {
-      if (prev.includes(id)) return prev.filter((i) => i !== id);
+      if (prev.includes(idolId)) return prev.filter((i) => i !== idolId);
       if (prev.length >= MAX_SELECT) return prev;
-      return [...prev, id];
+      return [...prev, idolId];
     });
   };
 
-  /* 칩에서 개별 해제 */
-  const deselect = (id) => setSelected((prev) => prev.filter((i) => i !== id));
+  /* ── 칩에서 개별 해제 ── */
+  const deselect = (idolId) =>
+    setSelected((prev) => prev.filter((i) => i !== idolId));
 
-  /* 투표 제출 */
+  /* ── 투표 제출 ── */
   const handleVote = () => {
     if (!user)    { alert("로그인 후 이용해주세요."); return; }
     if (!hasVote) return;
-    setVoted([...selected]);
+    if (isDone)   return;
+
+    submitVoteApi(CURRENT_AUDITION_ID, selected)
+      .then(() => {
+        console.log("✅ 투표 완료");
+        setIsDone(true);
+        setSelected([]);
+      })
+      .catch((err) => {
+        console.error("❌ 투표 실패:", err);
+        const msg = err.response?.data || "투표 중 오류가 발생했어요.";
+        alert(msg);
+      });
   };
 
-  /* 검색 초기화만 */
+  /* ── 검색 초기화 ── */
   const resetSearch = () => { setSearchQuery(""); setSearchInput(""); };
 
   const handleSearchSubmit = (e) => {
@@ -112,16 +147,25 @@ export default function Vote() {
     setShowSearch(false);
   };
 
+  /* ── 로딩 화면 ── */
+  if (loading) {
+    return (
+      <div className="av-wrap">
+        <div className="av-loading">참가자 목록을 불러오는 중...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="av-wrap">
 
       {/* ── 상단 고정 바 ── */}
       <div className="av-topbar">
         <div className="av-topbar-left">
-          <span className="av-round-badge">{ROUND_INFO.round}차</span>
+          <span className="av-round-badge">{CURRENT_AUDITION_ID}차</span>
           <div>
-            <p className="av-round-title">{ROUND_INFO.title}</p>
-            <p className="av-round-period">{ROUND_INFO.period}</p>
+            <p className="av-round-title">오디션 투표</p>
+            <p className="av-round-period">진행 중</p>
           </div>
         </div>
 
@@ -135,7 +179,7 @@ export default function Vote() {
           <button
             className={`av-btn av-btn-vote${isDone ? " done" : hasVote ? " active" : ""}`}
             onClick={handleVote}
-            disabled={!hasVote && !isDone}
+            disabled={isDone || !hasVote}
           >
             {isDone ? "투표완료 ✓" : "투표하기"}
           </button>
@@ -171,18 +215,25 @@ export default function Vote() {
         </div>
       )}
 
+      {/* ── 오늘 이미 투표한 경우 안내 배너 ── */}
+      {isDone && user && (
+        <div className="av-done-notice">
+          오늘 투표가 완료됐어요. 내일 다시 투표할 수 있어요 🎉
+        </div>
+      )}
+
       {/* ── 선택된 아이돌 칩 바 ── */}
       <div className="av-selected-bar">
         <span className="av-selected-bar-label">선택</span>
         {selected.length === 0 ? (
           <span className="av-sel-bar-empty">선택된 아이돌이 없어요</span>
         ) : (
-          selected.map((id, idx) => {
-            const idol = IDOLS.find((i) => i.id === id);
+          selected.map((idolId, idx) => {
+            const idol = idols.find((i) => i.idolId === idolId);
             return (
-              <span key={id} className="av-sel-chip">
-                <span>{idx + 1}. {idol.name}</span>
-                <button onClick={() => deselect(id)}>✕</button>
+              <span key={idolId} className="av-sel-chip">
+                <span>{idx + 1}. {idol?.name}</span>
+                <button onClick={() => deselect(idolId)}>✕</button>
               </span>
             );
           })
@@ -192,33 +243,33 @@ export default function Vote() {
       {/* ── 아이돌 카드 그리드 ── */}
       <div className="av-grid">
         {filtered.map((idol) => {
-          const isSel   = selected.includes(idol.id);
-          const isVoted = voted.includes(idol.id);
-          const selIdx  = selected.indexOf(idol.id);
+          const isSel   = selected.includes(idol.idolId);
+          const selIdx  = selected.indexOf(idol.idolId);
           const isMaxed = isFull && !isSel;
-          const pct     = Math.round((idol.votes / maxVotes) * 100);
+          const votes   = idol.votes ?? 0;
+          const pct     = maxVotes > 0 ? Math.round((votes / maxVotes) * 100) : 0;
 
           return (
             <div
-              key={idol.id}
-              className={`av-card${isSel ? " selected" : ""}${isVoted ? " voted" : ""}${isMaxed ? " maxed" : ""}`}
-              onClick={() => toggle(idol.id)}
+              key={idol.idolId}
+              className={`av-card${isSel ? " selected" : ""}${isDone ? " voted" : ""}${isMaxed ? " maxed" : ""}`}
+              onClick={() => !isDone && toggle(idol.idolId)}
             >
-              {isVoted && <span className="av-voted-badge">투표완료</span>}
-              {isSel   && <span className="av-sel-num">{selIdx + 1}</span>}
+              {isDone   && <span className="av-voted-badge">투표완료</span>}
+              {isSel    && <span className="av-sel-num">{selIdx + 1}</span>}
 
               <div
                 className="av-avatar"
-                style={{ background: AVATAR_COLORS[(idol.id - 1) % AVATAR_COLORS.length] }}
+                style={{ background: AVATAR_COLORS[(idol.idolId - 1) % AVATAR_COLORS.length] }}
               >
                 <span className="av-avatar-initial">{idol.name.charAt(0)}</span>
               </div>
 
               <p className="av-idol-name">{idol.name}</p>
-              <p className="av-idol-group">{idol.group}</p>
+              <p className="av-idol-group">{idol.groupName}</p>
 
               <div className="av-votes-area">
-                <span className="av-votes-num">{idol.votes.toLocaleString()}</span>
+                <span className="av-votes-num">{votes.toLocaleString()}</span>
                 <div className="av-votes-bar-bg">
                   <div className="av-votes-bar-fill" style={{ width: `${pct}%` }} />
                 </div>
@@ -264,7 +315,7 @@ export default function Vote() {
         </div>
       )}
 
-      {/* ── 순위표 모달 ── */}
+      {/* ── 순위표 모달 (LeaderBoard 기능 흡수) ── */}
       {showRanking && (
         <div className="av-modal-overlay" onClick={() => setShowRanking(false)}>
           <div className="av-modal av-modal-ranking" onClick={(e) => e.stopPropagation()}>
@@ -273,29 +324,40 @@ export default function Vote() {
               <button className="av-modal-close" onClick={() => setShowRanking(false)}>✕</button>
             </div>
             <ul className="av-ranking-list">
-              {sortedIdols.map((idol, idx) => {
-                const n   = idx + 1;
-                const rc  = rankColor(n);
-                const pct = Math.round((idol.votes / maxVotes) * 100);
-                return (
-                  <li key={idol.id} className="av-ranking-row">
-                    <span className="av-ranking-num" style={{ color: rc }}>
-                      {String(n).padStart(2, "0")}
-                    </span>
-                    <div className="av-ranking-info">
-                      <span className="av-ranking-name">{idol.name}</span>
-                      <span className="av-ranking-group">{idol.group}</span>
-                    </div>
-                    <div className="av-ranking-bar-bg">
-                      <div className="av-ranking-bar-fill"
-                        style={{ width: `${pct}%`, background: rc }} />
-                    </div>
-                    <span className="av-ranking-votes" style={{ color: rc }}>
-                      {idol.votes.toLocaleString()}
-                    </span>
-                  </li>
-                );
-              })}
+              {rankingIdols.length === 0 ? (
+                <li className="av-ranking-empty">순위 데이터를 불러오는 중...</li>
+              ) : (
+                rankingIdols.map((row, idx) => {
+                  // API 응답: [IdolDto, rawVotes, totalBonus, finalVotes]
+                  const idol       = row[0];
+                  const finalVotes = row[3] ?? 0;
+                  const n          = idx + 1;
+                  const rc         = rankColor(n);
+                  const maxFinal   = rankingIdols[0]?.[3] ?? 1;
+                  const pct        = Math.round((finalVotes / maxFinal) * 100);
+
+                  return (
+                    <li key={idol.idolId} className="av-ranking-row">
+                      <span className="av-ranking-num" style={{ color: rc }}>
+                        {String(n).padStart(2, "0")}
+                      </span>
+                      <div className="av-ranking-info">
+                        <span className="av-ranking-name">{idol.name}</span>
+                        <span className="av-ranking-group">{idol.groupName}</span>
+                      </div>
+                      <div className="av-ranking-bar-bg">
+                        <div
+                          className="av-ranking-bar-fill"
+                          style={{ width: `${pct}%`, background: rc }}
+                        />
+                      </div>
+                      <span className="av-ranking-votes" style={{ color: rc }}>
+                        {Number(finalVotes).toLocaleString()}
+                      </span>
+                    </li>
+                  );
+                })
+              )}
             </ul>
           </div>
         </div>

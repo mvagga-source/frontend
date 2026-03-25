@@ -15,7 +15,6 @@ import MVideo from "./pages/Video/MVideo";
 // Audition pages
 import AuditionVote from "./pages/Audition/Vote";
 import IdolList from "./pages/Audition/IdolList";
-import LeaderBoard from "./pages/Audition/LeaderBoard";
 import Contest from "./pages/Audition/Contest";
 
 // My pages
@@ -32,6 +31,7 @@ import BoardPreview from "./pages/Board/BoardPreview";
 
 import GoodsView from "./pages/Goods/GoodsView";
 import GoodsWrite from "./pages/Goods/GoodsWrite";
+import GoodsUpdate from "./pages/Goods/GoodsUpdate";
 import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
 import PaymentResult from "./components/kakaoPay/PaymentResult";
@@ -52,7 +52,6 @@ function App() {
 
           <Route path="/Audition/vote" element={<Layout><AuditionVote/></Layout>}/>
           <Route path="/Audition/idols" element={<Layout><IdolList/></Layout>}/>
-          <Route path="/Audition/ranking" element={<Layout><LeaderBoard/></Layout>}/>
           <Route path="/Audition/contest" element={<Layout><Contest/></Layout>}/>
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
@@ -75,6 +74,7 @@ function App() {
           <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
           <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
           <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
+          <Route path="/GoodsUpdate/:gno" element={<Layout><GoodsUpdate/></Layout>} />
           <Route path="/GoodsPreview" element={<Layout><GoodsPreview /></Layout>} />
 
           <Route path="/Payment/Success" element={<PaymentResult type="success" />} />
