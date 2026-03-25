@@ -15,7 +15,6 @@ import MVideo from "./pages/Video/MVideo";
 // Audition pages
 import AuditionVote from "./pages/Audition/Vote";
 import IdolList from "./pages/Audition/IdolList";
-import LeaderBoard from "./pages/Audition/LeaderBoard";
 import Contest from "./pages/Audition/Contest";
 
 // My pages
@@ -53,7 +52,6 @@ function App() {
 
           <Route path="/Audition/vote" element={<Layout><AuditionVote/></Layout>}/>
           <Route path="/Audition/idols" element={<Layout><IdolList/></Layout>}/>
-          <Route path="/Audition/ranking" element={<Layout><LeaderBoard/></Layout>}/>
           <Route path="/Audition/contest" element={<Layout><Contest/></Layout>}/>
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>

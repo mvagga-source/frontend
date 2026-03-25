@@ -418,3 +418,32 @@
   .av-selected-bar{ padding: 10px 16px; }
   .av-grid        { padding: 20px 16px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
 }
+
+/* 투표 완료 안내 배너 */
+.av-done-notice {
+  margin: 0 40px 12px;
+  background: rgba(0, 242, 255, 0.07);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--neon-blue);
+  text-align: center;
+}
+
+/* 로딩 */
+.av-loading {
+  text-align: center;
+  padding: 80px 40px;
+  font-size: 14px;
+  color: rgba(232,244,248,0.45);
+}
+
+/* 순위표 모달 빈 상태 */
+.av-ranking-empty {
+  text-align: center;
+  padding: 30px;
+  color: rgba(232,244,248,0.35);
+  font-size: 13px;
+  list-style: none;
+}
