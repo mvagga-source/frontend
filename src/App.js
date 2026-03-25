@@ -77,9 +77,9 @@ function App() {
           <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
           <Route path="/GoodsPreview" element={<Layout><GoodsPreview /></Layout>} />
 
-          <Route path="/payment/success" element={<PaymentResult type="success" />} />
-          <Route path="/payment/fail" element={<PaymentResult type="fail" />} />
-          <Route path="/payment/cancel" element={<PaymentResult type="cancel" />} />
+          <Route path="/Payment/Success" element={<PaymentResult type="success" />} />
+          <Route path="/Payment/Fail" element={<PaymentResult type="fail" />} />
+          <Route path="/Payment/Cancel" element={<PaymentResult type="cancel" />} />
 
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}

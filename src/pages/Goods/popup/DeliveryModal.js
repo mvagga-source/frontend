@@ -50,6 +50,7 @@ const DeliveryModal = ({ isOpen, onClose, totalPrice, goods, count }) => {
                         
                         // 결제창으로 이동
                         window.location.href = res.data.next_redirect_pc_url;
+                        //카톡 useNavigate는 안됨
                         onClose();
                     }
                 }
