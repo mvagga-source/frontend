@@ -10,6 +10,7 @@ import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import DaumAddrSearchModal from "../../components/DaumAddrModal/DaumAddrModal";
 import { GoodsUpdateApi, getGoodsDetailApi } from "./GoodsApi";
 import { useAuth } from "../../context/AuthContext";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function GoodsUpdate() {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ function GoodsUpdate() {
     }, [gno]);
 
     // 이미지 변경 핸들러
-    const handleMainImgChange = (e) => {
+    /*const handleMainImgChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setMainImg(file);
@@ -65,7 +66,7 @@ function GoodsUpdate() {
             };
             reader.readAsDataURL(file);
         }
-    };
+    };*/
 
     // 이미지 삭제 핸들러
     const handleRemoveMainImg = () => {
@@ -117,14 +118,33 @@ function GoodsUpdate() {
         // 새 창 열기 (Route는 아래 2번 단계에서 설정)
         window.open("/GoodsPreview", "_blank", "width=1100,height=900,scrollbars=yes");
     }
+    // 재고 입력 시 상태 변경 핸들러
+    const handleStockChange = (e) => {
+        const value = parseInt(e.target.value) || 0;
+        const statusSelect = formRef.current.querySelector('select[name="status"]'); // name="status"인 요소 찾기
 
+        if (value === 0) {
+            statusSelect.value = "품절"; // 재고 0 입력 시 '품절'로 강제 변경
+        } else if (value > 0 && statusSelect.value === "품절") {
+            statusSelect.value = "판매중"; // 재고가 생기면 다시 '판매중'으로 변경 (센스!)
+        }
+    };
+
+    // 상태 변경 시 재고 변경 핸들러
+    const handleStatusChange = (e) => {
+        const status = e.target.value;
+        const stockInput = formRef.current.querySelector('input[name="stockCnt"]'); // name="stockCnt"인 요소 찾기
+
+        if (status === "품절") {
+            stockInput.value = 0; // '품절' 선택 시 재고 0으로 강제 변경
+        } else if (status === "판매중" && parseInt(stockInput.value) <= 0) {
+            // '판매중'인데 재고가 0이라면 최소 1개는 넣으라고 안내하거나 1로 세팅
+            stockInput.value = 1;
+        }
+    };
     if (!goods) {
         return (
-            <Content TitleName="Loading...">
-                <div style={{ textAlign: "center", padding: "50px" }}>
-                    서버에서 데이터를 가져오고 있습니다...
-                </div>
-            </Content>
+            <LoadingScreen />
         );
     }
 
@@ -136,40 +156,32 @@ function GoodsUpdate() {
                         
                         {/* 1. 대표 이미지 업로드 섹션 */}
                         <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}>대표 상품 이미지 (Main Thumbnail)</label>
+                            <label className={formStyles.label}>대표 상품 이미지 (수정 불가)</label>
                             <div className={styles.imageUploadWrapper}>
-                                {/* 컨테이너는 딱 하나만 사용합니다 */}
-                                <div className={styles.imagePreviewContainer}>
-                                    <label htmlFor="mainImgFile" className={styles.imageLabel}>
+                                <div className={styles.imagePreviewContainer} style={{ cursor: 'default' }}>
+                                    {/* htmlFor를 제거하여 input 파일창이 뜨지 않게 막기 */}
+                                    <div className={styles.imageLabel} style={{ cursor: 'default' }}>
                                         {mainImgPreview ? (
                                             <div className={styles.imageWrapper}>
-                                                <img src={mainImgPreview} alt="대표이미지" />
-                                                <div className={styles.imageOverlay}>변경하기</div>
+                                                <img src={mainImgPreview} alt="대표이미지" style={{ opacity: 0.8 }} />
+                                                {/* 변경 안내 오버레이를 삭제하거나 '수정 불가' 메시지로 */}
+                                                <div className={styles.imageOverlay} style={{ display: 'none' }}>변경 불가</div>
                                             </div>
                                         ) : (
                                             <div className={styles.imagePlaceholder}>
-                                                <span>+</span>
-                                                <p>이미지 추가</p>
+                                                <p>등록된 이미지가 없습니다.</p>
                                             </div>
                                         )}
-                                    </label>
+                                    </div>
                                     
-                                    {mainImgPreview && (
-                                        <button 
-                                            type="button" 
-                                            className={styles.imageDeleteBadge} 
-                                            onClick={handleRemoveMainImg} 
-                                        >
-                                            ×
-                                        </button>
-                                    )}
+                                    {/* X 버튼은 당연히 제거된 상태 유지 */}
                                 </div>
 
+                                {/* input 태그는 있어도 되고 없어도 되지만, readOnly 프롭이 있다면 확실히 작동 안 함 */}
                                 <input 
                                     type="file" 
                                     id="mainImgFile" 
-                                    accept="image/*" 
-                                    onChange={handleMainImgChange} 
+                                    disabled // input 자체를 비활성화
                                     className={styles.hiddenInput} 
                                 />
                             </div>
@@ -178,17 +190,18 @@ function GoodsUpdate() {
                         {/* 2. 상품명 및 기본 정보 */}
                         <div className={formStyles.formGroup}>
                             <label className={formStyles.label}>상품명</label>
-                            <SaveInput name="gname" maxLength={100} defaultValue={goods?.gname} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
+                            <SaveInput name="gname" maxLength={100} readOnly defaultValue={goods?.gname} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
                         </div>
 
                         <div style={{display: "flex", gap: "20px"}}>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>판매가 (Price)</label>
-                                <NumberInput name="price" placeholder="0" defaultValue={goods?.price} style={{width:"100%"}} />
+                                <NumberInput name="price" readOnly placeholder="0" defaultValue={goods?.price} style={{width:"100%"}} />
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>재고 수량 (Stock)</label>
-                                <NumberInput name="stockCnt" placeholder="0" defaultValue={goods?.stockCnt} style={{width:"100%"}} />
+                                <NumberInput name="stockCnt" placeholder="0" defaultValue={goods?.stockCnt} 
+                                    onInput={handleStockChange} style={{width:"100%"}} />
                             </div>
                         </div>
 
@@ -222,7 +235,11 @@ function GoodsUpdate() {
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>판매 상태</label>
-                                <SearchSelect name="status" className={styles.fullWidth} options={searchOptions} />
+                                <SearchSelect 
+                                    name="status"
+                                    className={styles.fullWidth}
+                                    onChange={handleStatusChange}
+                                    options={searchOptions} />
                             </div>
                         </div>
 
@@ -232,7 +249,6 @@ function GoodsUpdate() {
                                 <SaveInput 
                                     name="gdelivAddrReturn"
                                     value={address} 
-                                    readOnly
                                     style={{ flex: 1 }} 
                                     placeholder="주소를 검색하세요"
                                 />
@@ -250,13 +266,14 @@ function GoodsUpdate() {
                         <div className={formStyles.formGroup}>
                             <label className={formStyles.label}>상세 설명</label>
                             <TiptapEditor 
+                            readOnly
                             content={goods?.gcontent || ""}
                             onChange={(data) => setEditorData(data)} />
                         </div>
 
                         <div className={formStyles.btnWrapper}>
                             <MoveBtn type="button" color="purple" onClick={handlePreview}>미리보기</MoveBtn>
-                            <SaveBtn type="button" onClick={handleUpdate}>상품 등록</SaveBtn>
+                            <SaveBtn type="button" onClick={handleUpdate}>상품 수정</SaveBtn>
                         </div>
                     </form>
                 </div>

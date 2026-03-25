@@ -9,6 +9,7 @@ import { useAuth } from "../../context/AuthContext";
 import DeliveryModal from "./popup/DeliveryModal";
 import { getGoodsViewApi, GoodsDeleteApi } from "./GoodsApi"; // API 함수 가정
 import GoodsContent from "./GoodsComponent/GoodsContent";
+import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
 
 function GoodsView() {
     const { gno } = useParams();
@@ -18,7 +19,7 @@ function GoodsView() {
     const [goods, setGoods] = useState(null);
     const [activeTab, setActiveTab] = useState("detail"); // 탭 상태: detail, review, info
     const [orderCnt, setOrderCnt] = useState(1);
-    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(false); // 북마크 상태
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     // 상태값에 따른 CSS 클래스 매핑
@@ -60,6 +61,17 @@ function GoodsView() {
                 setGoods(res.data.data);
             }
         });
+
+        // 로그인 상태라면 북마크 여부 확인
+        if (user && user.id) {
+            getMyBookmarkApi(user.id,"GOODS")
+            .then((res) => {
+                // 내 북마크 리스트 중 현재 상품(gno)이 있는지 확인
+                // res.data는 List<BookmarkDto> 형태
+                const exists = res.data.some(bookmark => String(bookmark.pageId) === String(gno));
+                setIsBookmarked(exists);
+            });
+        }
     }, [gno]);
 
     if (!goods) return <div className={commonStyles.loading}>Loading...</div>;
@@ -90,9 +102,11 @@ function GoodsView() {
             alert("로그인 후 이용 가능합니다.");
             return;
         }
-        setIsBookmarked(!isBookmarked);
-        // 여기에 북마크 저장/삭제 API 호출 로직 추가
-        // saveBookmarkApi(gno, user.id)...
+        toggleBookmarkApi(user.id, gno, "GOODS").then((res) => {
+            console.log(res);
+            // 기존 다른 사람이 만든 북마크 사용
+            setIsBookmarked(res.data); 
+        });
     };
 
     // 구매 버튼 클릭 시 실행

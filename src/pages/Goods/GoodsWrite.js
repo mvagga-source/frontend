@@ -57,7 +57,7 @@ function GoodsWrite() {
     };
 
     const handleSave = async () => {
-        if (window.confirm("상품을 등록하시겠습니까?")) {
+        if (window.confirm("상품을 등록하시겠습니까?\n※주의 : 상품을 등록하신 이후 판매상태와 반품주소 및 재고수량만 수정하실 수 있습니다.")) {
             const formData = new FormData(formRef.current);
             formData.append("gcontent", editorData); // DTO의 gcontent와 매칭
             //console.log("에디터 데이터 실제 byte 크기:", new Blob([editorData]).size);
@@ -95,6 +95,31 @@ function GoodsWrite() {
         // 새 창 열기 (Route는 아래 2번 단계에서 설정)
         window.open("/GoodsPreview", "_blank", "width=1100,height=900,scrollbars=yes");
     }
+
+    // 재고 입력 시 상태 변경 핸들러
+    const handleStockChange = (e) => {
+        const value = parseInt(e.target.value) || 0;
+        const statusSelect = formRef.current.querySelector('select[name="status"]'); // name="status"인 요소 찾기
+
+        if (value === 0) {
+            statusSelect.value = "품절"; // 재고 0 입력 시 '품절'로 강제 변경
+        } else if (value > 0 && statusSelect.value === "품절") {
+            statusSelect.value = "판매중"; // 재고가 생기면 다시 '판매중'으로 변경 (센스!)
+        }
+    };
+
+    // 상태 변경 시 재고 변경 핸들러
+    const handleStatusChange = (e) => {
+        const status = e.target.value;
+        const stockInput = formRef.current.querySelector('input[name="stockCnt"]'); // name="stockCnt"인 요소 찾기
+
+        if (status === "품절") {
+            stockInput.value = 0; // '품절' 선택 시 재고 0으로 강제 변경
+        } else if (status === "판매중" && parseInt(stockInput.value) <= 0) {
+            // '판매중'인데 재고가 0이라면 최소 1개는 넣으라고 안내하거나 1로 세팅
+            stockInput.value = 1;
+        }
+    };
 
     return (
         <Content TitleName="Goods Registration">
@@ -156,7 +181,8 @@ function GoodsWrite() {
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>재고 수량 (Stock)</label>
-                                <NumberInput name="stockCnt" placeholder="0" style={{width:"100%"}} />
+                                <NumberInput name="stockCnt" 
+                                    onInput={handleStockChange} defaultValue={1} placeholder="0" style={{width:"100%"}} />
                             </div>
                         </div>
 
@@ -188,7 +214,9 @@ function GoodsWrite() {
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>판매 상태</label>
-                                <SearchSelect name="status" className={styles.fullWidth} options={searchOptions} />
+                                <SearchSelect name="status" 
+                                onChange={handleStatusChange}
+                                className={styles.fullWidth} options={searchOptions} />
                             </div>
                         </div>
 

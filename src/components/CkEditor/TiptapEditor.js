@@ -73,7 +73,7 @@ const CustomYoutube = Youtube.extend({
   },
 })
 
-export default function TiptapEditor({ content, onChange }) {
+export default function TiptapEditor({ content, onChange, readOnly=false }) {
   const fileRef = useRef();
   const [showTablePicker, setShowTablePicker] = useState(false);
   const [grid, setGrid] = useState({ rows: 3, cols: 3 });
@@ -167,6 +167,7 @@ export default function TiptapEditor({ content, onChange }) {
       FontSize,
     ],
     content: content || '',
+    editable: !readOnly,  // [수정] 초기 생성 시 편집 가능 여부 설정
     onUpdate: ({ editor }) => {
       onChange?.(editor.getHTML())
     },
@@ -217,6 +218,7 @@ export default function TiptapEditor({ content, onChange }) {
 
   return (
     <div className={styles.editor}>
+      {!readOnly && (
       <div className={styles.toolbar}>
         {/* 1. 글자 스타일 그룹 */}
         <select 
@@ -576,6 +578,7 @@ export default function TiptapEditor({ content, onChange }) {
 
         <input type="file" hidden ref={fileRef} onChange={uploadImage} />
       </div>
+      )}
 
       {/* HTML 편집 모달 (포털이나 절대 위치로 구현) */}
       {showHtmlModal && (

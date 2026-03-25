@@ -1,0 +1,69 @@
+/* LoadingScreen.module.css */
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 100%로 설정하면 부모의 높이를 따라가고, 
+       vh를 사용하면 브라우저 화면 높이를 기준으로 합니다. */
+    min-height: 200px; 
+    height: 100%; 
+    width: 100%;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+.loaderContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    /* 추가적인 여백 제거 */
+    margin: 0 auto; 
+}
+
+.doubleSpinner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* 상단과 하단만 선을 남기고 양옆은 투명하게 */
+    border-top: 6px solid #87ceeb;
+    border-bottom: 6px solid #87ceeb;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    /* 네온 효과 */
+    box-shadow: 0 0 15px rgba(135, 206, 235, 0.6);
+    animation: rotate-continuous 1s linear infinite;
+}
+
+.text {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #87ceeb;
+    letter-spacing: 1px;
+    animation: neon-blink 1.5s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* 애니메이션 정의 */
+@keyframes rotate-continuous {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes neon-blink {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 10px #87ceeb, 0 0 20px #00bfff;
+    }
+    50% {
+        opacity: 0.3;
+        text-shadow: none;
+    }
+}
