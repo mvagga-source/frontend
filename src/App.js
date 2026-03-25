@@ -32,6 +32,7 @@ import BoardPreview from "./pages/Board/BoardPreview";
 
 import GoodsView from "./pages/Goods/GoodsView";
 import GoodsWrite from "./pages/Goods/GoodsWrite";
+import GoodsUpdate from "./pages/Goods/GoodsUpdate";
 import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
 import PaymentResult from "./components/kakaoPay/PaymentResult";
@@ -75,6 +76,7 @@ function App() {
           <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
           <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
           <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
+          <Route path="/GoodsUpdate/:gno" element={<Layout><GoodsUpdate/></Layout>} />
           <Route path="/GoodsPreview" element={<Layout><GoodsPreview /></Layout>} />
 
           <Route path="/Payment/Success" element={<PaymentResult type="success" />} />

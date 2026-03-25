@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { SearchBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import { SearchInput, SaveInput, NumberInput } from "../../components/input/Input";
 import Content from "../../components/Title/ContentComp";
@@ -8,15 +8,18 @@ import formStyles from "../Board/BoardWrite.module.css";
 import styles from "./GoodsWrite.module.css";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import DaumAddrSearchModal from "../../components/DaumAddrModal/DaumAddrModal";
-import { GoodsWriteApi } from "./GoodsApi";
+import { GoodsUpdateApi, getGoodsDetailApi } from "./GoodsApi";
 import { useAuth } from "../../context/AuthContext";
 
-function GoodsWrite() {
+function GoodsUpdate() {
     const navigate = useNavigate();
+    const { gno } = useParams();
     const formRef = useRef();
     const [editorData, setEditorData] = useState("");
     const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
     
+    const [goods, setGoods] = useState(null); // 불러온 상품 데이터
+
     // 대표 이미지 상태 관리
     const [mainImg, setMainImg] = useState(null);
     const [mainImgPreview, setMainImgPreview] = useState(null);
@@ -30,6 +33,26 @@ function GoodsWrite() {
         { value: "품절", label: "품절" },
         { value: "판매중지", label: "판매중지" },
     ];
+
+    // [추가] 기존 데이터 불러오기 함수
+    const getGoodsDetail = async () => {
+        getGoodsDetailApi({ gno }).then((res) => {
+            if (res.data.success) {
+                const data = res.data.data;
+                setGoods(data);
+                setEditorData(data?.gcontent);
+                setAddress(data?.gdelivAddrReturn || "");
+                // 기존 이미지가 있다면 프리뷰에 세팅 - 서버 경로
+                if (data?.gimg) {
+                    setMainImgPreview(data.gimg); 
+                }
+            }
+        });
+    };
+
+    useEffect(() => {
+        getGoodsDetail();
+    }, [gno]);
 
     // 이미지 변경 핸들러
     const handleMainImgChange = (e) => {
@@ -56,19 +79,18 @@ function GoodsWrite() {
         setIsModalOpen(false); // 주소 선택 후 자동 닫기
     };
 
-    const handleSave = async () => {
-        if (window.confirm("상품을 등록하시겠습니까?")) {
+    const handleUpdate = async () => {
+        if (window.confirm("상품 정보를 수정하시겠습니까?")) {
             const formData = new FormData(formRef.current);
-            formData.append("gcontent", editorData); // DTO의 gcontent와 매칭
-            //console.log("에디터 데이터 실제 byte 크기:", new Blob([editorData]).size);
+            formData.append("gno", gno);
+            formData.append("gcontent", editorData);
             if(mainImg) formData.append("gimgFile", mainImg); // 서버에서 처리할 파일 객체
-            GoodsWriteApi(formData).then((res) => {
+            GoodsUpdateApi(formData).then((res) => {
                 if (res.data.success) {
-                    alert("상품이 등록되었습니다.");
-                    navigate("/GoodsList");
+                    alert("상품 정보가 수정되었습니다.");
+                    navigate("/GoodsView/"+gno);
                 }
-            })
-            console.log("전송 데이터 확인:", Object.fromEntries(formData));
+            });
         }
     };
 
@@ -96,8 +118,18 @@ function GoodsWrite() {
         window.open("/GoodsPreview", "_blank", "width=1100,height=900,scrollbars=yes");
     }
 
+    if (!goods) {
+        return (
+            <Content TitleName="Loading...">
+                <div style={{ textAlign: "center", padding: "50px" }}>
+                    서버에서 데이터를 가져오고 있습니다...
+                </div>
+            </Content>
+        );
+    }
+
     return (
-        <Content TitleName="Goods Registration">
+        <Content TitleName="Goods Update">
             <div className={formStyles.wrapper}>
                 <div className={formStyles.container}>
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
@@ -146,17 +178,17 @@ function GoodsWrite() {
                         {/* 2. 상품명 및 기본 정보 */}
                         <div className={formStyles.formGroup}>
                             <label className={formStyles.label}>상품명</label>
-                            <SaveInput name="gname" maxLength={100} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
+                            <SaveInput name="gname" maxLength={100} defaultValue={goods?.gname} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
                         </div>
 
                         <div style={{display: "flex", gap: "20px"}}>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>판매가 (Price)</label>
-                                <NumberInput name="price" placeholder="0" style={{width:"100%"}} />
+                                <NumberInput name="price" placeholder="0" defaultValue={goods?.price} style={{width:"100%"}} />
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>재고 수량 (Stock)</label>
-                                <NumberInput name="stockCnt" placeholder="0" style={{width:"100%"}} />
+                                <NumberInput name="stockCnt" placeholder="0" defaultValue={goods?.stockCnt} style={{width:"100%"}} />
                             </div>
                         </div>
 
@@ -164,7 +196,7 @@ function GoodsWrite() {
                         <div style={{display: "flex", gap: "20px"}}>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}>배송비</label>
-                                <NumberInput name="gdelPrice" placeholder="3000" style={{width:"100%"}} />
+                                <NumberInput name="gdelPrice" placeholder="3000" defaultValue={goods?.gdelPrice} style={{width:"100%"}} />
                             </div>
                             <div className={formStyles.formGroup}  style={{flex: 1}}>
                                 <label className={formStyles.label}>택배사</label>
@@ -173,7 +205,8 @@ function GoodsWrite() {
                                     style={{width:"100%"}}
                                     placeholder="택배사를 입력하세요"
                                     name="gdelType"
-                                />
+                                    defaultValue={goods?.gdelType}
+                                    />
                             </div>
                         </div>
 
@@ -184,6 +217,7 @@ function GoodsWrite() {
                                     style={{width:"100%"}}
                                     placeholder="출고지 주소를 입력하세요"
                                     name="gdelivAddr"
+                                    defaultValue={goods?.gdelivAddr}
                                 />
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
@@ -196,15 +230,15 @@ function GoodsWrite() {
                             <label className={formStyles.label}>반품 주소</label>
                             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                                 <SaveInput 
+                                    name="gdelivAddrReturn"
                                     value={address} 
                                     readOnly
-                                    name="gdelivAddrReturn"
                                     style={{ flex: 1 }} 
-                                    placeholder="주소를 검색하세요" 
+                                    placeholder="주소를 검색하세요"
                                 />
                                 <SearchBtn type="button" onClick={() => setIsModalOpen(true)}>주소 검색</SearchBtn>
                             </div>
-                            <SaveInput name="gdelivAddrReturnDetail" style={{ width: "100%" }} placeholder="상세 주소를 입력하세요" />
+                            <SaveInput name="gdelivAddrReturnDetail" defaultValue={goods?.gdelivAddrReturnDetail} style={{ width: "100%" }} placeholder="상세 주소를 입력하세요" />
                         </div>
                         <DaumAddrSearchModal
                             isOpen={isModalOpen} 
@@ -215,12 +249,14 @@ function GoodsWrite() {
                         {/* 4. 상세 설명 (Tiptap 위지윅) */}
                         <div className={formStyles.formGroup}>
                             <label className={formStyles.label}>상세 설명</label>
-                            <TiptapEditor onChange={(data) => setEditorData(data)} />
+                            <TiptapEditor 
+                            content={goods?.gcontent || ""}
+                            onChange={(data) => setEditorData(data)} />
                         </div>
 
                         <div className={formStyles.btnWrapper}>
                             <MoveBtn type="button" color="purple" onClick={handlePreview}>미리보기</MoveBtn>
-                            <SaveBtn type="button" onClick={handleSave}>상품 등록</SaveBtn>
+                            <SaveBtn type="button" onClick={handleUpdate}>상품 등록</SaveBtn>
                         </div>
                     </form>
                 </div>
@@ -229,4 +265,4 @@ function GoodsWrite() {
     );
 }
 
-export default GoodsWrite;
+export default GoodsUpdate;
