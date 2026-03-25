@@ -1,0 +1,111 @@
+/* ============ start font color */
+
+.co-ongoing-all {
+  margin-top: 5px;
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);
+  border: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+.co-ended-all {
+  margin-top: 5px;  
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.co-upcoming-all {
+  margin-top: 5px;  
+  background: rgba(255, 122, 138, 0.1);
+  color: #ff7a8a;
+  border: 1px solid rgba(255, 122, 138, 0.25);
+}
+
+.co-ongoing-bc {
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);
+}
+
+.co-ended-bc {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+}
+.co-upcoming-bc {
+  background: rgba(255, 122, 138, 0.1);
+  color: #ff7a8a;
+}
+
+.co-ongoing-b {
+  border: 3px solid rgba(0, 242, 255, 0.3);
+}
+
+.co-ended-b {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.co-upcoming-b {
+  border: 1px solid rgba(255, 122, 138, 0.25);
+}
+
+.co-ongoing-fc {
+  color: var(--neon-blue);
+}
+.co-ended-fc {
+  color: rgba(232, 244, 248, 0.4);
+}
+.co-upcoming-fc {
+  color: #ff7a8a;
+}
+
+.co-ongoing-bb {
+  background: rgba(0, 242, 255, 0.12);
+  border: 1px solid rgba(0, 242, 255, 0.3);
+}
+.co-ended-bb {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.co-upcoming-bb {
+  background: rgba(255, 122, 138, 0.1);
+  border: 1px solid rgba(255, 122, 138, 0.25);
+}
+
+.co-passed-bb {
+  background: rgba(10, 16, 28, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============ end font color */
+
+.co-button-status {
+  /* border:1px solid #fff;   */
+  font-size: 12px;
+  font-weight: 700;
+  padding: 10px 50px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  cursor:pointer;
+}
+
+.co-sign-status {
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 7px;
+  /* padding: 10px 50px;
+  letter-spacing: 0.5px; */
+  cursor:pointer;
+}
+
+.co-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.co-ellipsis-multi {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 줄 수 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  text-overflow: ellipsis; /* 일부 브라우저 대비 */
+  word-break: break-word;  /* 긴 단어 줄바꿈 */
+}

@@ -55,15 +55,18 @@ function Sidebar({ isOpen, onClose }) {
         {user ? (
           <div className="sb-user">
             <div className="sb-user-row">
-              <div className="sb-avatar">{user.name ? user.name.charAt(0) : "U"}</div>
+              <div className="sb-avatar">{user.nickname ? user.nickname.charAt(0) : "U"}</div>
               <div>
-                <p className="sb-user-name">{user.name}님</p>
+                <p className="sb-user-name">{user.nickname}님</p>
                 <p className="sb-user-sub">{user.email || "디렉터"}</p>
               </div>
             </div>
             <div className="sb-user-btns">
               <Link to="/MyMain" className="sb-user-btn" onClick={onClose}>마이페이지</Link>
               <button className="sb-user-btn" onClick={onClose}>🔔 알림</button>
+              {user.id === "admin" &&
+                <Link to="/AdminMain"><button className="sb-user-btn">관리자</button></Link>
+              }
               <button className="sb-user-btn sb-user-btn-logout" onClick={handleLogout}>로그아웃</button>
             </div>
           </div>
