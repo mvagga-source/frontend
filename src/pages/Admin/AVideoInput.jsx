@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { saveVideoApi } from "../Video/MVideoApi";
 
-function AVideoInput({ onClose }) {
-  const [form, setForm] = useState({
-    title: "",
-    name: "",
-    url: "",
-    status: "1",
-    createdAt: "",
+function AVideoInput({ video, setVideos, onClose }) {
+
+  const [form, setForm] = useState(()=>{
+    return video ? {...video} : {
+      name: "",
+      title: "",    
+      url: "",
+      status: "1",
+    }
   });
 
   const handleChange = (e) => {
@@ -20,12 +23,53 @@ function AVideoInput({ onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    saveVideo();
   };
 
+  const saveVideo = async () => {
+ 
+          try {
+            // 비디오 저장
+            const videoRes = await saveVideoApi(form);
+
+            if (video && video.id) {
+              setVideos(prev =>
+                prev.map(v => v.id === video.id ? videoRes.data : v)
+              );
+
+              onClose();
+              
+            }else{
+              setVideos(prev => [videoRes.data, ...prev]);
+            }
+            
+          } catch (err) {
+              console.error(err);
+          }
+
+          // 입력폼 초기화
+          setForm({
+              name: "",
+              title: "",    
+              url: "",
+              status: "1",
+          });
+  };  
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="av-finput">
       <h2>비디오 등록</h2>
+
+      {/* 작성자 */}
+      <div>
+        <label>이름</label>
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+        />
+      </div>
 
       {/* 제목 */}
       <div>
@@ -34,17 +78,6 @@ function AVideoInput({ onClose }) {
           type="text"
           name="title"
           value={form.title}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* 작성자 */}
-      <div>
-        <label>작성자</label>
-        <input
-          type="text"
-          name="name"
-          value={form.name}
           onChange={handleChange}
         />
       </div>
@@ -64,24 +97,16 @@ function AVideoInput({ onClose }) {
       <div>
         <label>상태</label>
         <select name="status" value={form.status} onChange={handleChange}>
-          <option value="1">진행중</option>
-          <option value="2">예정</option>
+          <option value="1">통과</option>
+          <option value="0">탈락</option>
         </select>
       </div>
 
-      {/* 날짜 */}
-      <div>
-        <label>등록일</label>
-        <input
-          type="date"
-          name="createdAt"
-          value={form.createdAt}
-          onChange={handleChange}
-        />
+      <div className="co-button-wrap">
+        <button type="submit">저장</button>
+        <button type="button" onClick={onClose}>닫기</button>
       </div>
 
-      <button type="submit">등록</button>
-      <button type="button" onClick={onClose}>닫기</button>
     </form>
   );
 }

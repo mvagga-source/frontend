@@ -43,3 +43,16 @@ export const videoViewCountApi = (videoId) => {
     videoId
   });
 }
+
+export const saveVideoApi = (form) => {
+
+  // console.log("saveVideoApi : ",form);
+  return axiosInstance.post("/video/saveVideo", form);
+}
+
+export const deleteVideosApi = (selectedIds) => {
+  return axiosInstance.delete("/video/deleteVideo",
+    {
+      data:{ids: selectedIds}
+    });
+}
