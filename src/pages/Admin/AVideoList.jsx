@@ -1,49 +1,19 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { getVideosApi } from "../Video/MVideoApi";
 import { formatDate, formatDateTime } from "./ACommon";
 
-function AVideoList() {
+function AVideoList({videos, selectedIds, setSelectedIds}) {
 
-  const [videos, setVideos] = useState([]);
-  const [page, setPage] = useState(0);
-  const [sortType, setSortType] = useState("LATEST");
-  const [search, setSearch] = useState("");
-  const [searchType, setSearchType] = useState("ALL");
-
-  const [checkedList, setCheckedList] = useState([]);
-
-  const pageSize = 100;
+  console.log("videos : "+videos.length);
 
   const statusText = {
       "1": "통과",
       "0": "탈락"
   };  
 
-  useEffect(()=>{
-    setVideos([]);
-    getVideos();    
-  },[]);
-
-  const getVideos = async () => {
- 
-          try {
-            // 비디오 리스트
-            const videoRes = await getVideosApi(page, pageSize, sortType, search, searchType);
-            const vData = await videoRes.data.content;
-            
-            if (vData) {
-                setVideos(prev => [...prev, ...vData]);
-            }
-
-          } catch (err) {
-              console.error(err);
-          }
-  };
-
   const handleCheck = (id) => {
-    setCheckedList((prev) =>
+    setSelectedIds((prev) =>
       prev.includes(id)
         ? prev.filter((item) => item !== id) // 제거
         : [...prev, id] // 추가
@@ -54,17 +24,15 @@ function AVideoList() {
     if (e.target.checked) {
       // 전체 선택
       const allIds = videos.map((v) => v.id);
-      setCheckedList(allIds);
+      setSelectedIds(allIds);
     } else {
       // 전체 해제
-      setCheckedList([]);
+      setSelectedIds([]);
     }
   };
 
   return (
-
       <>
-
         <table className="av-table">
           <colgroup>
             <col style={{width:"5%"}}/>                    
@@ -82,7 +50,7 @@ function AVideoList() {
               <th><input 
                     type="checkbox"
                     onChange={handleAllCheck}
-                    checked={checkedList.length === videos.length}
+                    checked={selectedIds.length === videos.length}
                   />
               </th>
               <th>순번</th>
@@ -100,7 +68,7 @@ function AVideoList() {
               <tr key={video.id}>
                 <td style={{textAlign:"center"}}>
                   <input type="checkbox" 
-                         checked={checkedList.includes(video.id)}
+                         checked={selectedIds.includes(video.id)}
                          onChange={()=>handleCheck(video.id)}
                   />
                 </td>
