@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import GoodsReviewStyles from "./GoodsReview.module.css";
 import boardCommentStyles from "../../Board/boardComponent/BoardComment.module.css";
 import styles from "./GoodsReviewItem.module.css";
 import dayjs from "dayjs";
 import { ReviewDeleteApi, GoodsReviewLikeSaveApi, ReviewReplyApi } from "../GoodsApi";
 import ReviewEditForm from "./GoodsReviewEditForm";
-import GoodsReviewReply from "./GoodsReviewReply";
+import GoodsReviewReplyEditDelete from "./GoodsReviewReplyEditDelete";
+import GoodsReviewReplyForm from "./GoodsReviewReplySave";
 
-export default function GoodsReviewItem({ r, user, sellerId, editingId, setEditingId, refreshList }) {
+/**
+ * 굿즈 리뷰 목록의 상세(개별 댓글) 리뷰
+ * 수정 | 삭제
+ * 도움돼요
+ */
+const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, refreshList }) => {
     const [likeCnt, setLikeCnt] = useState(r.likeCnt || 0);
     const [isLiked, setIsLiked] = useState(r.liked || false);   //서버에서는 isLiked로 보이지만 liked로 가져와짐
 
-    // 답글 관련 상태 추가
+    // 답글 등록 관련 상태 추가
     const [isReplying, setIsReplying] = useState(false);
-    const [replyContent, setReplyContent] = useState("");
 
     useEffect(() => {
         setIsLiked(r.liked || false);
@@ -27,14 +32,14 @@ export default function GoodsReviewItem({ r, user, sellerId, editingId, setEditi
         formData.append("grno", r.grno);
         GoodsReviewLikeSaveApi(formData).then((res) => {
             if (res.data?.success) {
-                //setIsLiked(!isLiked);
-                //setLikeCnt(!isLiked ? likeCnt + 1 : Math.max(0, likeCnt - 1));
-                refreshList();
+                setIsLiked(!isLiked);
+                setLikeCnt(!isLiked ? likeCnt + 1 : Math.max(0, likeCnt - 1));
+                //refreshList();
             }
         });
     };
 
-    // 삭제
+    // 댓글 삭제
     const handleDelete = async () => {
         if (!window.confirm("삭제하시겠습니까?")) return;
         const formData = new FormData();
@@ -42,26 +47,6 @@ export default function GoodsReviewItem({ r, user, sellerId, editingId, setEditi
         ReviewDeleteApi(formData).then((res) => {
             if (res.data?.success) {
                 alert("삭제되었습니다.");
-                refreshList();
-            }
-        });
-    };
-
-    // 답글 저장 핸들러
-    const handleReplySave = async () => {
-        if (!replyContent.trim()) return alert("답글 내용을 입력해주세요.");
-        
-        const formData = new FormData();
-        formData.append("gno", r.goods?.gno || ""); // 상품 번호
-        formData.append("parent_grno", r.grno);     // 부모 리뷰 번호(Controller의 @RequestParam)
-        formData.append("grcontents", replyContent);
-        // 답글은 rating과 file이 없음
-
-        ReviewReplyApi(formData).then((res) => {
-            if (res.data?.success) {
-                //alert("답글이 등록되었습니다.");
-                setReplyContent("");
-                setIsReplying(false);
                 refreshList();
             }
         });
@@ -80,7 +65,7 @@ export default function GoodsReviewItem({ r, user, sellerId, editingId, setEditi
             </li>
             {/* 삭제된 글이라도 답글이 있다면 보여줌 */}
             {r.children?.map(child => (
-                <GoodsReviewReply key={child.grno} child={child} user={user} refreshList={refreshList} />
+                <GoodsReviewReplyEditDelete key={child.grno} child={child} user={user} refreshList={refreshList} />
             ))}
             </>
         );
@@ -148,32 +133,21 @@ export default function GoodsReviewItem({ r, user, sellerId, editingId, setEditi
 
         {/* 답글 입력창 (토글) */}
         {isReplying && (
-            <div className={styles.replyInputWrapper}>
-                <textarea 
-                    className={styles.replyTextarea}
-                    placeholder="판매자 답글을 남겨주세요."
-                    value={replyContent}
-                    onChange={(e) => setReplyContent(e.target.value)}
-                />
-                <div className={styles.replyBtnGroup}>
-                    <button 
-                        className={styles.replyCancelBtn} 
-                        onClick={() => {
-                            setIsReplying(false);
-                            setReplyContent(""); // 취소 시 내용 비우기 (선택사항)
-                        }}
-                    >
-                        취소
-                    </button>
-                    <button className={styles.replySaveBtn} onClick={handleReplySave}>등록</button>
-                </div>
-            </div>
+            <GoodsReviewReplyForm 
+                gno={r.goods?.gno}
+                parentGrno={r.grno}
+                refreshList={refreshList}
+                isReplying={isReplying}
+                setIsReplying={setIsReplying}
+            />
         )}
 
       {/* 판매자 답글 목록 */}
       {r.children?.map(child => (
-        <GoodsReviewReply key={child.grno} child={child} user={user} refreshList={refreshList} />
+        <GoodsReviewReplyEditDelete key={child.grno} child={child} user={user} refreshList={refreshList} />
       ))}
     </li>
   );
-}
+});
+
+export default GoodsReviewItem;

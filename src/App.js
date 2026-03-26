@@ -22,13 +22,22 @@ import MngVote from "./pages/MyPage/MyVote";
 import Bookmark from "./pages/MyPage/MyBookmark";
 import MyMain from "./pages/MyPage/MyMain";
 
+//커뮤니티
+import Community from "./pages/Community/Community";
 //게시판
 import BoardList from "./pages/Board/BoardList";
 import BoardWrite from "./pages/Board/BoardWrite";
 import BoardUpdate from "./pages/Board/BoardUpdate";
 import BoardView from "./pages/Board/BoardView";
 import BoardPreview from "./pages/Board/BoardPreview";
+//아이디어 제안
+import Idea from "./pages/Idea/Idea";
+//신고
+import Report from "./pages/Report/Report";
+//Qna
+import QnaList from "./pages/Qna/QnaList";
 
+//굿즈
 import GoodsView from "./pages/Goods/GoodsView";
 import GoodsWrite from "./pages/Goods/GoodsWrite";
 import GoodsUpdate from "./pages/Goods/GoodsUpdate";
@@ -68,9 +77,19 @@ function App() {
           <Route path="/MngVote" element={<ProtectedRoute><Layout><MngVote/></Layout></ProtectedRoute>}/>
           <Route path="/MyMain" element={<ProtectedRoute><Layout><MyMain/></Layout></ProtectedRoute>}/>
           
+          <Route path="/Community" element={<Layout><Community/></Layout>}>
+            {/* index는 /Community 접속 시 기본으로 보여줄 페이지 */}
+            <Route index element={<BoardList />} />
+            {/* /Community/BoardList 로 접근 가능 */}
+            <Route path="BoardList" element={<BoardList />} />
+            <Route path="Idea" element={<Idea />} />
+            <Route path="Report" element={<Report />} />
+            <Route path="QnaList" element={<QnaList />} />
+          </Route>
+
           <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>
           <Route path="/BoardUpdate/:bno" element={<ProtectedRoute><Layout><BoardUpdate/></Layout></ProtectedRoute>}/>
-          <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/>
+          {/* <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/> */}
           <Route path="/BoardView/:bno" element={<Layout><BoardView/></Layout>}/>
           <Route path="/BoardPreview" element={<Layout><BoardPreview /></Layout>} />
 

@@ -1,0 +1,66 @@
+/* QnaList.module.css */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.count {
+  font-size: 1.1rem;
+  color: #00f2ff; /* 포인트 컬러 */
+}
+
+.list {
+  /* 스크롤이 작동하려면 명확한 높이가 있거나 부모로부터 상속받아야 합니다 */
+  max-height: 500px; 
+  overflow-y: auto;
+  border-top: 1px solid rgba(0, 242, 255, 0.2);
+  /* 스크롤바 커스텀 (선택사항) */
+}
+
+.list::-webkit-scrollbar {
+  width: 6px;
+}
+.list::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 255, 0.2);
+  border-radius: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  padding: 15px 16px;
+  border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+  cursor: pointer;
+  gap: 15px; /* 요소 간 간격 */
+}
+
+.title {
+  flex: 1; /* 제목이 남은 공간을 다 차지하도록 */
+  font-weight: 500;
+  color: #e8f4f8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 제목이 길면 ... 처리 */
+}
+
+.date {
+  width: 100px; /* 날짜 영역 고정폭 */
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.status {
+  width: 80px; /* 상태 영역 고정폭 */
+  font-size: 0.85rem;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* 답변 상태에 따른 색상 변화 */
+.status.pending { color: #ffab00; } /* 대기중 */
+.status.completed { color: #00f2ff; } /* 완료 */

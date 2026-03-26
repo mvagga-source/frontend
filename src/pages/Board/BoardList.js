@@ -62,8 +62,8 @@ function BoardList() {
     }, [currentPage]);
 
     return (
-        <Content TitleName="Community Board">
-            <div className={formStyles.viewContainer}>
+        // <Content TitleName="Community Board">
+            // <div className={formStyles.viewContainer}>
                 <div className={styles.neonBoardContainer}>
                     {/* 검색 영역 */}
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
@@ -129,8 +129,8 @@ function BoardList() {
                         onPageChange={setCurrentPage} 
                     />
                 </div>
-            </div>
-        </Content>
+            // </div>
+        // </Content>
     );
 }
 

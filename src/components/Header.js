@@ -42,7 +42,7 @@ function Header({ onSidebarOpen }) {
           <span>ENJOY</span>
           <div className="hd-dropdown-menu">
             <Link to="/MVideo">VIDEO</Link>            
-            <Link to="/BoardList">COMMUNITY</Link>
+            <Link to="/Community">COMMUNITY</Link>
 
             {/* <Link to="/BoardList">자유게시판</Link>
             <Link to="/QnA">문의/아이디어제안/신고</Link> */}

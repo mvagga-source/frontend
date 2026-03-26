@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 import boardCommentStyles from "../../Board/boardComponent/BoardComment.module.css";
-import styles from "./GoodsReviewReply.module.css";
+import styles from "./GoodsReviewReplyEditDelete.module.css";
 import { ReviewDeleteApi, ReviewUpdateApi } from "../GoodsApi";
 
-export default function GoodsReviewReply({ child, user, refreshList }) {
+/**
+ * 굿즈 답글 수정 및 삭제
+ * @param {*} param0 
+ * @returns 
+ */
+export default function GoodsReviewReplyEditDelete({ child, user, refreshList }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(child.grcontents);
 

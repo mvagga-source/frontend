@@ -11,6 +11,10 @@ import { getGoodsViewApi, GoodsDeleteApi } from "./GoodsApi"; // API 함수 가�
 import GoodsContent from "./GoodsComponent/GoodsContent";
 import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
 
+/**
+ * 굿즈 구매(상세)페이지
+ * @returns 
+ */
 function GoodsView() {
     const { gno } = useParams();
     const navigate = useNavigate();
