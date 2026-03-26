@@ -88,4 +88,4 @@ const QnaList = ({ onSelect, onCreate }) => {
   );
 };
 
-export default QnaList;
+export default QnaList; 

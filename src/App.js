@@ -24,16 +24,20 @@ import MyMain from "./pages/MyPage/MyMain";
 
 //커뮤니티
 import Community from "./pages/Community/Community";
+
 //게시판
 import BoardList from "./pages/Board/BoardList";
 import BoardWrite from "./pages/Board/BoardWrite";
 import BoardUpdate from "./pages/Board/BoardUpdate";
 import BoardView from "./pages/Board/BoardView";
 import BoardPreview from "./pages/Board/BoardPreview";
+
 //아이디어 제안
 import Idea from "./pages/Idea/Idea";
+
 //신고
 import Report from "./pages/Report/Report";
+
 //Qna
 import QnaList from "./pages/Qna/QnaList";
 
