@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { saveVideoApi } from "../Video/MVideoApi";
 
-function AVideoInput({ video, setVideos, onClose }) {
+function ABookmarkInput({ video, setVideos, onClose }) {
 
   const [form, setForm] = useState(()=>{
     return video ? {...video} : {
@@ -110,4 +110,4 @@ function AVideoInput({ video, setVideos, onClose }) {
   );
 }
 
-export default AVideoInput;
+export default ABookmarkInput;

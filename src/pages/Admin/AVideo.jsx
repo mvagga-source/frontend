@@ -88,9 +88,9 @@ function AVideo() {
       <div className="av-main-list">
 
         <div className="av-do-wrap">
-          <button onClick={() => setIsModalOpen(true)}>등록</button>
-          <button onClick={() => hendleUpdate()}>수정</button>
-          <button onClick={() => hendleDelete()}>삭제</button>
+          <button className="co-button-status co-ended-all" onClick={() => setIsModalOpen(true)}>등록</button>
+          <button className="co-button-status co-ended-all" onClick={() => hendleUpdate()}>수정</button>
+          <button className="co-button-status co-ended-all" onClick={() => hendleDelete()}>삭제</button>
         </div>
 
         <AVideoList 
@@ -99,14 +99,20 @@ function AVideo() {
           setSelectedIds={setSelectedIds}
         />
 
-        {/* 모달 */}
+        {/* 입력창 */}
         {isModalOpen && (
-          <div className="co-modal">
-            <div className="co-modal-content co-modal-bg">
-              <AVideoInput 
-                video={video}
-                setVideos={setVideos} 
-                onClose={() => setIsModalOpen(false)} />
+          <div className="co-modal-overlay">
+            <div className="co-modal">
+              <div className="co-modal-header">
+                <span>뮤직비디오 입력</span>
+                <button className="close" onClick={() => setIsModalOpen(false)}>✕</button>
+              </div>
+              <div className="co-modal-contents">
+                <AVideoInput 
+                  video={video}
+                  setVideos={setVideos} 
+                  onClose={() => setIsModalOpen(false)} />
+              </div>
             </div>
           </div>
         )}

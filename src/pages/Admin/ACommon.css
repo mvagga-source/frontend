@@ -1,20 +1,17 @@
 /* ============ start font color */
 
 .co-ongoing-all {
-  margin-top: 5px;
   background: rgba(0, 242, 255, 0.12);
   color: var(--neon-blue);
   border: 1px solid rgba(0, 242, 255, 0.3);
 }
 
 .co-ended-all {
-  margin-top: 5px;  
   background: rgba(255, 255, 255, 0.06);
   color: rgba(232, 244, 248, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .co-upcoming-all {
-  margin-top: 5px;  
   background: rgba(255, 122, 138, 0.1);
   color: #ff7a8a;
   border: 1px solid rgba(255, 122, 138, 0.25);
@@ -78,10 +75,7 @@
 .co-button-status {
   /* border:1px solid #fff;   */
   font-size: 12px;
-  font-weight: 700;
-  padding: 10px 50px;
-  border-radius: 10px;
-  letter-spacing: 0.5px;
+  padding: 5px 10px;
   cursor:pointer;
 }
 
@@ -110,42 +104,73 @@
   word-break: break-word;  /* 긴 단어 줄바꿈 */
 }
 
-.co-modal {
+.co-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
-
+  background: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 }
 
-.co-modal-content {
-  padding: 20px;
-  width: 450px;
-  font-size: 14px;
-  border-radius: 8px;
+.co-modal{
+  background: #fff;
+  color:#575757;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  height:250px;
+  width:500px;
+  display: flex;
+  padding:20px;
+  flex-direction: column;
 }
 
-.co-modal-content label{
+.co-modal-header {
+  display: flex;
+  font-size: 22px;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.co-modal-header .close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.co-modal-contents {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.co-modal-contents label{
   width:100px;
-  height:35px;
+  margin-top: 10px;
+  /* font-weight: bold; */
+  font-size:14px;
   display: inline-block;
 }
 
-.co-modal-bg {
-  background: rgba(0, 242, 255, 0.12);
-  border: 1px solid rgba(0, 242, 255, 0.3);
+.co-modal-contents input,
+.co-modal-contents select{
+  margin-top: 4px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.co-modal-content input{
-  border:1px solid rgba(0, 242, 255, 0.2);
-  font-size:14px;
-  width: 290px;
+.co-modal-contents input{
+  width:350px;
 }
+
 
 .co-button-wrap {
   width:100%;
@@ -155,4 +180,7 @@
 
 .co-button-wrap button{
   margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;  
 }
