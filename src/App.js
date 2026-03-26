@@ -41,6 +41,9 @@ import Process from "./pages/Process/Process";
 import ServerError from "./pages/ErrorPage/ServerError";
 import NotFound from "./pages/ErrorPage/NotFound";
 
+// 관리자
+import AdminMain from "./pages/Admin/AdminMain";
+
 function App() {
   return (
     <AuthProvider>
@@ -80,6 +83,8 @@ function App() {
           <Route path="/Payment/Success" element={<PaymentResult type="success" />} />
           <Route path="/Payment/Fail" element={<PaymentResult type="fail" />} />
           <Route path="/Payment/Cancel" element={<PaymentResult type="cancel" />} />
+
+          <Route path="/AdminMain" element={<Layout><AdminMain /></Layout>} />
 
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}
