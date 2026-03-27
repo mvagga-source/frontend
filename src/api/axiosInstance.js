@@ -32,7 +32,11 @@ axiosInstance.interceptors.response.use(
     console.error("API 에러 발생:", error.response?.data || error.message);
     if (error.response?.status === 401) {
       //navigate("/UserLogin");
-      window.location.href = "/UserLogin";
+      const url = error.config?.url || "";
+      // vote/status는 비로그인 허용 → 리다이렉트 제외
+      if (!url.includes("/vote/status")) {
+          window.location.href = "/UserLogin";
+      }
     } else if (!error.response || error.response?.status === 500) {
       // 서버 오류
       //navigate("/500");

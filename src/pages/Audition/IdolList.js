@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getIdolsApi } from "../../api/auditionApi";
+import { getAllIdolsApi } from "../../api/auditionApi";
 import "./IdolList.css";
 
 const CURRENT_AUDITION_ID = 1; // 임시 고정값
@@ -27,7 +27,7 @@ export default function IdolList() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    getIdolsApi(CURRENT_AUDITION_ID)
+    getAllIdolsApi(CURRENT_AUDITION_ID)
       .then((res) => {
         console.log("✅ 아이돌 목록:", res.data);
         setIdols(res.data);
@@ -42,10 +42,7 @@ export default function IdolList() {
   }, []);
 
   /* ── API 응답에서 그룹 목록 동적 추출 ── */
-  const groups = useMemo(() => {
-    const groupSet = new Set(idols.map((i) => i.groupName));
-    return ["전체", ...Array.from(groupSet).sort()];
-  }, [idols]);
+  const groups = useMemo(() => ["전체"], []);
 
   /* ── API 응답에서 최대 득표수 계산 ── */
   const maxVotes = useMemo(() => {
@@ -58,8 +55,7 @@ export default function IdolList() {
     return idols.filter((i) => {
       const groupOk  = activeGroup === "전체" || i.groupName === activeGroup;
       const searchOk = !searchQuery ||
-        i.name.includes(searchQuery) ||
-        (i.groupName && i.groupName.includes(searchQuery));
+        (i.name && i.name.includes(searchQuery));  // ← null 체크 추가
       return groupOk && searchOk;
     });
   }, [idols, activeGroup, searchQuery]);
@@ -156,12 +152,10 @@ export default function IdolList() {
               onClick={() => goToProfile(idol.idolId)}
             >
               <div className="il-avatar" style={{ background: color }}>
-                <span className="il-avatar-initial">{idol.name.charAt(0)}</span>
+                <span className="il-avatar-initial">{idol.name?.charAt(0) ?? "#"}</span>
               </div>
 
-              <p className="il-idol-name">{idol.name}</p>
-              <p className="il-idol-group">{idol.groupName}</p>
-              <p className="il-idol-position">{idol.position}</p>
+              <p className="il-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
 
               <div className="il-votes-area">
                 <span className="il-votes-num">{votes.toLocaleString()}</span>

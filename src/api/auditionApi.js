@@ -2,32 +2,24 @@ import axiosInstance from "./axiosInstance";
 
 // 아이돌 목록 조회 (status=active 인 참가자만)
 export const getIdolsApi = (auditionId) => {
-    return axiosInstance.get(
-        `${process.env.REACT_APP_API_URL}/audition/idols`,
-        { params: { auditionId } }
-    );
+    return axiosInstance.get(`/audition/idols`, { params: { auditionId } });
 };
+
+// 전체 참가자 조회 (탈락자 포함, IdolList용)
+export const getAllIdolsApi = (auditionId) =>
+    axiosInstance.get(`/audition/allIdols`, { params: { auditionId } });
 
 // 실시간 랭킹 조회
 export const getRankingApi = (auditionId) => {
-    return axiosInstance.get(
-        `${process.env.REACT_APP_API_URL}/audition/ranking`,
-        { params: { auditionId } }
-    );
+    return axiosInstance.get(`/audition/ranking`, { params: { auditionId } });
 };
 
 // 오늘 투표 여부 확인
 export const getVoteStatusApi = (auditionId) => {
-    return axiosInstance.get(
-        `${process.env.REACT_APP_API_URL}/vote/status`,
-        { params: { auditionId } }
-    );
+    return axiosInstance.get(`/vote/status`, { params: { auditionId } });
 };
 
 // 투표 제출
 export const submitVoteApi = (auditionId, idolIds) => {
-    return axiosInstance.post(
-        `${process.env.REACT_APP_API_URL}/vote`,
-        { auditionId, idolIds }
-    );
+    return axiosInstance.post(`/vote`, { auditionId, idolIds });
 };
