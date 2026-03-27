@@ -10,7 +10,7 @@ import {
 import "./Vote.css";
 
 // 현재 진행 중인 오디션 ID (추후 API로 동적 처리)
-const CURRENT_AUDITION_ID = 1;
+const CURRENT_AUDITION_ID = 3;
 
 const AVATAR_COLORS = [
   "#1a2c4e","#1e1a2c","#1a2c1e","#2c1a1e",
@@ -99,8 +99,7 @@ export default function Vote() {
   const filtered = useMemo(() =>
     searchQuery
       ? idols.filter((i) =>
-          i.name.includes(searchQuery) ||
-          (i.groupName && i.groupName.includes(searchQuery))
+          (i.name && i.name.includes(searchQuery))  // ← null 체크 추가
         )
       : idols,
     [idols, searchQuery]
@@ -232,7 +231,7 @@ export default function Vote() {
             const idol = idols.find((i) => i.idolId === idolId);
             return (
               <span key={idolId} className="av-sel-chip">
-                <span>{idx + 1}. {idol?.name}</span>
+                <span>{idx + 1}. {idol?.name ?? `참가자 #${idolId}`}</span>
                 <button onClick={() => deselect(idolId)}>✕</button>
               </span>
             );
@@ -262,11 +261,10 @@ export default function Vote() {
                 className="av-avatar"
                 style={{ background: AVATAR_COLORS[(idol.idolId - 1) % AVATAR_COLORS.length] }}
               >
-                <span className="av-avatar-initial">{idol.name.charAt(0)}</span>
+                <span className="av-avatar-initial">{idol.name?.charAt(0) ?? idol.idolId}</span>
               </div>
 
-              <p className="av-idol-name">{idol.name}</p>
-              <p className="av-idol-group">{idol.groupName}</p>
+              <p className="av-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
 
               <div className="av-votes-area">
                 <span className="av-votes-num">{votes.toLocaleString()}</span>
@@ -329,21 +327,21 @@ export default function Vote() {
               ) : (
                 rankingIdols.map((row, idx) => {
                   // API 응답: [IdolDto, rawVotes, totalBonus, finalVotes]
-                  const idol       = row[0];
-                  const finalVotes = row[3] ?? 0;
+                  const idolId     = row[0];
+                  const name       = row[1];
+                  const finalVotes = row[4] ?? 0;
                   const n          = idx + 1;
                   const rc         = rankColor(n);
-                  const maxFinal   = rankingIdols[0]?.[3] ?? 1;
+                  const maxFinal   = rankingIdols[0]?.[4] ?? 1;
                   const pct        = Math.round((finalVotes / maxFinal) * 100);
 
                   return (
-                    <li key={idol.idolId} className="av-ranking-row">
+                    <li key={idolId} className="av-ranking-row">
                       <span className="av-ranking-num" style={{ color: rc }}>
                         {String(n).padStart(2, "0")}
                       </span>
                       <div className="av-ranking-info">
-                        <span className="av-ranking-name">{idol.name}</span>
-                        <span className="av-ranking-group">{idol.groupName}</span>
+                        <span className="av-ranking-name">{name ?? `참가자 #${idolId}`}</span>
                       </div>
                       <div className="av-ranking-bar-bg">
                         <div

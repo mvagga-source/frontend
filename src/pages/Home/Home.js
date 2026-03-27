@@ -119,8 +119,8 @@ const Home = () => {
           </div>
         </div>
         <div className={`hero-cta${revealed ? " reveal" : ""}`}>
-          <Link to="/Audition"       className="home-btn-primary">투표 참여하기</Link>
-          <Link to="/ActionCalendar" className="home-btn-ghost">오디션 일정</Link>
+          <Link to="/Audition/vote" className="home-btn-primary">투표 참여하기</Link>
+          <Link to="/Process" className="home-btn-ghost">오디션 일정</Link>
         </div>
       </section>
 
