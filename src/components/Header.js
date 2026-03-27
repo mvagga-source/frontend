@@ -17,37 +17,38 @@ function Header({ onSidebarOpen }) {
         </NavLink>
 
         <div className="hd-nav-item has-dropdown">
-          <span>AUDITION</span>
+          <span>오디션</span>
           <div className="hd-dropdown-menu">
-            <NavLink to="/Process">INTRO.</NavLink>
-            <NavLink to="/Schedule">SCHEDULE</NavLink>            
-            <NavLink to="/Audition/idols">MEMBER</NavLink>
+            <NavLink to="/Process">프로그램 소개</NavLink>
+            <NavLink to="/Schedule">일정표</NavLink>            
+            <NavLink to="/Audition/idols">참가자 명단</NavLink>
             {/* <NavLink to="/Audition/ranking">LIVE</NavLink> */}
           </div>          
         </div>
 
-        <div className="hd-nav-item has-dropdown">
-          <span>VOTE</span>
-          <div className="hd-dropdown-menu">
-            <Link to="/Audition/vote">PICK ME</Link>            
-            <Link to="/Audition/contest">RANKING</Link>
-          </div>
-        </div>   
-
-        <NavLink to="/GoodsList" className="hd-nav-item">
-        <span className="nav-item">SHOP</span>
+        <NavLink to="/Audition/vote" className="hd-nav-item">
+          <span className="nav-item">투표하기</span>
         </NavLink>
 
         <div className="hd-nav-item has-dropdown">
-          <span>ENJOY</span>
+          <span>경연 결과</span>
           <div className="hd-dropdown-menu">
-            <Link to="/MVideo">VIDEO</Link>            
-            <Link to="/Community">COMMUNITY</Link>
-
-            {/* <Link to="/BoardList">자유게시판</Link>
-            <Link to="/QnA">문의/아이디어제안/신고</Link> */}
+            <Link to="/Audition/contestResult">개인순위</Link>            
+            <Link to="/Audition/contest">팀 경연</Link>
           </div>
-        </div>   
+        </div>
+
+        <NavLink to="/GoodsList" className="hd-nav-item">
+        <span className="nav-item">굿즈샵</span>
+        </NavLink>
+
+        <NavLink to="/MVideo" className="hd-nav-item">
+        <span className="nav-item">비디오</span>
+        </NavLink>
+
+        <NavLink to="/Community" className="hd-nav-item">
+        <span className="nav-item">커뮤니티</span>
+        </NavLink>
         
         {/* 사이드바 열기 버튼 */}
         <button className="hd-nav-sidebar-btn" onClick={onSidebarOpen}>

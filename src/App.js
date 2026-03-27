@@ -16,6 +16,7 @@ import MVideo from "./pages/Video/MVideo";
 import AuditionVote from "./pages/Audition/Vote";
 import IdolList from "./pages/Audition/IdolList";
 import Contest from "./pages/Audition/Contest";
+import ContestResult from "./pages/Audition/ContestResult";
 
 // My pages
 import MngVote from "./pages/MyPage/MyVote";
@@ -69,6 +70,7 @@ function App() {
           <Route path="/Audition/vote" element={<Layout><AuditionVote/></Layout>}/>
           <Route path="/Audition/idols" element={<Layout><IdolList/></Layout>}/>
           <Route path="/Audition/contest" element={<Layout><Contest/></Layout>}/>
+          <Route path="/Audition/contestResult" element={<Layout><ContestResult/></Layout>}/>
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
 
