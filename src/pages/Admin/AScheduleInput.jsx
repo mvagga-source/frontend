@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { saveVideoApi } from "../Video/MVideoApi";
+import { saveEventApi } from "../Schedule/ScheduleApi";
 
-function AVideoInput({ video, setVideos, onClose }) {
+function AScheduleInput({ event, setEvents, onClose }) {
 
   const [form, setForm] = useState(()=>{
-    return video ? {...video} : {
-      name: "",
-      title: "",    
-      url: "",
-      status: "1",
+    return event ? {...event} : {
+      title: "",
+      startDate: "",    
+      endDate: "",
+      description: "",
     }
   });
 
@@ -23,24 +23,27 @@ function AVideoInput({ video, setVideos, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    saveVideo();
+    saveEvent();
   };
 
-  const saveVideo = async () => {
+  const saveEvent = async () => {
  
           try {
-            // 비디오 저장
-            const videoRes = await saveVideoApi(form);
+            // 이벤트 저장
+            const eventRes = await saveEventApi(form);
+            if (event && event.eno) {
 
-            if (video && video.id) {
-              setVideos(prev =>
-                prev.map(v => v.id === video.id ? videoRes.data : v)
+              // console.log(typeof setEvents);
+
+              setEvents(prev =>
+                  prev.map(v => v.eno === event.eno ? eventRes.data : v)
               );
 
               onClose();
               
             }else{
-              setVideos(prev => [videoRes.data, ...prev]);
+              setEvents(prev => [eventRes.data, ...prev]);
+              alert("저장 되었습니다.");
             }
             
           } catch (err) {
@@ -49,10 +52,10 @@ function AVideoInput({ video, setVideos, onClose }) {
 
           // 입력폼 초기화
           setForm({
-              name: "",
-              title: "",    
-              url: "",
-              status: "1",
+            title: "",
+            startDate: "",    
+            endDate: "",
+            description: "",
           });
   };  
 
@@ -60,32 +63,6 @@ function AVideoInput({ video, setVideos, onClose }) {
     <form onSubmit={handleSubmit} className="av-finput">
 
       {/* 제목 */}
-      {/* <div className="co-info-row">
-        <span className="co-info-label">제목</span>
-        <span className="co-info-val">
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-          />
-        </span>
-      </div> */}
-
-      {/* 작성자 */}
-      <div className="co-info-row">
-        <span className="co-info-label">이름</span>
-        <span className="co-info-val">
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-          />
-        </span>
-      </div>
-
-      {/* 제목 */}
       <div className="co-info-row">
         <span className="co-info-label">제목</span>
         <span className="co-info-val">
@@ -98,29 +75,44 @@ function AVideoInput({ video, setVideos, onClose }) {
         </span>
       </div>
 
-      {/* URL */}
+      {/* 시작일 */}
       <div className="co-info-row">
-        <span className="co-info-label">영상 URL</span>
+        <span className="co-info-label">시작일</span>
         <span className="co-info-val">
           <input
             type="text"
-            name="url"
-            value={form.url}
+            name="startDate"
+            value={form.startDate}
             onChange={handleChange}
           />
         </span>
-      </div>
+      </div>      
 
-      {/* 상태 */}
+      {/* 종료일 */}
       <div className="co-info-row">
-        <span className="co-info-label">상태</span>
+        <span className="co-info-label">종료일</span>
         <span className="co-info-val">
-          <select name="status" value={form.status} onChange={handleChange}>
-            <option value="1">통과</option>
-            <option value="0">탈락</option>
-          </select>
+          <input
+            type="text"
+            name="endDate"
+            value={form.endDate}
+            onChange={handleChange}
+          />
         </span>
-      </div>
+      </div>            
+
+      {/* 설명 */}
+      <div className="co-info-row">
+        <span className="co-info-label">설명</span>
+        <span className="co-info-val">
+          <input
+            type="text"
+          name="description"
+          value={form.description}
+            onChange={handleChange}
+          />
+        </span>
+      </div> 
 
       <div className="co-button-row">
         <button type="submit" className="co-button-status co-ended-all">저장</button>
@@ -131,4 +123,4 @@ function AVideoInput({ video, setVideos, onClose }) {
   );
 }
 
-export default AVideoInput;
+export default AScheduleInput;

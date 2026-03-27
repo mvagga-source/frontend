@@ -2,21 +2,21 @@
 import React, { useEffect, useState } from "react";
 import { formatDate, formatDateTime } from "./ACommon";
 
-import { getVideosApi, deleteVideosApi } from "../Video/MVideoApi";
+import { getEventsApi, deleteEventApi } from "../Schedule/ScheduleApi";
 
-import AVideoList from "./AVideoList";
-import AVideoInput from "./AVideoInput";
+import AScheduleList from "./AScheduleList";
+import AScheduleInput from "./AScheduleInput";
 
-import "./AVideo.css";
+import "./ASchedule.css";
 import "./ACommon.css";
 
 
-function AVideo() {
+function ASchedule() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [videos, setVideos] = useState([]);
-  const [video, setVideo] = useState([]);  
+  const [events, setEvents] = useState([]);
+  const [event, setEvent] = useState([]);  
   const [page, setPage] = useState(0);
   const [sortType, setSortType] = useState("LATEST");
   const [search, setSearch] = useState("");
@@ -27,30 +27,31 @@ function AVideo() {
   const pageSize = 100;  
 
   useEffect(()=>{
-    setVideos([]);
-    getVideos();    
+    setEvents([]);
+    getEvents();    
   },[]);
 
-  const getVideos = async () => {
+  const getEvents = async () => {
  
     try {
       // 비디오 리스트
-      const videoRes = await getVideosApi(page, pageSize, sortType, search, searchType);
-      const vData = await videoRes.data.content;
+      const eventRes = await getEventsApi();
+      const eData = await eventRes.data;
       
-      if (vData) {
-          setVideos(prev => [...prev, ...vData]);
+      if (eData) {
+          setEvents(prev => [...prev, ...eData]);
+          console.log(eData);
       }
     } catch (err) {
         console.error(err);
     }
   };
 
-  const deleteVideos = async() => {
+  const deleteevents = async() => {
     try {
-      await deleteVideosApi(selectedIds);
+      await deleteEventApi(selectedIds);
 
-      setVideos(prev => prev.filter(v => !selectedIds.includes(v.id))); // 리스트 제거
+      setEvents(prev => prev.filter(v => !selectedIds.includes(v.eno))); // 리스트 제거
       setSelectedIds([]); // 체크 초기화      
 
       alert("삭제완료!!");
@@ -66,8 +67,8 @@ function AVideo() {
       return;
      }
 
-    const video = videos.find(v => v.id === selectedIds[0]);
-    setVideo(video);
+    const event = events.find(v => v.eno === selectedIds[0]);
+    setEvent(event);
     setIsModalOpen(true);
   }
 
@@ -80,7 +81,7 @@ function AVideo() {
 
     if (!window.confirm("선택한 항목을 삭제하시겠습니까?")) return;
 
-    deleteVideos();
+    deleteevents();
   }
 
   return (
@@ -93,33 +94,48 @@ function AVideo() {
           <button className="co-button-status co-ended-all" onClick={() => hendleDelete()}>삭제</button>
         </div>
 
-        <AVideoList 
-          videos={videos}
+        <AScheduleList 
+          events={events}
           selectedIds={selectedIds}
           setSelectedIds={setSelectedIds}
         />
 
         {/* 입력창 */}
         {isModalOpen && (
+
           <div className="co-modal-overlay">
               <div className="co-modal-item">
                   <div className="co-modal-row">
-                    <span className="co-modal-title">비디오 등록</span> 
+                    <span className="co-modal-title">스케줄 등록</span> 
                     <button className="co-close" onClick={() => setIsModalOpen(false)}>✕</button>
                   </div>
                   <div className="co-modal-detail">
-                      <AVideoInput 
-                        video={video}
-                        setVideos={setVideos} 
+                      <AScheduleInput 
+                        event={event}
+                        setEvents={setEvents} 
                         onClose={() => setIsModalOpen(false)} />
                   </div>
               </div>
           </div>
 
+          // <div className="co-modal-overlay">
+          //   <div className="co-modal">
+          //     <div className="co-modal-header">
+          //       <span>스케줄 등록</span>
+          //       <button className="close" onClick={() => setIsModalOpen(false)}>✕</button>
+          //     </div>
+          //     <div className="co-modal-contents">
+          //       <AScheduleInput 
+          //         event={event}
+          //         setEvents={setEvents} 
+          //         onClose={() => setIsModalOpen(false)} />
+          //     </div>
+          //   </div>
+          // </div>
         )}
 
       </div>
   );
 }
 
-export default AVideo;
+export default ASchedule;

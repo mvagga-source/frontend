@@ -1,12 +1,16 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getBookmarksApi, deleteBookmarkApi } from "./MyBookmarkApi";
+import { getMyBookmarkApi, deleteBookmarkApi } from "../Common/BookmarkApi";
+import { useAuth } from "../../context/AuthContext";
 
 import "./MyBookmark.css";
 import dayjs from "dayjs";
 
 function MyBookmark () {
+
+  const {user} = useAuth();
+  const pageType = "EVENT"; // 페이지구분
 
   const [events, setEvents] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -25,7 +29,7 @@ function MyBookmark () {
     const loadEvents = async () => {
 
       try {
-          const res = await getBookmarksApi();
+          const res = await getMyBookmarkApi(user.id, pageType);
 
           setEvents(res.data);
           setTotalElements(res.data.totalElements);

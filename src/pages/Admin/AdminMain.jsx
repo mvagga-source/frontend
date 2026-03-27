@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import bg from "../../assets/images/singer_bg.png";
 import AVideo from './AVideo';
-import ABookmark from './ABookmark';
+import ASchedule from './ASchedule';
 import './AdminMain.css';
 
 const AdminMain = () => {
 
-  const [activeTab, setActiveTab] = useState('bookmark');
+  const [activeTab, setActiveTab] = useState('schedule');
   const tabs = [
-    { id: 'bookmark', label: '북마크 관리' },
+    { id: 'schedule', label: '스케줄 관리' },
     { id: 'video', label: '비디오 관리' },
   ];
 
@@ -42,7 +42,7 @@ const AdminMain = () => {
 
         {/* 탭 컨텐츠 영역 */}
         <div className="tab-content">
-            {activeTab === 'bookmark' && <div><ABookmark/></div>}
+            {activeTab === 'schedule' && <div><ASchedule/></div>}
             {activeTab === 'video' && <div><AVideo/></div>}
         </div>        
 

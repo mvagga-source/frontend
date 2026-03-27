@@ -13,7 +13,6 @@ import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
 
 // Login(user info)
 import { useAuth } from "../../context/AuthContext";
-import ScrollToTopButton from "../../components/ScrollToTopButton/ScrollToTopButton";
 
 // CSS
 import "./Schedule.css";

@@ -12,6 +12,7 @@ export const getBookmarkPageApi = (page, pageSize) => {
   });
 }
 
+// 북마크 전체 가져오기
 export const getBookmarksApi = () => {
   return axiosInstance.get("/mypage/getBookmarks", {
     // params:{
@@ -24,3 +25,4 @@ export const getBookmarksApi = () => {
 export const deleteBookmarkApi = (id) => {
   return axiosInstance.delete(`/mypage/deleteBookmark/${id}`,);
 }
+
