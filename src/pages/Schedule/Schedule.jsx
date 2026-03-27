@@ -9,7 +9,7 @@ import koLocale from "@fullcalendar/core/locales/ko";
 
 // API
 import { getEventsApi } from "./ScheduleApi";
-import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
+import { getPageBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
 
 // Login(user info)
 import { useAuth } from "../../context/AuthContext";
@@ -30,7 +30,7 @@ function Schedule() {
         const eventRes = await getEventsApi();
         console.log("eventRes : ",eventRes);
 
-        const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
+        const bookmarkRes = await getPageBookmarkApi(user.id, pageType);
         const pageId = bookmarkRes.data.map(b => b.pageId);
 
         setEvents(eventRes.data.map(e => ({

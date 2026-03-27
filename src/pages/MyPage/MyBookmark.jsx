@@ -10,7 +10,6 @@ import dayjs from "dayjs";
 function MyBookmark () {
 
   const {user} = useAuth();
-  const pageType = "EVENT"; // 페이지구분
 
   const [events, setEvents] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -29,10 +28,10 @@ function MyBookmark () {
     const loadEvents = async () => {
 
       try {
-          const res = await getMyBookmarkApi(user.id, pageType);
-
+          const res = await getMyBookmarkApi(user.id);
+          console.log("res.data : ",res.data);
           setEvents(res.data);
-          setTotalElements(res.data.totalElements);
+          // setTotalElements(res.data.totalElements);
         } catch(e){
           console.error("데이터 불러오기 실패 :",e);
         }
