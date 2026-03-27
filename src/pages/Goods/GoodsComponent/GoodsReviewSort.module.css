@@ -1,0 +1,66 @@
+/* --- 3. 리뷰 리스트 헤더 및 정렬 --- */
+
+.listHeader {
+  display: flex;
+  justify-content: space-between; /* 제목 왼쪽, 정렬 오른쪽 */
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.listTitle {
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.listTitle span {
+  color: #00f2ff; /* 개수 부분에 포인트 컬러 */
+  margin-left: 5px;
+}
+
+.sortOptions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sortBtn {
+  background: none;
+  border: none;
+  color: #64748b; /* 비활성 상태: 흐릿한 회색 */
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.sortBtn:hover {
+  color: #cbd5e1;
+}
+
+/* 활성화된 정렬 버튼 스타일 */
+.activeSort {
+  color: #00f2ff !important;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+}
+
+.divider {
+  width: 1px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 리뷰 리스트 간격 */
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}

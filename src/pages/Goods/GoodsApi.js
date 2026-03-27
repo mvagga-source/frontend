@@ -42,9 +42,9 @@ export const GoodsReviewLikeSaveApi = (param = {}) => {
 };
 
 // 굿즈 리뷰 댓글 목록 가져오기 (더보기/무한스크롤용)
-export const getReviewListApi = (gno, size = 10, lastCno = 0) => {
+export const getReviewListApi = (gno, size = 10, lastCno = 0, sortDir = "DESC", lastLikeCnt, lastRating) => {
   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReview/list`, {
-    params: { gno, size, lastCno }
+    params: { gno, size, lastCno, sortDir, lastLikeCnt, lastRating }
   });
 };
 

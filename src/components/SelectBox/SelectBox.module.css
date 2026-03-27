@@ -4,7 +4,7 @@
   position: relative; 
   display: inline-block;
   vertical-align: middle;
-  max-width: 200px; /* 적절한 기본 너비 */
+  /*max-width: 200px;*/ /* 적절한 기본 너비 */
 }
 
 .neonSelect {

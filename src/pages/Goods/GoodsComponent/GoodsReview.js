@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./GoodsReview.module.css"; // BoardComment와 유사한 스타일 적용
 import { SaveBtn } from "../../../components/button/Button";
 import { useAuth } from "../../../context/AuthContext";
@@ -6,8 +6,15 @@ import { getReviewListApi, ReviewWriteApi, ReviewUpdateApi, ReviewDeleteApi } fr
 import dayjs from "dayjs";
 import boardCommentStyles from "../../Board/boardComponent/BoardComment.module.css";
 import GoodsReviewItem from "./GoodsReviewItem";
+import GoodsReviewSort from "./GoodsReviewSort";
 
+/**
+ * 굿즈 리뷰 목록
+ * @param {*} param0 
+ * @returns 
+ */
 function GoodsReview({ gno, sellerId }) {
+    //가상스크롤 적용은 사용X(리뷰가 많아지는 경우 적용 필요)
     const { user } = useAuth();
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState("");
@@ -16,6 +23,8 @@ function GoodsReview({ gno, sellerId }) {
     const [previewImg, setPreviewImg] = useState(null);    // 미리보기용 URL
 
     const [lastGrno, setLastGrno] = useState(0);      //마지막 번호
+    const [lastLikeCnt, setLastLikeCnt] = useState(0); // 되움되요 정렬
+    const [lastRating, setLastRating] = useState(0.0); // 평점순 정렬
     const [totalCount, setTotalCount] = useState(0);    //댓글 삭제와 답글을 제외한 전체개수
     
     // 추가 상태: 더 가져올 데이터가 있는지 여부와 로딩 상태
@@ -25,10 +34,23 @@ function GoodsReview({ gno, sellerId }) {
     // 수정 중인 리뷰 grno
     const [editingId, setEditingId] = useState(null);
 
+    // 정렬 상태 추가
+    const [sortType, setSortType] = useState("DESC");
+
+    // 정렬 변경 핸들러
+    const handleSortChange = (type) => {
+        if (sortType === type) return;
+        setSortType(type);
+        setReviews([]); // 기존 리스트 초기화
+        setLastGrno(0); // 페이징 초기화
+        setLastLikeCnt(0); // 초기화
+        setLastRating(0);  // 초기화
+    };
+
     // 댓글 리스트 가져오기 (처음 로드나 저장 후 새로 불러오기)
-    const getList = async (lastGrno = 0, append = true) => {
+    const getList = async (lastGrno = 0, lastLikeCnt = 0, lastRating = 0, append = true) => {
         setLoading(true);
-        getReviewListApi(gno, 10, lastGrno)
+        getReviewListApi(gno, 10, lastGrno, sortType, lastLikeCnt, lastRating)
         .then((res) => {
             if (res.data?.success) {
                 console.log(res);
@@ -45,13 +67,15 @@ function GoodsReview({ gno, sellerId }) {
 
                 // 2. 서버에서 받은 다음 그룹 번호와 마지막 여부 저장
                 setLastGrno(serverLastGroup);
+                setLastLikeCnt(res.data.lastLikeCnt || 0); // 마지막 도운되요 순 정렬용
+                setLastRating(res.data.lastRating || 0);   // 마지막 별점순 순 정렬용
                 setHasMore(!isLastPage);
                 
                 // (선택사항) 전체 개수 상태 업데이트
                 setTotalCount(totalCount); 
             }
         }).finally(() => {
-        setLoading(false);
+            setLoading(false);
         });
     };
 
@@ -130,18 +154,23 @@ function GoodsReview({ gno, sellerId }) {
 
         // 리뷰 리스트 새로고침
         if (gno) {
-            getList(0, false); 
+            getList(0, 0, 0, false); 
         }
-    }, [gno]);
+    }, [gno, sortType]);
 
-    // [추가] 더보기 클릭 핸들러
-    const handleMore = () => {
+    // 더보기 클릭 핸들러
+    const handleMore= useCallback(() => {
         if (loading || !hasMore) return;
         // 현재 상태의 lastGrno를 사용하여 다음 데이터 호출
-        getList(lastGrno, true);
-    };
+        getList(lastGrno, lastLikeCnt, lastRating, true);
+    },[loading, hasMore, lastGrno, lastLikeCnt, lastRating]);
 
-    // 2. 리뷰 저장 (별점 데이터 포함)
+    // 자식에게 전달할 리프레시 함수
+    const refreshList = useCallback(() => {
+        getList(0, 0, 0, false);
+    }, [getList]);
+
+    // 리뷰 저장 (별점 데이터 포함)
     const handleSave = async () => {
         if (!newReview.trim()) return alert("리뷰 내용을 입력해주세요.");
         
@@ -156,9 +185,9 @@ function GoodsReview({ gno, sellerId }) {
             if (res.data?.success) {
                 setNewReview(""); // 리뷰 내용 취소
                 setRating(5); // 별점 초기화
-                setSelectedFile(null); // 파일 초기화
-                setPreviewImg(null);   // 미리보기 초기화
-                getList(0, false); // 새로고침
+                handleRemoveFile();
+                setSortType("DESC");
+                refreshList(); // 새로고침
             }
         })
     };
@@ -169,24 +198,43 @@ function GoodsReview({ gno, sellerId }) {
         if (file) {
             // 1. 파일 크기 제한 (예: 5MB)
             if (file.size > 5 * 1024 * 1024) {
-            alert("파일 크기는 5MB를 초과할 수 없습니다.");
-            return;
+                alert("파일 크기는 5MB를 초과할 수 없습니다.");
+                return;
             }
 
-            // 2. 파일 객체 저장
-            setSelectedFile(file);
+            if (previewImg) {
+                URL.revokeObjectURL(previewImg);        //코드가 길어짐
+            }
 
             // 3. 미리보기 URL 생성
-            const reader = new FileReader();
+            /*const reader = new FileReader();
             reader.onloadend = () => {
                 setPreviewImg(reader.result);
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file);*/
+            if(file){
+                const url = URL.createObjectURL(file);
+                setPreviewImg(url);
+                // 파일 객체 저장
+                setSelectedFile(file);
+            }
         }
     };
 
+    // 컴포넌트 언마운트 시 메모리 해제
+    useEffect(() => {
+        // 컴포넌트가 사라질 때 실행되는 clean-up 함수
+        return () => {
+            if (previewImg) {
+                URL.revokeObjectURL(previewImg);
+            }
+        };
+    }, [previewImg]);
+
     // 선택 취소 기능 (미리보기 이미지 클릭 시 삭제 등)
     const handleRemoveFile = () => {
+        // 파일 삭제 시 또는 컴포넌트 언마운트 시
+        URL.revokeObjectURL(previewImg);   // 메모리 해제
         setSelectedFile(null);
         setPreviewImg(null);
     };
@@ -246,9 +294,12 @@ function GoodsReview({ gno, sellerId }) {
 
         {/* 리뷰 리스트 영역 */}
         <div className={styles.listContainer}>
-            <h3 className={styles.listTitle}>전체 리뷰 ({totalCount})</h3>
+            {/* 정렬 옵션 그룹 */}
+            <GoodsReviewSort totalCount={totalCount} sortType={sortType} onSortChange={handleSortChange} />
+            {/* 리뷰리스트 */}
             <ul className={styles.reviewList}>
             {reviews.map((r) => (
+                // 리뷰 개별 컴포넌트
                 <GoodsReviewItem
                     key={r.grno}
                     r={r}
@@ -256,7 +307,7 @@ function GoodsReview({ gno, sellerId }) {
                     sellerId={sellerId}
                     editingId={editingId}
                     setEditingId={setEditingId}
-                    refreshList={() => getList(0, false)}
+                    refreshList={refreshList}
                 />
             ))}
             </ul>

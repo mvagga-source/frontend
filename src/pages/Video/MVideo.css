@@ -176,6 +176,7 @@
 
 .mv-scroll-card img{
   width:100%;
+  height:150px;
   object-fit: cover;
   cursor: pointer;
 }
@@ -354,6 +355,7 @@
 
 .mv-info-box img{
   width:100%;
+  height:120px;
   object-fit: cover;
   cursor: pointer;
 }

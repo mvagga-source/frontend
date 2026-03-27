@@ -207,11 +207,33 @@
 }
 
 .kakaoPayBtn {
-  background: #fee500; color: #191919; border: none;
-  padding: 18px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;
-  cursor: pointer; transition: 0.3s;
+  background: #fee500;
+  color: #191919;
+  border: none;
+  padding: 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-.kakaoPayBtn:hover { background: #fada00; transform: translateY(-2px); }
+/* 마우스 호버 효과 (활성 상태일 때만) */
+.kakaoPayBtn:hover {
+  background: #fada00;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(250, 218, 0, 0.3)
+}
+/* 비활성화(품절/판매중지) 상태 스타일 */
+.kakaoPayBtn:disabled {
+  background: #334155; /* 어두운 네이비/그레이 톤으로 변경 */
+  color: #94a3b8;      /* 글자색 흐리게 */
+  cursor: not-allowed; /* 마우스 커서 금지 표시 */
+  opacity: 0.6;        /* 전체적으로 흐리게 */
+  filter: grayscale(1); /* 색상을 무채색으로 만듦 */
+  transform: none !important; /* 호버 시 움직임 제거 */
+  box-shadow: none;    /* 그림자 제거 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
 /* 탭 메뉴 스타일 */
 .tabWrapper {
