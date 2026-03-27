@@ -1,0 +1,164 @@
+.ideaContainer {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* 폼 영역 */
+.ideaForm {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ideaForm h2 {
+    color: #e2e8f0;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.ideaForm label {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-top: 8px;
+}
+
+.ideaInput {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    color: #e2e8f0;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.ideaInput:focus {
+    border-color: #00f2ff;
+    box-shadow: 0 0 6px rgba(0, 242, 255, 0.3);
+}
+
+/* 텍스트 영역 */
+.ideaTextarea {
+    width: 100%;
+    min-height: 200px;
+    max-height: 400px;
+    padding: 16px;
+    font-size: 14px;
+    font-family: 'Pretendard', sans-serif;
+    color: #e8f4f8;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 12px;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.ideaTextarea:focus {
+    border-color: #00f2ff;
+    background: rgba(0, 242, 255, 0.05);
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
+}
+
+/* 파일 업로드 */
+.fileUpload {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.fileLabel {
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(0, 242, 255, 0.08);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    color: #00f2ff;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.fileLabel:hover {
+    background: rgba(0, 242, 255, 0.15);
+}
+
+.fileLabel input {
+    display: none;
+}
+
+.fileInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.fileCancelBtn {
+    background: none;
+    border: none;
+    color: #ff4757;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 제출 버튼 */
+.submitBtn {
+    margin-top: 24px;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: #00f2ff;
+    color: #0f172a;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.submitBtn:hover {
+    box-shadow: 0 0 15px #00f2ff;
+    transform: translateY(-2px);
+}
+
+/* 우측 가이드 박스 */
+.guideBox {
+    flex: 1;
+    padding: 24px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    margin-top: 50px; /* 제목 높이 고려 */
+}
+
+.guideBox h3 {
+    color: #e2e8f0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.guideBox p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.guideBox ul {
+    list-style: none;
+    padding: 0;
+    color: #cbd5f5;
+    font-size: 0.85rem;
+}
+
+.guideBox li {
+    margin-bottom: 12px;
+    line-height: 1.4;
+}

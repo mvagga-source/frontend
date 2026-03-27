@@ -1,0 +1,197 @@
+/* QnaView.module.css */
+.container {
+    padding: 10px;
+    color: #e2e8f0; /* 밝은 회색 글자 */
+}
+
+.backBtn {
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    background: rgba(0, 242, 255, 0.05);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    color: #00f2ff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.backBtn:hover {
+    background: rgba(0, 242, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
+}
+
+/* 문의 섹션 카드 */
+.questionSection {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-end; /* 제목 하단 라인에 날짜 맞춤 */
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+}
+
+.statusTag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    background: #475569; /* 대기 중 기본 색상 */
+    color: #fff;
+}
+
+.statusTag.done {
+    background: rgba(0, 242, 255, 0.2);
+    color: #00f2ff;
+    border: 1px solid #00f2ff;
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+}
+
+/* 제목 묶음 (상태태그 + 제목) */
+.titleWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.title {
+    font-size: 1.6rem;
+    color: #fff;
+    margin: 0; /* 기본 마진 제거 */
+    letter-spacing: -0.5px;
+}
+
+/* 오른쪽으로 붙는 날짜 */
+.date {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    white-space: nowrap; /* 날짜가 줄바꿈되지 않도록 */
+}
+
+.content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+    white-space: pre-wrap;
+    color: #cbd5e1;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.2), transparent);
+    margin: 40px 0;
+}
+
+/* 답변 섹션 (포인트 컬러) */
+.answerSection {
+    position: relative;
+    padding: 30px;
+    background: rgba(0, 242, 255, 0.02);
+    border: 1px dashed rgba(0, 242, 255, 0.3);
+    border-radius: 16px;
+}
+
+.answerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.answerHeader strong {
+    color: #00f2ff;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.answerHeader strong::before {
+    content: 'A.';
+    margin-right: 8px;
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.answerContent {
+    line-height: 1.7;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+}
+
+.emptyAnswer {
+    text-align: center;
+    color: #64748b;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* 버튼 상단 바 */
+.buttonWrapper {
+    display: flex;
+    justify-content: space-between; /* 양 끝 배치 */
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+/* 목록 버튼 (좌측) */
+.listBtn {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.listBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* 관리 버튼 그룹 (우측) */
+.adminBtns {
+    display: flex;
+    gap: 12px;
+}
+
+/* 수정 버튼 */
+.editBtn {
+    padding: 10px 20px;
+    background: rgba(0, 242, 255, 0.05);
+    border: 1px solid rgba(0, 242, 255, 0.4);
+    color: #00f2ff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.editBtn:hover {
+    background: rgba(0, 242, 255, 0.15);
+    box-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
+}
+
+/* 삭제 버튼 */
+.deleteBtn {
+    padding: 10px 20px;
+    background: rgba(255, 71, 87, 0.05);
+    border: 1px solid rgba(255, 71, 87, 0.4);
+    color: #ff4757;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.deleteBtn:hover {
+    background: rgba(255, 71, 87, 0.15);
+    box-shadow: 0 0 12px rgba(255, 71, 87, 0.3);
+}

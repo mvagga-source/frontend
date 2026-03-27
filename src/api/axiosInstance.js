@@ -1,5 +1,9 @@
 import axios from "axios";
 
+let logoutHandler = null;
+export const setLogoutHandler = (fn) => {
+  logoutHandler = fn;
+};
 //React + Spring 세션 로그인
 
 // 기본 URL, 타임아웃 등 설정
@@ -24,6 +28,12 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     if (response.data && response.data.success === false) {
+      /*if(response.data.code === "401") {
+        if (logoutHandler) {
+          logoutHandler(); // AuthContext의 logout 실행됨
+          window.location.href = "/UserLogin";
+        }
+      }*/
       alert(response.data.message);    //유효성체크 BaCdException에러들 alert띄우기
     }
     return response;
@@ -36,6 +46,9 @@ axiosInstance.interceptors.response.use(
       // vote/status는 비로그인 허용 → 리다이렉트 제외
       if (!url.includes("/vote/status")) {
           window.location.href = "/UserLogin";
+      } if (logoutHandler) {
+        logoutHandler(); // AuthContext의 logout 실행됨
+        window.location.href = "/UserLogin";
       }
     } else if (!error.response || error.response?.status === 500) {
       // 서버 오류

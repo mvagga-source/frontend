@@ -37,13 +37,18 @@ import BoardView from "./pages/Board/BoardView";
 import BoardPreview from "./pages/Board/BoardPreview";
 
 //아이디어 제안
-import Idea from "./pages/Idea/Idea";
+import IdeaList from "./pages/Idea/IdeaList";
+import IdeaWrite from "./pages/Idea/IdeaWrite";
 
 //신고
-import Report from "./pages/Report/Report";
+import ReportList from "./pages/Report/ReportList";
+import ReportSave from "./pages/Report/ReportWrite";
 
 //Qna
 import QnaList from "./pages/Qna/QnaList";
+import QnaWrite from "./pages/Qna/QnaWrite";
+import QnaView from "./pages/Qna/QnaView";
+import QnaUpdate from "./pages/Qna/QnaUpdate";
 
 //굿즈
 import GoodsView from "./pages/Goods/GoodsView";
@@ -92,9 +97,17 @@ function App() {
             <Route index element={<BoardList />} />
             {/* /Community/BoardList 로 접근 가능 */}
             <Route path="BoardList" element={<BoardList />} />
-            <Route path="Idea" element={<Idea />} />
-            <Route path="Report" element={<Report />} />
+            {/* 아이디어 */}
+            <Route path="IdeaList" element={<IdeaList />} />
+            <Route path="IdeaWrite" element={<IdeaWrite />} />
+            {/* 신고 */}
+            <Route path="ReportList" element={<ReportList />} />
+            <Route path="ReportSave" element={<ReportSave />} />
+            {/* Qna */}
             <Route path="QnaList" element={<QnaList />} />
+            <Route path="QnaWrite" element={<QnaWrite />} />
+            <Route path="QnaView/:qno" element={<QnaView />} />
+            <Route path="QnaUpdate/:qno" element={<QnaUpdate />} />
           </Route>
 
           <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>

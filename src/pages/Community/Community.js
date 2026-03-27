@@ -34,11 +34,11 @@ function Community() {
                     >문의</button>
                     <button 
                         className={activeTab === "idea" ? styles.activeTab : ""} 
-                        onClick={() => navigate("/Community/Idea")}
+                        onClick={() => navigate("/Community/IdeaList")}
                     >아이디어 제안</button>
                     <button 
                         className={activeTab === "report" ? styles.activeTab : ""} 
-                        onClick={() => navigate("/Community/Report")}
+                        onClick={() => navigate("/Community/ReportList")}
                     >신고</button>
                 </div>
 

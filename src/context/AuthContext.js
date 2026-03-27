@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { userSessionApi, userLogoutApi } from "../pages/Home/UserLoginApi";
+import { setLogoutHandler } from "../api/axiosInstance";
 
 export const AuthContext = createContext();
 
@@ -43,6 +44,10 @@ export const AuthProvider = ({ children }) => {
       sessionCheck();
 
   }, [children]);  
+
+  useEffect(() => {
+    setLogoutHandler(logout); // axios에 logout 함수 주입
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

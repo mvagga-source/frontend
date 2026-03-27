@@ -1,0 +1,141 @@
+.writeContainer {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.writeForm {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title {
+    color: #e2e8f0;
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.inputSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.inputSection label {
+    font-size: 0.95rem;
+    color: #00f2ff; /* 네온 포인트 색상 */
+    font-weight: 500;
+}
+
+/* Report와 동일한 Input/Textarea 스타일 */
+.writeInput,
+.writeTextarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 242, 255, 0.15);
+    background: rgba(0, 242, 255, 0.03);
+    color: #e8f4f8;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+.writeInput:focus,
+.writeTextarea:focus {
+    border-color: #00f2ff;
+    background: rgba(0, 242, 255, 0.08);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+}
+
+.writeTextarea {
+    min-height: 250px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* 버튼 그룹 */
+.buttonGroup {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end; /* 오른쪽 정렬로 안정감 부여 */
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 242, 255, 0.05); /* 상단에 얇은 선을 주어 구분 */
+}
+
+.submitBtn {
+    min-width: 140px; /* 버튼의 최소 너비를 잡아주어 가독성 향상 */
+    padding: 14px;
+    background: #00f2ff;
+    color: #0f172a;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submitBtn:hover {
+    background: #00dce6;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+}
+
+.cancelBtn {
+    min-width: 100px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.cancelBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+}
+
+/* 우측 가이드 박스 */
+.guideBox {
+    flex: 1;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: 20px;
+}
+
+.guideBox h3 {
+    color: #e2e8f0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.guideBox p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.guideBox ul {
+    list-style: none;
+    padding: 0;
+}
+
+.guideBox li {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

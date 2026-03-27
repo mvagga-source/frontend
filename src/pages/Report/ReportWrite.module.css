@@ -153,3 +153,27 @@
   background: rgba(0, 242, 255, 0.3);
   border-radius: 10px;
 }
+
+.fileInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+}
+
+.fileCancelBtn {
+    background: none;
+    border: none;
+    color: #ff4757; /* 빨간색 톤 */
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2px 5px;
+    transition: transform 0.2s;
+}
+
+.fileCancelBtn:hover {
+    transform: scale(1.2);
+    color: #ff6b81;
+}
