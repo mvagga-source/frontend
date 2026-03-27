@@ -22,7 +22,6 @@ function Header({ onSidebarOpen }) {
             <NavLink to="/Process">프로그램 소개</NavLink>
             <NavLink to="/Schedule">일정표</NavLink>            
             <NavLink to="/Audition/idols">참가자 명단</NavLink>
-            {/* <NavLink to="/Audition/ranking">LIVE</NavLink> */}
           </div>          
         </div>
 
@@ -33,21 +32,21 @@ function Header({ onSidebarOpen }) {
         <div className="hd-nav-item has-dropdown">
           <span>경연 결과</span>
           <div className="hd-dropdown-menu">
-            <Link to="/Audition/contestResult">개인순위</Link>            
-            <Link to="/Audition/contest">팀 경연</Link>
+            <NavLink to="/Audition/contest/ranking">개인순위</NavLink>            
+            <NavLink to="/Audition/contest/team">팀 경연</NavLink>
           </div>
         </div>
 
         <NavLink to="/GoodsList" className="hd-nav-item">
-        <span className="nav-item">굿즈샵</span>
+          <span className="nav-item">굿즈샵</span>
         </NavLink>
 
         <NavLink to="/MVideo" className="hd-nav-item">
-        <span className="nav-item">비디오</span>
+          <span className="nav-item">비디오</span>
         </NavLink>
 
         <NavLink to="/Community" className="hd-nav-item">
-        <span className="nav-item">커뮤니티</span>
+          <span className="nav-item">커뮤니티</span>
         </NavLink>
         
         {/* 사이드바 열기 버튼 */}

@@ -176,12 +176,14 @@ export default function IdolList() {
         <div className="il-empty">검색 결과가 없어요</div>
       )}
       {/* 모달 (필요 시 활성화) */}
+      {/* 
       {selectedIdol && (
         <ProfileModal 
           idol={selectedIdol} 
           onClose={() => setSelectedIdol(null)} 
         />
-      )}
+      )} 
+      */}
     </div>
   );
 }
