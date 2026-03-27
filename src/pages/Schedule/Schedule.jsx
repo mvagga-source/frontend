@@ -28,7 +28,7 @@ function Schedule() {
 
       try {
         const eventRes = await getEventsApi();
-        console.log("eventRes : ",eventRes);
+        // console.log("eventRes : ",eventRes);
 
         const bookmarkRes = await getPageBookmarkApi(user.id, pageType);
         const pageId = bookmarkRes.data.map(b => b.pageId);

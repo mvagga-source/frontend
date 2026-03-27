@@ -15,6 +15,9 @@ function AVideo() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // I : Insert, U : Update
+    const [isType, setIsType] = useState("I");
+
   const [videos, setVideos] = useState([]);
   const [video, setVideo] = useState([]);  
   const [page, setPage] = useState(0);
@@ -69,6 +72,7 @@ function AVideo() {
     const video = videos.find(v => v.id === selectedIds[0]);
     setVideo(video);
     setIsModalOpen(true);
+    setIsType("U");
   }
 
   const hendleDelete = () => {
@@ -88,7 +92,7 @@ function AVideo() {
       <div className="av-main-list">
 
         <div className="av-do-wrap">
-          <button className="co-button-status co-ended-all" onClick={() => setIsModalOpen(true)}>등록</button>
+          <button className="co-button-status co-ended-all" onClick={() => {setIsModalOpen(true); setIsType("I");}}>등록</button>
           <button className="co-button-status co-ended-all" onClick={() => hendleUpdate()}>수정</button>
           <button className="co-button-status co-ended-all" onClick={() => hendleDelete()}>삭제</button>
         </div>
@@ -104,7 +108,7 @@ function AVideo() {
           <div className="co-modal-overlay">
               <div className="co-modal-item">
                   <div className="co-modal-row">
-                    <span className="co-modal-title">비디오 등록</span> 
+                    <span className="co-modal-title">{isType === "I" ? "비디오 등록" : "비디오 수정"}</span> 
                     <button className="co-close" onClick={() => setIsModalOpen(false)}>✕</button>
                   </div>
                   <div className="co-modal-detail">

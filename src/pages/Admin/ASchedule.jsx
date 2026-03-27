@@ -15,6 +15,10 @@ function ASchedule() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // I : Insert, U : Update
+  const [isType, setIsType] = useState("I");
+
+
   const [events, setEvents] = useState([]);
   const [event, setEvent] = useState([]);  
   const [page, setPage] = useState(0);
@@ -70,6 +74,7 @@ function ASchedule() {
     const event = events.find(v => v.eno === selectedIds[0]);
     setEvent(event);
     setIsModalOpen(true);
+    setIsType("U");
   }
 
   const hendleDelete = () => {
@@ -89,7 +94,7 @@ function ASchedule() {
       <div className="av-main-list">
 
         <div className="av-do-wrap">
-          <button className="co-button-status co-ended-all" onClick={() => setIsModalOpen(true)}>등록</button>
+          <button className="co-button-status co-ended-all" onClick={() => {setIsModalOpen(true); setIsType("I");}}>등록</button>
           <button className="co-button-status co-ended-all" onClick={() => hendleUpdate()}>수정</button>
           <button className="co-button-status co-ended-all" onClick={() => hendleDelete()}>삭제</button>
         </div>
@@ -106,7 +111,7 @@ function ASchedule() {
           <div className="co-modal-overlay">
               <div className="co-modal-item">
                   <div className="co-modal-row">
-                    <span className="co-modal-title">스케줄 등록</span> 
+                    <span className="co-modal-title">{isType === "I" ? "스케줄 등록" : "스케줄 수정"}</span> 
                     <button className="co-close" onClick={() => setIsModalOpen(false)}>✕</button>
                   </div>
                   <div className="co-modal-detail">
@@ -117,21 +122,6 @@ function ASchedule() {
                   </div>
               </div>
           </div>
-
-          // <div className="co-modal-overlay">
-          //   <div className="co-modal">
-          //     <div className="co-modal-header">
-          //       <span>스케줄 등록</span>
-          //       <button className="close" onClick={() => setIsModalOpen(false)}>✕</button>
-          //     </div>
-          //     <div className="co-modal-contents">
-          //       <AScheduleInput 
-          //         event={event}
-          //         setEvents={setEvents} 
-          //         onClose={() => setIsModalOpen(false)} />
-          //     </div>
-          //   </div>
-          // </div>
         )}
 
       </div>

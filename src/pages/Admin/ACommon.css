@@ -123,8 +123,9 @@
   /* border-radius: 10px;  */
   overflow: hidden;
   border: 1px solid var(--border-color);
+  background: rgba(10, 16, 28, 0.98);
   width:500px;
-  height:300px;
+  height:350px;
 }
 
 .co-modal-row {
@@ -169,7 +170,7 @@
 
 .co-close:hover { border-color: #ff7a8a; color: #ff7a8a; }
 
-.co-info-row { display: flex; justify-content: left; font-size: 14px; margin:15px 0; }
+.co-info-row { display: flex; justify-content: left; font-size: 14px; margin:20px 0; }
 
 .co-info-label { display: inline-block; width:80px; color: rgba(245, 245, 245, 0.9); }
 .co-info-val   { color: rgba(232,244,248,0.85);}
@@ -188,12 +189,12 @@
 }
 
 .co-button-row {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: right;
 }
 
 .co-button-row button{
-  margin-left: 10px;
+  margin-left: 15px;
 }
   
 .co-button-row button:hover { border-color: var(--neon-blue); color: var(--neon-blue); }

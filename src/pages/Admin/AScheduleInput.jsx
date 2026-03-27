@@ -115,7 +115,7 @@ function AScheduleInput({ event, setEvents, onClose }) {
       </div> 
 
       <div className="co-button-row">
-        <button type="submit" className="co-button-status co-ended-all">저장</button>
+        <button type="submit" className="co-button-status co-ongoing-bc">저장</button>
         <button type="button" className="co-button-status co-ended-all" onClick={onClose}>닫기</button>
       </div>
 
