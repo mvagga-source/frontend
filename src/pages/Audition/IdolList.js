@@ -156,9 +156,11 @@ export default function IdolList() {
               </div>
 
               <p className="il-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
+              <p className="il-idol-group">{idol.group}</p>
+              <p className="il-idol-position">{idol.position}</p>
 
               <div className="il-votes-area">
-                <span className="il-votes-num">{votes.toLocaleString()}</span>
+                <span className="il-votes-num">{idol.votes.toLocaleString()}</span>
                 <div className="il-votes-bar-bg">
                   <div className="il-votes-bar-fill" style={{ width: `${pct}%` }} />
                 </div>
@@ -173,7 +175,13 @@ export default function IdolList() {
       {filtered.length === 0 && (
         <div className="il-empty">검색 결과가 없어요</div>
       )}
-
+      {/* 모달 (필요 시 활성화) */}
+      {selectedIdol && (
+        <ProfileModal 
+          idol={selectedIdol} 
+          onClose={() => setSelectedIdol(null)} 
+        />
+      )}
     </div>
   );
 }

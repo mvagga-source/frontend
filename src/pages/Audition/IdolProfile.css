@@ -1,0 +1,234 @@
+.header-container { /* 실제 사용 중인 헤더 클래스명으로 확인 */
+  position: fixed; /* 혹은 absolute */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999; /* 다른 요소보다 무조건 위로 */
+}
+
+/* ── 전체 래퍼 ── */
+.id-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 80px 20px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+.id-back-bar { margin-bottom: 20px; padding-left: 20px; }
+.id-back-btn {
+  background: none; border: none;
+  color: rgba(232, 244, 248, 0.4);
+  font-size: 13px; cursor: pointer;
+}
+.id-back-btn:hover { color: var(--neon-blue); }
+
+/* --- 상단: 왼쪽 / 오른쪽 레이아웃 --- */
+.id-top-content {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px 30px;
+}
+
+/* === 왼쪽 영역 (세로 배치) === */
+.id-left-area {
+  flex: 2.5; /* 오른쪽 사이드바보다 넓게 */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* [프로필] */
+.id-profile-section {
+  background: rgba(0, 242, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  
+  padding: 20px;
+  display: flex;
+  height: 400px;
+  gap: 150px;
+}
+
+.id-p-info{margin-top: 120px; margin-left: 70px;}
+.id-p-img { width: 300px; flex-shrink: 0; text-align: center; margin-right: -150px; margin-left: 20px;position: relative; /* 자식 요소(버튼) 배치의 기준점 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  margin-bottom: 20px; /* 아래쪽 여백 */}
+.id-p-img img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+/* 2. 등록/삭제 버튼을 감싸는 컨테이너 추가 (JSX에 div 추가 필요) */
+.id-admin-btns {
+display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 (테이블 헤더와 맞춤) */
+  gap: 12px;                  /* 버튼 사이 간격 */
+  margin-top: 20px;           /* 테이블과의 간격 */
+  padding-left: 0;            /* 테이블 위치와 맞추기 */
+}
+/* 3. 등록 버튼(label)과 삭제 버튼(button) 공통 스타일 */
+.label-upload, /* label에 클래스 추가 예정 */
+.btn-delete { /* button에 클래스 추가 예정 */
+ display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;               /* 버튼 높이 통일 */
+  padding: 0 16px;
+  background-color: #2d2d30;  /* 어두운 배경색 */
+  color: #00e5ff;             /* 포인트 컬러 (민트/하늘색) */
+  border: 1px solid #00e5ff;  /* 테두리도 포인트 컬러 */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;        /* 글자 줄바꿈 방지 필수! */
+  transition: all 0.2s ease;
+}
+.btn-delete {
+  border-color: #ff4d4d;
+  color: #ff4d4d;
+}
+.btn-delete:hover {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+/* 4. 마우스 올렸을 때(호버) 스타일 */
+.id-p-img .label-upload:hover,
+.id-p-img .btn-delete:hover {
+  background-color: #555558; /* 조금 더 밝은 회색 */
+}
+
+
+.id-p-share { margin-top: 10px; display: flex; gap: 4px; justify-content: center; }
+.id-p-share button {
+  padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-color);
+  background: none; color: rgba(255,255,255,0.6); font-size: 10px; cursor: pointer;
+}
+
+.id-p-info { flex: 1; }
+.id-p-name-row {
+  display: flex;
+  justify-content: space-between; /* ★ 왼쪽 끝과 오른쪽 끝으로 밀기 ★ */
+  align-items: flex-end;         /* 아래쪽 라인을 맞춤 (이름 밑선에 버튼 맞추기) */
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333; /* 기존 가로줄 스타일 유지 */
+  margin-bottom: 15px;
+}
+.id-p-name-row h2 { font-size: 22px; font-weight: 700; color: #fff; margin: 0 0 3px; }
+.id-p-name-row span { font-size: 11px; color: var(--neon-blue); opacity: 0.7; }
+
+.id-info-table th { width: 120px; font-size: 12px; color: rgba(232,244,248,0.35); text-align: left; padding: 4px 0; }
+.id-info-table td { font-size: 13px; color: rgba(232,244,248,0.85); padding: 4px 0; }
+
+/* [사 진 여 기] (4분할 그리드) */
+.id-photo-section {
+  background: rgba(0, 242, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 15px;
+}
+.id-sec-title { font-size: 14px; color: rgba(232,244,248,0.4); margin: 0 0 10px; }
+
+.id-photo-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr; /* 2분할 */
+  gap: 10px;
+}
+.id-photo-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  aspect-ratio: 1; /* 정사각형 */
+}
+.id-photo-item img { width: 100%; height: 100%; object-fit: cover; }
+.id-photo-overlay {
+  position: absolute; bottom: 0; width: 100%;
+  background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 4px; text-align: center;
+}
+
+/* === 오른쪽 영역 (세로 배치, 채팅방 포함) === */
+.id-side-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 손그림처럼 따닥따닥 붙임 */
+}
+
+.id-btn-sponsor {
+  background: var(--neon-blue); color: #0a101c;
+  border: none; padding: 15px; border-radius: 10px;
+  font-weight: 700; font-size: 14px; cursor: pointer;
+}
+
+.id-vote-card {
+  display: flex; gap: 8px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
+  border-radius: 10px; padding: 10px;
+}
+.id-v-stat { flex: 1; text-align: center; }
+.id-v-stat strong { display: block; font-size: 18px; font-weight: 700; color: var(--neon-blue); }
+.id-v-stat span { font-size: 11px; color: rgba(232,244,248,0.3); }
+
+.id-btn-sub {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  color: rgba(232, 244, 248, 0.7);
+  padding: 10px; border-radius: 8px; font-size: 12px; cursor: pointer;
+}
+/* 채팅창 (높이 고정) */
+.id-chat-room { height: 410px; background: rgba(0, 242, 255, 0.02); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; }
+.id-chat-title { font-size: 12px; color: #444; margin-bottom: 10px; }
+.id-chat-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
+.id-chat-item span { color: #00f2ff; font-weight: 600; }
+.id-chat-input { display: flex; gap: 5px; margin-top: 10px; }
+.id-chat-input input { flex: 1; background: #0a101c; border: 1px solid #333; border-radius: 4px; padding: 6px; color: #fff; font-size: 11px; }
+.id-chat-input button { background: #00f2ff; border: none; border-radius: 4px; padding: 6px 10px; font-weight: 700; font-size: 11px; cursor: pointer; }
+
+/* 달력 영역 */
+.id-calendar-room { height: 272px; background: rgba(0, 242, 255, 0.02); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 15px; margin-top: 15px;}
+.id-calendar-box { height: 160px; border: 1px dashed #333; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; font-size: 13px; }
+
+.id-bottom-content { margin-top: 20px; }
+.id-video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.id-video-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; overflow: hidden; }
+.id-v-thumb { position: relative; aspect-ratio: 16/9; }
+.id-v-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.id-v-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 30px; background: rgba(0,0,0,0.3); }
+.id-v-body { padding: 10px; }
+.id-v-body p { font-size: 12px; margin: 0; }
+
+/* --- 하단: [동 영 상 여 기] --- */
+.id-bottom-content {
+  padding: 0 20px;
+  margin-top: 10px;
+}
+
+.id-video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 손그림처럼 2분할 */
+  gap: 15px;
+}
+.id-video-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.id-v-thumb { position: relative; aspect-ratio: 16 / 9; }
+.id-v-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.id-v-play {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 30px; color: #fff; background: rgba(0,0,0,0.3);
+}
+.id-v-body { padding: 10px; }
+.id-v-body p { font-size: 12px; color: #fff; margin: 0; }

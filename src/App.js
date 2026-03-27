@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./context/ProtectedRoute";
+import Header from "./components/Header";
 
 // Home pages
 import Home from "./pages/Home/Home";
@@ -15,6 +16,7 @@ import MVideo from "./pages/Video/MVideo";
 // Audition pages
 import AuditionVote from "./pages/Audition/Vote";
 import IdolList from "./pages/Audition/IdolList";
+import IdolProfile from "./pages/Audition/IdolProfile.js";
 import Contest from "./pages/Audition/Contest";
 import ContestResult from "./pages/Audition/ContestResult";
 
@@ -69,6 +71,7 @@ function App() {
 
           <Route path="/Audition/vote" element={<Layout><AuditionVote/></Layout>}/>
           <Route path="/Audition/idols" element={<Layout><IdolList/></Layout>}/>
+          <Route path="/Audition/profile/:id" element={<Layout><IdolProfile/></Layout>} />
           <Route path="/Audition/contest" element={<Layout><Contest/></Layout>}/>
           <Route path="/Audition/contestResult" element={<Layout><ContestResult/></Layout>}/>
 

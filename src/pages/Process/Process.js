@@ -44,9 +44,13 @@ import final_img2 from "../../assets/images/step5_06.png";
 import final_img3 from "../../assets/images/step5_07.png";
 import final_img4 from "../../assets/images/step5_08.png";
 
+// 6차 피날레 이미지 (로고 배경 및 데코)
+
+import crown_icon from "../../assets/images/step06_01.png"; // 왕관 실루엣
+import mic_icon from "../../assets/images/step06_02.png";     // 마이크 실루엣
 
 function Process() {
-  const [activeTab, setActiveTab] = useState(1); 
+  const [activeTab, setActiveTab] = useState(0); 
 
   const processData = [
     {
@@ -80,8 +84,8 @@ function Process() {
         { label: "생존 인원", text: "상위 60명만 생존하여 2차 과제 진행" }
       ],
       videoSrc: VoteVideo,
-      result: "1차 결과 보러가기",
-      result2: "투표 하러가기"
+       result: "1차 결과 보러가기",
+      //result2: "투표 하러가기"
     },
     { 
       id: 2, 
@@ -121,7 +125,7 @@ function Process() {
       ],
       sections: [], 
       result: "2차 결과 보러가기",
-       result2: "투표 하러가기"
+      // result2: "투표 하러가기"
     },
     { 
 
@@ -162,7 +166,7 @@ function Process() {
       ],
       sections: [], // 기본 레이아웃용 sections는 비워둠
       result: "3차 결과 보러가기",
-       result2: "투표 하러가기"
+      // result2: "투표 하러가기"
     },
     { 
       id: 4, displayId: "4", title: "4차 컨셉평가", 
@@ -198,7 +202,7 @@ function Process() {
         }
       ],
       result: "4차 결과 보러가기",
-      result2: "투표 하러가기"
+      //result2: "투표 하러가기"
 
     },
     { 
@@ -206,7 +210,7 @@ function Process() {
       step5Blocks: [
         {
           type: "step5_mv_grid",
-          title: "5차 뮤직비디오 촬영",
+          title: "뮤직비디오 촬영",
           items: [
             { icon: mv_icon1, title: "모금", desc: ["4차 순위발표에서 생존 연습생", "개인마다 모금 진행"] },
             { icon: mv_icon2, title: "뮤직비디오 제작", desc: ["진행된 모금으로 MV 자체 제작", "금액별 소품 및 장소 제공"] },
@@ -216,7 +220,7 @@ function Process() {
         },
         {
           type: "step5_final_stage",
-          title: "5차 파이널 무대",
+          title: "파이널 무대",
           items: [
             { num: "01", img: final_img1, title: "최종 팀 구성", desc: ["생존 14명은 7명씩 두 팀 구성", "팀별 자체 작곡 곡으로 무대"] },
             { num: "02", img: final_img2, title: "팀원 선택 방식", desc: ["4차 1·2등이 팀 센터", "두 센터가 번갈아 팀원 선택"] },
@@ -228,8 +232,39 @@ function Process() {
       result: "최종 순위 확인",
       result2: "투표 결과 보기"
      },
-    { id: 6, displayId: "⯌", title: "최종 데뷔 멤버 선정", sections: [], result: "커밍순" 
-
+    { 
+      id: 6, 
+      displayId: "⯌", 
+      title: "최종 데뷔 멤버 선정", 
+      // 이미지 속의 좌/우 내용을 분리해서 담았어
+      finalInfo: [
+        {
+          title: "데뷔 그룹명",
+          desc: [
+            "프로그램 사이트를 통해 시청자의 의견 수집",
+            "방송 종료까지 투표 집계",
+            "합산 결과로 데뷔 그룹명 결정"
+          ]
+        },
+        {
+          title: "실시간 순위 발표",
+          desc: [
+            "생방송 중 실시간으로 최종 순위 집계 및 발표",
+            "7위부터 1위까지 순차적으로 공개",
+            "각 연습생의 최종 득표수와 순위 공개"
+          ]
+        }
+      ],
+      // 하단 요약 섹션
+      summary: {
+        title: "ACTION 101 종료",
+        items: [
+          "최종 순위 1위부터 7위까지 데뷔 확정",
+          "101명에서 시작해 7명의 데뷔 멤버 선정 완료",
+          "새로운 아이돌 그룹의 시작을 알리는 피날레"
+        ]
+      },
+      // result: "참가 연습생 둘러보기" 
     }
   ];
 
@@ -545,7 +580,78 @@ function Process() {
       </div>
     ))}
   </div>
-) : (
+)
+// -------------------------------------------------------------------------------------------------------------------
+: activeTab === 6 ? (
+  <div className="ps-step6-container">
+    {/* 파트 1: 최종 데뷔 멤버 선정 상세 정보 영역 */}
+    <div className="ps6-info-wrapper">
+      {/* 배경 아이콘 데코레이션 (왕관 & 마이크) */}
+      <div className="ps6-deco-icons">
+        <img src={crown_icon} className="ps6-icon crown" alt="crown" />
+        <img src={mic_icon} className="ps6-icon mic" alt="mic" />
+      </div>
+
+      <div className="ps6-main-content">
+        {/* 상단 2열 정보 (데뷔 그룹명 / 실시간 순위) */}
+        <div className="ps6-top-row">
+          {currentTab.finalInfo?.map((info, i) => (
+            <React.Fragment key={i}>
+              <div className="ps6-info-card">
+                <h3 className="ps6-info-title">{info.title}</h3>
+                <ul className="ps6-info-list">
+                  {info.desc.map((d, j) => <li key={j}>- {d}</li>)}
+                </ul>
+              </div>
+              {i === 0 && <div className="ps6-v-line"></div>}
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* 하단 요약 (ACTION 101 종료 설명) */}
+        <div className="ps6-bottom-summary">
+          <h4 className="ps6-summary-title">{currentTab.summary?.title}</h4>
+          <ul className="ps6-summary-list">
+            {currentTab.summary?.items.map((item, i) => (
+              <li key={i}>- {item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {/* 파트 2: ACTION 101 메인 로고 섹션 (이미지 레이아웃 구현) */}
+    <div className="action101-logo-section">
+      {/* 배경 바이너리 패턴 텍스트 */}
+      <div className="binary-pattern">
+        101001001011011101101010111101110101011011101101011010101
+        101110101011011101101010111101110101011011101101011010101
+      </div>
+      
+      <div className="logo-glass-card">
+        <div className="logo-header-text">
+          <span className="left-tag">PICK YOUR IDOL</span>
+          <span className="right-tag">2026 SURVIVAL</span>
+        </div>
+
+        <h1 className="main-logo-text">ACTION 101</h1>
+        
+        <p className="sub-logo-text">
+          디렉터 여러분들, 당신의 아이돌에게 투표하세요!
+        </p>
+
+        <div className="logo-footer-link">WWW.ACTION101.COM</div>
+
+        {/* 모서리 포인트 점 4개 */}
+        <div className="corner-dot top-left"></div>
+        <div className="corner-dot top-right"></div>
+        <div className="corner-dot bottom-left"></div>
+        <div className="corner-dot bottom-right"></div>
+      </div>
+    </div>
+  </div>
+) 
+ : (
 // -------------------------------------------------------------------------------------------------------------------
           /* 기본 레이아웃 (ID 0, 3, 4, 5, 6) */
           <div className="ps-default-layout">
