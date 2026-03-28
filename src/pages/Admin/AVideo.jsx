@@ -38,7 +38,7 @@ function AVideo() {
  
     try {
       // 비디오 리스트
-      const videoRes = await getVideosApi(page, pageSize, sortType, search, searchType);
+      const videoRes = await getVideosApi(page, pageSize, sortType, search, searchType,"");
       const vData = await videoRes.data.content;
       
       if (vData) {
@@ -53,7 +53,12 @@ function AVideo() {
     try {
       await deleteVideosApi(selectedIds);
 
-      setVideos(prev => prev.filter(v => !selectedIds.includes(v.id))); // 리스트 제거
+      //setVideos(prev => prev.filter(v => !selectedIds.includes(v.id))); // 리스트 제거
+
+      setVideos(prev =>
+          prev.map(v => selectedIds.includes(v.id) ? { ...v, deletedFlag:"Y" } : v)
+        );      
+
       setSelectedIds([]); // 체크 초기화      
 
       alert("삭제완료!!");

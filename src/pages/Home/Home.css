@@ -26,7 +26,7 @@
 
 .hero-bg-text {
   position: absolute;
-  bottom: -10px;
+  top: 200px;
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(80px, 18vw, 200px);
@@ -93,7 +93,7 @@
 }
 
 .timer-label {
-  font-size: 11px;
+  font-size: 18px;
   letter-spacing: 2px;
   color: rgba(232, 244, 248, 0.45);
   text-transform: uppercase;
@@ -489,4 +489,56 @@
   .timer-unit           { padding: 10px 12px; min-width: 52px; }
   .timer-num            { font-size: 1.6rem; }
   .home-video-card      { flex: 0 0 calc(50% - 6px); }
+}
+
+
+.splash-container {
+  background-color: #1a253bff; /* 요청하신 배경색으로 변경 */
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  
+  /* 2초 대기 + 0.5초 사라짐 = 총 2.5초 뒤에 컨테이너 완전히 제거 */
+  animation: fadeOutContainer 0s forwards 2.5s; 
+}
+
+.logo-anim {
+  width: 100%; /* 로고 크기는 적절히 조절하세요 (예: 300px 또는 50%) */
+  
+  opacity: 1; /* 처음엔 선명하게 유지 */
+  
+  /* - 2초(delay) 동안 가만히 있다가
+     - 0.5초(duration) 동안 
+     - 서서히 사라짐(fadeOut)
+  */
+  animation: fadeOut 0.5s ease-out 2s forwards;
+}
+
+/* 컨테이너 자체가 사라지게 하는 애니메이션 */
+@keyframes fadeOutContainer {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* 로고가 투명해지는 애니메이션 */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1); /* 원래 크기 */
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.1); /* 살짝 커지면서 사라지면 더 고급스러워요 (선택사항) */
+  }
 }

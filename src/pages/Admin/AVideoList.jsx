@@ -39,11 +39,12 @@ function AVideoList({videos, selectedIds, setSelectedIds}) {
             <col style={{width:"5%"}}/>          
             <col style={{width:"5%"}}/>
             <col style={{width:"10%"}}/>
-            <col style={{width:"25%"}}/>
+            <col style={{width:"20%"}}/>
             <col style={{width:"20%"}}/>
             <col style={{width:"5%"}}/>
             <col style={{width:"5%"}}/>
             <col style={{width:"5%"}}/>
+            <col style={{width:"5%"}}/>            
           </colgroup>
           <thead>
             <tr>
@@ -60,7 +61,8 @@ function AVideoList({videos, selectedIds, setSelectedIds}) {
               <th>유튜브 URL</th>
               <th>좋아요</th>
               <th>조회</th>
-              <th>생성일</th>            
+              <th>생성일</th>
+              <th>삭제</th>              
             </tr>
           </thead>
           <tbody>
@@ -86,6 +88,7 @@ function AVideoList({videos, selectedIds, setSelectedIds}) {
                 <td style={{textAlign:"center"}}>{video.likeCount}</td>
                 <td style={{textAlign:"center"}}>{video.viewCount}</td>
                 <td style={{textAlign:"center"}}>{formatDate(video.createdAt)}</td>
+                <td style={{textAlign:"center"}}>{video.deletedFlag}</td>
               </tr>            
             ))}
 

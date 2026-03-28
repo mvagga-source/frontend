@@ -102,7 +102,7 @@ function MVideo() {
             } else {
 
                 // 비디오 리스트
-                const videoRes = await getVideosApi(currentPage, pageSize, sortType, search, searchType);
+                const videoRes = await getVideosApi(currentPage, pageSize, sortType, search, searchType,"N");
                 const vData = await videoRes.data.content;
                 
                 if (vData) {

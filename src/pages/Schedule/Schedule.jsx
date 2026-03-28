@@ -27,7 +27,7 @@ function Schedule() {
   const getEvents  = async () => {
 
       try {
-        const eventRes = await getEventsApi();
+        const eventRes = await getEventsApi("N");
         // console.log("eventRes : ",eventRes);
 
         const bookmarkRes = await getPageBookmarkApi(user.id, pageType);

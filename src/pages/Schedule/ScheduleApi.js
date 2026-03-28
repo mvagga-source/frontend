@@ -2,8 +2,12 @@
 import axiosInstance from "../../api/axiosInstance";
 
 // 전체 일정 가져오기
-export const getEventsApi = () => {
-  return axiosInstance.get("/schedule/getEvents",{});
+export const getEventsApi = (deletedFlag) => {
+  return axiosInstance.get("/schedule/getEvents",{
+    params:{
+      deletedFlag: deletedFlag
+    }
+  });
 }
 
 // 일정 저장

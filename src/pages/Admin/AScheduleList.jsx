@@ -31,11 +31,12 @@ function AScheduleList({events, selectedIds, setSelectedIds}) {
           <colgroup>
             <col style={{width:"5%"}}/>
             <col style={{width:"5%"}}/>
-            <col style={{width:"25%"}}/>          
+            <col style={{width:"20%"}}/>          
             <col style={{width:"10%"}}/>
             <col style={{width:"10%"}}/>
             <col style={{width:"35%"}}/>
             <col style={{width:"10%"}}/>
+            <col style={{width:"5%"}}/>            
           </colgroup>
           <thead>
             <tr>
@@ -51,6 +52,7 @@ function AScheduleList({events, selectedIds, setSelectedIds}) {
               <th>종료일자</th>
               <th>설명</th>
               <th>생성일</th>            
+              <th>삭제</th>              
             </tr>
           </thead>
           <tbody>
@@ -68,6 +70,7 @@ function AScheduleList({events, selectedIds, setSelectedIds}) {
                 <td style={{textAlign:"center"}}>{event.endDate}</td>
                 <td className="co-ellipsis">{event.description}</td>                
                 <td style={{textAlign:"center"}}>{formatDate(event.createdAt)}</td>
+                <td style={{textAlign:"center"}}>{event.deletedFlag}</td>
               </tr>            
             ))}
 

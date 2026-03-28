@@ -55,7 +55,10 @@ function ASchedule() {
     try {
       await deleteEventApi(selectedIds);
 
-      setEvents(prev => prev.filter(v => !selectedIds.includes(v.eno))); // 리스트 제거
+      //setEvents(prev => prev.filter(v => !selectedIds.includes(v.eno))); // 리스트 제거
+      setEvents(prev =>
+          prev.map(v => selectedIds.includes(v.eno) ? {...v, deletedFlag:'Y' } : v)
+      );
       setSelectedIds([]); // 체크 초기화      
 
       alert("삭제완료!!");
