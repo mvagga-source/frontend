@@ -1,0 +1,152 @@
+.modalOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 3000;
+}
+
+.modalContent {
+    /* 본문 배경(0.03)보다 조금 더 확실한 네이비 톤 */
+    background: #111a2e; 
+    width: 600px;
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease-out;
+    overflow: hidden;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modalHeader {
+    padding: 18px 25px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modalHeader h2 { color: #00f2ff; font-size: 1.1rem; margin: 0; font-weight: 600; }
+.closeBtn { background: none; border: none; color: #64748b; font-size: 24px; cursor: pointer; transition: 0.2s; }
+.closeBtn:hover { color: #fff; }
+
+.modalBody { padding: 30px; }
+
+/* 별점 영역 (최상단) */
+.ratingArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+.ratingLabel { color: #94a3b8; font-size: 0.95rem; }
+
+.stars { display: flex; align-items: center; gap: 5px; }
+.starActive { 
+    color: #facc15; font-size: 1.8rem; cursor: pointer; 
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.4); 
+}
+.starInactive { color: #334155; font-size: 1.8rem; cursor: pointer; }
+.ratingScore { color: #fff; font-weight: bold; font-size: 1.2rem; margin-left: 10px; }
+
+/* Textarea: 포커스 시 밝아짐 & 네온 스크롤바 */
+.textarea {
+    width: 100%;
+    height: 180px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    
+    /* [중요] 글자 찌그러짐 방지 설정 */
+    font-size: 0.85rem;               /* 너무 작지 않은 폰트 사이즈 */
+    line-height: 1.6;              /* 줄 간격을 1.6배로 설정하여 가독성 확보 */
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    
+    resize: none;                  /* 사용자가 크기 조절 못하게 고정 */
+    outline: none;
+    transition: all 0.3s ease;
+    
+    /* 글자가 영역을 넘어가면 깔끔하게 스크롤 */
+    overflow-y: auto;
+    word-break: break-all;         /* 긴 단어도 영역 안에서 줄바꿈 */
+}
+
+/* 포커스 시 배경이 밝아지는 효과 유지 */
+.textarea:focus {
+    background: rgba(0, 242, 255, 0.05);
+    border-color: #00f2ff;
+}
+
+/* 네온 스크롤바 (Webkit) */
+.textarea::-webkit-scrollbar { width: 5px; }
+.textarea::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
+.textarea::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 255, 0.2);
+    border-radius: 10px;
+}
+.textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+}
+
+/* 하단 버튼 영역 */
+.actionRow {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-top: 25px;
+}
+
+.fileLeft { display: flex; align-items: center; gap: 12px; }
+
+/* 사진 첨부 (Dashed) */
+.fileLabel {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(0, 242, 255, 0.3);
+    border-radius: 6px;
+    color: #00f2ff; font-size: 0.85rem; cursor: pointer;
+    transition: 0.2s;
+}
+.fileLabel:hover { background: rgba(0, 242, 255, 0.1); border-color: #00f2ff; }
+.hiddenInput { display: none; }
+
+/* 미리보기 */
+.previewWrapper { position: relative; width: 45px; height: 45px; }
+.previewThumb { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; border: 1px solid #00f2ff; }
+.removeBtn {
+    position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
+    background: #ff4d4d; border: none; border-radius: 50%; color: #fff;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+
+.footerBtns { display: flex; gap: 10px; }
+
+/* 취소 버튼: 호버 시 살짝 티나게 */
+.cancelBtn {
+    padding: 9px 22px;
+    background: transparent;
+    color: #94a3b8; border: 1px solid #334155;
+    border-radius: 6px; cursor: pointer; transition: 0.2s;
+}
+.cancelBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff; border-color: #475569;
+}
+
+/* 등록 버튼: 네온 스타일 */
+.submitBtn {
+    padding: 9px 22px;
+    background: transparent;
+    color: #fff; border: 1px solid #334155;
+    border-radius: 6px; cursor: pointer; transition: 0.3s;
+}
+.submitBtn:hover {
+    border-color: #00f2ff; color: #00f2ff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+}

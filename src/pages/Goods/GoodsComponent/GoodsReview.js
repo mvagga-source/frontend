@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import boardCommentStyles from "../../Board/boardComponent/BoardComment.module.css";
 import GoodsReviewItem from "./GoodsReviewItem";
 import GoodsReviewSort from "./GoodsReviewSort";
+import GoodsReviewModal from "../popup/GoodsReviewModal";
 
 /**
  * 굿즈 리뷰 목록
@@ -36,6 +37,10 @@ function GoodsReview({ gno, sellerId }) {
 
     // 정렬 상태 추가
     const [sortType, setSortType] = useState("DESC");
+
+    // 상품 리뷰 팝업
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedReview, setSelectedReview] = useState(null); // 수정용
 
     // 정렬 변경 핸들러
     const handleSortChange = (type) => {
@@ -313,6 +318,23 @@ function GoodsReview({ gno, sellerId }) {
             </ul>
         </div>
         </div>
+        {/* 리뷰 작성 버튼 (보통 주문내역 확인 후 노출) */}
+        {/* <div className={styles.writeTrigger}>
+            <SaveBtn onClick={() => {
+                setSelectedReview(null); // 등록 모드
+                setIsModalOpen(true);
+            }}>리뷰 작성하기</SaveBtn>
+        </div> */}
+
+        {/* 팝업 렌더링 */}
+        {/* {isModalOpen && (
+            <GoodsReviewModal 
+                reviewData={selectedReview}
+                gno={gno}
+                gono={123} // 실제로는 주문 목록에서 가져온 번호 전달
+                onClose={() => setIsModalOpen(false)}
+            />
+        )} */}
         {/* [추가] BoardComment에서 가져온 네온 더보기 버튼 */}
         {hasMore && (
             <div 
