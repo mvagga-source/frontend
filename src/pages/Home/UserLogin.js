@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { userLoginApi } from "./UserLoginApi";
 import "./UserLogin.css";
@@ -7,6 +7,9 @@ import "./UserLogin.css";
 export default function UserLogin() {
   const { login }  = useAuth();
   const navigate   = useNavigate();
+
+  const location = useLocation();
+  const state = location.state;
 
   const [id,      setId]      = useState("");
   const [pw,      setPw]      = useState("");
@@ -22,7 +25,7 @@ export default function UserLogin() {
     try {
       const res = await userLoginApi(id.trim(), pw);
       login(res.data);
-      navigate("/");
+      navigate(state?.from || "/");
     } catch {
       setErrMsg("아이디 또는 비밀번호가 일치하지 않아요.");
     }

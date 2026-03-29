@@ -22,8 +22,6 @@ import TeamCompetition from "./pages/Audition/contest/TeamCompetition";
 
 
 // My pages
-import MngVote from "./pages/MyPage/MyVote";
-import Bookmark from "./pages/MyPage/MyBookmark";
 import MyMain from "./pages/MyPage/MyMain";
 
 //커뮤니티
@@ -83,15 +81,16 @@ function App() {
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
 
-          <Route path="/MVideo" element={<ProtectedRoute><Layout><MVideo/></Layout></ProtectedRoute>}/>
+          {/* 뮤직비디오 */}
+          <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>
           <Route path="/MVideo/:pageId" element={<ProtectedRoute><Layout><MVideo/></Layout></ProtectedRoute>}/>
 
-          <Route path="/Schedule" element={<ProtectedRoute><Layout><Schedule/></Layout></ProtectedRoute>}/>          
+          {/* 오디션 일정 */}
+          <Route path="/Schedule" element={<Layout><Schedule/></Layout>}/>          
 
-          <Route path="/Bookmark" element={<ProtectedRoute><Layout><Bookmark/></Layout></ProtectedRoute>}/>
-          <Route path="/MngVote" element={<ProtectedRoute><Layout><MngVote/></Layout></ProtectedRoute>}/>
+          {/* 내페이지 관리*/}
           <Route path="/MyMain" element={<ProtectedRoute><Layout><MyMain/></Layout></ProtectedRoute>}/>
-          
+
           <Route path="/Community" element={<Layout><Community/></Layout>}>
             {/* index는 /Community 접속 시 기본으로 보여줄 페이지 */}
             <Route index element={<BoardList />} />

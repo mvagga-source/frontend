@@ -1,14 +1,14 @@
-import { useRef, useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faCrown, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 
 // Api
-import { getVideosApi, getVideoApi, toggleVideoLikeApi,videoViewCountApi,getMyLikesApi } from "./MVideoApi";
-import { toggleBookmarkApi, getMyBookmarkApi } from "../Common/BookmarkApi";
+import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
+import { getMyLikesApi, getVideoApi, getVideosApi, toggleVideoLikeApi, videoViewCountApi } from "./MVideoApi";
 
-import { useAuth } from "../../context/AuthContext";
 import bg from "../../assets/images/singer_bg.png";
+import { useAuth } from "../../context/AuthContext";
 import "./MVideo.css";
 
 
@@ -28,7 +28,10 @@ function MVideo() {
     //     { id: 11, name: "35번 연습생",title:"Love You Like A Love Song - Selena...", status:"0", hit:"15", url:"https://www.youtube.com/watch?v=jWQx2f-CErU" }
     // ];
 
-    const initialState = [];
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // const initialState = [];
     const {user} = useAuth();
     const pageType = "VIDEO"; // 페이지구분    
 
@@ -129,8 +132,6 @@ function MVideo() {
     },[sortType]);
 
     useEffect (()=>{
-        console.log("2. useEffect : ",page);
-
         if (page === 0) return;
 
         getVideos(sortType, page);
@@ -151,44 +152,56 @@ function MVideo() {
     }, []);
 
     // 나의 북마크 리스트
+    const getMyBookmark = async () => {
+        const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
+        const pageId = bookmarkRes.data.map(b => b.pageId);
+        setBookmarks(pageId);
+    };    
     useEffect(() => {
-        const getMyBookmark = async () => {
-
-            const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
-            const pageId = bookmarkRes.data.map(b => b.pageId);
-            setBookmarks(pageId);
-        };
+        if (!user?.id) return;        
         getMyBookmark();
-    }, []);
+    }, [user?.id]);
 
     // 나의 좋아요 리스트
+    const getMyLikes = async () => {
+        const likesRes = await getMyLikesApi(user.id);
+        const videoId = likesRes.data.map(l => l.video.id);
+        setVideosLike(videoId);
+    };
+    
     useEffect(() => {
-        const getMyLikes = async () => {
-
-            const likesRes = await getMyLikesApi(user.id);
-            const videoId = likesRes.data.map(l => l.video.id);
-            setVideosLike(videoId);
-        };
-        getMyLikes();
-    }, []);    
+        if (!user?.id) return;
+        getMyLikes();    
+    }, [user?.id]);    
 
     // 북마크 토글
     const toggleVideBookmark = async(pageId) => {
 
-          try {
-            const res = await toggleBookmarkApi(user.id, pageId, pageType);
-            if (res.data) {
-                // 추가됨
-                setBookmarks(prev => [...prev, pageId]);
-                alert("북마크에 등록되었습니다.\n\n'마이페이지'에서 확인 가능합니다.")
-            } else {
-                // 삭제됨
-                setBookmarks(prev => prev.filter(id => id !== pageId));
-                 alert("북마크 등록이 취소 되었습니다.");
+        if (!user?.id){
+            if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
+                navigate("/UserLogin",{
+                    state: {
+                        from: location.pathname,
+                    }                    
+                });
             }
-          }catch (err) {
-            console.error(err);
-          }        
+            return;
+        }            
+
+        try {
+        const res = await toggleBookmarkApi(user.id, pageId, pageType);
+        if (res.data) {
+            // 추가됨
+            setBookmarks(prev => [...prev, pageId]);
+            alert("북마크에 등록되었습니다.\n\n'마이페이지'에서 확인 가능합니다.")
+        } else {
+            // 삭제됨
+            setBookmarks(prev => prev.filter(id => id !== pageId));
+                alert("북마크 등록이 취소 되었습니다.");
+        }
+        }catch (err) {
+        console.error(err);
+        }        
     }
 
     // 좋아요 처리

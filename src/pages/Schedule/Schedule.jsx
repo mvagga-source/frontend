@@ -1,5 +1,6 @@
 // hooks
 import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // JavaScript Lib
 import FullCalendar from "@fullcalendar/react";
@@ -19,6 +20,11 @@ import "./Schedule.css";
 
 function Schedule() {
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [events, setEvents] = useState([]);
   const {user} = useAuth();
   const pageType = "EVENT"; // 페이지구분
@@ -28,10 +34,6 @@ function Schedule() {
 
       try {
         const eventRes = await getEventsApi("N");
-        // console.log("eventRes : ",eventRes);
-
-        const bookmarkRes = await getPageBookmarkApi(user.id, pageType);
-        const pageId = bookmarkRes.data.map(b => b.pageId);
 
         setEvents(eventRes.data.map(e => ({
           id: e.eno,
@@ -42,7 +44,7 @@ function Schedule() {
           borderColor:'rgba(0, 242, 255, 0.1)',
           extendedProps: {
             desc: e.description,            
-            bookmarked: pageId.includes(e.eno)
+            bookmarked: ""
           }
         })));
 
@@ -52,11 +54,42 @@ function Schedule() {
       
   };
 
+  const getBookmarkInfo = async () => {
+      console.log("getBookmarkInfo");
+      try {
+        const bookmarkRes = await getPageBookmarkApi(user.id, pageType);
+        const pageId = bookmarkRes.data.map(b => b.pageId);
+
+        setEvents(prev =>
+          prev.map(v =>
+            pageId.includes(v.id)
+              ? {
+                  ...v,
+                  extendedProps: {
+                    ...v.extendedProps,
+                    bookmarked: true
+                  }
+                }
+              : v
+          )
+        );
+
+      }catch (err) {
+        console.error(err);
+      }    
+  }
+
+  // 이벤트 정보 가져오기
   useEffect(() => {
-
     getEvents();
-
   }, []);  
+
+  // 로그인 일경우 북마크 정보 가져오기
+  useEffect(() => {
+    if(!user?.id) return;
+
+    getBookmarkInfo();
+  }, [user?.id]);    
 
   const toggleBookmark = async (eno) => {
 
@@ -87,6 +120,11 @@ function Schedule() {
       }
   }
 
+  const hendleModal = () => {
+
+    setIsModalOpen(true);
+  }
+
   return (
 
     <div className="main-container">
@@ -97,7 +135,6 @@ function Schedule() {
         </div>
       </div>
       <div className="sidebar-divider"></div>
-
 
       <div className="main-list">
         
@@ -117,10 +154,24 @@ function Schedule() {
             const bookmarked = eventInfo.event.extendedProps.bookmarked;
             return (
               <div className="bookmark-info">
-                <span> <span className="bookmark-icon">●</span> {eventInfo.event.title} / {eventInfo.event.extendedProps.desc} </span>
+                <span onClick={hendleModal()}> <span className="bookmark-icon">●</span> {eventInfo.event.title} / {eventInfo.event.extendedProps.desc} </span>
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
+                    {
+                      if (!user?.id){
+                        if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
+                          navigate("/UserLogin",{
+                                  state: {
+                                    from: location.pathname,
+                                    action: "bookmark",
+                                    eventId: eventInfo.event.id
+                                  }
+                        });
+                        }
+                        return;
+                      }
+                    }
                     toggleBookmark(eventInfo.event.id);
                   }}
                   style={{cursor:"pointer"}}
@@ -133,8 +184,15 @@ function Schedule() {
           }}
           
         /> }
+      </div> {/* end main-list */} 
 
-      </div>
+      {isModalOpen && (
+        <div className="co-modal-overlay">
+
+        </div>
+      )}
+
+
     </div>
   );
 }
