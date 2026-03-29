@@ -23,3 +23,11 @@ export const getVoteStatusApi = (auditionId) => {
 export const submitVoteApi = (auditionId, idolIds) => {
     return axiosInstance.post(`/vote`, { auditionId, idolIds });
 };
+
+// 회차 목록 조회 (ended + ongoing)
+export const getAuditionListApi = () =>
+    axiosInstance.get(`/audition/list`);
+ 
+// 팀경연 결과 조회
+export const getMatchesApi = (auditionId) =>
+    axiosInstance.get(`/audition/matches`, { params: { auditionId } });
