@@ -46,7 +46,7 @@ function BoardView() {
         if (res.data.success) {
           alert("삭제되었습니다.");
           // replace: true를 추가하여 히스토리 스택에서 현재 페이지를 제거
-          navigate("/BoardList", { replace: true });
+          navigate("/Community/BoardList", { replace: true });
         }
       });
     }
@@ -126,7 +126,7 @@ function BoardView() {
 
         {/* 버튼 영역 */}
         <div className={styles.btnArea}>
-          <MoveBtn onClick={() => navigate("/BoardList")}>목록으로</MoveBtn>
+          <MoveBtn onClick={() => navigate("/Community/BoardList")}>목록으로</MoveBtn>
           {user && user.id === board.member?.id && (
             <div className={styles.rightBtns}>
               <SaveBtn onClick={handleUpdate}>수정</SaveBtn>

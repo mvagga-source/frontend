@@ -318,20 +318,19 @@ function GoodsReview({ gno, sellerId }) {
         </div>
         </div>
         {/* 리뷰 작성 버튼 (보통 주문내역 확인 후 노출) */}
-        <div className={styles.writeTrigger}>
+        {/* <div className={styles.writeTrigger}>
             <SaveBtn onClick={() => {
                 setIsModalOpen(true);
             }}>리뷰 작성하기</SaveBtn>
-        </div>
+        </div> */}
 
         {/* 팝업 렌더링 */}
-        {isModalOpen && (
+        {/* {isModalOpen && (
             <GoodsReviewModal 
-                //gno={gno}
-                gono={48} // 실제로는 주문 목록에서 가져온 번호 전달
+                gono={61} // 실제로는 주문 목록에서 가져온 번호 전달
                 onClose={() => setIsModalOpen(false)}
             />
-        )}
+        )} */}
         {/* [추가] BoardComment에서 가져온 네온 더보기 버튼 */}
         {hasMore && (
             <div 
