@@ -6,7 +6,6 @@ import { deleteBookmarkApi } from "./MyMainApi";
 
 import { useAuth } from "../../context/AuthContext";
 
-import { formatDate, formatDateTime } from "../Admin/ACommon";
 import "./MyMain.css";
 import dayjs from "dayjs";
 
@@ -57,46 +56,35 @@ function MyBookmark () {
 
   return (
 
-    <>
-   <div className="my-btn-wrap">
-      <select>
-        <option>오디션 일정</option>
-        <option>아이돌 영상</option>
-      </select>
-    </div>
+        <div className="my-main-list">
 
-    <table className="my-table">
-      <colgroup>
-        <col style={{width:"5%"}}/>
-        <col style={{width:"5%"}}/>
-        <col style={{width:"10%"}}/>        
-        <col style={{width:"15%"}}/>          
-        <col style={{width:"20%"}}/>
-        <col style={{width:"35%"}}/>
-        <col style={{width:"10%"}}/>                
-      </colgroup>
-      <thead>
-        <tr>
-          <th>
-          </th>
-          <th>순번</th>
-          <th>생성일자</th>
-          <th>화면</th>
-          <th>이름</th>          
-          <th>제목</th>
-          <th></th>          
-        </tr>
-      </thead>
-      <tbody>
-        {events.map((event,index) => (
-          <tr key={event.id}>
-              <td></td>
-              <td>{events.length - index}</td>
-              <td>{formatDateTime(event.createdAt)}</td>
-              <td>{pageTypes[event.pageType]}</td>
-              <td>{event.name}</td>
-              <td>{event.title}</td>
-              <td>
+          <select>
+            <option>오디션 일정</option>
+            <option>아이돌 영상</option>
+          </select>
+
+
+          <ul className="my-card-row-title">
+            <li style={{width:"5%"}}>순번</li>
+            <li style={{width:"10%"}}>북마크 일자</li>            
+            <li style={{width:"15%"}}>화면</li>
+            <li style={{width:"20%"}}>이름</li>            
+            <li style={{width:"40%"}}>제목</li>
+            <li style={{width:"10%"}}></li>
+          </ul>                
+
+          {events.map((event,index) => (
+
+            <div className="my-card-row-box">
+
+              <div className="my-card-row" key={event.id}>
+                <ul className="my-card-row-list">
+                  <li style={{width:"5%"}} className="my-center">{events.length - index}</li>
+                  <li style={{width:"10%"}} className="my-center">{dayjs(event.createdAt).format("YYYY-MM-DD")}</li>                  
+                  <li style={{width:"15%"}} className="my-center">{pageTypes[event.pageType]}</li>
+                  <li style={{width:"20%"}} className="ellipsis">{event.name}</li>                  
+                  <li style={{width:"40%"}} className="ellipsis">{event.title}</li>
+                  <li style={{width:"5%"}} className="my-center">
                     {event.pageType === "VIDEO" &&
                       <Link to={`/Mvideo/${event.pageId}`}>
                         <button className="my-status_btn my-ongoing-all">
@@ -104,19 +92,22 @@ function MyBookmark () {
                         </button>                    
                       </Link>                    
                     }
-
+                  </li>
+                  <li style={{width:"5%"}} className="my-center">
                     <button className="my-status_btn my-upcoming-all" onClick={() => deleteEvent(event.id)}>
                       삭제
-                    </button>                    
-                
-              </td>                                                                      
-          </tr>
-        ))}
-      </tbody>
-      
-    </table>    
+                    </button>
+                  </li>
+                </ul>
 
-    </>
+              </div>
+              <div className="my-sidebar-divider"></div>
+            </div>
+
+            
+          ))}
+        </div>
+
   );
 }
 
