@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import bg from "../../assets/images/singer_bg.png";
 
-import MyBookmark from './MyBookmark';
-import MyVote from './MyVote';
-import MyPurchase from './MyPurchase';
-import MySale from './MySale';
 
 import './MyMain.css';
 
 const MyMain = () => {
 
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('bookmark');
   const tabs = [
-    { id: 'bookmark', label: '북마크 관리' },
-    { id: 'vote', label: '투표 관리' },
-    { id: 'purchase', label: '구매내역' },
-    { id: 'sale', label: '판매내역' },
+    { id: 'bookmark', label: '북마크 관리', url:'/MyMain/Mybookmark' },
+    { id: 'vote', label: '투표 관리', url:'/MyMain/MyVote' },
+    { id: 'purchase', label: '구매내역', url:'/MyMain/MyPurchase' },
+    { id: 'sale', label: '판매내역', url:'/MyMain/MySale' },
   ];
 
   return (
 
     <div className="my-main-container" >
-
         <div className="my-main-head" style={{
           backgroundImage: `url(${bg})`,
           backgroundSize: "auto 100%",
@@ -37,9 +34,11 @@ const MyMain = () => {
                 <li
                     key={tab.id}
                     className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => {
+                      setActiveTab(tab.id)
+                      navigate(tab.url)
+                    }}
                 >
-                    {/* {activeTab === tab.id && <span className="tab-indicator">●</span>} */}
                     {tab.label}
                 </li>
                 ))}
@@ -49,10 +48,7 @@ const MyMain = () => {
 
         {/* 탭 컨텐츠 영역 */}
         <div className="tab-content">
-            {activeTab === 'bookmark' && <MyBookmark/>}
-            {activeTab === 'vote' && <div><MyVote/></div>}
-            {activeTab === 'purchase' && <div><MyPurchase/></div>}
-            {activeTab === 'sale' && <div><MySale/></div>}
+            <Outlet />
         </div>        
 
     </div>

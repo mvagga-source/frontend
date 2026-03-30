@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 function MyVote () {
 
 
-  localStorage.clear();
+  // localStorage.clear();/s
 
 
   return (

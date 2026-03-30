@@ -20,9 +20,13 @@ import IdolProfile from "./pages/Audition/IdolProfile.js";
 import IdolRanking     from "./pages/Audition/contest/IdolRanking";
 import TeamCompetition from "./pages/Audition/contest/TeamCompetition";
 
-
 // My pages
 import MyMain from "./pages/MyPage/MyMain";
+import MyBookmark from "./pages/MyPage/MyBookmark";
+import MyVote from "./pages/MyPage/MyVote";
+import MyPurchase from "./pages/MyPage/MyPurchase";
+import MySale from "./pages/MyPage/MySale";
+
 
 //커뮤니티
 import Community from "./pages/Community/Community";
@@ -89,7 +93,13 @@ function App() {
           <Route path="/Schedule" element={<Layout><Schedule/></Layout>}/>          
 
           {/* 내페이지 관리*/}
-          <Route path="/MyMain" element={<ProtectedRoute><Layout><MyMain/></Layout></ProtectedRoute>}/>
+          <Route path="/MyMain" element={<ProtectedRoute><Layout><MyMain/></Layout></ProtectedRoute>}>
+            <Route index element={<MyBookmark />} />
+            <Route path="MyBookmark" element={<MyBookmark />} />
+            <Route path="MyVote" element={<MyVote />} />
+            <Route path="MyPurchase" element={<MyPurchase />} />
+            <Route path="MySale" element={<MySale />} />
+          </Route>
 
           <Route path="/Community" element={<Layout><Community/></Layout>}>
             {/* index는 /Community 접속 시 기본으로 보여줄 페이지 */}

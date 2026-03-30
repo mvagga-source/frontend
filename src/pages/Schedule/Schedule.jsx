@@ -24,6 +24,7 @@ function Schedule() {
   const location = useLocation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const [events, setEvents] = useState([]);
   const {user} = useAuth();
@@ -120,7 +121,12 @@ function Schedule() {
       }
   }
 
-  const hendleModal = () => {
+  const hendleModal = (e) => {
+
+    setPosition({
+      x: e.clientX,
+      y: e.clientY,
+    });    
 
     setIsModalOpen(true);
   }
@@ -154,7 +160,7 @@ function Schedule() {
             const bookmarked = eventInfo.event.extendedProps.bookmarked;
             return (
               <div className="bookmark-info">
-                <span onClick={hendleModal()}> <span className="bookmark-icon">●</span> {eventInfo.event.title} / {eventInfo.event.extendedProps.desc} </span>
+                <span onClick={hendleModal} style={{cursor:"pointer"}}> <span className="bookmark-icon">●</span> {eventInfo.event.title} / {eventInfo.event.extendedProps.desc} </span>
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
@@ -179,19 +185,28 @@ function Schedule() {
                   {bookmarked ? <span className="bookmark-status status-ongoing">북마크</span> : <span className="bookmark-status status-ended">북마크</span>}
                 </span>
 
+                {isModalOpen && (
+                  <div style={{
+                        position: "fixed",
+                        top: position.y,
+                        left: position.x,
+                        height: "100px",
+                        width: "100px",
+                        background: "white",
+                        border: "1px solid black",
+                        padding: "10px",
+                      }}>
+
+                      <button type="button" onClick={()=>setIsModalOpen(false)}>닫기</button>
+                  </div>
+                )}
+
               </div>
             );
           }}
           
         /> }
       </div> {/* end main-list */} 
-
-      {isModalOpen && (
-        <div className="co-modal-overlay">
-
-        </div>
-      )}
-
 
     </div>
   );
