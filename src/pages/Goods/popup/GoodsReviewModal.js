@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./GoodsReviewModal.module.css";
-import { ReviewWriteApi, ReviewUpdateApi, getGoodsReviewDetailApi } from "../GoodsApi";
+import { ReviewWriteApi, ReviewUpdateApi, ReviewDeleteApi, getGoodsReviewDetailApi } from "../GoodsApi";
 
 /**
  * 리뷰 등록 및 수정 팝업
@@ -15,12 +15,13 @@ function GoodsReviewModal({ gno, gono, onClose, refreshList }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        console.log(gono);
         if (gono) {
             setLoading(true);
             getGoodsReviewDetailApi(gono)
                 .then((res) => {
                     if (res.data?.success) {
-                        if (res.data && res.data.data.grno) {
+                        if (res.data && res.data.data?.grno) {
                             // 리뷰가 이미 존재함 -> 수정 모드 세팅
                             const data = res.data.data;
                             setReviewData(data);
@@ -53,6 +54,10 @@ function GoodsReviewModal({ gno, gono, onClose, refreshList }) {
     };
 
     const handleSave = async () => {
+        const confirmMsg = reviewData 
+            ? "리뷰를 수정하시겠습니까?" 
+            : "※리뷰를 등록하면 구매확정 처리되어 반품이나 교환이 불가능합니다.\n등록하시겠습니까?";
+        if (!window.confirm(confirmMsg)) return;
         if (!content.trim()) return alert("리뷰 내용을 입력해주세요.");
         if (loading) return;
 
@@ -88,6 +93,20 @@ function GoodsReviewModal({ gno, gono, onClose, refreshList }) {
                 }
             })
             .finally(() => setLoading(false));
+    };
+
+    // 댓글 삭제
+    const handleDelete = async () => {
+        if (!window.confirm("삭제 후 운영규칙상 다시 해당상품의 리뷰를 작성하실 수 없습니다.\n정말 삭제하시겠습니까?")) return;
+        const formData = new FormData();
+        formData.append("grno", reviewData.grno);
+        ReviewDeleteApi(formData).then((res) => {
+            if (res.data?.success) {
+                alert("삭제되었습니다.");
+                //refreshList();
+                onClose();
+            }
+        });
     };
 
     return (
@@ -140,6 +159,11 @@ function GoodsReviewModal({ gno, gono, onClose, refreshList }) {
 
                         <div className={styles.footerBtns}>
                             {/* <button className={styles.cancelBtn} onClick={onClose}>취소</button> */}
+                            {reviewData && (
+                                <button className={styles.deleteBtn} onClick={handleDelete}>
+                                    삭제
+                                </button>
+                            )}
                             <button className={styles.submitBtn} onClick={handleSave} disabled={loading}>
                                 {reviewData ? "수정" : "리뷰 등록"}
                             </button>

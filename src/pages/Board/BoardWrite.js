@@ -24,7 +24,7 @@ function BoardWrite() {
       BoardWriteApi(formData).then((res) => {
         if (res.data.success) {
           alert("저장되었습니다.");
-          navigate("/BoardList");
+          navigate("/Community/BoardList");
         }
       });
     }
