@@ -1,8 +1,12 @@
 import axios from "axios";
 
 let logoutHandler = null;
+let navigateFn = null;
 export const setLogoutHandler = (fn) => {
   logoutHandler = fn;
+};
+export const setNavigate = (fn) => {
+  navigateFn = fn;
 };
 //React + Spring 세션 로그인
 
@@ -28,12 +32,14 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     if (response.data && response.data.success === false) {
-      /*if(response.data.code === "401") {
+      if(response.data.code === "401") {    //App.js에 AuthProvider
         if (logoutHandler) {
           logoutHandler(); // AuthContext의 logout 실행됨
-          window.location.href = "/UserLogin";
+          //window.location.href = "/UserLogin";
+          // 원래 있던 페이지 경로를 state에 담아서 이동
+          navigateFn("/UserLogin", { state: { from: window.location.pathname } });
         }
-      }*/
+      }
       alert(response.data.message);    //유효성체크 BaCdException에러들 alert띄우기
     }
     return response;

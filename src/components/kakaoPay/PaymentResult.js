@@ -70,7 +70,7 @@ const PaymentResult = ({ type }) => {
             title: "결제 완료!",
             text: "주문이 정상적으로 처리되었습니다. 이용해 주셔서 감사합니다.",
             btnText: "주문 내역 확인",
-            btnAction: () => navigate("/MyMain"),
+            btnAction: () => navigate("/MyMain/MyPurchase"),
             isError: false
         },
         fail: {

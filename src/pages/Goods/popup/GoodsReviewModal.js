@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./GoodsReviewModal.module.css";
-import { ReviewWriteApi, ReviewUpdateApi } from "../GoodsApi";
+import { ReviewWriteApi, ReviewUpdateApi, getGoodsReviewDetailApi } from "../GoodsApi";
 
-function GoodsReviewModal({ reviewData, gno, gono, onClose, refreshList }) {
+/**
+ * 리뷰 등록 및 수정 팝업
+ * 기존에 존재하면 수정으로 진행
+ */
+function GoodsReviewModal({ gno, gono, onClose, refreshList }) {
+    const [reviewData, setReviewData] = useState(null);
     const [content, setContent] = useState("");
     const [rating, setRating] = useState(5);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -10,12 +15,27 @@ function GoodsReviewModal({ reviewData, gno, gono, onClose, refreshList }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (reviewData) {
-            setContent(reviewData.grcontents || "");
-            setRating(reviewData.rating || 5);
-            setPreviewImg(reviewData.grImg || null);
+        if (gono) {
+            setLoading(true);
+            getGoodsReviewDetailApi(gono)
+                .then((res) => {
+                    if (res.data?.success) {
+                        if (res.data && res.data.data.grno) {
+                            // 리뷰가 이미 존재함 -> 수정 모드 세팅
+                            const data = res.data.data;
+                            setReviewData(data);
+                            setContent(data.grcontents || "");
+                            setRating(data.rating || 5);
+                            setPreviewImg(data.grImg || null);
+                        } else {
+                            // 리뷰가 없음 -> 등록 모드 (초기값 유지)
+                            setReviewData(null);
+                        }
+                    }
+                })
+                .finally(() => setLoading(false));
         }
-    }, [reviewData]);
+    }, [gono]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -26,31 +46,47 @@ function GoodsReviewModal({ reviewData, gno, gono, onClose, refreshList }) {
         }
     };
 
+    // 파일 삭제 핸들러
+    const handleRemoveFile = () => {
+        setSelectedFile(null);
+        setPreviewImg(null); // previewImg를 null로 만들어 서버에 삭제 신호를 보냄
+    };
+
     const handleSave = async () => {
         if (!content.trim()) return alert("리뷰 내용을 입력해주세요.");
         if (loading) return;
 
         setLoading(true);
         const formData = new FormData();
-        formData.append("gno", gno);
+        //formData.append("gno", gno);
         formData.append("grcontents", content);
         formData.append("rating", rating);
+
+        // --- 파일/이미지 처리 로직 (기존 수정 폼 방식 적용) ---
+        if (selectedFile) {
+            // 1) 새로운 파일을 선택한 경우
+            formData.append("file", selectedFile);
+        } else if (!previewImg) {
+            // 2) 기존 이미지도 지우고 새 파일도 선택 안 한 경우 (삭제)
+            formData.append("grImg", ""); 
+        } else {
+            // 3) 기존 이미지를 그대로 유지하는 경우 (문자열 전송)
+            formData.append("grImg", previewImg);
+        }
         
         if (gono && !reviewData) formData.append("order.gono", gono);
         if (reviewData) formData.append("grno", reviewData.grno);
-        if (selectedFile) formData.append("file", selectedFile);
+        //if (selectedFile) formData.append("file", selectedFile);
 
         const apiCall = reviewData ? ReviewUpdateApi : ReviewWriteApi;
-
         apiCall(formData)
             .then((res) => {
                 if (res.data?.success) {
                     alert(reviewData ? "수정되었습니다." : "리뷰가 등록되었습니다.");
-                    refreshList();
+                    //refreshList();
                     onClose();
                 }
             })
-            .catch(() => alert("서버 통신 오류가 발생했습니다."))
             .finally(() => setLoading(false));
     };
 
@@ -97,15 +133,15 @@ function GoodsReviewModal({ reviewData, gno, gono, onClose, refreshList }) {
                             {previewImg && (
                                 <div className={styles.previewWrapper}>
                                     <img src={previewImg} alt="미리보기" className={styles.previewThumb} />
-                                    <button className={styles.removeBtn} onClick={() => {setPreviewImg(null); setSelectedFile(null);}}>&times;</button>
+                                    <button className={styles.removeBtn} onClick={handleRemoveFile}>&times;</button>
                                 </div>
                             )}
                         </div>
 
                         <div className={styles.footerBtns}>
-                            <button className={styles.cancelBtn} onClick={onClose}>취소</button>
+                            {/* <button className={styles.cancelBtn} onClick={onClose}>취소</button> */}
                             <button className={styles.submitBtn} onClick={handleSave} disabled={loading}>
-                                {reviewData ? "수정 완료" : "리뷰 등록"}
+                                {reviewData ? "수정" : "리뷰 등록"}
                             </button>
                         </div>
                     </div>

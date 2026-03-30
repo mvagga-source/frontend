@@ -1,5 +1,7 @@
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { setNavigate } from "./api/axiosInstance";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./context/ProtectedRoute";
 import Header from "./components/Header";
@@ -69,9 +71,14 @@ import NotFound from "./pages/ErrorPage/NotFound";
 import AdminMain from "./pages/Admin/AdminMain";
 
 function App() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    // 앱이 켜질 때 axios 인터셉터에 함수들을 주입합니다.
+    setNavigate(navigate);
+  }, [navigate]);
   return (
     <AuthProvider>
-      <BrowserRouter>
+      {/* <BrowserRouter> */}
         <Routes>
           <Route path="/" element={<Layout><Home/></Layout>}/>
           <Route path="/UserLogin" element={<Layout><UserLogin/></Layout>}/>
@@ -140,7 +147,7 @@ function App() {
           <Route path="/500" element={<ServerError/>} />{/* 서버에러500페이지 */}
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}
         </Routes>
-      </BrowserRouter>
+      {/* </BrowserRouter> */}
     </AuthProvider>
 
   );

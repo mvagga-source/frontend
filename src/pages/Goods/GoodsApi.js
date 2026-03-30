@@ -48,6 +48,13 @@ export const getReviewListApi = (gno, size = 10, lastCno = 0, sortDir = "DESC", 
   });
 };
 
+//굿즈리뷰상세
+export const getGoodsReviewDetailApi = (gono) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReview/detail`, {
+    params: { gono:gono }
+  });
+};
+
 // 굿즈 리뷰 댓글 등록하기
 export const ReviewWriteApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/save`, commentData);

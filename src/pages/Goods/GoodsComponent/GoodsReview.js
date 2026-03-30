@@ -40,7 +40,6 @@ function GoodsReview({ gno, sellerId }) {
 
     // 상품 리뷰 팝업
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedReview, setSelectedReview] = useState(null); // 수정용
 
     // 정렬 변경 핸들러
     const handleSortChange = (type) => {
@@ -247,7 +246,7 @@ function GoodsReview({ gno, sellerId }) {
     return (
         <>
         <div className={styles.reviewSection}>
-            <div className={styles.reviewInputBox}>
+            {/* <div className={styles.reviewInputBox}>
                 <div className={styles.ratingArea}>
                     <span className={styles.ratingLabel}>상품은 어떠셨나요?</span>
                     <div className={styles.stars}>
@@ -271,7 +270,7 @@ function GoodsReview({ gno, sellerId }) {
                     placeholder="구매하신 굿즈의 솔직한 후기를 남겨주세요."
                 />
 
-                {/* 버튼들을 한 줄에 정렬하는 컨테이너 */}
+                {/* 버튼들을 한 줄에 정렬하는 컨테이너 * /}
                 <div className={styles.actionRow}>
                     <div className={styles.fileLeft}>
                         <label htmlFor="reviewFile" className={styles.fileLabel}>
@@ -282,7 +281,7 @@ function GoodsReview({ gno, sellerId }) {
                         </label>
                         <input type="file" id="reviewFile" accept="image/*" onChange={handleFileChange} className={styles.hiddenInput} />
                         
-                        {/* 미리보기 및 삭제 버튼 */}
+                        {/* 미리보기 및 삭제 버튼 * /}
                         {previewImg && (
                             <div className={styles.previewWrapper}>
                                 <img src={previewImg} alt="미리보기" className={styles.previewThumb} />
@@ -295,7 +294,7 @@ function GoodsReview({ gno, sellerId }) {
                         <SaveBtn onClick={handleSave}>리뷰 등록</SaveBtn>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
         {/* 리뷰 리스트 영역 */}
         <div className={styles.listContainer}>
@@ -319,22 +318,20 @@ function GoodsReview({ gno, sellerId }) {
         </div>
         </div>
         {/* 리뷰 작성 버튼 (보통 주문내역 확인 후 노출) */}
-        {/* <div className={styles.writeTrigger}>
+        <div className={styles.writeTrigger}>
             <SaveBtn onClick={() => {
-                setSelectedReview(null); // 등록 모드
                 setIsModalOpen(true);
             }}>리뷰 작성하기</SaveBtn>
-        </div> */}
+        </div>
 
         {/* 팝업 렌더링 */}
-        {/* {isModalOpen && (
+        {isModalOpen && (
             <GoodsReviewModal 
-                reviewData={selectedReview}
-                gno={gno}
-                gono={123} // 실제로는 주문 목록에서 가져온 번호 전달
+                //gno={gno}
+                gono={48} // 실제로는 주문 목록에서 가져온 번호 전달
                 onClose={() => setIsModalOpen(false)}
             />
-        )} */}
+        )}
         {/* [추가] BoardComment에서 가져온 네온 더보기 버튼 */}
         {hasMore && (
             <div 
