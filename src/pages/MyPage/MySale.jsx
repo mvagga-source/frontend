@@ -74,7 +74,7 @@ function MySale () {
   return (
     
     <>
-    <div className="my-btn-wrap">
+    <div className="my-form-wrap">
         <button className="co-button-status co-ongoing-all" 
                 onClick={()=>{
                   navigate("/GoodsWrite",{
@@ -87,11 +87,11 @@ function MySale () {
 
     <table className="my-table">
       <colgroup>
-        <col style={{width:"5%"}}/>
+        {/* <col style={{width:"5%"}}/> */}
         <col style={{width:"5%"}}/>
         <col style={{width:"15%"}}/>        
         <col style={{width:"15%"}}/>          
-        <col style={{width:"20%"}}/>
+        <col style={{width:"25%"}}/>
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>                
         <col style={{width:"5%"}}/>
@@ -100,12 +100,12 @@ function MySale () {
       </colgroup>
       <thead>
         <tr>
-          <th>
+          {/* <th>
             <input type="checkbox"
                   onChange={handleAllCheck}
                   checked={selectedIds.length === list.length}
             />
-          </th>
+          </th> */}
           <th>순번</th>
           <th>등록일자</th>
           <th>이미지</th>          
@@ -121,12 +121,14 @@ function MySale () {
 
         {list.map((l, index) => (
           <tr key={l.gno}>
+            {/* 
             <td style={{textAlign:"center"}}>
               <input type="checkbox"
                     checked={selectedIds.includes(l.gono)}
                     onChange={()=>handleCheck(l.gono)}              
               />
             </td>
+            */}
             <td style={{textAlign:"center"}}>{totalCount - index}</td>
             <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>
             <td style={{textAlign:"center"}}><img src={l.gimg} style={{height:"90px"}}/></td>            

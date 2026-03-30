@@ -71,7 +71,7 @@ function MyPurchase () {
 
   return (
     <>
-    <div className="my-btn-wrap">
+    <div className="my-form-wrap">
         <button className="co-button-status co-ongoing-all" onClick={() => {
           if(selectedIds.length !== 1) {
             alert("하나만 선택해서 리뷰작성이 가능합니다.");
@@ -102,6 +102,7 @@ function MyPurchase () {
                   onChange={handleAllCheck}
                   checked={selectedIds.length === list.length}
             /> */}
+
           </th>
           <th>순번</th>
           <th>주문일자</th>
