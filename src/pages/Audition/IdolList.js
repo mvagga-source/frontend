@@ -42,7 +42,12 @@ export default function IdolList() {
   }, []);
 
   /* ── API 응답에서 그룹 목록 동적 추출 ── */
-  const groups = useMemo(() => ["전체"], []);
+const groups = useMemo(() => {
+  if (idols.length === 0) return ["전체"];
+  // 중복 제거 후 "전체"와 합치기
+  const uniqueGroups = [...new Set(idols.map(i => i.groupName).filter(Boolean))];
+  return ["전체", ...uniqueGroups];
+}, [idols]);
 
   /* ── API 응답에서 최대 득표수 계산 ── */
   const maxVotes = useMemo(() => {
@@ -53,9 +58,10 @@ export default function IdolList() {
   /* ── 필터링 ── */
   const filtered = useMemo(() => {
     return idols.filter((i) => {
-      const groupOk  = activeGroup === "전체" || i.groupName === activeGroup;
-      const searchOk = !searchQuery ||
-        (i.name && i.name.includes(searchQuery));  // ← null 체크 추가
+      const groupOk = activeGroup === "전체" || i.groupName === activeGroup;
+      // 이름뿐만 아니라 그룹명으로도 검색 가능하게 확장 가능
+      const searchOk = !searchQuery || 
+        (i.name && i.name.toLowerCase().includes(searchQuery.toLowerCase()));
       return groupOk && searchOk;
     });
   }, [idols, activeGroup, searchQuery]);
@@ -74,6 +80,7 @@ export default function IdolList() {
 
   /* ── 카드 클릭 → 프로필 페이지 이동 ── */
   const goToProfile = (id) => {
+    console.log("👉 클릭한 아이돌 ID:", id);
     navigate(`/Audition/profile/${id}`);
   };
 
@@ -151,16 +158,33 @@ export default function IdolList() {
               className="il-card"
               onClick={() => goToProfile(idol.idolId)}
             >
-              <div className="il-avatar" style={{ background: color }}>
-                <span className="il-avatar-initial">{idol.name?.charAt(0) ?? "#"}</span>
+              <div className="il-avatar" style={{ background: color, overflow: 'hidden' }}>
+                {/* ✅ 사진이 있으면 보여주고, 없으면 이니셜 표시 */}
+                {idol.mainImgUrl ? (
+                  <img 
+                    src={`http://localhost:8181/images/${idol.mainImgUrl}`} 
+                    alt={idol.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 이니셜만 보이도록 처리
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                ) : (
+                  <span className="il-avatar-initial">{idol.name?.charAt(0) ?? "#"}</span>
+                )}
               </div>
 
               <p className="il-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
-              <p className="il-idol-group">{idol.group}</p>
-              <p className="il-idol-position">{idol.position}</p>
+              <p className="il-idol-group">{idol.groupName || "개인 연습생"}</p>
+                <p className="il-idol-position">{idol.position}</p>
 
               <div className="il-votes-area">
-                <span className="il-votes-num">{idol.votes.toLocaleString()}</span>
+                <div className="il-votes-info">
+                  <span className="il-votes-label">득표수</span>
+                  <span className="il-votes-num">{votes.toLocaleString()}</span>
+                </div>
                 <div className="il-votes-bar-bg">
                   <div className="il-votes-bar-fill" style={{ width: `${pct}%` }} />
                 </div>
