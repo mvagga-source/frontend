@@ -1,10 +1,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getMyBookmarkApi, deleteBookmarkApi } from "../Common/BookmarkApi";
+import { getMyBookmarkApi } from "../Common/BookmarkApi";
+import { deleteBookmarkApi } from "./MyMainApi";
+
 import { useAuth } from "../../context/AuthContext";
 
-import "./MyBookmark.css";
+import "./MyMain.css";
 import dayjs from "dayjs";
 
 function MyBookmark () {
@@ -54,7 +56,7 @@ function MyBookmark () {
 
   return (
 
-        <div className="bk-main-list">
+        <div className="my-main-list">
 
           <select>
             <option>오디션 일정</option>
@@ -62,7 +64,7 @@ function MyBookmark () {
           </select>
 
 
-          <ul className="bk-card-row-title">
+          <ul className="my-card-row-title">
             <li style={{width:"5%"}}>순번</li>
             <li style={{width:"10%"}}>북마크 일자</li>            
             <li style={{width:"15%"}}>화면</li>
@@ -73,33 +75,33 @@ function MyBookmark () {
 
           {events.map((event,index) => (
 
-            <div className="bk-card-row-box">
+            <div className="my-card-row-box">
 
-              <div className="bk-card-row" key={event.id}>
-                <ul className="bk-card-row-list">
-                  <li style={{width:"5%"}} className="bk-center">{events.length - index}</li>
-                  <li style={{width:"10%"}} className="bk-center">{dayjs(event.createdAt).format("YYYY-MM-DD")}</li>                  
-                  <li style={{width:"15%"}} className="bk-center">{pageTypes[event.pageType]}</li>
+              <div className="my-card-row" key={event.id}>
+                <ul className="my-card-row-list">
+                  <li style={{width:"5%"}} className="my-center">{events.length - index}</li>
+                  <li style={{width:"10%"}} className="my-center">{dayjs(event.createdAt).format("YYYY-MM-DD")}</li>                  
+                  <li style={{width:"15%"}} className="my-center">{pageTypes[event.pageType]}</li>
                   <li style={{width:"20%"}} className="ellipsis">{event.name}</li>                  
                   <li style={{width:"40%"}} className="ellipsis">{event.title}</li>
-                  <li style={{width:"5%"}} className="bk-center">
+                  <li style={{width:"5%"}} className="my-center">
                     {event.pageType === "VIDEO" &&
                       <Link to={`/Mvideo/${event.pageId}`}>
-                        <button className="bk-status_btn my-ongoing-all">
+                        <button className="my-status_btn my-ongoing-all">
                           이동
                         </button>                    
                       </Link>                    
                     }
                   </li>
-                  <li style={{width:"5%"}} className="bk-center">
-                    <button className="bk-status_btn my-upcoming-all" onClick={() => deleteEvent(event.id)}>
+                  <li style={{width:"5%"}} className="my-center">
+                    <button className="my-status_btn my-upcoming-all" onClick={() => deleteEvent(event.id)}>
                       삭제
                     </button>
                   </li>
                 </ul>
 
               </div>
-              <div className="bk-sidebar-divider"></div>
+              <div className="my-sidebar-divider"></div>
             </div>
 
             

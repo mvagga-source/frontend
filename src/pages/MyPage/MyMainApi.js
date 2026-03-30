@@ -1,7 +1,7 @@
 
 import axiosInstance from "../../api/axiosInstance";
 
-// 나의 북마크 정보 가져오기
+// 나의 북마크 페이지별 정보 가져오기
 export const getBookmarkPageApi = (page, pageSize) => {
   return axiosInstance.get("/mypage/getBookmarkPage", {
     params:{
@@ -20,9 +20,14 @@ export const getBookmarksApi = () => {
   });
 }
 
-
 // 나의 북마크 삭제
 export const deleteBookmarkApi = (id) => {
   return axiosInstance.delete(`/mypage/deleteBookmark/${id}`,);
 }
 
+// 주문 목록 가져오기
+export const getMyOrderListApi = (page = 1, size = 10) => {
+  return axiosInstance.get(`/goodsOrders/getMyOrderList`, {
+    params: { page, size }
+  });
+};

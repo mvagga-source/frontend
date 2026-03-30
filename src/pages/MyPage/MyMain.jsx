@@ -19,6 +19,7 @@ const MyMain = () => {
   return (
 
     <div className="my-main-container" >
+      
         <div className="my-main-head" style={{
           backgroundImage: `url(${bg})`,
           backgroundSize: "auto 100%",
@@ -47,7 +48,7 @@ const MyMain = () => {
         </div>
 
         {/* 탭 컨텐츠 영역 */}
-        <div className="tab-content">
+        <div className="my-main-list">
             <Outlet />
         </div>        
 

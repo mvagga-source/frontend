@@ -152,3 +152,136 @@
   color: #00ffff;
   text-shadow: 0 0 10px #00ffff;
 }
+
+/* 리스트 */
+
+.my-table {
+  width:100%;
+  box-sizing: border-box;
+}
+
+.my-table{
+  border-collapse: collapse;
+}
+
+.my-table th{
+  background:#1a253bff;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  height:30px;
+  font-size: 12px;
+}
+
+.my-table td{
+  height:30px;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.my-table tr:hover{
+  background: rgba(0,242,255,0.05);
+}
+
+.my-btn-wrap{
+  width:100%;
+  height:30px;
+  text-align:right;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+.my-main-list {
+  padding:10px;
+  width:1200px;
+  margin:50px auto;
+  /* border:1px solid black; */
+}
+
+.my-card-row-title {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;  
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  gap:5px;
+}
+
+.my-card-row-title li{
+  /* flex:1; */
+  height:40px;
+  line-height: 40px;
+  background:#1a253bff;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  margin-bottom: 15px;
+}
+
+.my-sidebar-divider{
+  width:100%;
+  margin:0 auto;
+  height: 1px;
+  background: var(--border-color);
+  flex-shrink: 0;
+}
+
+.my-card-row-box {
+    box-sizing: border-box;
+    margin-Bottom:10px;
+    /* border: 1px solid rgba(0, 242, 255, 0.3);     */
+}
+
+.my-card-row {
+    box-sizing: border-box;
+    padding-bottom:5px;
+}
+
+.my-card-row-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  font-size : 14px;
+  gap:4px;
+}
+
+.my-card-row-list li{
+  /* flex:1; */
+  height:40px;
+  line-height: 40px;
+  /* border:1px solid #fff; */
+}
+
+.my-card-row-list li button{
+  margin-right:10px;
+}
+
+.my-center{
+  text-align: center;
+}
+
+.my-status_btn{
+    /* border-Radius:5px; */  
+    font-size: 12px;
+    font-weight: 700;    
+    padding:5px 10px;
+    cursor:pointer;
+}
+
+.my-status {
+  /* border:1px solid #fff;   */
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  /* border-radius: 10px; */
+  letter-spacing: 0.5px;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
