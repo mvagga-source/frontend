@@ -142,7 +142,7 @@ function MyPurchase () {
     {isModalOpen && (
         <GoodsReviewModal 
             //gno={gno}
-            gno={selectedIds[0]} // 실제로는 주문 목록에서 가져온 번호 전달
+            gono={selectedIds[0]} // 실제로는 주문 목록에서 가져온 번호 전달
             onClose={() => setIsModalOpen(false)}
         />
     )}

@@ -150,3 +150,23 @@
     border-color: #00f2ff; color: #00f2ff;
     box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
 }
+
+/* 삭제 버튼: 붉은색 네온 스타일 */
+.deleteBtn {
+    padding: 9px 22px;
+    background: transparent;
+    color: #fff; /* 평소에는 가독성 있는 회색조 */
+    border: 1px solid #334155; /* 평소에는 눈에 덜 띄는 테두리 */
+    border-radius: 6px; 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.deleteBtn:hover {
+    color: #ff4d4d; 
+    border-color: #ff4d4d;
+    background: rgba(255, 77, 77, 0.05); /* 아주 살짝 붉은 배경 */
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.3); /* 레드 네온 효과 */
+    transform: translateY(-1px); /* 살짝 떠오르는 효과 (선택사항) */
+}
