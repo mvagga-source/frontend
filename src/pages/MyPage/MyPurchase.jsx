@@ -71,7 +71,6 @@ function MyPurchase () {
 
   return (
     <>
-
     <div className="my-btn-wrap">
         <button className="co-button-status co-ongoing-all" onClick={() => {
           if(selectedIds.length !== 1) {
@@ -88,11 +87,12 @@ function MyPurchase () {
         <col style={{width:"5%"}}/>
         <col style={{width:"10%"}}/>        
         <col style={{width:"15%"}}/>          
-        <col style={{width:"15%"}}/>
         <col style={{width:"10%"}}/>
-        <col style={{width:"15%"}}/>                
+        <col style={{width:"10%"}}/>
+        <col style={{width:"10%"}}/>                
         <col style={{width:"10%"}}/>
         <col style={{width:"5%"}}/>        
+        <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
       </colgroup>
       <thead>
@@ -112,6 +112,7 @@ function MyPurchase () {
           <th>결재상태</th>
           <th>주문수량</th>          
           <th>주문금액</th>
+          <th>배송상태</th>
         </tr>
       </thead>
       <tbody>
@@ -132,6 +133,7 @@ function MyPurchase () {
             <td>{l.status}</td>
             <td style={{textAlign:"center"}}>{Number(l.cnt?? 0).toLocaleString()}</td>            
             <td style={{textAlign:"right"}}>{Number(l.totalPrice?? 0).toLocaleString()} 원</td>
+            <td style={{textAlign:"center"}}>{l.delivStatus}</td>
           </tr>
         ))}
       </tbody>

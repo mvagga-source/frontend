@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { SearchBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import { SearchInput, SaveInput, NumberInput } from "../../components/input/Input";
 import Content from "../../components/Title/ContentComp";
@@ -14,6 +14,9 @@ import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function GoodsUpdate() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state;
+
     const { gno } = useParams();
     const formRef = useRef();
     const [editorData, setEditorData] = useState("");
@@ -89,7 +92,7 @@ function GoodsUpdate() {
             GoodsUpdateApi(formData).then((res) => {
                 if (res.data.success) {
                     alert("상품 정보가 수정되었습니다.");
-                    navigate("/GoodsView/"+gno);
+                    navigate(state?.from || "/GoodsView/"+gno);
                 }
             });
         }

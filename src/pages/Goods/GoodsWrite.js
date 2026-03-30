@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { SearchBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import { SearchInput, SaveInput, NumberInput } from "../../components/input/Input";
 import Content from "../../components/Title/ContentComp";
@@ -13,6 +13,9 @@ import { useAuth } from "../../context/AuthContext";
 
 function GoodsWrite() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state;
+
     const formRef = useRef();
     const [editorData, setEditorData] = useState("");
     const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
@@ -65,7 +68,7 @@ function GoodsWrite() {
             GoodsWriteApi(formData).then((res) => {
                 if (res.data.success) {
                     alert("상품이 등록되었습니다.");
-                    navigate("/GoodsList");
+                    navigate(state?.from || "/GoodsList");
                 }
             })
             console.log("전송 데이터 확인:", Object.fromEntries(formData));

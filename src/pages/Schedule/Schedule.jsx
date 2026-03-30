@@ -169,9 +169,7 @@ function Schedule() {
                         if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
                           navigate("/UserLogin",{
                                   state: {
-                                    from: location.pathname,
-                                    action: "bookmark",
-                                    eventId: eventInfo.event.id
+                                    from: location.pathname
                                   }
                         });
                         }

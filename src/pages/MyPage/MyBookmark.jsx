@@ -84,7 +84,7 @@ function MyBookmark () {
           <th>화면</th>
           <th>이름</th>          
           <th>제목</th>
-          <th></th>          
+          <th>처리</th>
         </tr>
       </thead>
       <tbody>
