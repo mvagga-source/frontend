@@ -12,3 +12,7 @@ export const getIdolProfileApi = (idolProfileId) => {
     params: {idolProfileId: idolProfileId}
   });
 }
+
+export const getIdolSelectBoxApi = (commentData) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/idolProfile/idolSelectBox`, commentData);
+};

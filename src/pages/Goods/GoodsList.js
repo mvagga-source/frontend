@@ -43,7 +43,7 @@ function GoodsList() {
         { value: "", label: "전체" },
         { value: "gname", label: "상품명" },
         { value: "idol", label: "참가자명" },
-        { value: "idolGroup", label: "그룹명" },
+        { value: "member", label: "판매자" },
     ];
 
     // 데이터를 가져오는 핵심 함수

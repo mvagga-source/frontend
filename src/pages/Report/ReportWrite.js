@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ReportWrite.module.css";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import { ReportWriteApi } from "./ReportApi";
+import { getIdolSelectBoxApi } from "../Audition/idolApi";
 
 function ReportSave() {
     const navigate = useNavigate();
@@ -15,6 +16,22 @@ function ReportSave() {
         { value: "성희롱", label: "성희롱" },
         { value: "기타", label: "기타" }
     ];
+
+    const [idolList, setIdolList] = useState([]);
+        
+    useEffect(() => {
+        getIdolSelectBoxApi({}).then((res) => {
+            if (res.data.success) {
+                const formattedList = res.data.data.map(i => ({
+                    value: i.profileId, // 또는 i.idolId (실제 PK 값)
+                    label: i.name       // 화면에 표시될 참가자 이름
+                }));
+                
+                //console.log("변환된 리스트:", formattedList);
+                setIdolList(formattedList);
+            }
+        });
+    },[]);
 
     // 파일 이름을 저장할 상태 (초기값은 빈 문자열)
     const [fileName, setFileName] = useState("");
@@ -74,11 +91,17 @@ function ReportSave() {
                 
                 {/* selectBox로 선택 */}
                 <label>참가자</label>
+                <SearchSelect 
+                    name="idol.profileId"
+                    className={styles.fullWidth} 
+                    options={[{ value: "", label: "선택 안함" }, ...idolList]} 
+                />
+                {/* <label>참가자</label>
                 <input
                     type="text"
                     name="idol"
                     placeholder="피해 대상 참가자"
-                />
+                /> */}
 
                 <label>상세 설명</label>
                 <textarea

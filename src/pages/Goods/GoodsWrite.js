@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SearchBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import { SearchInput, SaveInput, NumberInput } from "../../components/input/Input";
@@ -9,6 +9,7 @@ import styles from "./GoodsWrite.module.css";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import DaumAddrSearchModal from "../../components/DaumAddrModal/DaumAddrModal";
 import { GoodsWriteApi } from "./GoodsApi";
+import { getIdolSelectBoxApi } from '../Audition/idolApi';
 import { useAuth } from "../../context/AuthContext";
 
 function GoodsWrite() {
@@ -33,6 +34,21 @@ function GoodsWrite() {
         { value: "품절", label: "품절" },
         { value: "판매중지", label: "판매중지" },
     ];
+
+    // 참가자 selectBoxOption
+    const [idolList, setIdolList] = useState([]);
+
+    useEffect(() => {
+        getIdolSelectBoxApi({}).then((res) => {
+            if (res.data.success) {
+                const formattedList = res.data.data.map(i => ({
+                    value: i.profileId, // 또는 i.idolId (실제 PK 값)
+                    label: i.name       // 화면에 표시될 참가자 이름
+                }));
+                setIdolList(formattedList);
+            }
+        });
+    },[]);
 
     // 이미지 변경 핸들러
     const handleMainImgChange = (e) => {
@@ -172,9 +188,23 @@ function GoodsWrite() {
                         </div>
 
                         {/* 2. 상품명 및 기본 정보 */}
-                        <div className={formStyles.formGroup}>
+                        {/* <div className={formStyles.formGroup}>
                             <label className={formStyles.label}>상품명</label>
                             <SaveInput name="gname" maxLength={100} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
+                        </div> */}
+                        <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+                            <div className={formStyles.formGroup} style={{ flex: 1 }}>
+                                <label className={formStyles.label}>상품명</label>
+                                <SaveInput name="gname" maxLength={100} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
+                            </div>
+                            <div className={formStyles.formGroup} style={{ flex: 1 }}>
+                                <label className={formStyles.label}>참가자명</label>
+                                <SearchSelect 
+                                    name="idol.profileId" 
+                                    className={styles.fullWidth} 
+                                    options={[{ value: "", label: "선택 안함" }, ...idolList]} 
+                                />
+                            </div>
                         </div>
 
                         <div style={{display: "flex", gap: "20px"}}>
