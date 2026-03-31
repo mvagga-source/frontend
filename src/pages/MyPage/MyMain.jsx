@@ -10,12 +10,13 @@ const MyMain = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-    const tabs = [
+  const tabs = [
     { id: 'bookmark', label: '북마크 관리', url:'/MyMain/Mybookmark' },
     { id: 'vote', label: '투표 관리', url:'/MyMain/MyVote' },
     { id: 'purchase', label: '구매내역', url:'/MyMain/MyPurchase' },
     { id: 'sale', label: '상품내역', url:'/MyMain/MySale' },
   ];
+  const actived  = location.pathname === "/MyMain" ? "/MyMain/Mybookmark" : location.pathname;
 
   return (
 
@@ -35,7 +36,7 @@ const MyMain = () => {
                 {tabs.map((tab) => (
                 <li
                     key={tab.id}
-                    className={`tab-btn ${location.pathname === tab.url ? 'active' : ''}`}
+                    className={`tab-btn ${actived === tab.url ? 'active' : ''}`}
                     onClick={() => {
                       navigate(tab.url)
                     }}

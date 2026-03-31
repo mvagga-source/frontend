@@ -46,6 +46,8 @@ function MyBookmark () {
 
   const deleteEvent = async (id) => {
 
+    if (!window.confirm("북마크 정보를 삭제하시겠습니까?")) return;
+
     try {
       await deleteBookmarkApi(id);
       setEvents(prev => prev.filter(event => event.id !== id));
@@ -71,7 +73,6 @@ function MyBookmark () {
       </select>
       <input type="text"/>
       <button type="button">검색</button>
-
     
     </div>
 

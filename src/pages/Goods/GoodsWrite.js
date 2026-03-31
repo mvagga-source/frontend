@@ -147,9 +147,9 @@ function GoodsWrite() {
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
                         
                         {/* 1. 대표 이미지 업로드 섹션 */}
-                        <div className={formStyles.formGroup}>
+                        {/* <div className={formStyles.formGroup}> */}
                         {/* 아래주석은 중앙 정렬 */}
-                        {/* <div className={formStyles.formGroup} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}> */}
+                        <div className={formStyles.formGroup} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
                             <label className={formStyles.label}><span className={styles.required}>*</span> 대표 상품 이미지 (Main Thumbnail)</label>
                             <div className={styles.imageUploadWrapper}>
                                 {/* 컨테이너는 딱 하나만 사용합니다 */}
