@@ -58,7 +58,10 @@ function QnaUpdate() {
                 <h2 className={styles.title}>1:1 문의 수정</h2>
 
                 <div className={styles.inputSection}>
-                    <label htmlFor="qtitle">문의 제목</label>
+                    <label htmlFor="qtitle">
+                        <span className={styles.required}>*</span>
+                        문의 제목
+                    </label>
                     <SaveInput
                         id="qtitle"
                         type="text"
@@ -71,7 +74,10 @@ function QnaUpdate() {
                 </div>
 
                 <div className={styles.inputSection}>
-                    <label htmlFor="qcontent">문의 상세 내용</label>
+                    <label htmlFor="qcontent">
+                        <span className={styles.required}>*</span>
+                        문의 상세 내용
+                    </label>
                     <textarea
                         id="qcontent"
                         name="qcontent"

@@ -50,14 +50,20 @@ function IdeaSave() {
             <form className={styles.ideaForm} ref={formRef}>
                 <h2>아이디어 제안</h2>
 
-                <label>카테고리</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    카테고리
+                </label>
                 <SearchSelect 
                     name="ideacategory" 
                     options={categoryOptions} 
                     className={styles.customWidth} 
                 />
 
-                <label>제안 제목</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    제안 제목
+                </label>
                 <input
                     type="text"
                     name="ideatitle"
@@ -65,7 +71,10 @@ function IdeaSave() {
                     className={styles.ideaInput}
                 />
 
-                <label>상세 내용</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    상세 내용
+                </label>
                 <textarea
                     name="ideacontent"
                     rows="8"

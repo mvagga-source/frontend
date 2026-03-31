@@ -72,17 +72,26 @@ function ReportSave() {
             <form className={styles.reportForm} ref={formRef}>
                 <h2>신고하기</h2>
 
-                <label>신고 유형</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    신고 유형
+                </label>
                 <SearchSelect name="reportType" options={options} className={styles.customWidth}/>
 
-                <label>신고 대상 (URL 또는 사용자)</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    신고 대상 (URL 또는 사용자)
+                </label>
                 <input
                     type="text"
                     name="targetType"
                     placeholder="URL 또는 사용자 ID"
                 />
 
-                <label>신고 사유</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    신고 사유
+                </label>
                 <input
                     type="text"
                     name="reason"
@@ -90,7 +99,10 @@ function ReportSave() {
                 />
                 
                 {/* selectBox로 선택 */}
-                <label>참가자</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    참가자
+                </label>
                 <SearchSelect 
                     name="idol.profileId"
                     className={styles.fullWidth} 
@@ -103,7 +115,10 @@ function ReportSave() {
                     placeholder="피해 대상 참가자"
                 /> */}
 
-                <label>상세 설명</label>
+                <label>
+                    <span className={styles.required}>*</span>
+                    상세 설명
+                </label>
                 <textarea
                     name="reasonContent"
                     rows="5"

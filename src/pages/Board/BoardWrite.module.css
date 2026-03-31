@@ -50,3 +50,10 @@
   border-radius: 10px;
   padding: 20px;
 }
+
+/* 필수 항목 별표 스타일 */
+.required {
+    color: rgb(255, 122, 138); /* 네온 레드 계열 */
+    margin-right: 4px;
+    font-weight: bold;
+}

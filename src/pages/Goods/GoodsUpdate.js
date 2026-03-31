@@ -47,7 +47,7 @@ function GoodsUpdate() {
             if (res.data.success) {
                 const formattedList = res.data.data.map(i => ({
                     value: i.profileId, // 또는 i.idolId (실제 PK 값)
-                    label: i.name       // 화면에 표시될 참가자 이름
+                    label: i.profileId + ". " + i.name       // 화면에 표시될 참가자 이름
                 }));
                 
                 //console.log("변환된 리스트:", formattedList);
@@ -177,7 +177,7 @@ function GoodsUpdate() {
                         
                         {/* 1. 대표 이미지 업로드 섹션 */}
                         <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}>대표 상품 이미지 (수정 불가)</label>
+                            <label className={formStyles.label}><span className={styles.required}>*</span> 대표 상품 이미지<span className={styles.readOnlyNote}>(수정 불가)</span></label>
                             <div className={styles.imageUploadWrapper}>
                                 <div className={styles.imagePreviewContainer} style={{ cursor: 'default' }}>
                                     {/* htmlFor를 제거하여 input 파일창이 뜨지 않게 막기 */}
@@ -215,11 +215,17 @@ function GoodsUpdate() {
                         </div> */}
                         <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                             <div className={formStyles.formGroup} style={{ flex: 1 }}>
-                                <label className={formStyles.label}>상품명</label>
+                                <label className={formStyles.label}>
+                                    <span className={styles.required}>*</span> 상품명
+                                    <span className={styles.readOnlyNote}>(수정 불가)</span>
+                                </label>
                                 <SaveInput name="gname" maxLength={100} readOnly defaultValue={goods?.gname} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
                             </div>
                             <div className={formStyles.formGroup} style={{ flex: 1 }}>
-                                <label className={formStyles.label}>참가자명</label>
+                                <label className={formStyles.label}>
+                                    <span className={styles.required}>*</span> 참가자명
+                                    <span className={styles.readOnlyNote}>(수정 불가)</span>
+                                </label>
                                 <SearchSelect 
                                     name="idol.profileId"
                                     disabled
@@ -232,11 +238,14 @@ function GoodsUpdate() {
 
                         <div style={{display: "flex", gap: "20px"}}>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}>판매가 (Price)</label>
+                                <label className={formStyles.label}>
+                                    <span className={styles.required}>*</span> 판매가
+                                    <span className={styles.readOnlyNote}>(수정 불가)</span>
+                                </label>
                                 <NumberInput name="price" readOnly placeholder="0" defaultValue={goods?.price} style={{width:"100%"}} />
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}>재고 수량 (Stock)</label>
+                                <label className={formStyles.label}><span className={styles.required}>*</span> 재고 수량 (Stock)</label>
                                 <NumberInput name="stockCnt" placeholder="0" defaultValue={goods?.stockCnt} 
                                     onInput={handleStockChange} style={{width:"100%"}} />
                             </div>
@@ -245,11 +254,11 @@ function GoodsUpdate() {
                         {/* 3. 배송 및 상태 정보 */}
                         <div style={{display: "flex", gap: "20px"}}>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}>배송비</label>
+                                <label className={formStyles.label}><span className={styles.required}>*</span> 배송비</label>
                                 <NumberInput name="gdelPrice" placeholder="3000" defaultValue={goods?.gdelPrice} style={{width:"100%"}} />
                             </div>
                             <div className={formStyles.formGroup}  style={{flex: 1}}>
-                                <label className={formStyles.label}>택배사</label>
+                                <label className={formStyles.label}><span className={styles.required}>*</span> 택배사</label>
                                 <SaveInput 
                                     maxLength={255}
                                     style={{width:"100%"}}
@@ -262,7 +271,7 @@ function GoodsUpdate() {
 
                         <div style={{display: "flex", gap: "20px"}}>
                             <div className={formStyles.formGroup} style={{ flex: 1 }}>
-                                <label className={formStyles.label}>출고지 주소</label>
+                                <label className={formStyles.label}><span className={styles.required}>*</span> 출고지 주소</label>
                                 <SaveInput 
                                     style={{width:"100%"}}
                                     placeholder="출고지 주소를 입력하세요"
@@ -271,7 +280,7 @@ function GoodsUpdate() {
                                 />
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}>판매 상태</label>
+                                <label className={formStyles.label}><span className={styles.required}>*</span> 판매 상태</label>
                                 <SearchSelect 
                                     name="status"
                                     className={styles.fullWidth}
@@ -281,7 +290,7 @@ function GoodsUpdate() {
                         </div>
 
                         <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}>반품 주소</label>
+                            <label className={formStyles.label}><span className={styles.required}>*</span> 반품 주소</label>
                             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                                 <SaveInput 
                                     name="gdelivAddrReturn"
@@ -301,7 +310,10 @@ function GoodsUpdate() {
 
                         {/* 4. 상세 설명 (Tiptap 위지윅) */}
                         <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}>상세 설명</label>
+                            <label className={formStyles.label}>
+                                <span className={styles.required}>*</span> 상세 설명
+                                <span className={styles.readOnlyNote}>(수정 불가)</span>
+                            </label>
                             <TiptapEditor 
                             readOnly
                             content={goods?.gcontent || ""}

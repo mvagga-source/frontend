@@ -93,3 +93,31 @@
     width: 100%;
     max-width: 100%;
 }
+
+/* 필수 항목 별표 스타일 */
+.required {
+    color: #ff4d4d;
+    margin-left: 4px;
+    font-weight: bold;
+    font-size: 1.1em; /* 별표가 너무 작아 보이면 크기 조절 */
+}
+
+/* 수정 불가 라벨용 보조 텍스트 */
+.readOnlyNote {
+    color: #ff4d4d; /* 별표(*)와 톤을 맞춘 레드 */
+    margin-left: 3px;
+    font-weight: 500;
+}
+
+.readOnlyInputText {
+    color: #ff4d4d !important;
+    font-weight: bold;
+}
+
+/* readOnly 인풋 스타일 (필요 시) */
+input:read-only, select:disabled {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #999 !important;
+    cursor: not-allowed !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}

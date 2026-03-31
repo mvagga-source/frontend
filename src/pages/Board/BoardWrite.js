@@ -53,7 +53,10 @@ function BoardWrite() {
       <div className={styles.container}>
         <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>제목</label>
+            <label className={styles.label}>
+              <span className={styles.required}>*</span>
+              제목
+            </label>
             <SaveInput 
               type="text" 
               name="btitle"
@@ -64,7 +67,10 @@ function BoardWrite() {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>내용</label>
+            <label className={styles.label}>
+              <span className={styles.required}>*</span>
+              내용
+            </label>
             {/* <textarea 
               name="bcontent"
               className={styles.textAreaField} 
