@@ -121,8 +121,7 @@ function MySale () {
         <col style={{width:"25%"}}/>
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>                
-        <col style={{width:"5%"}}/>
-        <col style={{width:"5%"}}/> 
+        <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
       </colgroup>
       <thead>
@@ -140,7 +139,6 @@ function MySale () {
           <th>가격</th>
           <th>재고</th>          
           <th>상태</th>
-          <th>삭제</th>          
           <th>처리</th>
         </tr>
       </thead>
@@ -163,7 +161,6 @@ function MySale () {
             <td style={{textAlign:"right"}}>{Number(l.price?? 0).toLocaleString()} 원</td>
             <td style={{textAlign:"center"}}>{Number(l.stockCnt?? 0).toLocaleString()}</td>            
             <td style={{textAlign:"center"}}>{l.status}</td>
-            <td style={{textAlign:"center"}}>{String(l.delYn?? "").toUpperCase()}</td>
             <td>
               <button className="co-button-status co-ongoing-all"
                       onClick={()=>{
