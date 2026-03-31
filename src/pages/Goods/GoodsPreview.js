@@ -57,7 +57,7 @@ function GoodsView() {
     };
 
     return (
-        <Content TitleName="미리보기 화면입니다.">
+        <Content TitleName="Goods Preview (미리보기 모드)">
         <div className={commonStyles.viewContainer}>
             
             {/* [상단] 상품 핵심 정보 영역 */}

@@ -1,0 +1,153 @@
+/* ── 레이아웃 및 배경 ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7); /* 배경을 조금 더 투명하게 해서 뒤가 살짝 보이게 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(8px); /* 블러를 조금 더 주면 고급스러워집니다 */
+}
+
+.popupContainer {
+  width: 90%;
+  max-width: 450px;
+  /* 이미지와 유사한 약간 밝은 네이비 톤 */
+  background: #162130; 
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 255, 0.1);
+}
+
+.mySwiper {
+  width: 100%;
+  /* 높이는 내부 콘텐츠에 따라 유동적일 수 있으나 슬라이더 일관성을 위해 유지 */
+  height: 420px; 
+}
+
+/* ── 슬라이드 내부 콘텐츠 ── */
+.slideContent {
+  display: block;
+  text-decoration: none;
+  color: white;
+  height: 100%;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(180deg, #1f2d40 0%, #162130 100%);
+  
+  /* 중앙 정렬 강화를 위한 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative; /* 자식 요소 위치 기준 */
+}
+
+.imagePlaceholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.textLogo {
+  font-size: 28px; /* 너무 크면 깨질 수 있으니 살짝 조절 */
+  font-weight: 900;
+  color: rgba(0, 242, 255, 0.15); /* 투명도를 살짝 올림 */
+  letter-spacing: 6px; /* 자간 조절 */
+  text-transform: uppercase;
+  user-select: none;
+  
+  /* 텍스트가 정중앙에 위치하도록 보장 */
+  display: block;
+  width: 100%;
+  
+  /* 네온 느낌의 그림자 추가 (왼쪽 쏠림 방지 및 가시성) */
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.05);
+}
+
+/* ── 텍스트 및 스크롤 영역 ── */
+.textSection {
+  padding: 24px; /* 여유 공간을 조금 더 줌 */
+  display: flex;
+  flex-direction: column;
+  height: 290px; 
+  background: rgba(255, 255, 255, 0.02); /* 내부 콘텐츠 영역 구분 */
+}
+
+.title {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #00f2ff; 
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.3); /* 살짝 빛나는 효과 */
+}
+
+.scrollContent {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.scrollContent::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollContent::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 255, 0.2);
+  border-radius: 2px;
+}
+
+.content {
+  font-size: 15px; /* 가독성을 위해 약간 키움 */
+  color: rgba(255, 255, 255, 0.85); /* 텍스트를 더 밝게 수정 */
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ── 하단 버튼 영역 ── */
+.footer {
+  display: flex;
+  background: #121a26; /* 하단바를 살짝 더 어둡게 구분 */
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footerBtn {
+  flex: 1;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.footerBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #00f2ff;
+}
+
+.close {
+  color: #ff7a8a; /* 닫기 강조 */
+}
+
+/* ── 라이브러리 커스텀 ── */
+:global(.swiper-button-next), 
+:global(.swiper-button-prev) {
+  color: #00f2ff !important;
+  transform: scale(0.5);
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: #00f2ff !important;
+}

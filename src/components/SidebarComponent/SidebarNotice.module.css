@@ -1,0 +1,87 @@
+/* ── 섹션 공통 스타일 ── */
+.section {
+  padding: 18px 24px 14px;
+  flex-shrink: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(232,244,248,0.38);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.moreBtn {
+  font-size: 11px;
+  color: rgba(0, 242, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.moreBtn:hover {
+  color: #00f2ff; /* var(--neon-blue) */
+}
+
+/* ── 리스트 스타일 ── */
+.noticeList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.noticeItem {
+  padding: 9px 3px;
+  border-bottom: 1px solid rgba(0, 242, 255, 0.06);
+  transition: padding-left 0.18s;
+}
+
+.noticeItem:last-child {
+  border-bottom: none;
+}
+
+.noticeLink {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.noticeItem:hover {
+  padding-left: 6px;
+  background: rgba(0, 242, 255, 0.03);
+  border-radius: 4px;
+}
+
+.noticeText {
+  font-size: 13px;
+  color: rgba(232, 244, 248, 0.78);
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.noticeDate {
+  font-size: 11px;
+  color: rgba(232, 244, 248, 0.32);
+}
+
+/* 로딩 및 빈 상태 */
+.loading, .empty {
+  font-size: 12px;
+  color: rgba(232, 244, 248, 0.3);
+  padding: 20px 0;
+  text-align: center;
+}

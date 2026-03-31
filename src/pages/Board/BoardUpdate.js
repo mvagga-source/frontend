@@ -64,7 +64,7 @@ function BoardUpdate() {
   }
 
   return (
-    <Content TitleName="글수정">
+    <Content TitleName="Board Update">
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <form ref={formRef} onSubmit={(e) => e.preventDefault()}>

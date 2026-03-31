@@ -43,7 +43,7 @@ function GoodsWrite() {
             if (res.data.success) {
                 const formattedList = res.data.data.map(i => ({
                     value: i.profileId, // 또는 i.idolId (실제 PK 값)
-                    label: "#" + i.profileId + "(" + i.name + ")"       // 화면에 표시될 참가자 이름
+                    label: i.name       // 화면에 표시될 참가자 이름
                 }));
                 setIdolList(formattedList);
             }
@@ -141,7 +141,7 @@ function GoodsWrite() {
     };
 
     return (
-        <Content TitleName="Goods Registration">
+        <Content TitleName="Goods Write">
             <div className={formStyles.wrapper}>
                 <div className={formStyles.container}>
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>

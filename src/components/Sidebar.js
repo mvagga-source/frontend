@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Sidebar.css";
+import SidebarNotice from "./SidebarComponent/SidebarNotice";
 
 const AUDITION_LIST = [
   { id: 1, title: "1차 오디션", status: "ended",    competitionDate: "2026.01.15", voteStart: "2026.01.15", voteEnd: "2026.01.20", resultDate: "2026.01.21" },
@@ -158,7 +159,7 @@ function Sidebar({ isOpen, onClose }) {
 
 
         {/* 공지사항 최신 5개 */}
-        <div className="sb-section">
+        {/* <div className="sb-section">
           <p className="sb-section-title">공지사항</p>
           <ul className="sb-notice-list">
             {NOTICES.map((n) => (
@@ -168,7 +169,8 @@ function Sidebar({ isOpen, onClose }) {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <SidebarNotice/>
 
       </aside>
     </>

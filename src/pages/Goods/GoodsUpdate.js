@@ -47,7 +47,7 @@ function GoodsUpdate() {
             if (res.data.success) {
                 const formattedList = res.data.data.map(i => ({
                     value: i.profileId, // 또는 i.idolId (실제 PK 값)
-                    label: "#" + i.profileId + "(" + i.name + ")"       // 화면에 표시될 참가자 이름
+                    label: i.name       // 화면에 표시될 참가자 이름
                 }));
                 
                 //console.log("변환된 리스트:", formattedList);
@@ -231,7 +231,9 @@ function GoodsUpdate() {
                                 <SearchSelect 
                                     name="idol.profileId"
                                     disabled
-                                    defaultValue={goods?.idol?.profileId}
+                                    readOnly
+                                    value={goods?.idol?.profileId || ""}
+                                    //defaultValue={goods?.idol?.profileId}
                                     className={styles.fullWidth} 
                                     options={[{ value: "", label: "선택 안함" }, ...idolList]} 
                                 />

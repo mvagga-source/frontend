@@ -48,7 +48,7 @@ function BoardWrite() {
   }
 
   return (
-    <Content TitleName="Community Board Write">
+    <Content TitleName="Board Write">
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
