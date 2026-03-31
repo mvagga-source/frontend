@@ -1,17 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import dayjs from "dayjs";
-import boardCommentStyles from "../../Board/boardComponent/BoardComment.module.css";
 import styles from "./GoodsReviewReplyEditDelete.module.css";
-import { ReviewDeleteApi, ReviewUpdateApi } from "../GoodsApi";
+import { ReviewDeleteApi, ReviewUpdateApi } from "../../../../GoodsApi";
 
 /**
  * 굿즈 답글 수정 및 삭제
  * @param {*} param0 
  * @returns 
  */
-export default function GoodsReviewReplyEditDelete({ child, user, refreshList }) {
+export default function GoodsReviewReplyEditDelete({ child, user, setReviews, refreshList }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(child.grcontents);
+
+    // 답글 수정/삭제 전용 업데이트 함수
+    const updateReplyInList = useCallback((updatedReply, isDelete = false) => {
+        setReviews((prev) =>
+            prev.map((item) => {
+                // 이 답글의 부모 리뷰인 경우
+                if (item.grno === updatedReply.parent?.grno) {
+                    return {
+                        ...item,
+                        children: isDelete
+                            ? item.children.filter((c) => c.grno !== updatedReply.grno) // 삭제 시 제외
+                            : item.children.map((c) => (c.grno === updatedReply.grno ? updatedReply : c)) // 수정 시 교체
+                    };
+                }
+                return item;
+            })
+        );
+    }, []);
 
     // 답글 삭제
     const handleDelete = async () => {
@@ -22,7 +39,8 @@ export default function GoodsReviewReplyEditDelete({ child, user, refreshList })
         ReviewDeleteApi(formData).then((res) => {
             if (res.data?.success) {
                 alert("답글이 삭제되었습니다.");
-                refreshList();
+                updateReplyInList(child, true);
+                //refreshList();
             }
         });
     };
@@ -38,8 +56,15 @@ export default function GoodsReviewReplyEditDelete({ child, user, refreshList })
         ReviewUpdateApi(formData).then((res) => {
             if (res.data?.success) {
                 //alert("답글이 수정되었습니다.");
+                // 서버에서 받은 최신 데이터(res.data.data)로 리스트 업데이트
+                const updatedData = res.data.data;
+                
+                // 만약 서버 데이터에 parent 정보가 없으면 child에서 보정
+                if (!updatedData.parent) updatedData.parent = child.parent;
+                updateReplyInList(res.data.data, false);
+                
                 setIsEditing(false);
-                refreshList();
+                //refreshList();
             }
         });
     };
@@ -53,7 +78,7 @@ export default function GoodsReviewReplyEditDelete({ child, user, refreshList })
             <div className={styles.replyHeader}>
                 <div className={styles.sellerInfo}>
                     <span className={styles.replyIcon}>ㄴ</span>
-                    <span className={styles.sellerName}>{child.member?.id}</span>
+                    <span className={styles.sellerName}>{child.member?.nickname}</span>
                     <span className={styles.sellerBadge}>판매자</span>
                 </div>
                 <span className={styles.replyDate}>
@@ -77,15 +102,15 @@ export default function GoodsReviewReplyEditDelete({ child, user, refreshList })
             {/* 3. 하단 액션 버튼 영역 (수정/삭제) */}
             {user && user.id === child.member?.id && (
             <div className={styles.replyActions}>
-                    <div className={boardCommentStyles.commentActions}>
-                        <span className={boardCommentStyles.actionBtn} onClick={() => setIsEditing(!isEditing)}>
+                    <div className={styles.commentActions}>
+                        <span className={styles.actionBtn} onClick={() => setIsEditing(!isEditing)}>
                             {isEditing ? "취소" : "수정"}
                         </span>
-                        <span className={boardCommentStyles.divider}>|</span>
+                        <span className={styles.divider}>|</span>
                         {isEditing ? (
-                            <span className={boardCommentStyles.actionBtn} onClick={handleUpdate} style={{color: '#00f2ff'}}>저장</span>
+                            <span className={styles.actionBtn} onClick={handleUpdate} style={{color: '#00f2ff'}}>저장</span>
                         ) : (
-                            <span className={boardCommentStyles.actionBtn} onClick={handleDelete}>삭제</span>
+                            <span className={styles.actionBtn} onClick={handleDelete}>삭제</span>
                         )}
                     </div>
             </div>

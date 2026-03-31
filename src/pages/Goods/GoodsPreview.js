@@ -4,11 +4,10 @@ import styles from "./GoodsView.module.css";
 import commonStyles from "../Board/BoardView.module.css"; // 기존 게시판 스타일 재사용
 import { DelBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import Content from "../../components/Title/ContentComp";
-import GoodsReview from "./GoodsComponent/GoodsReview";
 import { useAuth } from "../../context/AuthContext";
 import DeliveryModal from "./popup/DeliveryModal";
-import { getGoodsViewApi } from "./GoodsApi"; // API 함수 가정
 import GoodsContent from "./GoodsComponent/GoodsContent";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function GoodsView() {
     const { gno } = useParams();
@@ -35,7 +34,7 @@ function GoodsView() {
         "판매중지": styles.hidden
     };
 
-    if (!goods) return <div className={commonStyles.loading}>Loading...</div>;
+    if (!goods) return <LoadingScreen />;
 
     // 수량 직접 입력 핸들러
     const handleQtyChange = (e) => {

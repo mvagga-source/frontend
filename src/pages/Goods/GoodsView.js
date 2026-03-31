@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./GoodsView.module.css";
 import commonStyles from "../Board/BoardView.module.css"; // 기존 게시판 스타일 재사용
 import { DelBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import Content from "../../components/Title/ContentComp";
-import GoodsReview from "./GoodsComponent/GoodsReview";
+import GoodsReview from "./GoodsComponent/GoodsView/GoodsReview";
 import { useAuth } from "../../context/AuthContext";
 import DeliveryModal from "./popup/DeliveryModal";
 import { getGoodsViewApi, GoodsDeleteApi } from "./GoodsApi"; // API 함수 가정
 import GoodsContent from "./GoodsComponent/GoodsContent";
 import { getPageBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 /**
  * 굿즈 구매(상세)페이지
@@ -25,6 +26,7 @@ function GoodsView() {
     const [orderCnt, setOrderCnt] = useState(1);
     const [isBookmarked, setIsBookmarked] = useState(false); // 북마크 상태
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+    const [loading, setLoading] = useState(false);
 
     // 상태값에 따른 CSS 클래스 매핑
     const STATUS_CLASS_MAP = {
@@ -59,12 +61,15 @@ function GoodsView() {
         setTimeout(() => {
         setGoods(mockData.goods);
         }, 500);*/
+
+        if (loading) return;
+        setLoading(true);
         // 상품 데이터 가져오기 로직 (예시)
         getGoodsViewApi({gno}).then((res) => {
             if (res.data.success) {
                 setGoods(res.data.data);
             }
-        });
+        }).finally(() => setLoading(false));
 
         // 로그인 상태라면 북마크 여부 확인
         if (user && user.id) {
@@ -77,8 +82,6 @@ function GoodsView() {
             });
         }
     }, [gno]);
-
-    if (!goods) return <div className={commonStyles.loading}>Loading...</div>;
 
     // 수량 직접 입력 핸들러
     const handleQtyChange = (e) => {
@@ -135,11 +138,14 @@ function GoodsView() {
             });
         }
     };
-    
+
+    //if (!goods) return <LoadingScreen />;
 
     return (
         <Content TitleName="Goods Detail">
-        <div className={commonStyles.viewContainer}>
+        {/* 1. 데이터를 불러오는 중일 때 로딩바 표시 */}
+        {loading && <LoadingScreen />}
+        {goods && (<div className={commonStyles.viewContainer}>
             
             {/* [상단] 상품 핵심 정보 영역 */}
             <div className={styles.goodsTop}>
@@ -152,7 +158,7 @@ function GoodsView() {
                 <div className={styles.sellerBookmarkRow}>
                     <div className={styles.sellerArea}>
                     <span className={styles.sellerTitle}>판매자: </span>
-                    <span className={styles.sellerId}>{goods.member?.id}</span>
+                    <span className={styles.sellerId}>{goods.member?.nickname}</span>
                     <span className={`${styles.statusBadge} ${STATUS_CLASS_MAP[goods.status] || ""}`}>{goods.status}</span>
                     </div>
                     <div className={styles.actionArea}>
@@ -269,7 +275,7 @@ function GoodsView() {
                 </div>
             )}
             </div>
-        </div>
+        </div>)}
         </Content>
     );
 }

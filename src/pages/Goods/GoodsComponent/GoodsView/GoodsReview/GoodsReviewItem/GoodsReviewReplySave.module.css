@@ -1,0 +1,93 @@
+/* 답글 입력 영역 */
+.replyInputWrapper {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(0, 242, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+.replyTextarea {
+  width: 100%;
+  min-height: 100px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  /* 파이어폭스 대응 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 255, 0.3) transparent;
+}
+
+.replyTextarea:focus {
+  border-color: #00f2ff;
+  background: rgba(0, 242, 255, 0.05);
+}
+
+/* 답글버튼 그룹 정렬 */
+.replyBtnGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.replySaveBtn {
+  padding: 6px 16px;
+  background: #00f2ff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.replySaveBtn:hover {
+  background: #00d8e4;
+  transform: translateY(-1px);
+}
+
+/* 공통 버튼 스타일 */
+.replyCancelBtn, .replySaveBtn {
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 취소 버튼: 차분한 스타일 */
+.replyCancelBtn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #94a3b8;
+}
+
+.replyCancelBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 삭제된 리뷰 아이템 전체 컨테이너 */
+.deletedReview {
+    background-color: rgba(255, 255, 255, 0.02); /* 아주 미세한 배경 차이 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 삭제 메시지 스타일 */
+.deletedMessage {
+    padding: 20px 10px;
+    color: #64748b; /* 흐린 회색 (slate-400) */
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

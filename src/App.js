@@ -115,32 +115,32 @@ function App() {
             <Route path="BoardList" element={<BoardList />} />
             {/* 아이디어 */}
             <Route path="IdeaList" element={<IdeaList />} />
-            <Route path="IdeaWrite" element={<IdeaWrite />} />
+            <Route path="IdeaWrite" element={<ProtectedRoute><IdeaWrite /></ProtectedRoute>} />
             {/* 신고 */}
             <Route path="ReportList" element={<ReportList />} />
-            <Route path="ReportSave" element={<ReportSave />} />
+            <Route path="ReportSave" element={<ProtectedRoute><ReportSave /></ProtectedRoute>} />
             {/* Qna */}
-            <Route path="QnaList" element={<QnaList />} />
-            <Route path="QnaWrite" element={<QnaWrite />} />
-            <Route path="QnaView/:qno" element={<QnaView />} />
-            <Route path="QnaUpdate/:qno" element={<QnaUpdate />} />
+            <Route path="QnaList" element={<ProtectedRoute><QnaList /></ProtectedRoute>} />
+            <Route path="QnaWrite" element={<ProtectedRoute><QnaWrite /></ProtectedRoute>} />
+            <Route path="QnaView/:qno" element={<ProtectedRoute><QnaView /></ProtectedRoute>} />
+            <Route path="QnaUpdate/:qno" element={<ProtectedRoute><QnaUpdate /></ProtectedRoute>} />
           </Route>
 
           <Route path="/BoardWrite" element={<ProtectedRoute><Layout><BoardWrite/></Layout></ProtectedRoute>}/>
           <Route path="/BoardUpdate/:bno" element={<ProtectedRoute><Layout><BoardUpdate/></Layout></ProtectedRoute>}/>
           {/* <Route path="/BoardList" element={<Layout><BoardList/></Layout>}/> */}
           <Route path="/BoardView/:bno" element={<Layout><BoardView/></Layout>}/>
-          <Route path="/BoardPreview" element={<Layout><BoardPreview /></Layout>} />
+          <Route path="/BoardPreview" element={<ProtectedRoute><Layout><BoardPreview /></Layout></ProtectedRoute>} />
 
           <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
           <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
-          <Route path="/GoodsWrite" element={<Layout><GoodsWrite/></Layout>} />
-          <Route path="/GoodsUpdate/:gno" element={<Layout><GoodsUpdate/></Layout>} />
-          <Route path="/GoodsPreview" element={<Layout><GoodsPreview /></Layout>} />
+          <Route path="/GoodsWrite" element={<ProtectedRoute><Layout><GoodsWrite/></Layout></ProtectedRoute>} />
+          <Route path="/GoodsUpdate/:gno" element={<ProtectedRoute><Layout><GoodsUpdate/></Layout></ProtectedRoute>} />
+          <Route path="/GoodsPreview" element={<ProtectedRoute><Layout><GoodsPreview /></Layout></ProtectedRoute>} />
 
-          <Route path="/Payment/Success" element={<PaymentResult type="success" />} />
-          <Route path="/Payment/Fail" element={<PaymentResult type="fail" />} />
-          <Route path="/Payment/Cancel" element={<PaymentResult type="cancel" />} />
+          <Route path="/Payment/Success" element={<ProtectedRoute><PaymentResult type="success" /></ProtectedRoute>} />
+          <Route path="/Payment/Fail" element={<ProtectedRoute><PaymentResult type="fail" /></ProtectedRoute>} />
+          <Route path="/Payment/Cancel" element={<ProtectedRoute><PaymentResult type="cancel" /></ProtectedRoute>} />
 
           <Route path="/AdminMain" element={<Layout><AdminMain /></Layout>} />
 
