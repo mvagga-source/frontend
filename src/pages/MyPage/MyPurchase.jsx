@@ -51,59 +51,53 @@ function MyPurchase () {
     getMyOrderList();
   },[]);
 
-  const handleAllCheck =(e)=>{
-    if(e.target.checked) {
-      const allIds = list.map((v)=>v.gono);
-      setSelectedIds(allIds);
-    }else{
-      setSelectedIds([]);
-    }
-  }
+  // const handleAllCheck =(e)=>{
+  //   if(e.target.checked) {
+  //     const allIds = list.map((v)=>v.gono);
+  //     setSelectedIds(allIds);
+  //   }else{
+  //     setSelectedIds([]);
+  //   }
+  // }
 
-  const handleCheck = (gono) => {
+  // const handleCheck = (gono) => {
 
-    setSelectedIds((prev) =>
-      prev.includes(gono)
-        ? prev.filter((item) => item !== gono) // 제거
-        : [...prev, gono] // 추가
-    );
-  };  
+  //   setSelectedIds((prev) =>
+  //     prev.includes(gono)
+  //       ? prev.filter((item) => item !== gono) // 제거
+  //       : [...prev, gono] // 추가
+  //   );
+  // };  
 
   return (
     <>
     <div className="my-form-wrap">
-        <button className="co-button-status co-ongoing-all" onClick={() => {
-          if(selectedIds.length !== 1) {
-            alert("하나만 선택해서 리뷰작성이 가능합니다.");
-            return;
-          }
-          setIsModalOpen(true);
-        }}>리뷰 작성하기</button>
+
     </div>
 
     <table className="my-table">
       <colgroup>
-        <col style={{width:"5%"}}/>
+        {/* <col style={{width:"5%"}}/> */}
         <col style={{width:"5%"}}/>
         <col style={{width:"10%"}}/>        
         <col style={{width:"15%"}}/>          
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>                
-        <col style={{width:"10%"}}/>
+        <col style={{width:"5%"}}/>
         <col style={{width:"5%"}}/>        
+        <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
       </colgroup>
       <thead>
         <tr>
-          <th>
-            {/* <input type="checkbox"
+          {/* <th>
+            <input type="checkbox"
                   onChange={handleAllCheck}
                   checked={selectedIds.length === list.length}
-            /> */}
-
-          </th>
+            />
+          </th> */}
           <th>순번</th>
           <th>주문일자</th>
           <th>주문번호</th>
@@ -114,17 +108,18 @@ function MyPurchase () {
           <th>주문수량</th>          
           <th>주문금액</th>
           <th>배송상태</th>
+          <th>작업</th>          
         </tr>
       </thead>
       <tbody>
         {list.map((l, index) => (
           <tr key={l.gono}>
-            <td style={{textAlign:"center"}}>
+            {/* <td style={{textAlign:"center"}}>
               <input type="checkbox"
                     checked={selectedIds.includes(l.gono)}
                     onChange={()=>handleCheck(l.gono)}              
               />
-            </td>
+            </td> */}
             <td style={{textAlign:"center"}}>{totalCount - index}</td>
             <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>            
             <td style={{textAlign:"center"}}>{l.orderId}</td>
@@ -135,6 +130,12 @@ function MyPurchase () {
             <td style={{textAlign:"center"}}>{Number(l.cnt?? 0).toLocaleString()}</td>            
             <td style={{textAlign:"right"}}>{Number(l.totalPrice?? 0).toLocaleString()} 원</td>
             <td style={{textAlign:"center"}}>{l.delivStatus}</td>
+            <td>
+              <button className="co-button-status co-ongoing-all" onClick={() => {
+                setSelectedIds(l.gono);
+                setIsModalOpen(true);
+              }}>리뷰 작성하기</button>
+            </td>
           </tr>
         ))}
       </tbody>
@@ -145,7 +146,7 @@ function MyPurchase () {
     {isModalOpen && (
         <GoodsReviewModal 
             //gno={gno}
-            gono={selectedIds[0]} // 실제로는 주문 목록에서 가져온 번호 전달
+            gono={selectedIds} // 실제로는 주문 목록에서 가져온 번호 전달
             onClose={() => setIsModalOpen(false)}
         />
     )}

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getGoodsListApi } from "../Goods/GoodsApi";
+import { getGoodsListApi, GoodsDeleteApi } from "../Goods/GoodsApi";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
 
 import "./MyMain.css"
@@ -11,6 +11,7 @@ function MySale () {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const formRef = useRef();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -32,7 +33,8 @@ function MySale () {
                 ...searchParams,
                 minPrice: minPrice || 0,
                 maxPrice: maxPrice || 0,
-                sortDir: sortDirection // 현재 정렬 상태 포함
+                sortDir: sortDirection, // 현재 정렬 상태 포함
+                view: "ME"  
             });
             
             if (res.data && res.data.success) {
@@ -53,23 +55,48 @@ function MySale () {
     getGoodsList();
   },[]);  
 
-  const handleAllCheck =(e)=>{
-    if(e.target.checked) {
-      const allIds = list.map((v)=>v.gono);
-      setSelectedIds(allIds);
-    }else{
-      setSelectedIds([]);
+  // const handleAllCheck =(e)=>{
+  //   if(e.target.checked) {
+  //     const allIds = list.map((v)=>v.gono);
+  //     setSelectedIds(allIds);
+  //   }else{
+  //     setSelectedIds([]);
+  //   }
+  // }
+
+  // const handleCheck = (gono) => {
+
+  //   setSelectedIds((prev) =>
+  //     prev.includes(gono)
+  //       ? prev.filter((item) => item !== gono) // 제거
+  //       : [...prev, gono] // 추가
+  //   );
+  // };  
+
+  const handleDelete = async(gno) =>{
+
+    if (!window.confirm("상품 정보를 삭제하시겠습니까?")) return;
+
+    try{
+      const formData = new FormData();
+      formData.append("gno", gno);
+
+      const res = await GoodsDeleteApi(formData);
+
+      if(res.data.success) {
+        setList(prev => 
+          prev.map(v => v.gno === gno
+            ? { ...v, delYn : "Y" } 
+            : v
+          )
+        );
+      }
+
+    }catch(error){
+      console.error("삭제 실패 : ",error);
     }
+
   }
-
-  const handleCheck = (gono) => {
-
-    setSelectedIds((prev) =>
-      prev.includes(gono)
-        ? prev.filter((item) => item !== gono) // 제거
-        : [...prev, gono] // 추가
-    );
-  };  
 
   return (
     
@@ -140,13 +167,17 @@ function MySale () {
             <td>
               <button className="co-button-status co-ongoing-all"
                       onClick={()=>{
-                        navigate("/GoodsUpdate",{
+                        navigate(`/GoodsUpdate/${l.gno}`,{
                             state: {
                               from: location.pathname
                         }});
                       }}        
               >수정</button>
-              <button className="co-button-status co-ongoing-all">삭제</button>
+              <button className="co-button-status co-upcoming-all"
+                      onClick={()=>{
+                        handleDelete(l.gno);
+                      }}
+              >삭제</button>
             </td>
           </tr>
         ))}
