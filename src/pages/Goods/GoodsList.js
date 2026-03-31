@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 import { SearchBar, NumberInput } from "../../components/input/Input";
 import { SearchBtn } from "../../components/button/Button";
@@ -15,6 +9,7 @@ import styles from "./GoodsList.module.css";
 import PriceFilter from "./popup/PriceFilter";
 import { getGoodsListApi, getGoodsBannerListApi } from "./GoodsApi";
 import GoodsPagination from "../../components/Pagination/Pagination";
+import GoodsBanner from "./GoodsComponent/GoodsList/GoodsBannerList";
 
 function GoodsList() {
     const navigate = useNavigate();
@@ -46,31 +41,15 @@ function GoodsList() {
         { value: "member", label: "판매자" },
     ];
 
-    const [bannerList, setBannerList] = useState([]); // 배너 리스트 상태 추가
-
-    // 배너 데이터를 가져오는 함수
-    const getBannerData = async () => {
-        // 상위 5개 요청
-        getGoodsBannerListApi(5).then((res) => {
-            if (res.data && res.data.success) {
-                console.log("배너 데이터:", res.data); 
-                setBannerList(res.data.list || []);
-            }
-        });
-    };
-
     // 데이터를 가져오는 핵심 함수
     const getList = async (page, searchParams) => {
-        try {
-            const res = await getGoodsListApi(page, size, {
-                ...searchParams,
-                minPrice: minPrice || 0,
-                maxPrice: maxPrice || 0,
-                sortDir: sortDirection // 현재 정렬 상태 포함
-            });
-            
+        getGoodsListApi(page, size, {
+            ...searchParams,
+            minPrice: minPrice || 0,
+            maxPrice: maxPrice || 0,
+            sortDir: sortDirection // 현재 정렬 상태 포함
+        }).then((res) => {
             if (res.data && res.data.success) {
-                console.log(res);
                 const { list, maxPage, startPage, endPage, totalCount } = res.data; // AjaxResponse 구조 확인
                 setList(list || []);
                 setTotalPages(maxPage || 1);
@@ -78,9 +57,7 @@ function GoodsList() {
                 setEndPage(endPage || 1);
                 setTotalCount(totalCount || 0);
             }
-        } catch (error) {
-            console.error("상품 목록 로딩 실패:", error);
-        }
+        });
     };
 
     // 정렬 변경 시 1페이지로 이동하며 호출
@@ -88,10 +65,6 @@ function GoodsList() {
         setSortDirection(dir);
         setCurrentPage(1);
     };
-
-    useEffect(() => {
-        getBannerData();
-    }, []);
 
     // 페이지 변경이나 정렬 변경 시 데이터 호출
     useEffect(() => {
@@ -113,86 +86,7 @@ function GoodsList() {
                 <div className={styles.contentContainer}>
                     
                     {/* 1. 상단 메인 배너 - 텍스트 가독성 확보 */}
-                    <div className={styles.heroSlider}>
-                        <Swiper 
-                            modules={[Navigation, Pagination, Autoplay]}
-                            navigation
-                            pagination={{ clickable: true }}
-                            autoplay={{ delay: 4000, disableOnInteraction: false }}
-                            speed={800}
-                            loop={bannerList.length > 1}
-                            className={styles.mySwiper}
-                        >
-                            {bannerList.length > 0 ? (
-                            bannerList.map((banner, index) => {
-                                const avg = Number(banner.AVGRATING || banner.avgRating || 0);
-                                const reviewCnt = banner.REVIEWCNT || banner.reviewCnt || 0;
-
-                                return (
-                                <SwiperSlide key={banner.GNO || banner.gno}>
-                                    <div 
-                                    className={styles.mainSlide}
-                                    onClick={() => navigate(`/GoodsView/${banner.GNO || banner.gno}`)}
-                                    >
-                                    
-                                    {/* 왼쪽 텍스트 영역 */}
-                                    <div className={styles.leftContent}>
-                                        
-                                        <div className={styles.topStatus}>
-                                        <span className={styles.rankBadge}>TOP {index + 1}</span>
-                                        <span className={styles.statusText}>평점 기준 베스트</span>
-                                        </div>
-
-                                        <span className={styles.ratingBadge}>
-                                        ⭐ {avg.toFixed(2)}
-                                        <small>
-                                            ({reviewCnt} reviews)
-                                            {reviewCnt < 5 && " · NEW"}
-                                        </small>
-                                        </span>
-
-                                        <h2>{banner.GNAME || banner.gname}</h2>
-
-                                        <p className={styles.priceText}>
-                                        지금 가장 사랑받는 굿즈
-                                        <strong>
-                                            {(banner.PRICE || banner.price)?.toLocaleString()}원
-                                        </strong>
-                                        </p>
-
-                                        <span className={styles.sellerTag}>
-                                        판매자: {banner.SELLERID || banner.sellerId}
-                                        </span>
-
-                                        <button className={styles.ctaBtn}>
-                                        상품 보러가기 →
-                                        </button>
-                                    </div>
-
-                                    {/* 오른쪽 이미지 영역 */}
-                                    <div className={styles.rightImage}>
-                                        <img 
-                                        src={banner.GIMG || banner.gimg} 
-                                        alt={banner.GNAME || banner.gname} 
-                                        />
-                                    </div>
-
-                                    </div>
-                                </SwiperSlide>
-                                );
-                            })
-                            ) : (
-                            <SwiperSlide>
-                                <div className={styles.mainSlide}>
-                                <div className={styles.leftContent}>
-                                    <h2>인기 굿즈를 만나보세요</h2>
-                                    <p>리뷰가 증명하는 베스트 아이템</p>
-                                </div>
-                                </div>
-                            </SwiperSlide>
-                            )}
-                        </Swiper>
-                    </div>
+                    <GoodsBanner />
 
                     {/* 2. 쇼핑몰형 상세 검색 필터 (디자인 수정) */}
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
@@ -226,8 +120,6 @@ function GoodsList() {
                         <p className={styles.totalCount}>총 <span>{totalCount}</span>개의 상품이 있습니다</p>
                         
                         <div className={styles.headerControls}>
-                            <div className={styles.vDivider}></div>
-
                             {/* 정렬 옵션 */}
                             {/* 정렬 버튼 클릭 이벤트 연결 */}
                             <div className={styles.sortOptions}>
@@ -235,10 +127,12 @@ function GoodsList() {
                                     className={sortDirection === "DESC" ? styles.activeSort : ""} 
                                     onClick={() => handleSortChange("DESC")}
                                 >최신순</button>
+                                {/* <div className={styles.vDivider}></div> */}
                                 <button 
                                     className={sortDirection === "priceAsc" ? styles.activeSort : ""} 
                                     onClick={() => handleSortChange("priceAsc")}
                                 >낮은가격순</button>
+                                {/* <div className={styles.vDivider}></div> */}
                                 <button 
                                     className={sortDirection === "priceDesc" ? styles.activeSort : ""} 
                                     onClick={() => handleSortChange("priceDesc")}
@@ -258,7 +152,7 @@ function GoodsList() {
                                     </div>
                                     <div className={styles.productDesc}>
                                         {/* 만약 member.id를 보여주고 싶다면 item.member?.id 등을 사용 */}
-                                        <span className={styles.groupTag}>{item.group || item.member?.id}</span>
+                                        <span className={styles.groupTag}>{item.group || item.member?.nickname}</span>
                                         <h3 className={styles.productTitle}>{item.gname}</h3>
                                         <p className={styles.productPrice}>
                                             {item.price?.toLocaleString()}<span>원</span>

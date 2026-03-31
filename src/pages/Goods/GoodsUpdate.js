@@ -47,7 +47,7 @@ function GoodsUpdate() {
             if (res.data.success) {
                 const formattedList = res.data.data.map(i => ({
                     value: i.profileId, // 또는 i.idolId (실제 PK 값)
-                    label: i.profileId + ". " + i.name       // 화면에 표시될 참가자 이름
+                    label: "#" + i.profileId + "(" + i.name + ")"       // 화면에 표시될 참가자 이름
                 }));
                 
                 //console.log("변환된 리스트:", formattedList);
@@ -176,7 +176,9 @@ function GoodsUpdate() {
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
                         
                         {/* 1. 대표 이미지 업로드 섹션 */}
-                        <div className={formStyles.formGroup}>
+                        {/* <div className={formStyles.formGroup}> */}
+                        {/* 아래주석은 중앙 정렬 */}
+                        <div className={formStyles.formGroup} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
                             <label className={formStyles.label}><span className={styles.required}>*</span> 대표 상품 이미지<span className={styles.readOnlyNote}>(수정 불가)</span></label>
                             <div className={styles.imageUploadWrapper}>
                                 <div className={styles.imagePreviewContainer} style={{ cursor: 'default' }}>
@@ -295,6 +297,7 @@ function GoodsUpdate() {
                                 <SaveInput 
                                     name="gdelivAddrReturn"
                                     value={address} 
+                                    readOnly
                                     style={{ flex: 1 }} 
                                     placeholder="주소를 검색하세요"
                                 />

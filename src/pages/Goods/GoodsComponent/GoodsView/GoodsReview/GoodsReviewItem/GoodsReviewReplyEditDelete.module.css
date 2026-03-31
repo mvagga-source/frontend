@@ -114,3 +114,28 @@
     margin-bottom: 5px;
 }
 
+/* 수정/삭제 버튼 컨테이너 */
+.commentActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.actionBtn:hover {
+  color: #00f2ff; /* 포인트 컬러로 강조 */
+}
+
+.divider {
+  color: rgba(255, 255, 255, 0.1);
+  font-size: 0.7rem;
+}

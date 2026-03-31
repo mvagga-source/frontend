@@ -32,6 +32,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     if (response.data && response.data.success === false) {
+      alert(response.data.message);    //유효성체크 BaCdException에러들 alert띄우기
+      //세션 없을시 로그인페이지로
       if(response.data.code === "401") {    //App.js에 AuthProvider
         if (logoutHandler) {
           logoutHandler(); // AuthContext의 logout 실행됨
@@ -40,7 +42,14 @@ axiosInstance.interceptors.response.use(
           navigateFn("/UserLogin", { state: { from: window.location.pathname } });
         }
       }
-      alert(response.data.message);    //유효성체크 BaCdException에러들 alert띄우기
+      //페이지 없는 경우
+      else if(response.data.code === "207") {
+        navigateFn(-1);
+      }
+      //파라미터 타입을 다른 타입으로 서버로 넘길경우
+      else if(response.data.code === "208") {
+        navigateFn(-1);
+      }
     }
     return response;
   },

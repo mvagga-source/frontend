@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./GoodsReviewEditForm.module.css";
-import { ReviewUpdateApi } from "../GoodsApi";
+import { ReviewUpdateApi } from "../../../../GoodsApi";
 
-export default function ReviewEditForm({ r, setEditingId, refreshList }) {
+export default function ReviewEditForm({ r, setEditingId, setReviews, refreshList }) {
   const [newContent, setNewContent] = useState(r.grcontents);
   const [rating, setRating] = useState(r.rating);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -22,6 +22,13 @@ export default function ReviewEditForm({ r, setEditingId, refreshList }) {
     setSelectedFile(null);
     setPreviewImg(null);
   };
+
+  // 특정 리뷰만 상태에서 교체하는 함수 (useCallback으로 최적화)
+  const updateReview = useCallback((updatedItem) => {
+      setReviews((prev) =>
+          prev.map((item) => (item.grno === updatedItem.grno ? updatedItem : item))
+      );
+  }, []);
 
   const handleUpdate = async () => {
     if (!newContent.trim()) return alert("내용을 입력해주세요.");
@@ -44,7 +51,8 @@ export default function ReviewEditForm({ r, setEditingId, refreshList }) {
     ReviewUpdateApi(formData).then((res) => {
         if (res.data?.success) {
           setEditingId(null);
-          refreshList();
+          updateReview(res.data.data);
+          //refreshList();
         }
     })
   };

@@ -98,7 +98,7 @@ const ReportList = () => {
                     className={styles.ideaItem}
                 >
                     <div className={styles.ideaTitle}>
-                    [{report.reportType}] {maskId(report.member.id)}님이 '{report?.idol?.name}'에 대한 {report.reportType} 내용을 신고하였습니다.
+                    [{report.reportType}] {maskId(report.member.nickname)}님이 '{report?.idol?.name}'에 대한 {report.reportType} 내용을 신고하였습니다.
                     </div>
                     <div className={styles.ideaMeta}>
                     <span style={{ color: report.status === "처리완료" ? "#00f2ff" : "#64748b" }}>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BoardComment.module.css";
-import { CancelBtn, SaveBtn } from "../../../components/button/Button";
-import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "../BoardApi";
-import { useAuth } from "../../../context/AuthContext";
+import { CancelBtn, SaveBtn } from "../../../../components/button/Button";
+import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "../../BoardApi";
+import { useAuth } from "../../../../context/AuthContext";
 
 function BoardComment({ bno }) {
   const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
@@ -182,7 +182,7 @@ function BoardComment({ bno }) {
               <>
                 {/* 1. 작성자 정보 */}
                 <div className={styles.commentInfo}>
-                  <span className={styles.commentAuthor}>{c.member?.id}</span>
+                  <span className={styles.commentAuthor}>{c.member?.nickname}</span>
                   <span className={styles.commentDate}>{new Date(c.cdate).toLocaleString()}</span>
                 </div>
 
