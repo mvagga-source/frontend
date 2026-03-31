@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { getIdeaListApi } from "./IdeaApi";
 
 function IdeaList() {
-    const dummyIdeas = [
+    /*const dummyIdeas = [
         { id: 1, title: "굿즈 예약 기능 추가 요청", author: "user123", time: "10분 전" },
         { id: 2, title: "팬 커뮤니티 이벤트 제안", author: "fanlove", time: "25분 전" },
         { id: 3, title: "앱 다크모드 개선 아이디어", author: "devking", time: "1시간 전" },
@@ -17,7 +17,7 @@ function IdeaList() {
         { id: 8, title: "앱 다크모드 개선 아이디어", author: "devking", time: "1시간 전" },
         { id: 9, title: "앱 다크모드 개선 아이디어", author: "devking", time: "1시간 전" },
         { id: 10, title: "앱 다크모드 개선 아이디어", author: "devking", time: "1시간 전" },
-    ];
+    ];*/
 
     const [ideas, setIdeas] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -107,14 +107,14 @@ function IdeaList() {
                                 <div className={styles.categoryBadge}>[{idea.ideacategory}] {idea.ideatitle}</div>
                                 {/* <div className={styles.ideaTitle}>{idea.ideatitle}</div> */}
                                 <div className={styles.ideaMeta}>
-                                    <span>{maskId(idea.member?.id)}</span>
+                                    <span>{maskId(idea.member?.nickname)}</span>
                                     <span>{formatTime(idea.crdt)}</span>
                                 </div>
                             </li>
                         );
                     })}
                 </ul>
-                {loading && <div className={styles.loadingText}>데이터를 불러오는 중...</div>}
+                {loading && <LoadingScreen />}
             </div>
 
             <div className={styles.ideaGuide}>

@@ -38,9 +38,10 @@ const QnaView = () => {
         }
     };
 
-    if (loading) return <LoadingScreen />;
-
     return (
+        <>
+        {loading && <LoadingScreen />}
+        {qna && (
         <div className={styles.container}>
         {/* 상단 버튼 레이아웃 */}
         <div className={styles.buttonWrapper}>
@@ -102,6 +103,8 @@ const QnaView = () => {
             )}
         </div>
         </div>
+        )}
+        </>
     );
 };
 

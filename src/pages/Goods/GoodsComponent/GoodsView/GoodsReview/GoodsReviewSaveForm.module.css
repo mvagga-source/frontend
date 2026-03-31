@@ -1,6 +1,3 @@
-/* 전체 컨테이너 */
-.reviewSection { padding: 10px 0; }
-
 /* --- 1. 리뷰 작성 박스 --- */
 .reviewInputBox {
   background: rgba(255, 255, 255, 0.03);

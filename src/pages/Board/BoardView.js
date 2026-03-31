@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "./BoardView.module.css";
 import { DelBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
-import BoardComment from "./boardComponent/BoardComment";
+import BoardComment from "./boardComponent/BoardView/BoardComment";
 import Content from "../../components/Title/ContentComp";
 import { getBoardViewApi, BoardDeleteApi, BoardLikeSaveApi } from "./BoardApi";
 import dayjs from "dayjs";
 import { useAuth } from "../../context/AuthContext";
 import BoardContent from "./boardComponent/BoardContent";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function BoardView() {
   const { bno } = useParams();
@@ -16,8 +17,11 @@ function BoardView() {
   // 1. 추천/비추천 상태 관리 (null: 미선택, 'up': 추천, 'down': 비추천)
   const [postVote, setPostVote] = useState(null); 
   const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
+  const [loading, setLoading] = useState(false);
   
   const getBoardView = async () => {
+    if (loading) return;
+    setLoading(true);
     getBoardViewApi({ bno })
     .then((res) => {
       if (res.data.success) {
@@ -27,7 +31,7 @@ function BoardView() {
         else if (myLike === -1) setPostVote('down');
         else setPostVote(null);
       }
-    });
+    }).finally(() => setLoading(false));
   };
   
   useEffect(() => {
@@ -72,13 +76,10 @@ function BoardView() {
     });
   };
 
-  if (!board) {
-    return <div>Loading...</div>; 
-  }
-
   return (
     <Content TitleName="Board Detail">
-      <div className={styles.viewContainer}>
+      {loading && <LoadingScreen />}
+      {board && (<div className={styles.viewContainer}>
 
         {/* 게시글 헤더 */}
         <div className={styles.header}>
@@ -86,7 +87,7 @@ function BoardView() {
           <div className={styles.info}>
             {/* 왼쪽: 작성자 */}
             <div className={styles.infoLeft}>
-              <span className={styles.author}>작성자 : {board.member?.id || "알 수 없음"}</span>
+              <span className={styles.author}>작성자 : {board.member?.nickname || "알 수 없음"}</span>
             </div>
 
             {/* 오른쪽: 날짜(위) + 수치(아래) */}
@@ -159,6 +160,7 @@ function BoardView() {
         <BoardComment bno={board.bno}/>
 
       </div>
+      )}
     </Content>
   );
 }

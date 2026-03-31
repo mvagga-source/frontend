@@ -11,6 +11,7 @@ import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import Content from "../../components/Title/ContentComp";
 import { useAuth } from "../../context/AuthContext";
 import dayjs from "dayjs";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function BoardList() {
     const [list, setList] = useState([]);
@@ -23,6 +24,7 @@ function BoardList() {
     const formRef = useRef();
     const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
     const [sortDirection, setSortDirection] = useState("DESC");   //정렬 임시로 고정
+    const [loading, setLoading] = useState(false);
 
     // 검색 조건을 저장할 상태 추가(검색버튼 누른 입력값만 페이징 등 사용)
     const params = useRef();
@@ -36,6 +38,7 @@ function BoardList() {
     ];
 
     const getList = async (page, searchParams) => {
+        setLoading(true);
         getBoardListApi(page, size, searchParams)
         .then((res) => {
             if (res.data && res.data.success) {
@@ -46,6 +49,8 @@ function BoardList() {
                 setEndPage(endPage || 1);
                 setTotalCount(totalCount || 0);
             }
+        }).finally(() => {
+            setLoading(false);
         });
     };
 
@@ -65,6 +70,8 @@ function BoardList() {
         // <Content TitleName="Community Board">
             // <div className={formStyles.viewContainer}>
                 <div className={styles.neonBoardContainer}>
+                    {/* 로딩 중일 때만 로딩바를 띄움 */}
+                    {loading && <LoadingScreen />}
                     {/* 검색 영역 */}
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
                         <div className={styles.searchSection}>
@@ -107,7 +114,7 @@ function BoardList() {
                                                     {board.btitle}
                                                 </NavLink>
                                             </td>
-                                            <td>{board.member.id || ''}</td>
+                                            <td>{board.member.nickname || ''}</td>
                                             <td>{dayjs(board.bdate).format("YYYY-MM-DD")}</td>
                                             <td>{board.bhit}</td>
                                         </tr>)

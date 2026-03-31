@@ -24,7 +24,7 @@ function ReportSave() {
             if (res.data.success) {
                 const formattedList = res.data.data.map(i => ({
                     value: i.profileId, // 또는 i.idolId (실제 PK 값)
-                    label: i.name       // 화면에 표시될 참가자 이름
+                    label: "#" + i.profileId + "(" + i.name + ")"       // 화면에 표시될 참가자 이름
                 }));
                 
                 //console.log("변환된 리스트:", formattedList);

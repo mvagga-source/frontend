@@ -1,19 +1,17 @@
 import React, { useState, useEffect, memo } from "react";
-import GoodsReviewStyles from "./GoodsReview.module.css";
-import boardCommentStyles from "../../Board/boardComponent/BoardComment.module.css";
 import styles from "./GoodsReviewItem.module.css";
 import dayjs from "dayjs";
-import { ReviewDeleteApi, GoodsReviewLikeSaveApi, ReviewReplyApi } from "../GoodsApi";
-import ReviewEditForm from "./GoodsReviewEditForm";
-import GoodsReviewReplyEditDelete from "./GoodsReviewReplyEditDelete";
-import GoodsReviewReplyForm from "./GoodsReviewReplySave";
+import { ReviewDeleteApi, GoodsReviewLikeSaveApi, ReviewReplyApi } from "../../../GoodsApi";
+import ReviewEditForm from "./GoodsReviewItem/GoodsReviewEditForm";
+import GoodsReviewReplyEditDelete from "./GoodsReviewItem/GoodsReviewReplyEditDelete";
+import GoodsReviewReplySave from "./GoodsReviewItem//GoodsReviewReplySave";
 
 /**
  * 굿즈 리뷰 목록의 상세(개별 댓글) 리뷰
  * 수정 | 삭제
  * 도움돼요
  */
-const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, refreshList }) => {
+const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, setReviews, refreshList }) => {
     const [likeCnt, setLikeCnt] = useState(r.likeCnt || 0);
     const [isLiked, setIsLiked] = useState(r.liked || false);   //서버에서는 isLiked로 보이지만 liked로 가져와짐
 
@@ -47,7 +45,15 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, refr
         ReviewDeleteApi(formData).then((res) => {
             if (res.data?.success) {
                 alert("삭제되었습니다.");
-                refreshList();
+                // 1. 전체 리스트를 새로고침하지 않고, 해당 리뷰만 '삭제됨' 상태로 변경
+                setReviews((prev) =>
+                    prev.map((item) =>
+                        item.grno === r.grno 
+                            ? { ...item, delYn: 'y' } // 원본 데이터의 delYn을 'y'로 교체
+                            : item
+                    )
+                );
+                //refreshList();
             }
         });
     };
@@ -75,12 +81,12 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, refr
     return (
     <li className={styles.reviewItem}>
       {editingId === r.grno ? (
-        <ReviewEditForm r={r} setEditingId={setEditingId} refreshList={refreshList} />
+        <ReviewEditForm r={r} setReviews={setReviews} setEditingId={setEditingId} refreshList={refreshList} />
       ) : (
         <>
           <div className={styles.reviewHeader}>
             <div className={styles.userInfo}>
-              <span className={styles.author}>{r.member?.id}</span>
+              <span className={styles.author}>{r.member?.nickname}</span>
               <span className={styles.itemRating}>
                 {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
               </span>
@@ -133,8 +139,9 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, refr
 
         {/* 답글 입력창 (토글) */}
         {isReplying && (
-            <GoodsReviewReplyForm 
+            <GoodsReviewReplySave
                 gno={r.goods?.gno}
+                setReviews={setReviews}
                 parentGrno={r.grno}
                 refreshList={refreshList}
                 isReplying={isReplying}
@@ -144,7 +151,7 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, refr
 
       {/* 판매자 답글 목록 */}
       {r.children?.map(child => (
-        <GoodsReviewReplyEditDelete key={child.grno} child={child} user={user} refreshList={refreshList} />
+        <GoodsReviewReplyEditDelete key={child.grno} setReviews={setReviews} child={child} user={user} refreshList={refreshList} />
       ))}
     </li>
   );

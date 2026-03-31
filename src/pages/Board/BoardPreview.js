@@ -3,6 +3,7 @@ import styles from "./BoardView.module.css"; // 기존 상세페이지 CSS 재�
 import Content from "../../components/Title/ContentComp";
 import dayjs from "dayjs";
 import BoardContent from "./boardComponent/BoardContent";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function BoardPreview() {
   const [board, setBoard] = useState(null);
@@ -14,7 +15,7 @@ function BoardPreview() {
     }
   }, []);
 
-  if (!board) return <div>미리보기 데이터를 불러오는 중...</div>;
+  if (!board) return <LoadingScreen />;
 
   return (
     <Content TitleName="Board Preview (미리보기 모드)">
