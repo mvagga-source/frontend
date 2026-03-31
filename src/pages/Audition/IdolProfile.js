@@ -68,7 +68,27 @@ export default function IdolDetail() {
   const [idol, setIdol] = useState(IDOL_DATA); 
   const [loading, setLoading] = useState(true);
 
-  const user = { role: 'ADMIN' };
+  // ✅ 안전하게 수정 (user가 있을 때만 role을 읽고 소문자로 변환)
+  const { user } = useAuth();
+
+// ✅ 아래 로그를 추가해서 브라우저 콘솔(F12)을 확인해보세요!
+  console.log("현재 로그인한 유저 정보:", user);
+  console.log("유저의 권한(role):", user?.role);
+  // 콘솔에서 'role' 대신 어떤 이름으로 데이터가 들어오는지 확인 필수!
+console.log("실제 유저 데이터 구조:", user);
+
+  const userRole = user?.role?.toLowerCase();
+
+  // 2. tempFiles: 업로드 대기 중인 파일 (스크린샷에 있던 변수)
+  const [tempFiles, setTempFiles] = useState([]);
+
+  // 3. handleTempDelete: 취소 버튼 클릭 시 실행될 함수
+  const handleTempDelete = () => {
+    setTempFiles([]); // 임시 파일 목록 비우기
+    const fileInput = document.getElementById("tempUpload");
+    if (fileInput) fileInput.value = "";
+  };
+
 
   // 1. 사진 삭제 기능 (실제 서버 연동)
   const handleImageDelete = async () => {
@@ -235,19 +255,33 @@ export default function IdolDetail() {
                       <td>{val}</td>
                     </tr>
                   ))}
-                  {/* ✅ 관리자일 때만 사진 등록 버튼 표시 */}
-                  {user && user.role === 'ADMIN' && (
+
+
+                  {/* ✅ user가 존재하고(로그인 상태), role이 'ADMIN'일 때만 렌더링 */}
+                  {user && (
                     <tr>
                       <td colSpan="2">
-                        <div className="id-admin-btns">
-                          <input type="file" id="imageUpload" style={{ display: 'none' }} onChange={handleImageUpload} />
-                          <label htmlFor="imageUpload" className="label-upload">사진 등록</label>
-                          <button onClick={handleImageDelete} className="btn-delete">사진 삭제</button>
+                        <div className="id-btn-row">
+                          <label htmlFor="tempUpload" className="id-btn-upload">
+                            <span className="id-btn-icon">📁</span> 사진 등록
+                          </label>
+                          <input 
+                            type="file" 
+                            id="tempUpload" 
+                            style={{ display: 'none' }} 
+                            onChange={handleImageUpload} 
+                          />
+                          {idol.profile.mainImgUrl && (
+                            <button onClick={handleImageDelete} className="id-btn-delete">
+                              <span>🗑️</span> 사진 삭제
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
                   )}
-                </tbody>
+
+                  </tbody>
               </table>
             </div>
           </div>
@@ -257,7 +291,18 @@ export default function IdolDetail() {
             <div className="id-photo-grid">
               {idol.photos.map(p => (
                 <div key={p.id} className="id-photo-item">
-                  <img src={p.url} alt={p.desc} />
+                  <img 
+                    // ✅ URL이 http로 시작하면 그대로 쓰고, 아니면 서버 주소를 붙여줍니다.
+                    src={p.url && p.url.startsWith('http') 
+                      ? p.url 
+                      : `http://localhost:8181/images/${p.url}`
+                    } 
+                    alt={p.desc} 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/images/default_profile.png"; // 이미지 없을 때 기본 이미지
+                    }}
+                  />
                   <div className="id-photo-overlay">{p.desc}</div>
                 </div>
               ))}
@@ -266,7 +311,7 @@ export default function IdolDetail() {
         </div>
 
         <div className="id-side-bar">
-          <button className="id-btn-sponsor">아이돌 후원하기</button>
+          
           
           <div className="id-vote-card">
             <div className="id-v-stat">
@@ -279,8 +324,9 @@ export default function IdolDetail() {
             </div>
           </div>
 
-          <button className="id-btn-sub">투표 현황</button>
-          <button className="id-btn-sub">모금 현황</button>
+          <button className="id-btn-sub">투표 하러가기</button>
+          <button className="id-btn-sub">굿즈 보러가기</button>
+          <button className="id-btn-sponsor">후원하기</button>
 
           <ChatRoom />
 
