@@ -32,7 +32,7 @@ function MyBookmark () {
 
       try {
           const res = await getMyBookmarkApi(user.id);
-          console.log("res.data : ",res.data);
+          // console.log("res.data : ",res.data);
           setEvents(res.data);
           // setTotalElements(res.data.totalElements);
         } catch(e){

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import bg from "../../assets/images/singer_bg.png";
 
 
@@ -8,8 +8,9 @@ import './MyMain.css';
 const MyMain = () => {
 
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('bookmark');
-  const tabs = [
+  const location = useLocation();
+
+    const tabs = [
     { id: 'bookmark', label: '북마크 관리', url:'/MyMain/Mybookmark' },
     { id: 'vote', label: '투표 관리', url:'/MyMain/MyVote' },
     { id: 'purchase', label: '구매내역', url:'/MyMain/MyPurchase' },
@@ -34,9 +35,8 @@ const MyMain = () => {
                 {tabs.map((tab) => (
                 <li
                     key={tab.id}
-                    className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                    className={`tab-btn ${location.pathname === tab.url ? 'active' : ''}`}
                     onClick={() => {
-                      setActiveTab(tab.id)
                       navigate(tab.url)
                     }}
                 >
