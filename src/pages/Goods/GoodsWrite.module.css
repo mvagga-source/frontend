@@ -114,10 +114,18 @@
     font-weight: bold;
 }
 
-/* readOnly 인풋 스타일 (필요 시) */
-input:read-only, select:disabled {
+/* 기존 input:read-only를 아래와 같이 클래스명으로 변경 */
+.readOnlyInput {
     background-color: rgba(255, 255, 255, 0.05) !important;
     color: #999 !important;
     cursor: not-allowed !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.readOnlyInput:disabled {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #999 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
 }
