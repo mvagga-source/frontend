@@ -143,6 +143,7 @@ console.log("실제 유저 데이터 구조:", user);
 };
 
   useEffect(() => {
+    if (!id) return;
   const fetchIdolData = async () => {
     try {
       setLoading(true);
@@ -151,9 +152,12 @@ console.log("실제 유저 데이터 구조:", user);
       // 1. 서버가 보내준 생 데이터를 눈으로 직접 확인 (매우 중요!)
       console.log("=== 서버 응답 형태 확인 ===");
       console.log(response.data); 
+      console.log("지금 idol 상태의 photos 내용:", idol.photos);
+      // 서버에서 Map.put("profile", ...)과 Map.put("mediaList", ...)로 보낸 데이터를 꺼냅니다.
+      const { profile, mediaList } = response.data;
+      const dbData = profile || response.data.idolProfile || response.data;
       
-      // 2. 데이터 추출 시도 (여러 경로 대응)
-      const dbData = response.data?.idolProfile || response.data;
+      
       // IdolProfile.js 이미지 렌더링 부분
       const isValidFileName = (fileName) => {
         if (!fileName) return false;
@@ -179,10 +183,18 @@ console.log("실제 유저 데이터 구조:", user);
               rank: dbData.rank || "-", 
               current: dbData.voteCount || 0 
             },
-          }
+          },
+         photos: mediaList ? mediaList.map(m => ({
+              // 서버가 보내주는 실제 데이터 구조를 console.log(mediaList)로 꼭 확인하세요!
+              id: m.mediaId || m.MEDIAID || m.id || m.ID,
+              url: m.url || m.URL || m.fileName || m.FILENAME, 
+              desc: m.description || m.DESCRIPTION || ""
+          })) : [],
+          
         }));
         console.log("✅ 상태 업데이트 성공!");
-      } else {
+      } 
+      else {
         console.error("❌ 서버에서 빈 데이터를 보냈습니다. DB를 확인하세요.");
       }
     } catch (err) {
@@ -192,10 +204,8 @@ console.log("실제 유저 데이터 구조:", user);
     }
   };
 
-  if (id) {
-    fetchIdolData();
-  }
-}, [id]);
+fetchIdolData();
+}, [id])
 
   if (loading) return <div style={{color: 'white', padding: '20px'}}>데이터 연결 중...</div>;
 
@@ -214,10 +224,10 @@ console.log("실제 유저 데이터 구조:", user);
               <img 
                 // key를 주면 주소가 바뀔 때 이미지를 아예 새로 갈아 끼웁니다.
                 key={idol.profile.mainImgUrl || 'default'} 
-                src={idol.profile.mainImgUrl 
-                  ? `http://localhost:8181/images/${idol.profile.mainImgUrl}` 
-                  : "/images/default_profile.png" 
-                }
+                src={idol.profile.mainImgUrl && idol.profile.mainImgUrl !== "default_profile.png"
+                ? `http://localhost:8181/profile/${idol.profile.mainImgUrl.replace(/^\//, "")}`
+                : "/default_profile.png"
+              }
                 alt="profile"
                 onError={(e) => {
                   e.target.onerror = null; // 무한 루프 방지
@@ -289,24 +299,25 @@ console.log("실제 유저 데이터 구조:", user);
           <div className="id-photo-section">
             <h4 className="id-sec-title">사진</h4>
             <div className="id-photo-grid">
-              {idol.photos.map(p => (
-                <div key={p.id} className="id-photo-item">
-                  <img 
-                    // ✅ URL이 http로 시작하면 그대로 쓰고, 아니면 서버 주소를 붙여줍니다.
-                    src={p.url && p.url.startsWith('http') 
-                      ? p.url 
-                      : `http://localhost:8181/images/${p.url}`
-                    } 
-                    alt={p.desc} 
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/images/default_profile.png"; // 이미지 없을 때 기본 이미지
-                    }}
-                  />
-                  <div className="id-photo-overlay">{p.desc}</div>
-                </div>
-              ))}
-            </div>
+                {idol.photos.length > 0 ? (
+                  idol.photos.map((p) => (
+                    <div key={p.id} className="id-photo-item">
+                      <img 
+                        /* 1. 경로 확인: 서버에서 '1.jpg'라고 온다면 /images/1.jpg가 되어야 함 */
+                        src={p.url.startsWith('http') ? p.url : `http://localhost:8181/images/${p.url.replace(/^\//, "")}`} 
+                        alt={p.desc} 
+                        onError={(e) => {
+                          e.target.onerror = null; 
+                          e.target.src = "/default_profile.png"; // 실패 시 대체 이미지
+                        }}
+                      />
+                      {p.desc && <div className="id-photo-overlay">{p.desc}</div>}
+                    </div>
+                  ))
+                ) : (
+                  <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px" }}>등록된 사진이 없습니다.</p>
+                )}
+              </div>
           </div>
         </div>
 
