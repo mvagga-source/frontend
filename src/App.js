@@ -22,6 +22,10 @@ import IdolProfile from "./pages/Audition/IdolProfile.js";
 import IdolRanking     from "./pages/Audition/contest/IdolRanking";
 import TeamCompetition from "./pages/Audition/contest/TeamCompetition";
 
+// Support ㅠㅔ이지
+import Support from "./pages/Support/Support.js";
+
+
 // My pages
 import MyMain from "./pages/MyPage/MyMain";
 import MyBookmark from "./pages/MyPage/MyBookmark";
@@ -91,6 +95,7 @@ function App() {
           <Route path="/Audition/contest/team" element={<Layout><TeamCompetition/></Layout>}/>
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
+          <Route path="/support/:id" element={<Layout><Support/></Layout>}/>
 
           {/* 뮤직비디오 */}
           <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>

@@ -148,7 +148,6 @@ console.log("실제 유저 데이터 구조:", user);
     try {
       setLoading(true);
       const response = await getIdolProfileApi(id); 
-      
       // 1. 서버가 보내준 생 데이터를 눈으로 직접 확인 (매우 중요!)
       console.log("=== 서버 응답 형태 확인 ===");
       console.log(response.data); 
@@ -337,7 +336,12 @@ fetchIdolData();
 
           <button className="id-btn-sub">투표 하러가기</button>
           <button className="id-btn-sub">굿즈 보러가기</button>
-          <button className="id-btn-sponsor">후원하기</button>
+          <button 
+          className="id-btn-sponsor" 
+          onClick={() => navigate(`/support/${id}`)}
+        >
+          후원하기
+        </button>
 
           <ChatRoom />
 

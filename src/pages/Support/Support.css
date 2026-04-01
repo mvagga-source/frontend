@@ -1,0 +1,126 @@
+/* --- 후원 페이지 Full-Width 레이아웃 --- */
+
+.sp-wrap {
+  padding: 80px 40px 40px; /* 상단 헤더 여백 및 좌우 여백 */
+  width: 100%;             /* 전체 너비 사용 */
+  min-height: 100vh;
+  max-width: 1500px;
+  margin: 0 auto; /* 중앙 정렬 */
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.sp-container {
+  display: grid;
+  /* 양쪽 사이드바는 고정, 중앙은 100% 확장 */
+  grid-template-columns: 320px 1fr 320px; 
+  gap: 30px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* --- [왼쪽] 프로필 사이드바 --- */
+.sp-left {
+  position: sticky; /* 스크롤 시에도 고정되길 원하면 추가 */
+  top: 100px;
+}
+
+.sp-profile-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sp-profile-card img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- [중앙] 모금 메인 컨텐츠 --- */
+.sp-center {
+  width: 100%;
+}
+
+.sp-info-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 20px;
+}
+
+/* 게이지 바를 더 시원하게 확장 */
+.sp-bar-bg {
+  width: 100%;
+  height: 40px; /* 높이를 조금 더 키움 */
+  background: #111;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #333;
+  margin: 20px 0;
+}
+
+.sp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f2ff, #0072ff, #00f2ff);
+  background-size: 200% 100%;
+  animation: shine 3s infinite linear; /* 게이지에 흐르는 애니메이션 추가 */
+}
+
+@keyframes shine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* --- [오른쪽] 정보 사이드바 --- */
+.sp-right {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sp-notice-card, .sp-ad-preview {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 20px;
+}
+
+/* 후원 로그 그리드 확장 */
+.sp-log-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 너비에 따라 자동 배치 */
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.sp-log-item {
+  background: rgba(0, 242, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #00f2ff; /* 포인트 바 */
+}
+
+/* 반응형: 화면이 작아지면 사이드바 숨기거나 아래로 내림 */
+@media (max-width: 1400px) {
+  .sp-container {
+    grid-template-columns: 280px 1fr 280px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sp-container {
+    grid-template-columns: 1fr;
+  }
+  .sp-left, .sp-right {
+    position: static;
+  }
+}
