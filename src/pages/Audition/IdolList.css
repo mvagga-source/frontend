@@ -9,48 +9,51 @@
   min-height: 80vh;
 }
 
-/* ── 페이지 헤더 ── */
-.il-page-header {
-  padding: 24px 40px 0;
+/* ── 공통 max-width ── */
+.il-page-header,
+.il-summary,
+.il-filter-bar,
+.il-grid {
   max-width: 1060px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   box-sizing: border-box;
 }
 
-.il-page-title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin: 0 0 4px;
-}
+/* ── 페이지 헤더 ── */
+.il-page-header { padding: 24px 40px 0; }
+.il-page-title  { font-size: 22px; font-weight: 700; letter-spacing: 1px; margin: 0 0 4px; }
+.il-page-sub    { font-size: 13px; color: rgba(232,244,248,0.4); margin: 0; }
 
-.il-page-sub {
-  font-size: 13px;
-  color: rgba(232, 244, 248, 0.4);
-  margin: 0;
+/* ── 요약 섹션 ── */
+.il-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 16px 40px;
 }
+.il-sc     { background: rgba(0,242,255,0.04); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; }
+.il-sc-lbl { font-size: 10px; letter-spacing: 2px; color: rgba(232,244,248,0.35); text-transform: uppercase; margin: 0 0 4px; }
+.il-sc-val { font-size: 18px; font-weight: 700; color: var(--neon-blue); margin: 0 0 2px; }
+.il-sc-val--survived   { color: var(--neon-blue); }
+.il-sc-val--eliminated { color: #ff7a8a; }
+.il-sc-sub { font-size: 11px; color: rgba(232,244,248,0.32); margin: 0; }
 
-/* ── 검색 + 필터 바 ── */
+/* ── 검색 + 정렬 바 ── */
 .il-filter-bar {
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 12px;
-  padding: 20px 40px;
-  max-width: 1060px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 0 40px 16px;
   flex-wrap: wrap;
 }
 
 .il-search-box {
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 242, 255, 0.05);
+  background: rgba(0,242,255,0.05);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 8px 14px;
@@ -58,88 +61,52 @@
   min-width: 200px;
   max-width: 300px;
 }
-
-.il-search-icon {
-  font-size: 14px;
-  color: rgba(232, 244, 248, 0.3);
-  flex-shrink: 0;
-}
-
+.il-search-icon  { font-size: 14px; color: rgba(232,244,248,0.3); flex-shrink: 0; }
 .il-search-input {
-  background: none;
-  border: none;
-  outline: none;
-  color: #e8f4f8;
-  font-size: 13px;
-  width: 100%;
+  background: none; border: none; outline: none;
+  color: #e8f4f8; font-size: 13px; width: 100%;
   font-family: 'Pretendard', sans-serif;
 }
-.il-search-input::placeholder { color: rgba(232, 244, 248, 0.25); }
-
+.il-search-input::placeholder { color: rgba(232,244,248,0.25); }
 .il-search-clear {
-  background: none;
-  border: none;
-  color: rgba(232, 244, 248, 0.35);
-  cursor: pointer;
-  font-size: 11px;
-  padding: 0;
-  flex-shrink: 0;
+  background: none; border: none;
+  color: rgba(232,244,248,0.35);
+  cursor: pointer; font-size: 11px; padding: 0; flex-shrink: 0;
   transition: color 0.15s;
 }
 .il-search-clear:hover { color: #ff7a8a; }
 
-/* 그룹 탭 */
-.il-group-tabs {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.il-gtab {
-  padding: 7px 16px;
+/* ── 정렬 버튼 ── */
+.il-sort-box { display: flex; gap: 6px; }
+.il-sort-btn {
+  padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.1);
   background: transparent;
-  color: rgba(232, 244, 248, 0.45);
+  color: rgba(232,244,248,0.4);
   transition: all 0.18s;
   font-family: 'Pretendard', sans-serif;
   white-space: nowrap;
 }
-.il-gtab:hover {
-  border-color: var(--neon-blue);
-  color: var(--neon-blue);
-}
-.il-gtab.on {
-  background: rgba(0, 242, 255, 0.12);
-  border-color: var(--neon-blue);
-  color: var(--neon-blue);
-}
+.il-sort-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); }
+.il-sort-btn.on   { background: rgba(0,242,255,0.12); border-color: var(--neon-blue); color: var(--neon-blue); }
+.il-sort-btn.on.survived-filter { background: rgba(0,242,255,0.18); border-color: var(--neon-blue); color: var(--neon-blue); font-weight: 700; }
 
-.il-count-label {
-  font-size: 12px;
-  color: rgba(232, 244, 248, 0.35);
-  flex-shrink: 0;
-}
+.il-count-label { font-size: 12px; color: rgba(232,244,248,0.35); flex-shrink: 0; margin-left: auto; }
 
 /* ── 카드 그리드 ── */
 .il-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
+  gap: 14px;
   padding: 0 40px 40px;
-  max-width: 1060px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
 }
 
+/* ── 기본 카드 ── */
 .il-card {
-  background: rgba(0, 242, 255, 0.04);
-  border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 20px 14px 16px;
   display: flex;
@@ -147,19 +114,66 @@
   align-items: center;
   gap: 7px;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s, opacity 0.2s;
   position: relative;
 }
-.il-card:hover {
-  border-color: rgba(0, 242, 255, 0.5);
-  background: rgba(0, 242, 255, 0.09);
+
+/* ── 생존 카드 — 기본 ── */
+.il-card.survived {
+  background: rgba(0,242,255,0.04);
+  border: 1px solid var(--border-color);
+}
+.il-card.survived:hover {
+  border-color: rgba(0,242,255,0.4);
+  background: rgba(0,242,255,0.08);
   transform: translateY(-3px);
 }
+.il-card.survived .il-votes-num       { color: var(--neon-blue); }
+.il-card.survived .il-votes-bar-fill  { background: var(--neon-blue); }
+.il-card.survived .il-profile-hint    { color: rgba(232,244,248,0.3); }
+.il-card.survived:hover .il-profile-hint { color: var(--neon-blue); }
 
+/* ── 탈락 카드 — 어둡게 ── */
+.il-card.eliminated {
+  background: rgba(255,255,255,0.02);
+  border: 0.5px solid var(--border-color);
+  opacity: 0.38;
+}
+.il-card.eliminated:hover {
+  opacity: 0.6;
+  transform: translateY(-2px);
+  border-color: rgba(255,122,138,0.3);
+  background: rgba(255,122,138,0.03);
+}
+.il-card.eliminated .il-votes-bar-fill { background: rgba(232,244,248,0.2); }
+.il-card.eliminated .il-votes-num      { color: rgba(232,244,248,0.35); }
+
+/* ── 생존/탈락 뱃지 ── */
+.il-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.il-badge.surv {
+  background: rgba(0,242,255,0.1);
+  color: var(--neon-blue);
+  border: 1px solid rgba(0,242,255,0.2);
+}
+.il-badge.elim {
+  background: rgba(255,122,138,0.1);
+  color: #ff7a8a;
+  border: 1px solid rgba(255,122,138,0.2);
+}
+
+/* ── 아바타 ── */
 .il-avatar {
   width: 68px;
   height: 68px;
-  border-radius: 50%;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,68 +181,72 @@
   flex-shrink: 0;
   transition: border-color 0.18s;
 }
-.il-card:hover .il-avatar { border-color: var(--neon-blue); }
+.il-avatar-initial { font-size: 24px; font-weight: 700; color: rgba(232,244,248,0.85); }
 
-.il-avatar-initial {
-  font-size: 24px;
-  font-weight: 700;
-  color: rgba(232, 244, 248, 0.85);
-}
+.il-idol-name { font-size: 14px; font-weight: 700; margin: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 
-.il-idol-name     { font-size: 14px; font-weight: 700; margin: 0; text-align: center; }
+.il-avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: block; }
 
-.il-votes-area {
-  width: 100%;
+/* ── 카드 버튼 영역 ── */
+.il-card-btns {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  align-items: center;
-}
-
-.il-votes-num { font-size: 12px; font-weight: 700; color: var(--neon-blue); }
-
-.il-votes-bar-bg {
+  gap: 6px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 3px;
-  height: 3px;
-}
-.il-votes-bar-fill {
-  height: 3px;
-  border-radius: 3px;
-  background: var(--neon-blue);
+  margin-top: 4px;
 }
 
-.il-profile-hint {
-  font-size: 10px;
-  color: rgba(0, 242, 255, 0.5);
-  margin-top: 2px;
-  transition: color 0.18s;
+.il-btn-profile {
+  width: 100%;
+  padding: 7px 0;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: rgba(232,244,248,0.7);
+  font-family: 'Pretendard', sans-serif;
+  transition: all 0.18s;
 }
-.il-card:hover .il-profile-hint { color: var(--neon-blue); }
+.il-btn-profile:hover {
+  border-color: rgba(232,244,248,0.4);
+  color: #e8f4f8;
+}
 
-/* 빈 결과 */
-.il-empty {
-  text-align: center;
-  padding: 60px;
-  color: rgba(232, 244, 248, 0.3);
-  font-size: 14px;
+.il-btn-vote {
+  width: 100%;
+  padding: 7px 0;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: rgba(0,242,255,0.12);
+  color: var(--neon-blue);
+  font-family: 'Pretendard', sans-serif;
+  transition: all 0.18s;
 }
+.il-btn-vote:hover {
+  background: rgba(0,242,255,0.22);
+}
+
+/* ── 빈 결과 ── */
+.il-empty { text-align: center; padding: 60px; color: rgba(232,244,248,0.3); font-size: 14px; }
+
+/* ── 로딩 / 에러 ── */
+.il-loading,
+.il-error { text-align: center; padding: 80px 40px; font-size: 14px; color: rgba(232,244,248,0.45); }
+.il-error  { color: #ff7a8a; }
 
 /* ── 반응형 ── */
 @media (max-width: 768px) {
-  .il-page-header { padding: 20px 20px 0; }
-  .il-filter-bar  { padding: 16px 20px; }
-  .il-grid        { padding: 0 20px 40px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-  .il-search-box  { max-width: 100%; }
+  .il-page-header,
+  .il-summary,
+  .il-filter-bar,
+  .il-grid    { padding-left: 20px; padding-right: 20px; }
+  .il-summary { grid-template-columns: 1fr 1fr; }
+  .il-sc:last-child { grid-column: span 2; }
+  .il-grid    { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .il-search-box { max-width: 100%; }
 }
-
-/* 로딩 / 에러 공통 */
-.il-loading,
-.il-error {
-  text-align: center;
-  padding: 80px 40px;
-  font-size: 14px;
-  color: rgba(232,244,248,0.45);
-}
-.il-error { color: #ff7a8a; }

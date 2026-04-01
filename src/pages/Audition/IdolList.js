@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllIdolsApi } from "../../api/auditionApi";
+import { getAllIdolsLatestApi } from "../../api/auditionApi";
 import "./IdolList.css";
-
-const CURRENT_AUDITION_ID = 1; // 임시 고정값
 
 const AVATAR_COLORS = [
   "#1a2c4e","#1e1a2c","#1a2c1e","#2c1a1e","#1a1e2c",
@@ -21,13 +19,14 @@ export default function IdolList() {
   /* ── 검색/필터 상태 ── */
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeGroup, setActiveGroup] = useState("전체");
+  const [sortMode, setSortMode] = useState("votes");      // "votes" | "name"
+  const [filterMode,  setFilterMode]  = useState("all");  // "all" | "survived"
 
   /* ── API 호출 ── */
   useEffect(() => {
     setLoading(true);
     setError(null);
-    getAllIdolsApi(CURRENT_AUDITION_ID)
+    getAllIdolsLatestApi()
       .then((res) => {
         console.log("✅ 아이돌 목록:", res.data);
         setIdols(res.data);
@@ -41,30 +40,25 @@ export default function IdolList() {
       });
   }, []);
 
-  /* ── API 응답에서 그룹 목록 동적 추출 ── */
-const groups = useMemo(() => {
-  if (idols.length === 0) return ["전체"];
-  // 중복 제거 후 "전체"와 합치기
-  const uniqueGroups = [...new Set(idols.map(i => i.groupName).filter(Boolean))];
-  return ["전체", ...uniqueGroups];
-}, [idols]);
+  /* ── 집계 ── */
+  /* ── API 응답에서 생존/탈락자 수 계산 ── */
+  const survived   = useMemo(() => idols.filter(i => i.status === "active").length,    [idols]);
+  const eliminated = useMemo(() => idols.filter(i => i.status === "eliminated").length, [idols]);
 
-  /* ── API 응답에서 최대 득표수 계산 ── */
-  const maxVotes = useMemo(() => {
-    if (idols.length === 0) return 1;
-    return Math.max(...idols.map((i) => i.votes ?? 0));
-  }, [idols]);
-
-  /* ── 필터링 ── */
+  /* ── 검색 + 정렬 ── */
   const filtered = useMemo(() => {
-    return idols.filter((i) => {
-      const groupOk = activeGroup === "전체" || i.groupName === activeGroup;
-      // 이름뿐만 아니라 그룹명으로도 검색 가능하게 확장 가능
-      const searchOk = !searchQuery || 
-        (i.name && i.name.toLowerCase().includes(searchQuery.toLowerCase()));
-      return groupOk && searchOk;
+    let list = idols.filter((i) => {
+      const searchOk = !searchQuery || (i.name && i.name.includes(searchQuery));
+      const filterOk = filterMode === "all" || i.status === "active";
+      return searchOk && filterOk;
     });
-  }, [idols, activeGroup, searchQuery]);
+    if (sortMode === "votes") {
+        list = [...list].sort((a, b) => (b.votes ?? 0) - (a.votes ?? 0));
+    } else {
+        list = [...list].sort((a, b) => a.name?.localeCompare(b.name, "ko"));
+    }
+    return list;
+  }, [idols, searchQuery, sortMode, filterMode]);
 
   /* ── 검색 제출 ── */
   const handleSearchSubmit = (e) => {
@@ -80,7 +74,6 @@ const groups = useMemo(() => {
 
   /* ── 카드 클릭 → 프로필 페이지 이동 ── */
   const goToProfile = (id) => {
-    console.log("👉 클릭한 아이돌 ID:", id);
     navigate(`/Audition/profile/${id}`);
   };
 
@@ -111,6 +104,25 @@ const groups = useMemo(() => {
         <p className="il-page-sub">총 {filtered.length}명의 참가자</p>
       </div>
 
+      {/* 요약 섹션 */}
+      <div className="il-summary">
+          <div className="il-sc">
+              <p className="il-sc-lbl">총 참가자</p>
+              <p className="il-sc-val">{idols.length}명</p>
+              <p className="il-sc-sub">전체 회차 누적</p>
+          </div>
+          <div className="il-sc">
+              <p className="il-sc-lbl">생존자</p>
+              <p className="il-sc-val">{survived}명</p>
+              <p className="il-sc-sub">현재 진행 중</p>
+          </div>
+          <div className="il-sc">
+              <p className="il-sc-lbl">탈락자</p>
+              <p className="il-sc-val">{eliminated}명</p>
+              <p className="il-sc-sub">누적 탈락</p>
+          </div>
+      </div>
+
       {/* ── 검색 + 그룹 필터 바 ── */}
       <div className="il-filter-bar">
         <form className="il-search-box" onSubmit={handleSearchSubmit}>
@@ -129,16 +141,25 @@ const groups = useMemo(() => {
           )}
         </form>
 
-        <div className="il-group-tabs">
-          {groups.map((g) => (
+        <div className="il-sort-box">
             <button
-              key={g}
-              className={`il-gtab${activeGroup === g ? " on" : ""}`}
-              onClick={() => setActiveGroup(g)}
+                className={`il-sort-btn${sortMode === "votes" ? " on" : ""}`}
+                onClick={() => setSortMode("votes")}
             >
-              {g}
+                득표순
             </button>
-          ))}
+            <button
+                className={`il-sort-btn${sortMode === "name" ? " on" : ""}`}
+                onClick={() => setSortMode("name")}
+            >
+                가나다순
+            </button>
+            <button
+                className={`il-sort-btn${filterMode === "survived" ? " on survived-filter" : ""}`}
+                onClick={() => setFilterMode(filterMode === "survived" ? "all" : "survived")}
+            >
+                생존자만
+            </button>
         </div>
 
         <span className="il-count-label">{filtered.length}명</span>
@@ -147,50 +168,56 @@ const groups = useMemo(() => {
       {/* ── 카드 그리드 ── */}
       <div className="il-grid">
         {filtered.map((idol) => {
-          // API 응답 필드명: idolId, name, groupName, position, age, votes
-          const votes = idol.votes ?? 0;
-          const pct   = maxVotes > 0 ? Math.round((votes / maxVotes) * 100) : 0;
-          const color = AVATAR_COLORS[(idol.idolId - 1) % AVATAR_COLORS.length];
+          const color  = AVATAR_COLORS[(idol.idolId - 1) % AVATAR_COLORS.length];
+          const isElim = idol.status === "eliminated";
 
           return (
             <div
-              key={idol.idolId}
-              className="il-card"
-              onClick={() => goToProfile(idol.idolId)}
+                key={idol.idolId}
+                className={`il-card${isElim ? " eliminated" : " survived"}`}
             >
-              <div className="il-avatar" style={{ background: color, overflow: 'hidden' }}>
-                {/* ✅ 사진이 있으면 보여주고, 없으면 이니셜 표시 */}
-                {idol.mainImgUrl ? (
-                  <img 
-                    src={`http://localhost:8181/images/${idol.mainImgUrl}`} 
-                    alt={idol.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    onError={(e) => {
-                      // 이미지 로드 실패 시 이니셜만 보이도록 처리
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'block';
-                    }}
-                  />
-                ) : (
-                  <span className="il-avatar-initial">{idol.name?.charAt(0) ?? "#"}</span>
-                )}
-              </div>
+                <span className={`il-badge${isElim ? " elim" : " surv"}`}>
+                    {isElim ? "탈락" : "생존"}
+                </span>
 
-              <p className="il-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
-              <p className="il-idol-group">{idol.groupName || "개인 연습생"}</p>
-                <p className="il-idol-position">{idol.position}</p>
-
-              <div className="il-votes-area">
-                <div className="il-votes-info">
-                  <span className="il-votes-label">득표수</span>
-                  <span className="il-votes-num">{votes.toLocaleString()}</span>
+                <div className="il-avatar" style={{ background: color }}>
+                    {idol.mainImgUrl ? (
+                        <img
+                            src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/images/${idol.mainImgUrl}`}
+                            alt={idol.name}
+                            className="il-avatar-img"
+                            onError={(e) => {
+                                e.target.style.display = "none";
+                                e.target.nextSibling.style.display = "flex";
+                            }}
+                        />
+                    ) : null}
+                    <span
+                        className="il-avatar-initial"
+                        style={{ display: idol.mainImgUrl ? "none" : "flex" }}
+                    >
+                        {idol.name?.charAt(0) ?? "#"}
+                    </span>
                 </div>
-                <div className="il-votes-bar-bg">
-                  <div className="il-votes-bar-fill" style={{ width: `${pct}%` }} />
-                </div>
-              </div>
 
-              <span className="il-profile-hint">프로필 보기 →</span>
+                <p className="il-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
+
+                <div className="il-card-btns">
+                    <button
+                        className="il-btn-profile"
+                        onClick={() => goToProfile(idol.idolId)}
+                    >
+                        프로필 보기
+                    </button>
+                    {!isElim && (
+                        <button
+                            className="il-btn-vote"
+                            onClick={() => navigate("/Audition/vote")}
+                        >
+                            투표하기
+                        </button>
+                    )}
+                </div>
             </div>
           );
         })}

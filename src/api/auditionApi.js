@@ -5,9 +5,13 @@ export const getIdolsApi = (auditionId) => {
     return axiosInstance.get(`/audition/idols`, { params: { auditionId } });
 };
 
-// 전체 참가자 조회 (탈락자 포함, IdolList용)
+// 전체 참가자 조회 (탈락자 포함, IdolRanking용)
 export const getAllIdolsApi = (auditionId) =>
     axiosInstance.get(`/audition/allIdols`, { params: { auditionId } });
+
+// IdolList용 — 전체 참가자 최신 회차 status 포함
+export const getAllIdolsLatestApi = () =>
+    axiosInstance.get(`/audition/allIdolsLatest`);
 
 // 실시간 랭킹 조회
 export const getRankingApi = (auditionId) => {
@@ -31,3 +35,7 @@ export const getAuditionListApi = () =>
 // 팀경연 결과 조회
 export const getMatchesApi = (auditionId) =>
     axiosInstance.get(`/audition/matches`, { params: { auditionId } });
+
+// 오늘 투표한 아이돌 ID 목록 조회
+export const getVotedIdolsApi = (auditionId) =>
+    axiosInstance.get(`/vote/today`, { params: { auditionId } });
