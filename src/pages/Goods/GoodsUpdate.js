@@ -221,7 +221,7 @@ function GoodsUpdate() {
                                     <span className={styles.required}>*</span> 상품명
                                     <span className={styles.readOnlyNote}>(수정 불가)</span>
                                 </label>
-                                <SaveInput name="gname" maxLength={100} readOnly defaultValue={goods?.gname} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
+                                <SaveInput name="gname" maxLength={100} readOnly className={styles.readOnlyInput} defaultValue={goods?.gname} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
                             </div>
                             <div className={formStyles.formGroup} style={{ flex: 1 }}>
                                 <label className={formStyles.label}>
@@ -230,11 +230,11 @@ function GoodsUpdate() {
                                 </label>
                                 <SearchSelect 
                                     name="idol.profileId"
+                                    className={`${styles.fullWidth} ${styles.readOnlyInput}`}
                                     disabled
                                     readOnly
                                     value={goods?.idol?.profileId || ""}
                                     //defaultValue={goods?.idol?.profileId}
-                                    className={styles.fullWidth} 
                                     options={[{ value: "", label: "선택 안함" }, ...idolList]} 
                                 />
                             </div>
@@ -246,7 +246,7 @@ function GoodsUpdate() {
                                     <span className={styles.required}>*</span> 판매가
                                     <span className={styles.readOnlyNote}>(수정 불가)</span>
                                 </label>
-                                <NumberInput name="price" readOnly placeholder="0" defaultValue={goods?.price} style={{width:"100%"}} />
+                                <NumberInput name="price" className={styles.readOnlyInput} readOnly placeholder="0" defaultValue={goods?.price} style={{width:"100%"}} />
                             </div>
                             <div className={formStyles.formGroup} style={{flex: 1}}>
                                 <label className={formStyles.label}><span className={styles.required}>*</span> 재고 수량 (Stock)</label>
@@ -300,6 +300,7 @@ function GoodsUpdate() {
                                     name="gdelivAddrReturn"
                                     value={address} 
                                     readOnly
+                                    className={styles.readOnlyInput}
                                     style={{ flex: 1 }} 
                                     placeholder="주소를 검색하세요"
                                 />

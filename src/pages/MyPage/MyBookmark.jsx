@@ -19,11 +19,12 @@ function MyBookmark () {
   const [page, setPage] = useState(0);  
   const pageSize = 10;
 
-  const pageTypes = {
-    "EVENT":"오디션 일정",
-    "VIDEO":"아이돌 영상",
-    "GOODS":"아이돌 굿즈"
-  }
+  const pageTypes = [
+    {value : "ALL", label : "전체"},    
+    {value : "EVENT", label : "오디션 일정"},
+    {value : "VIDEO", label : "아이돌 영상"},
+    {value : "GOODS", label : "아이돌 굿즈"},
+  ]
     
   // 데이터 가져오기
   useEffect (() => {
@@ -62,18 +63,10 @@ function MyBookmark () {
     <>
    <div className="my-form-wrap">
       <select>
-        <option>오디션 일정</option>
-        <option>아이돌 영상</option>
+        {pageTypes.map(v =>(
+          <option key={v.value} value={v.value}>{v.label}</option>
+        ))}
       </select>
-
-      <select>
-        <option>전체</option>        
-        <option>제목</option>
-        <option>이름</option>
-      </select>
-      <input type="text"/>
-      <button type="button">검색</button>
-    
     </div>
 
     <table className="my-table">

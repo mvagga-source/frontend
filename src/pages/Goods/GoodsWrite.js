@@ -261,6 +261,7 @@ function GoodsWrite() {
                                 <SaveInput 
                                     value={address} 
                                     readOnly
+                                    className={styles.readOnlyInput}
                                     name="gdelivAddrReturn"
                                     style={{ flex: 1 }} 
                                     placeholder="주소를 검색하세요" 
