@@ -14,8 +14,8 @@ export default function Support() {
     totalAmount: 0,
     targetAmount: 5000000, // 임시 목표액 (500만원)
     logs: [
-      { id: 1, name: "공유", amount: 10000, date: "2026-03-25" },
-      { id: 2, name: "팬A", amount: 5000, date: "2026-03-26" },
+      { id: 1, name: "재미니왕자", amount: 10000, date: "2026-03-25" },
+      { id: 2, name: "나냥이데뷔해", amount: 5000, date: "2026-03-26" },
     ]
   });
 
@@ -83,7 +83,7 @@ export default function Support() {
                 <div className="account-main-details">
                   <p><strong>PAYPAL : </strong> action101@naver.com</p>
                   <p><strong>모금계좌 : </strong> 카카오 000-000-000-000</p>
-                  <p className="sp-caution">* 입금자명: (연습생이름)+(본인이름)</p>
+                  <p className="sp-caution">* 입금자명: (연습생이름)+(본인이름 또는 닉네임)</p>
                 </div>
                 
                 <div className="account-warning-details">

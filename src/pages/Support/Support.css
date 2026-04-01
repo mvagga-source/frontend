@@ -274,7 +274,14 @@
 
 .ad-guide-intro strong {
   color: #00f2ff;
-  font-weight: 600;
+  font-weight: 400;
+}
+
+.sp-ad-preview h5 {
+  margin-bottom: 15px;
+  color: #00f2ff;
+  font-size: 16px;
+  flex-shrink: 0;
 }
 
 /* 단계별 헤더 (배지와 금액 가로 정렬) */
