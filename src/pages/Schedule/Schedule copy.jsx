@@ -147,7 +147,7 @@ function Schedule() {
         { <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          // dayMaxEvents={true}
+          dayMaxEvents={true}
           key={events.length}
           events={events}
           locale={koLocale}
@@ -159,50 +159,30 @@ function Schedule() {
 
           eventContent={(eventInfo) => {
             const bookmarked = eventInfo.event.extendedProps.bookmarked;
-            const truncate = (text, max = 10) => {
-              const chars = [...text];
-              return chars.length > max
-                ? chars.slice(0, max).join('') + '...'
-                : text;
-            };
-            const getDateDiff = (start, end) => {
-              const diff = end - start; // ms 차이
-              return Math.ceil(diff / (1000 * 60 * 60 * 24));
-            };
-
             return (
               <div className="bookmark-info">
-                <div className="bookmark-info-title"> 
-                  <ul>
-                    <li className="bookmark-icon">●</li>
-                    <li className="bookmark-title-text">
-                      {getDateDiff(eventInfo.event.start, eventInfo.event.end) > 1 ? eventInfo.event.title : truncate(eventInfo.event.title,16)}
-                    </li>
-                  </ul>
-                  <span className="tooltip-text">
-                    {eventInfo.event.title}                    
-                  </span>
-                </div>
-                <div className="bookmark-info-value"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      {
-                        if (!user?.id){
-                          if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
-                            navigate("/UserLogin",{
-                                    state: {
-                                      from: location.pathname
-                                    }
-                          });
-                          }
-                          return;
+                <span style={{cursor:"pointer"}}> <span className="bookmark-icon">●</span> {eventInfo.event.title} / {eventInfo.event.extendedProps.desc} </span>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    {
+                      if (!user?.id){
+                        if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
+                          navigate("/UserLogin",{
+                                  state: {
+                                    from: location.pathname
+                                  }
+                        });
                         }
+                        return;
                       }
-                      toggleBookmark(eventInfo.event.id);
-                    }}
+                    }
+                    toggleBookmark(eventInfo.event.id);
+                  }}
+                  style={{cursor:"pointer"}}
                 >
                   {bookmarked ? <span className="bookmark-status status-ongoing">북마크</span> : <span className="bookmark-status status-ended">북마크</span>}
-                </div>
+                </span>
 
                 {isModalOpen && (
                   <div style={{

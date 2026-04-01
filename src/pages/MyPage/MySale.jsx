@@ -27,6 +27,8 @@ function MySale () {
   const [sortDirection, setSortDirection] = useState("DESC"); // 정렬 상태  
   const size = 10;
 
+  const isEmpty = list.length === 0;
+
   const getGoodsList = async (page, searchParams) => {
         try {
             const res = await getGoodsListApi(page, size, {
@@ -143,8 +145,15 @@ function MySale () {
         </tr>
       </thead>
       <tbody>
+        {isEmpty ? (
+            <tr>
+              <td colSpan="8" style={{ textAlign: "center", height:"50px" }}>
+                데이터가 없습니다.
+              </td>
+            </tr>
 
-        {list.map((l, index) => (
+        ) :
+        list.map((l, index) => (
           <tr key={l.gno}>
             {/* 
             <td style={{textAlign:"center"}}>

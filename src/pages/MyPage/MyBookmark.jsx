@@ -20,6 +20,8 @@ function MyBookmark () {
   const [page, setPage] = useState(0);  
   const pageSize = 10;
 
+  const isEmpty = events.length === 0;
+
   const pageTypes = [
     {value : "ALL", label : "전체"},    
     {value : "EVENT", label : "오디션 일정"},
@@ -101,7 +103,17 @@ function MyBookmark () {
         </tr>
       </thead>
       <tbody>
-        {events.map((event,index) => {
+
+        {isEmpty ? (
+            <tr>
+              <td colSpan="7" style={{ textAlign: "center", height:"50px" }}>
+                데이터가 없습니다.
+              </td>
+            </tr>
+
+        ) : 
+
+        events.map((event,index) => {
 
           const pathMap = {
             GOODS: `/GoodsView/${event.PAGEID}`,

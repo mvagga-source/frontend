@@ -106,22 +106,97 @@
     color: rgb(221, 164, 164);
 }
 
+.fc-daygrid-day-frame {
+  min-height: 120px;
+}
+
+.fc-daygrid-event {
+  overflow: visible !important;
+}
+
+/* .fc-event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
+
+/* .fc-daygrid-day-events {
+  max-height: 100px;
+  overflow-y: auto;
+} */
 
 /*
   북마크
 */
 
 .bookmark-info{
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* display: -webkit-box; */
+  /* -webkit-line-clamp: 3; */
+  /* -webkit-box-orient: vertical; */
+  height:55px;
+}
+
+.bookmark-info-title{
+  position: relative;
+  display: inline-block;  
+  height:30px;
+ }
+
+.bookmark-info-title ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  justify-content: space-between;
+} 
+
+.bookmark-title-text {
+  /* border:1px solid #fff; */
+  display: inline-block;
+  max-width: 180px;
+  /* overflow: hidden;
+  text-overflow: ellipsis; */
+  white-space: nowrap;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background: #333;
+  color: #fff;
+  padding: 5px 10px;
+  /* border-radius: 5px; */
+  white-space: nowrap;
+
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.bookmark-info-title:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.bookmark-info-value{
+  overflow: hidden;  
+  text-overflow: ellipsis;
+  height:30px;
+  padding-left: 12px;
+  cursor: pointer;
 }
 
 .bookmark-icon{
+  /* border:1px solid #fff; */
   font-size: 7px;
   font-weight: 700;
   color: var(--neon-blue);
   margin-right: 5px;
-  /* line-height: 30px; */
+  line-height: 20px;
 }
 
 .bookmark-status {

@@ -20,6 +20,8 @@ function MyPurchase () {
   const [page, setPage] = useState(1);
   const size = 10;
 
+  const isEmpty = list.length === 0;
+
   const getMyOrderList = async() => {
     
       try {
@@ -112,7 +114,16 @@ function MyPurchase () {
         </tr>
       </thead>
       <tbody>
-        {list.map((l, index) => (
+
+        {isEmpty ? (
+            <tr>
+              <td colSpan="11" style={{ textAlign: "center", height:"50px" }}>
+                데이터가 없습니다.
+              </td>
+            </tr>
+
+        ) : 
+        list.map((l, index) => (
           <tr key={l.gono}>
             {/* <td style={{textAlign:"center"}}>
               <input type="checkbox"
