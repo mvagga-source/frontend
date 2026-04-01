@@ -25,7 +25,7 @@ const rankColor = (rank) => {
 };
 
 /* ── 피라미드 카드 ── */
-function PyramidCard({ idol, rank, total, imgMap }) {
+function PyramidCard({ idol, rank, total, imgMap, profileMap }) {
   const navigate = useNavigate();
   if (!idol) return <div className="ir-pcard" />;
 
@@ -35,9 +35,10 @@ function PyramidCard({ idol, rank, total, imgMap }) {
   const finalVotes = Number(idol[4] ?? 0);
   const mainImgUrl = imgMap?.[idolId];
   const pct        = total > 0 ? (finalVotes / total * 100).toFixed(1) : "0.0";
+  const profileId = profileMap?.[idolId];
 
   return (
-    <div className="ir-pcard" onClick={() => navigate(`/Audition/profile/${idolId}`)}>
+    <div className="ir-pcard" onClick={() => navigate(`/Audition/profile/${profileId}`)}>
       <div className="ir-av-wrap">
         <div className="ir-av" style={{ background: avColor(idolId) }}>
           {mainImgUrl ? (
@@ -62,17 +63,18 @@ function PyramidCard({ idol, rank, total, imgMap }) {
 }
 
 /* ── 랭킹 행 카드 ── */
-function RankCard({ idol, rank, total }) {
+function RankCard({ idol, rank, total, imgMap, profileMap }) {
   const navigate  = useNavigate();
   const idolId    = idol[0];
   const name      = idol[1];
   const finalVotes = Number(idol[4] ?? 0);
   const pct        = total > 0 ? (finalVotes / total * 100).toFixed(1) : "0.0";
+  const profileId = profileMap?.[idolId];
 
   return (
     <div
       className="ir-rescard"
-      onClick={() => navigate(`/Audition/profile/${idolId}`)}
+      onClick={() => navigate(`/Audition/profile/${profileId}`)}
     >
       <span className="ir-rc-rank" style={{ color: rankColor(rank) }}>
         {String(rank).padStart(2, "0")}
@@ -146,6 +148,13 @@ export default function IdolRanking() {
   const imgMap = useMemo(() => {
     const map = {};
     allIdols.forEach(i => { map[i.idolId] = i.mainImgUrl; });
+    return map;
+  }, [allIdols]);
+
+  // idolId → idolProfileId 매핑
+  const profileMap = useMemo(() => {
+    const map = {};
+    allIdols.forEach(i => { map[i.idolId] = i.idolProfileId; });
     return map;
   }, [allIdols]);
 
@@ -229,22 +238,22 @@ export default function IdolRanking() {
               <p className="ir-sec">TOP 10</p>
               <div className="ir-pyramid">
                 <div className="ir-prow ir-r1">
-                  <PyramidCard idol={top10[0]} rank={1} total={total} imgMap={imgMap} />
+                  <PyramidCard idol={top10[0]} rank={1} total={total} imgMap={imgMap} profileMap={profileMap} />
                 </div>
                 <div className="ir-prow ir-r2">
-                  <PyramidCard idol={top10[1]} rank={2} total={total} imgMap={imgMap} />
-                  <PyramidCard idol={top10[2]} rank={3} total={total} imgMap={imgMap} />
+                  <PyramidCard idol={top10[1]} rank={2} total={total} imgMap={imgMap} profileMap={profileMap} />
+                  <PyramidCard idol={top10[2]} rank={3} total={total} imgMap={imgMap} profileMap={profileMap} />
                 </div>
                 <div className="ir-prow ir-r3">
-                  <PyramidCard idol={top10[3]} rank={4} total={total} imgMap={imgMap} />
-                  <PyramidCard idol={top10[4]} rank={5} total={total} imgMap={imgMap} />
-                  <PyramidCard idol={top10[5]} rank={6} total={total} imgMap={imgMap} />
+                  <PyramidCard idol={top10[3]} rank={4} total={total} imgMap={imgMap} profileMap={profileMap} />
+                  <PyramidCard idol={top10[4]} rank={5} total={total} imgMap={imgMap} profileMap={profileMap} />
+                  <PyramidCard idol={top10[5]} rank={6} total={total} imgMap={imgMap} profileMap={profileMap} />
                 </div>
                 <div className="ir-prow ir-r4">
-                  <PyramidCard idol={top10[6]}  rank={7}  total={total} imgMap={imgMap} />
-                  <PyramidCard idol={top10[7]}  rank={8}  total={total} imgMap={imgMap} />
-                  <PyramidCard idol={top10[8]}  rank={9}  total={total} imgMap={imgMap} />
-                  <PyramidCard idol={top10[9]}  rank={10} total={total} imgMap={imgMap} />
+                  <PyramidCard idol={top10[6]}  rank={7}  total={total} imgMap={imgMap} profileMap={profileMap} />
+                  <PyramidCard idol={top10[7]}  rank={8}  total={total} imgMap={imgMap} profileMap={profileMap} />
+                  <PyramidCard idol={top10[8]}  rank={9}  total={total} imgMap={imgMap} profileMap={profileMap} />
+                  <PyramidCard idol={top10[9]}  rank={10} total={total} imgMap={imgMap} profileMap={profileMap} />
                 </div>
               </div>
             </div>
@@ -254,7 +263,7 @@ export default function IdolRanking() {
               <p className="ir-sec">전체 랭킹</p>
               <div className="ir-rank-scroll">
                 {rankingData.map((idol, i) => (
-                  <RankCard key={idol[0]} idol={idol} rank={i + 1} total={total} imgMap={imgMap} />
+                  <RankCard key={idol[0]} idol={idol} rank={i + 1} total={total} imgMap={imgMap} profileMap={profileMap} />
                 ))}
               </div>
             </div>

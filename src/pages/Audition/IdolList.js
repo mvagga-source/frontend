@@ -73,8 +73,8 @@ export default function IdolList() {
   };
 
   /* ── 카드 클릭 → 프로필 페이지 이동 ── */
-  const goToProfile = (id) => {
-    navigate(`/Audition/profile/${id}`);
+  const goToProfile = (profileId) => {
+    navigate(`/Audition/profile/${profileId}`);
   };
 
   /* ── 로딩 화면 ── */
@@ -205,7 +205,7 @@ export default function IdolList() {
                 <div className="il-card-btns">
                     <button
                         className="il-btn-profile"
-                        onClick={() => goToProfile(idol.idolId)}
+                        onClick={() => goToProfile(idol.idolProfileId)}
                     >
                         프로필 보기
                     </button>
