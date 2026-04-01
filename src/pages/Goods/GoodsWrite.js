@@ -4,7 +4,6 @@ import { SearchBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
 import { SearchInput, SaveInput, NumberInput } from "../../components/input/Input";
 import Content from "../../components/Title/ContentComp";
 import TiptapEditor from "../../components/CkEditor/TiptapEditor";
-import formStyles from "../Board/BoardWrite.module.css";
 import styles from "./GoodsWrite.module.css";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import DaumAddrSearchModal from "../../components/DaumAddrModal/DaumAddrModal";
@@ -112,7 +111,7 @@ function GoodsWrite() {
         localStorage.setItem("goods_preview", JSON.stringify(previewData));
         
         // 새 창 열기 (Route는 아래 2번 단계에서 설정)
-        window.open("/GoodsPreview", "_blank", "width=1100,height=900,scrollbars=yes");
+        window.open("/GoodsPreview", "_blank", "width=1500,height=1000,scrollbars=yes");
     }
 
     // 재고 입력 시 상태 변경 핸들러
@@ -142,15 +141,15 @@ function GoodsWrite() {
 
     return (
         <Content TitleName="Goods Write">
-            <div className={formStyles.wrapper}>
-                <div className={formStyles.container}>
+            <div className={styles.wrapper}>
+                <div className={styles.container}>
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
                         
                         {/* 1. 대표 이미지 업로드 섹션 */}
-                        {/* <div className={formStyles.formGroup}> */}
+                        {/* <div className={styles.formGroup}> */}
                         {/* 아래주석은 중앙 정렬 */}
-                        <div className={formStyles.formGroup} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
-                            <label className={formStyles.label}><span className={styles.required}>*</span> 대표 상품 이미지 (Main Thumbnail)</label>
+                        <div className={styles.formGroup} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
+                            <label className={styles.label}><span className={styles.required}>*</span> 대표 상품 이미지 (Main Thumbnail)</label>
                             <div className={styles.imageUploadWrapper}>
                                 {/* 컨테이너는 딱 하나만 사용합니다 */}
                                 <div className={styles.imagePreviewContainer}>
@@ -190,17 +189,17 @@ function GoodsWrite() {
                         </div>
 
                         {/* 2. 상품명 및 기본 정보 */}
-                        {/* <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}>상품명</label>
+                        {/* <div className={styles.formGroup}>
+                            <label className={styles.label}>상품명</label>
                             <SaveInput name="gname" maxLength={100} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
                         </div> */}
                         <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-                            <div className={formStyles.formGroup} style={{ flex: 1 }}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 상품명</label>
+                            <div className={styles.formGroup} style={{ flex: 1 }}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 상품명</label>
                                 <SaveInput name="gname" maxLength={100} style={{width:"100%"}} placeholder="상품명을 입력하세요" />
                             </div>
-                            <div className={formStyles.formGroup} style={{ flex: 1 }}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 참가자명</label>
+                            <div className={styles.formGroup} style={{ flex: 1 }}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 참가자명</label>
                                 <SearchSelect 
                                     name="idol.profileId" 
                                     className={styles.fullWidth} 
@@ -210,12 +209,12 @@ function GoodsWrite() {
                         </div>
 
                         <div style={{display: "flex", gap: "20px"}}>
-                            <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 판매가</label>
+                            <div className={styles.formGroup} style={{flex: 1}}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 판매가</label>
                                 <NumberInput name="price" placeholder="0" style={{width:"100%"}} />
                             </div>
-                            <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 재고 수량</label>
+                            <div className={styles.formGroup} style={{flex: 1}}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 재고 수량</label>
                                 <NumberInput name="stockCnt" 
                                     onInput={handleStockChange} defaultValue={1} placeholder="0" style={{width:"100%"}} />
                             </div>
@@ -223,12 +222,12 @@ function GoodsWrite() {
 
                         {/* 3. 배송 및 상태 정보 */}
                         <div style={{display: "flex", gap: "20px"}}>
-                            <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 배송비</label>
+                            <div className={styles.formGroup} style={{flex: 1}}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 배송비</label>
                                 <NumberInput name="gdelPrice" placeholder="3000" style={{width:"100%"}} />
                             </div>
-                            <div className={formStyles.formGroup}  style={{flex: 1}}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 택배사</label>
+                            <div className={styles.formGroup}  style={{flex: 1}}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 택배사</label>
                                 <SaveInput 
                                     maxLength={255}
                                     style={{width:"100%"}}
@@ -239,24 +238,24 @@ function GoodsWrite() {
                         </div>
 
                         <div style={{display: "flex", gap: "20px"}}>
-                            <div className={formStyles.formGroup} style={{ flex: 1 }}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 출고지 주소</label>
+                            <div className={styles.formGroup} style={{ flex: 1 }}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 출고지 주소</label>
                                 <SaveInput 
                                     style={{width:"100%"}}
                                     placeholder="출고지 주소를 입력하세요"
                                     name="gdelivAddr"
                                 />
                             </div>
-                            <div className={formStyles.formGroup} style={{flex: 1}}>
-                                <label className={formStyles.label}><span className={styles.required}>*</span> 판매 상태</label>
+                            <div className={styles.formGroup} style={{flex: 1}}>
+                                <label className={styles.label}><span className={styles.required}>*</span> 판매 상태</label>
                                 <SearchSelect name="status" 
                                 onChange={handleStatusChange}
                                 className={styles.fullWidth} options={searchOptions} />
                             </div>
                         </div>
 
-                        <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}><span className={styles.required}>*</span> 반품 주소</label>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}><span className={styles.required}>*</span> 반품 주소</label>
                             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                                 <SaveInput 
                                     value={address} 
@@ -277,12 +276,12 @@ function GoodsWrite() {
                         />
 
                         {/* 4. 상세 설명 (Tiptap 위지윅) */}
-                        <div className={formStyles.formGroup}>
-                            <label className={formStyles.label}><span className={styles.required}>*</span> 상세 설명</label>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}><span className={styles.required}>*</span> 상세 설명</label>
                             <TiptapEditor onChange={(data) => setEditorData(data)} />
                         </div>
 
-                        <div className={formStyles.btnWrapper}>
+                        <div className={styles.btnWrapper}>
                             <MoveBtn type="button" color="purple" onClick={handlePreview}>미리보기</MoveBtn>
                             <SaveBtn type="button" onClick={handleSave}>상품 등록</SaveBtn>
                         </div>

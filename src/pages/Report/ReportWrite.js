@@ -1,13 +1,20 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./ReportWrite.module.css";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import { ReportWriteApi } from "./ReportApi";
 import { getIdolSelectBoxApi } from "../Audition/idolApi";
 
-function ReportSave() {
+function ReportWrite() {
     const navigate = useNavigate();
+    const location = useLocation();
     const formRef = useRef();
+
+    const queryParams = new URLSearchParams(location.search);
+    const targetUrl = queryParams.get("targetUrl") || "";
+    const targetId = queryParams.get("targetId") || "";
+    const targetIdName = queryParams.get("targetIdName") || "";
+    const targetAuthor = queryParams.get("author") || "";
 
     const options = [
         { value: "비방/욕설", label: "비방/욕설" },
@@ -86,7 +93,11 @@ function ReportSave() {
                     type="text"
                     name="targetType"
                     placeholder="URL 또는 사용자 ID"
+                    defaultValue={targetUrl ? `${targetUrl} (대상: ${targetAuthor})` : ""}
                 />
+                {/* 해당 pk아이디 */}
+                <input type="hidden" name="targetId" defaultValue={targetId} />
+                <input type="hidden" name="targetIdName" defaultValue={targetIdName} />
 
                 <label>
                     <span className={styles.required}>*</span>
@@ -168,4 +179,4 @@ function ReportSave() {
     );
 }
 
-export default ReportSave;
+export default ReportWrite;

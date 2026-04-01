@@ -1,82 +1,46 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "./QnaList.module.css";
 import { SaveBtn } from "../../components/button/Button";
-import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 import { getQnaListApi } from "./QnaApi";
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 const QnaList = () => {
-
-  // 가상 API 호출
-  /*useEffect(() => {
-    // 예시 더미 데이터
-    const dummyData = [
-      { id: 1, user: "me", title: "앱 오류 문의", content: "앱이 자꾸 꺼져요.", date: "2026-03-20", answer: "업데이트 후 확인 부탁드립니다." },
-      { id: 2, user: "me", title: "결제 문의", content: "결제가 안 되네요.", date: "2026-03-20", answer: "" },
-      { id: 3, user: "me", title: "UI 개선 문의", content: "UI가 불편해요.", date: "2026-03-20", answer: "" },
-      { id: 4, user: "me", title: "기타 문의", content: "다른 사람 문의", date: "2026-03-20",answer: "관리자 답변" },
-      { id: 5, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20", answer: "확인 중" },
-      { id: 6, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20", answer: "확인 중" },
-      { id: 7, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20", answer: "확인 중" },
-      { id: 8, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 9, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 10, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 11, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 12, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 13, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 14, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 15, user: "me", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 16, user: "other", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 17, user: "other", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 18, user: "other", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-      { id: 19, user: "other", title: "버그 신고", content: "버그가 발생했어요.", date: "2026-03-20",answer: "확인 중" },
-    ];
-    setQna(dummyData);
-  }, []);*/
   const navigate = useNavigate();
   const [qna, setQna] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-  const [hasMore, setHasMore] = useState(true); // 더 가져올 데이터가 있는지
+  const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
 
-  // 리스트 호출 함수
-  const getList = async (lastQno) => {
-    if (loading || !hasMore) return; // 스크롤시 중복가져오는 것 방지용으로 로딩 중이거나 더 이상 데이터가 없으면 중단
+  const getList = useCallback(async (lastQno) => {
+    if (loading || !hasMore) return;
     setLoading(true);
     getQnaListApi(lastQno).then((res) => {
       if (res.data.success) {
-        console.log(res);
         const newData = res.data.list;
         setTotalCount(res.data.totalCount);
-        // 기존 리스트 뒤에 새 데이터 추가
-        setQna((prev) => [...prev, ...newData]);
+        setQna((prev) => (lastQno === 0 ? newData : [...prev, ...newData]));
         setHasMore(newData.length === 10);
       }
     }).finally(() => setLoading(false));
-  };
+  }, [loading, hasMore]);
 
-  // 첫 렌더링 시 초기 데이터 로드
   useEffect(() => {
-    getList(0); // 처음엔 lastQno를 0으로 보냄 (혹은 백엔드 로직에 따른 초기값)
+    getList(0);
   }, []);
 
   const handleView = (qno) => {
-    // 상세 페이지 경로로 이동
     navigate(`/Community/QnaView/${qno}`);
   };
 
-  // Intersection Observer 설정 (마지막 요소 감시)
   const lastElementRef = useCallback((node) => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver((entries) => {
-      // 마지막 요소가 화면에 보이고, 더 가져올 데이터가 있다면
       if (entries[0].isIntersecting && hasMore) {
-        // 현재 리스트의 마지막 항목의 qno를 전달
         const lastQno = qna.length > 0 ? qna[qna.length - 1].qno : 0;
         getList(lastQno);
       }
@@ -86,18 +50,46 @@ const QnaList = () => {
   }, [loading, hasMore, qna, getList]);
 
   return (
-    <>
-      <div className={styles.header}>
-        <h2 className={styles.count}>총 문의 {totalCount}건</h2>
-        <NavLink to="/Community/QnaWrite">
-          <SaveBtn className={styles.createBtn}>문의 등록</SaveBtn>
-        </NavLink>
+    <div className={styles.qnaContainer}>
+      {/* 1. 타이틀 섹션 */}
+      <div className={styles.titleSection}>
+        <h2>나의 문의 내역</h2>
       </div>
 
+      {/* 2. 가이드 섹션 */}
+      <div className={styles.topGuideSection}>
+        <div className={styles.guideTitle}>
+          <h3>1:1 문의 가이드</h3>
+          <p>궁금하신 점을 남겨주시면 운영진이 확인 후 답변해 드립니다.</p>
+        </div>
+        <ul className={styles.guideList}>
+          <li>✔ 답변은 평균 1~2일 소요</li>
+          <li>✔ 개인정보 포함 주의</li>
+          <li>✔ 상세한 내용 작성 권장</li>
+        </ul>
+      </div>
+
+      {/* 3. 헤더 (총 건수 및 등록 버튼) */}
+      <div className={styles.header}>
+        <h2 className={styles.countText}>
+          총 <span className={styles.highlight}>{totalCount}</span>건의 문의
+        </h2>
+        <button 
+          type="button" 
+          className={styles.createBtn} 
+          onClick={() => navigate("/Community/QnaWrite")}
+        >
+          문의 등록
+        </button>
+      </div>
+
+      {/* 4. 리스트 영역 */}
       <div className={styles.list}>
-        {qna.length === 0 && <p>등록된 문의가 없습니다.</p>}
+        {qna.length === 0 && !loading && (
+          <div className={styles.noData}>등록된 문의 내역이 없습니다.</div>
+        )}
+        
         {qna.map((item, index) => {
-          // 마지막 요소에만 ref를 달아줍니다.
           const isLastElement = qna.length === index + 1;
           return (
             <div 
@@ -106,21 +98,25 @@ const QnaList = () => {
               className={styles.item}
               onClick={() => handleView(item.qno)}
             >
-              <div className={styles.title}>{item.qtitle}</div>
-              <div className={styles.date}>{dayjs(item.crdt).format("YYYY-MM-DD")}</div>
-              <div className={`${styles.status} ${item.status === "답변완료" ? styles.completed : styles.pending}`}>
-                {item.status}
+              <div className={styles.titleWrapper}>
+                <span className={styles.title}>{item.qtitle}</span>
+                {/* 답변 완료 시 작은 체크 아이콘 등을 추가할 수 있습니다 */}
+              </div>
+              <div className={styles.infoWrapper}>
+                <div className={styles.date}>{dayjs(item.crdt).format("YYYY-MM-DD HH:mm:ss")}</div>
+                <div className={`${styles.status} ${item.status === "답변완료" ? styles.completed : styles.pending}`}>
+                  {item.status}
+                </div>
               </div>
             </div>
           );
         })}
-        {/* 4. 추가 로딩 중일 때 하단에만 표시 (스크롤 유지됨) */}
-        {loading && (
-          <LoadingScreen />
-        )}
+        
+        {/* 스크롤 로딩 표시 */}
+        {loading && <LoadingScreen />}
       </div>
-    </>
+    </div>
   );
 };
 
-export default QnaList; 
+export default QnaList;

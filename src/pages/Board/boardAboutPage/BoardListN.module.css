@@ -1,0 +1,259 @@
+.container {
+    display: flex;
+    gap: 35px;
+    align-items: flex-start;
+}
+
+/* 좌측 리스트 섹션 */
+.mainContent {
+    flex: 2.5;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 상단 헤더 정렬 맞춤 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* 아래쪽 라인 맞춤 */
+    margin-bottom: 20px;
+    padding: 0 5px;
+}
+
+/* 제목과 건수를 감싸는 컨테이너 */
+.titleInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.titleInfo h2 {
+    color: #e2e8f0;
+    margin: 0;
+    font-size: 1.7rem; /* 제목 크기 살짝 키움 */
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* 총 건수 텍스트 전체 */
+.countText {
+    color: #94a3b8; /* 조금 더 밝은 회색으로 변경 */
+    font-size: 1rem; /* 0.85rem에서 1rem으로 키움 */
+    font-weight: 500;
+    margin-left: 2px;
+}
+
+/* 숫자 부분만 강조 (네온 포인트) */
+.highlight {
+    color: #00f2ff;
+    font-weight: 800;
+    margin: 0 2px;
+    text-shadow: 0 0 8px rgba(0, 242, 255, 0.4); /* 숫자 강조 효과 */
+    font-family: 'Pretendard', sans-serif; /* 숫자 가독성 좋은 폰트 */
+}
+
+/* 테이블 디자인 */
+.tableWrapper {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    background: rgba(0, 242, 255, 0.04);
+    color: #00f2ff;
+    padding: 18px 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.15);
+}
+
+.table tbody td {
+    padding: 16px 10px;
+    color: #cbd5e1;
+    font-size: 0.92rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.table tbody tr:hover {
+    background: rgba(0, 242, 255, 0.03);
+}
+
+.titleCell {
+    text-align: left;
+    padding-left: 30px !important;
+}
+
+.titleCell a {
+    text-decoration: none;
+    color: #e2e8f0;
+    transition: color 0.2s;
+}
+
+.titleCell a:hover {
+    color: #00f2ff;
+}
+
+.textCenter { text-align: center; }
+
+/* 우측 사이드 섹션 */
+.sideContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 글쓰기 버튼 (Report의 Submit 버튼 스타일) */
+.writeButton {
+    width: 100%;
+    padding: 15px;
+    background: #00f2ff;
+    color: #0f172a;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.writeButton:hover {
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* 가이드 박스 */
+.guideBox {
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 16px;
+}
+
+.guideBox h3 {
+    color: #e2e8f0;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.guideBox p {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+}
+
+.guideBox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.guideBox li {
+    font-size: 0.8rem;
+    color: #cbd5f5;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+/* 검색 카드 영역 */
+.searchCard {
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 16px;
+}
+
+/* 사이드 입력창 & 셀렉트 공통 (Report 스타일 차용) */
+.sideSelect, .sideInput {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 242, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    color: #e2e8f0;
+    outline: none;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+.sideSelect:focus, .sideInput:focus {
+    border-color: #00f2ff;
+    box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
+}
+
+/* 검색창 아이콘 포함 래퍼 */
+.searchInputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+}
+
+.sideInput {
+    padding-left: 40px !important; /* 아이콘 공간 확보 */
+}
+
+/* 검색 버튼 */
+.searchBtn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid #00f2ff;
+    color: #00f2ff;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.searchBtn:hover {
+    background: rgba(0, 242, 255, 0.1);
+}
+
+.noData {
+    padding: 100px 0 !important;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.1);
+}
+
+/* 셀렉트박스 래퍼 - 부모에서 너비를 100% 잡아줘야 내부 select가 늘어납니다 */
+.topSelectWrapper {
+    width: 150px; /* 상단 정렬박스는 적당한 고정폭 */
+}
+
+.sideSelectWrapper {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* SearchSelect 컴포넌트 내부 스타일 강제 오버라이드 */
+.topSearchSelect, .fullWidthSelect {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: 42px !important;
+    outline: none !important;
+}
+
+/* 상단용 별도 높이 조절 (필요시) */
+.topSearchSelect {
+    height: 37px !important;
+    font-size: 12px !important;
+}

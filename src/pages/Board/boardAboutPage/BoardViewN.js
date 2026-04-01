@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
-import styles from "./BoardView.module.css";
-import { DelBtn, SaveBtn, MoveBtn } from "../../components/button/Button";
-import BoardComment from "./boardComponent/BoardView/BoardComment";
-import Content from "../../components/Title/ContentComp";
-import { getBoardViewApi, BoardDeleteApi, BoardLikeSaveApi } from "./BoardApi";
+import styles from "./BoardViewN.module.css";
+import { DelBtn, SaveBtn, MoveBtn } from "../../../components/button/Button";
+import BoardComment from "../boardComponent/BoardView/BoardComment";
+import Content from "../../../components/Title/ContentComp";
+import { getBoardViewApi, BoardDeleteApi, BoardLikeSaveApi } from "../BoardApi";
 import dayjs from "dayjs";
-import { useAuth } from "../../context/AuthContext";
-import BoardContent from "./boardComponent/BoardContent";
-import LoadingScreen from "../../components/LoadingBar/LoadingBar";
+import { useAuth } from "../../../context/AuthContext";
+import BoardContent from "../boardComponent/BoardContent";
+import LoadingScreen from "../../../components/LoadingBar/LoadingBar";
 
-function BoardView() {
+function BoardViewN() {
   const { bno } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -200,4 +200,4 @@ function BoardView() {
   );
 }
 
-export default BoardView;
+export default BoardViewN;

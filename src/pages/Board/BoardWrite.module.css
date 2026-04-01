@@ -1,59 +1,186 @@
 /* BoardWrite.module.css */
-
-.wrapper {
-  min-height: 80vh;
+.boardWriteContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
+  flex-direction: column; /* 타이틀이 위로 가도록 변경 */
+  gap: 24px;
 }
 
-.container {
-  width: 100%;
-  max-width: 850px;
-  /* 로그인 폼 카드와 동일한 배경 및 테두리 */
-  background: rgba(0, 242, 255, 0.03); 
-  border: 1px solid var(--border-color, rgba(0, 242, 255, 0.15));
-  border-radius: 20px;
-  padding: 50px 40px;
-  box-sizing: border-box;
+/* 상단 타이틀 스타일 */
+.pageTitle {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 30px; /* 폼과의 간격 확보 */
+  letter-spacing: -0.5px;
+}
+
+.contentWrapper {
+  display: flex;
+  gap: 40px; /* 신고하기와 동일하게 간격 조정 */
+  align-items: flex-start;
+}
+
+/* 좌측 폼 섹션 */
+.formSection {
+  flex: 2; /* 신고하기와 비율 맞춤 */
+  min-width: 0;
 }
 
 .formGroup {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
-/* 라벨 스타일: 네온 효과 제거, 로그인 폼 라벨 톤으로 변경 */
 .label {
   display: block;
-  font-size: 13px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: rgba(232, 244, 248, 0.55); /* 차분한 톤 */
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin-bottom: 12px;
 }
 
-/* 버튼 영역 */
+.required {
+  color: rgb(255, 122, 138);
+  margin-right: 4px;
+}
+
+.inputField {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 242, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  color: #e2e8f0;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.inputField:focus {
+  border-color: #00f2ff;
+}
+
+.editorWrapper {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 242, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.editorWrapper :global(.tiptap) {
+  min-height: 500px;
+  padding: 20px;
+  color: #e8f4f8;
+  outline: none;
+}
+
+/* 우측 섹션 (가이드 + 버튼 뭉치) */
+.sideSection {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 20px;
+}
+
+.guideBox {
+  padding: 24px; /* 상하 여백은 줄이고 좌우는 유지 */
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+.guideBox h3 {
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  white-space: nowrap; /* 제목은 절대 줄바꿈 안되게 함 */
+}
+
+.guideBox p {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  word-break: keep-all; /* 단어 단위로 줄바꿈하여 가독성 향상 */
+}
+
+.guideBox ul {
+  padding-left: 0; /* 리스트 점 여백 제거해서 공간 확보 */
+  list-style: none;
+}
+
+.guideBox li {
+  color: #cbd5f5;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  white-space: nowrap; /* [중요] 문장이 길지 않다면 한 줄 유지를 강제 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 혹시라도 넘치면 ... 처리 (선택사항) */
+}
+
+/* 버튼 스타일링 */
 .btnWrapper {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 40px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* 에디터 내부 텍스트 색상 대응 (필요시) */
-.formGroup :global(.tiptap) {
-  color: #e8f4f8;
-  min-height: 300px;
-  background: rgba(0, 242, 255, 0.02);
-  border: 1px solid var(--border-color, rgba(0, 242, 255, 0.1));
+.subBtnRow {
+  display: flex;
+  gap: 10px;
+}
+
+.actionBtn {
+  padding: 15px;
+  border: none;
   border-radius: 10px;
-  padding: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
 }
 
-/* 필수 항목 별표 스타일 */
-.required {
-    color: rgb(255, 122, 138); /* 네온 레드 계열 */
-    margin-right: 4px;
-    font-weight: bold;
+.submitBtn {
+  width: 100%;
+  background: #00f2ff;
+  color: #0f172a;
+}
+
+.submitBtn:hover {
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.previewBtn {
+  flex: 1;
+  background: rgba(168, 85, 247, 0.15);
+  color: #d8b4fe;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.cancelBtn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.previewBtn:hover, .cancelBtn:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+}
+
+/* 반응형 처리 */
+@media (max-width: 1100px) {
+  .contentWrapper {
+    flex-direction: column;
+  }
+  .sideSection {
+    position: static;
+    width: 100%;
+  }
+  .formSection {
+    width: 100%;
+  }
 }

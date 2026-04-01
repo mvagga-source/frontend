@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./BoardComment.module.css";
 import { CancelBtn, SaveBtn } from "../../../../components/button/Button";
 import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "../../BoardApi";
 import { useAuth } from "../../../../context/AuthContext";
+import BoardCommentSaveForm from "./BoardComment/BoardCommentSaveForm";
 
 function BoardComment({ bno }) {
   const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
   const [comments, setComments] = useState([]);    //수정예정
-  const [newComment, setNewComment] = useState("");
+  const navigate = useNavigate();
 
   // 답글 관련 상태
   const [editingCno, setEditingCno] = useState(null); // 수정 중인 댓글 번호
@@ -28,9 +30,9 @@ function BoardComment({ bno }) {
       getList(0, false); // 처음 로드이므로 lastCno는 0, append는 false
       
       // 이전 글에서 작성 중이던 상태값들 초기화
-      setNewComment("");
       setEditingCno(null);
       setReplyingTo(null);
+      setReplyContent("");
     }
   }, [bno]);
 
@@ -70,26 +72,6 @@ function BoardComment({ bno }) {
     getList(lastGroup, true);
   };
 
-  // 댓글 저장 로직
-  const handleSave = async () => {
-    if (!newComment.trim()) {
-      alert("댓글 내용을 입력해주세요.");
-      return;
-    }
-    const formData = new URLSearchParams();
-    formData.append("bno", bno);          // Long 값 그대로 문자열로 보내도 OK
-    formData.append("ccontent", newComment);
-    CommentWriteApi(formData)
-    .then((res) => {
-      if (res.data?.success) {
-        // 댓글 저장 후 새로 리스트 불러오기
-        getList(0, false);
-        
-        // 입력창 초기화
-        setNewComment("");
-      }
-    });
-  };
 
   // 답글 저장 핸들러
   const handleReplySave = async (parentComment) => {
@@ -149,22 +131,34 @@ function BoardComment({ bno }) {
     });
   };
 
+  // 신고 페이지로 이동하는 함수
+  const handleReport = (comment) => {
+    if (!user) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+    
+    // 현재 페이지의 전체 경로 (예: /Community/BoardView/123)
+    const currentUrl = window.location.pathname;
+    
+    // 신고 페이지로 이동하면서 대상 정보와 복귀 URL을 쿼리로 전달
+    const params = new URLSearchParams();
+    params.append("targetUrl", currentUrl);
+    //params.append("targetType", "comment");
+    params.append("targetIdName", "cno");
+    params.append("targetId", comment.cno);
+    params.append("author", comment.member?.nickname || "");
+
+    navigate(`/Community/ReportWrite?${params.toString()}`);
+  };
+
+
   return (
     <div className={styles.commentSection}>
       <h3 className={styles.commentTitle}>전체댓글 {totalCount}개</h3>
       
       {/* 댓글 작성창 */}
-      <div className={styles.commentInputBox}>
-        <textarea
-          className={styles.textarea}
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="댓글을 입력하세요."
-        />
-        <div className={styles.submitBtn}>
-          <SaveBtn onClick={handleSave}>등록</SaveBtn>
-        </div>
-      </div>
+      <BoardCommentSaveForm bno={bno} getList={getList} />
 
       {/* 댓글 리스트 */}
       <ul className={styles.commentList}>
@@ -205,6 +199,7 @@ function BoardComment({ bno }) {
 
                 {/* 3. 하단 액션 버튼 */}
                 <div className={styles.commentFooter}>
+                  <div className={styles.leftActions}>
                   <button className={styles.footerBtn} onClick={() => setReplyingTo(c.cno)}>답글</button>
                   {user && user.id === c.member?.id && (
                     <>
@@ -213,6 +208,16 @@ function BoardComment({ bno }) {
                       }}>수정</button>
                       <button className={styles.footerBtn} onClick={() => handleDelete(c.cno)}>삭제</button>
                     </>
+                  )}
+                  </div>
+                  {/* 신고 버튼을 오른쪽 끝으로 분리 */}
+                  {user?.id !== c.member?.id && (
+                    <button 
+                      className={`${styles.footerBtn} ${styles.reportBtn}`} 
+                      onClick={() => handleReport(c)}
+                    >
+                      신고
+                    </button>
                   )}
                 </div>
               </>

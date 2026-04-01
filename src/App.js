@@ -44,13 +44,16 @@ import BoardUpdate from "./pages/Board/BoardUpdate";
 import BoardView from "./pages/Board/BoardView";
 import BoardPreview from "./pages/Board/BoardPreview";
 
+import BoardListN from "./pages/Board/boardAboutPage/BoardListN.js";
+import BoardViewN from "./pages/Board/boardAboutPage/BoardViewN.js";
+
 //아이디어 제안
 import IdeaList from "./pages/Idea/IdeaList";
 import IdeaWrite from "./pages/Idea/IdeaWrite";
 
 //신고
 import ReportList from "./pages/Report/ReportList";
-import ReportSave from "./pages/Report/ReportWrite";
+import ReportWrite from "./pages/Report/ReportWrite";
 
 //Qna
 import QnaList from "./pages/Qna/QnaList";
@@ -118,12 +121,21 @@ function App() {
             <Route index element={<BoardList />} />
             {/* /Community/BoardList 로 접근 가능 */}
             <Route path="BoardList" element={<BoardList />} />
+            <Route path="BoardView/:bno" element={<BoardView/>}/>
+            <Route path="BoardPreview" element={<ProtectedRoute><BoardPreview /></ProtectedRoute>} />
+            <Route path="BoardWrite" element={<ProtectedRoute><BoardWrite/></ProtectedRoute>}/>
+            <Route path="BoardUpdate/:bno" element={<ProtectedRoute><BoardUpdate/></ProtectedRoute>}/>
+
+            {/* N붙은 테스트 페이지 */}
+            <Route path="BoardListN" element={<BoardListN />} />
+            <Route path="BoardViewN/:bno" element={<BoardViewN/>}/>
+            
             {/* 아이디어 */}
             <Route path="IdeaList" element={<IdeaList />} />
             <Route path="IdeaWrite" element={<ProtectedRoute><IdeaWrite /></ProtectedRoute>} />
             {/* 신고 */}
             <Route path="ReportList" element={<ReportList />} />
-            <Route path="ReportSave" element={<ProtectedRoute><ReportSave /></ProtectedRoute>} />
+            <Route path="ReportWrite" element={<ProtectedRoute><ReportWrite /></ProtectedRoute>} />
             {/* Qna */}
             <Route path="QnaList" element={<ProtectedRoute><QnaList /></ProtectedRoute>} />
             <Route path="QnaWrite" element={<ProtectedRoute><QnaWrite /></ProtectedRoute>} />

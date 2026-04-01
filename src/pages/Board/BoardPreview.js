@@ -18,7 +18,7 @@ function BoardPreview() {
   if (!board) return <LoadingScreen />;
 
   return (
-    <Content TitleName="Board Preview (미리보기 모드)">
+    // <Content TitleName="Board Preview (미리보기 모드)">
       <div className={styles.viewContainer}>
         <div className={styles.header}>
           <h2 className={styles.title}>{board.btitle}</h2>
@@ -51,7 +51,7 @@ function BoardPreview() {
           --- 미리보기 모드에서는 댓글과 버튼이 비활성화됩니다 ---
         </div>
       </div>
-    </Content>
+    // </Content>
   );
 }
 

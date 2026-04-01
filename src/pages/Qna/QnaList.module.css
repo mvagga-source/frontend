@@ -1,66 +1,174 @@
-/* QnaList.module.css */
+.qnaContainer {
+    margin: 0 auto;
+    padding: 20px;
+    color: #e8f4f8;
+}
 
+/* 1. 타이틀 */
+.titleSection h2 {
+    color: #e2e8f0;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+}
+
+/* 2. 가이드 바 (게시판과 동일 스타일) */
+.topGuideSection {
+    background: rgba(0, 242, 255, 0.03);
+    border: 1px solid rgba(0, 242, 255, 0.15);
+    border-radius: 16px;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.guideTitle h3 {
+    color: #00f2ff;
+    font-size: 1.1rem;
+    margin: 0 0 4px 0;
+}
+
+.guideTitle p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.guideList {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.guideList li {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 3. 헤더 */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-.count {
-  font-size: 1.1rem;
-  color: #00f2ff; /* 포인트 컬러 */
+.countText {
+    font-size: 1rem;
+    color: #94a3b8;
+    font-weight: 500;
 }
 
+.highlight {
+    color: #00f2ff;
+    font-weight: 800;
+}
+
+/* 4. 리스트 */
 .list {
-  /* 스크롤이 작동하려면 명확한 높이가 있거나 부모로부터 상속받아야 합니다 */
-  max-height: 500px; 
-  overflow-y: auto;
-  border-top: 1px solid rgba(0, 242, 255, 0.2);
-  /* 스크롤바 커스텀 (선택사항) */
+    max-height: 600px; 
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 16px;
 }
 
-.list::-webkit-scrollbar {
-  width: 6px;
-}
+.list::-webkit-scrollbar { width: 6px; }
 .list::-webkit-scrollbar-thumb {
-  background: rgba(0, 242, 255, 0.2);
-  border-radius: 10px;
+    background: rgba(0, 242, 255, 0.2);
+    border-radius: 10px;
 }
 
 .item {
-  display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  padding: 15px 16px;
-  border-bottom: 1px solid rgba(0, 242, 255, 0.1);
-  cursor: pointer;
-  gap: 15px; /* 요소 간 간격 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid rgba(0, 242, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.item:hover {
+    background: rgba(0, 242, 255, 0.04);
+}
+
+.titleWrapper {
+    flex: 1;
+    overflow: hidden;
+    padding-right: 20px;
 }
 
 .title {
-  flex: 1; /* 제목이 남은 공간을 다 차지하도록 */
-  font-weight: 500;
-  color: #e8f4f8;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* 제목이 길면 ... 처리 */
+    font-weight: 500;
+    color: #e8f4f8;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.infoWrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
 .date {
-  width: 100px; /* 날짜 영역 고정폭 */
-  font-size: 0.85rem;
-  color: #94a3b8;
-  text-align: center;
+    font-size: 0.9rem;
+    color: #64748b;
 }
 
 .status {
-  width: 80px; /* 상태 영역 고정폭 */
-  font-size: 0.85rem;
-  text-align: right;
-  font-weight: bold;
+    width: 70px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
 }
 
-/* 답변 상태에 따른 색상 변화 */
-.status.pending { color: #ffab00; } /* 대기중 */
-.status.completed { color: #00f2ff; } /* 완료 */
+.status.pending { color: #ffab00; }
+.status.completed { color: #00f2ff; text-shadow: 0 0 8px rgba(0, 242, 255, 0.3); }
+
+.noData {
+    padding: 100px 0;
+    text-align: center;
+    color: rgba(232, 244, 248, 0.3);
+}
+
+.scrollLoading {
+    padding: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #00f2ff;
+}
+
+/* 새 문의 등록 버튼 (BoardWrite의 submitBtn 스타일 적용) */
+.createBtn {
+    padding: 10px 24px;
+    background: #00f2ff; /* 네온 블루 */
+    color: #0f172a;    /* 다크 네이비 */
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+}
+
+.createBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(0, 242, 255, 0.5);
+    filter: brightness(1.1);
+}
+
+.createBtn:active {
+    transform: translateY(0);
+}

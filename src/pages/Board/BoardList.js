@@ -1,133 +1,165 @@
-
 import React, { useEffect, useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./BoardList.module.css";
-import formStyles from "./BoardView.module.css";
-import { SearchBtn, MoveBtn } from "../../components/button/Button";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { getBoardListApi } from "./BoardApi";
-import { SearchInput } from "../../components/input/Input";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
-import Content from "../../components/Title/ContentComp";
 import { useAuth } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function BoardList() {
+    const navigate = useNavigate();
+    const { user } = useAuth();
     const [list, setList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [startPage, setStartPage] = useState(1);
     const [endPage, setEndPage] = useState(1);
-    const [totalCount, setTotalCount] = useState(0);
-    const size = 10;     //서버쪽 페이지 불러올 size
-    const formRef = useRef();
-    const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
-    const [sortDirection, setSortDirection] = useState("DESC");   //정렬 임시로 고정
-    const [loading, setLoading] = useState(false);
+    const [sortDirection, setSortDirection] = useState("DESC");
 
-    // 검색 조건을 저장할 상태 추가(검색버튼 누른 입력값만 페이징 등 사용)
+    const size = 10;
+    const formRef = useRef();
     const params = useRef();
 
-    // 검색 옵션 데이터
     const searchOptions = [
         { value: "", label: "전체" },
         { value: "btitle", label: "제목" },
         { value: "bcontent", label: "내용" },
-        //{ value: "test", label: "test21314" }
+    ];
+
+    const sortOptions = [
+        { value: "DESC", label: "최신순" },
+        { value: "bhit", label: "조회순" },
     ];
 
     const getList = async (page, searchParams) => {
         setLoading(true);
+        searchParams = { ...searchParams, sortDir: sortDirection };
         getBoardListApi(page, size, searchParams)
-        .then((res) => {
-            if (res.data && res.data.success) {
-                const { list, maxPage, startPage, endPage, totalCount } = res.data;
-                setList(list || []);
-                setTotalPages(maxPage || 1);
-                setStartPage(startPage || 1);
-                setEndPage(endPage || 1);
-                setTotalCount(totalCount || 0);
-            }
-        }).finally(() => {
-            setLoading(false);
-        });
+            .then((res) => {
+                if (res.data?.success) {
+                    const { list, maxPage, startPage, endPage, totalCount } = res.data;
+                    setList(list || []);
+                    setTotalPages(maxPage || 1);
+                    setStartPage(startPage || 1);
+                    setEndPage(endPage || 1);
+                    setTotalCount(totalCount || 0);
+                }
+            })
+            .finally(() => setLoading(false));
     };
 
-    const searchData = async (e) => {
+    const searchData = () => {
         const formData = new FormData(formRef.current);
-        const newParams = Object.fromEntries(formData.entries());
-        params.current = newParams; // 검색 조건 저장
-        setCurrentPage(1);      //검색시 1페이지부터
-        getList(currentPage, params.current);
+        params.current = Object.fromEntries(formData.entries());
+        setCurrentPage(1);
+        getList(1, params.current);
+    };
+
+    // 2. 정렬 변경 핸들러: 정렬이 바뀌면 페이지를 1로 되돌림
+    const handleSortChange = (e) => {
+        const newSort = e.target.value;
+        setSortDirection(newSort);
+        setCurrentPage(1); // 정렬 변경 시 1페이지로 이동
     };
 
     useEffect(() => {
         getList(currentPage, params.current);
-    }, [currentPage]);
+    }, [currentPage, sortDirection]);
 
     return (
-        // <Content TitleName="Community Board">
-            // <div className={formStyles.viewContainer}>
-                <div className={styles.neonBoardContainer}>
-                    {/* 로딩 중일 때만 로딩바를 띄움 */}
-                    {loading && <LoadingScreen />}
-                    {/* 검색 영역 */}
-                    <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
-                        <div className={styles.searchSection}>
-                            <SearchSelect name="category" options={searchOptions} />
-                            <SearchInput name="search" style={{minWidth:'400px'}} placeholder="검색어를 입력하세요." />
-                            <SearchBtn onClick={searchData}>검색</SearchBtn>
-                        </div>
-                    </form>
-                    {user && user.id && (
-                        <div className={styles.headerSection}>
-                            <NavLink to="/BoardWrite" style={{ textDecoration: 'none' }}>
-                                <MoveBtn>글쓰기</MoveBtn>
-                            </NavLink>
-                        </div>
-                    )}
+        <div className={styles.neonBoardContainer}>
+            {loading && <LoadingScreen />}
 
-                    {/* 테이블 영역 */}
-                    <div className={styles.tableWrapper}>
-                        <table className={styles.neonTable}>
-                            <thead>
-                                <tr>
-                                    <th style={{ width: '8%' }}>번호</th>
-                                    <th style={{ width: '35%' }}>제목</th>
-                                    <th>작성자</th>
-                                    <th>날짜</th>
-                                    <th>조회수</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {list.length > 0 ? (
-                                    list.map((board, index) => {
-                                        // 내림차순 순번 계산: 전체개수 - (현재페이지-1)*페이지당개수 - 현재인덱스
-                                        const rowNum = sortDirection === "DESC" 
-                                        ? totalCount - (currentPage - 1) * size - index // 내림차순
-                                        : (currentPage - 1) * size + index + 1;           // 오름차순
-                                        return (<tr key={board.bno}>
-                                            <td>{rowNum}</td>
-                                            <td className={styles.textStart}>
-                                                <NavLink to={`/BoardView/${board.bno}`} className={styles.neonLink}>
-                                                    {board.btitle}
-                                                </NavLink>
-                                            </td>
-                                            <td>{board.member.nickname || ''}</td>
-                                            <td>{dayjs(board.bdate).format("YYYY-MM-DD")}</td>
-                                            <td>{board.bhit}</td>
-                                        </tr>)
-                                    })
-                                ) : (
-                                    <tr>
-                                        <td colSpan="5" className={styles.noData}>등록된 게시글이 없습니다.</td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+            {/* 1. 타이틀 섹션 */}
+            <div className={styles.titleSection}>
+                <h2>자유게시판</h2>
+            </div>
+
+            {/* 2. 가이드 섹션 (이전 스타일 유지) */}
+            <div className={styles.topGuideSection}>
+                <div className={styles.guideTitle}>
+                    <h3>게시판 가이드</h3>
+                    <p>자유롭게 의견을 나누는 공간입니다.</p>
+                </div>
+                <ul className={styles.guideList}>
+                    <li>✔ 비방 및 욕설 금지</li>
+                    <li>✔ 도배/스팸 게시글 삭제</li>
+                    <li>✔ 타인 저작권 보호</li>
+                </ul>
+            </div>
+
+            {/* 3. 검색 섹션 (안정적인 레이아웃) */}
+            <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
+            <div className={styles.searchSection}>
+                <div className={styles.searchForm}>
+                    <div className={styles.searchGroup}>
+                        <SearchSelect name="category" options={searchOptions} />
+                        <div className={styles.searchInputWrapper}>
+                            <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#00f2ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            <input name="search" type="text" placeholder="검색어를 입력하세요" className={styles.mainInput} />
+                        </div>
+                        <button type="button" className={styles.searchBtn} onClick={searchData}>검색</button>
                     </div>
+                </div>
+            </div>
 
+            {/* 4. 리스트 정보 (총 건수 & 정렬) */}
+            <div className={styles.listInfo}>
+                <span className={styles.countText}>
+                    총 <span className={styles.highlight}>{totalCount}</span>건
+                </span>
+                <SearchSelect 
+                    name="sortDir" 
+                    options={sortOptions} 
+                    value={sortDirection}
+                    onChange={handleSortChange}
+                />
+            </div>
+            </form>
+
+            {/* 5. 테이블 영역 */}
+            <div className={styles.tableWrapper}>
+                <table className={styles.neonTable}>
+                    <thead>
+                        <tr>
+                            <th style={{ width: '8%' }}>번호</th>
+                            <th style={{ width: '45%' }}>제목</th>
+                            <th>작성자</th>
+                            <th>날짜</th>
+                            <th>조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list.length > 0 ? (
+                            list.map((board, index) => (
+                                <tr key={board.bno}>
+                                    <td>{totalCount - (currentPage - 1) * size - index}</td>
+                                    <td className={styles.textStart}>
+                                        <NavLink to={`/Community/BoardView/${board.bno}`} className={styles.neonLink}>
+                                            {board.btitle}
+                                        </NavLink>
+                                    </td>
+                                    <td>{board.member.nickname}</td>
+                                    <td>{dayjs(board.bdate).format("YYYY-MM-DD")}</td>
+                                    <td>{board.bhit}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr><td colSpan="5" className={styles.noData}>등록된 게시글이 없습니다.</td></tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* 6. 하단 영역 (페이지네이션 + 글쓰기 버튼) */}
+            <div className={styles.bottomSection}>
+                <div className={styles.paginationFlexBox}>
                     <Pagination 
                         currentPage={currentPage} 
                         totalPages={totalPages}
@@ -136,8 +168,13 @@ function BoardList() {
                         onPageChange={setCurrentPage} 
                     />
                 </div>
-            // </div>
-        // </Content>
+                {user?.id && (
+                    <button type="button" className={styles.writeBtn} onClick={() => navigate("/Community/BoardWrite")}>
+                        새 글 작성
+                    </button>
+                )}
+            </div>
+        </div>
     );
 }
 

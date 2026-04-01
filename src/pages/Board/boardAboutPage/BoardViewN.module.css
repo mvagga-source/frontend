@@ -2,12 +2,8 @@
 
 .viewContainer {
   max-width: 1000px;
-  margin: 48px auto;
+  margin: 0px auto;
   padding: 50px 40px;
-  /* 로그인/게시판 카드와 동일한 배경 및 테두리 */
-  background: rgba(0, 242, 255, 0.03);
-  border: 1px solid var(--border-color, rgba(0, 242, 255, 0.15));
-  border-radius: 20px;
 }
 
 /* 헤더: 구분선을 더 은은하게 */

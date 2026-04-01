@@ -131,7 +131,7 @@ const ReportList = () => {
 
                 <button 
                     className={styles.writeButton}
-                    onClick={() => navigate("/Community/ReportSave")}
+                    onClick={() => navigate("/Community/ReportWrite")}
                 >
                     신고하기
                 </button>
