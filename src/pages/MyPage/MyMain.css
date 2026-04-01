@@ -169,6 +169,7 @@
   border: 1px solid rgba(0, 242, 255, 0.2);
   height:30px;
   font-size: 12px;
+  box-sizing: border-box;
 }
 
 .my-table td{
@@ -176,6 +177,7 @@
   font-size: 12px;
   padding: 8px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
 }
 
 .my-table td:last-child button{
@@ -204,7 +206,8 @@
 .my-form-wrap button:hover{
   background: rgba(0, 242, 255, 0.12);
   color: var(--neon-blue);  
-  border: 1px solid rgba(0, 242, 255, 0.3);  
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  cursor: pointer;
 }
 
 
@@ -246,6 +249,7 @@
   list-style: none; 
   padding:5px 2px;
   margin:0 10px 0 0;
+  border-top-left-radius:10px ;
 }
 
 .my-idol-wrap ul li{
@@ -269,9 +273,16 @@
   object-fit: cover;
   display: block;
   margin: 0 auto;
+  border-top-left-radius:10px ;
 }
 
-
+.my-iodl-round {
+  /* border:1px solid #fff; */
+  width:100px;
+  text-align: center;  
+  font-size: 14px;
+  font-weight: 700;
+}
 
 
 

@@ -33,10 +33,13 @@ export const getMyOrderListApi = (page = 1, size = 10) => {
 };
 
 // 투표관리 (리스트 가져오기)
-export const getMyVotePageApi = (page = 1, size = 10) => {
+export const getMyVotePageApi = (page = 1, size = 10, searchParams = {}) => {
   return axiosInstance.get(`/mypage/getMyVotePage`, {
-    params: { page, size }
+    params: { page, size, ...searchParams }
   });
 };
 
-
+// 나의 투표 삭제
+export const deleteMyVoteApi = (id) => {
+  return axiosInstance.delete(`/mypage/deleteMyVote/${id}`,);
+}
