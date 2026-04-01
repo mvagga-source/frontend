@@ -154,7 +154,7 @@ function MVideo() {
     // 나의 북마크 리스트
     const getMyBookmark = async () => {
         const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
-        const pageId = bookmarkRes.data.map(b => b.pageId);
+        const pageId = bookmarkRes.data.data.map(b => b.pageId);
         setBookmarks(pageId);
     };    
     useEffect(() => {

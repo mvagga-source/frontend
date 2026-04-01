@@ -59,19 +59,6 @@ function AVideoInput({ video, setVideos, onClose }) {
   return (
     <form onSubmit={handleSubmit} className="av-finput">
 
-      {/* 제목 */}
-      {/* <div className="co-info-row">
-        <span className="co-info-label">제목</span>
-        <span className="co-info-val">
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-          />
-        </span>
-      </div> */}
-
       {/* 작성자 */}
       <div className="co-info-row">
         <span className="co-info-label">이름</span>

@@ -14,13 +14,14 @@ export const getPageBookmarkApi = (memberId,pageType) => {
 }
 
 // 나의 북마크 정보 가져오기 (get방식 - react : params 사용, spring : requestBody 사용불가)
-export const getMyBookmarkApi = (memberId) => {
+export const getMyBookmarkApi = (memberId, pageType) => {
 
     //console.log("getMyBookmarkApi params : ",memberId,pageType);
 
     return axiosInstance.get("bookmark/getMyBookmark",{
             params:{
-                memberId: memberId
+                memberId: memberId,
+                pageType: pageType
             }
     });
 }
