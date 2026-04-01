@@ -1,18 +1,16 @@
 /* --- 후원 페이지 Full-Width 레이아웃 --- */
-
 .sp-wrap {
-  padding: 80px 40px 40px; /* 상단 헤더 여백 및 좌우 여백 */
-  width: 100%;             /* 전체 너비 사용 */
+  padding: 80px 40px 40px;
+  width: 100%;
   min-height: 100vh;
   max-width: 1500px;
-  margin: 0 auto; /* 중앙 정렬 */
+  margin: 0 auto;
   color: #fff;
   box-sizing: border-box;
 }
 
 .sp-container {
   display: grid;
-  /* 양쪽 사이드바는 고정, 중앙은 100% 확장 */
   grid-template-columns: 320px 1fr 320px; 
   gap: 30px;
   width: 100%;
@@ -21,7 +19,7 @@
 
 /* --- [왼쪽] 프로필 사이드바 --- */
 .sp-left {
-  position: sticky; /* 스크롤 시에도 고정되길 원하면 추가 */
+  position: sticky;
   top: 100px;
 }
 
@@ -54,10 +52,117 @@
   border-radius: 20px;
 }
 
-/* 게이지 바를 더 시원하게 확장 */
+.sp-info-box p {
+  margin: 5px 0;
+  line-height: 1.5;
+  font-size: 16px;
+  color: #fff;
+}
+
+.sp-info-box .sp-notice-small {
+  margin-top: 7px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.sp-info-box .sp-notice-small strong {
+  color: #2ecc71;
+  font-weight: 600;
+}
+/* --- 점선 구분선 스타일 --- */
+.sp-divider {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.2); /* 흰색 점선 */
+  margin: 30px 0; /* 위아래 여백 */
+}
+/* --- 계좌 및 후원 수단 영역 --- */
+.sp-account-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0; /* 배경이 없으므로 내부 패딩 축소 */
+  background: none; /* 박스 배경 제거 */
+  border: none;     /* 박스 테두리 제거 */
+}
+
+/* 왼쪽 텍스트 사이드 */
+.account-text-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.account-main-details p {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+.sp-caution {
+  color: #999;
+  font-size: 13px !important;
+}
+
+.sp-notice-small.warn {
+  color: #ff5e5e;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 5px;
+}
+
+/* 오른쪽 버튼 세션 (세로 배치 및 정렬) */
+.account-btn-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+/* PAYPAL 버튼 스타일 */
+.paypal-btn-styled {
+  width: 150px;
+  height: 35px;
+  background: #000;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s;
+  
+}
+
+.paypal-btn-styled img {
+  height: 35px;
+}
+
+/* QR 박스 (노란색 이미지 자체가 깎이는 스타일 핵심) */
+.kakaopay-img-btn{
+  width: 100px;
+  height: 33px;
+  background: #000;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s;
+  
+}
+
+.kakaopay-img-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+.paypal-btn-styled:hover, .qr-box-btn-styled:hover {
+  transform: translateY(-3px);
+}
+
+/* --- 게이지 바 --- */
 .sp-bar-bg {
   width: 100%;
-  height: 40px; /* 높이를 조금 더 키움 */
+  height: 40px;
   background: #111;
   border-radius: 20px;
   overflow: hidden;
@@ -69,7 +174,7 @@
   height: 100%;
   background: linear-gradient(90deg, #00f2ff, #0072ff, #00f2ff);
   background-size: 200% 100%;
-  animation: shine 3s infinite linear; /* 게이지에 흐르는 애니메이션 추가 */
+  animation: shine 3s infinite linear;
 }
 
 @keyframes shine {
@@ -86,17 +191,49 @@
   gap: 20px;
 }
 
-.sp-notice-card, .sp-ad-preview {
+.sp-notice-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+}
+
+.sp-notice-card h5 {
+  margin-bottom: 15px;
+  color: #00f2ff;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.sp-notice-content.scroll-box {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 1.6;
+  padding-right: 10px;
+  text-align: left;
+}
+
+.scroll-box::-webkit-scrollbar { width: 4px; }
+.scroll-box::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+.scroll-box::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+.scroll-box::-webkit-scrollbar-thumb:hover { background: #00f2ff; }
+
+.sp-ad-preview {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 25px;
   border-radius: 20px;
 }
 
-/* 후원 로그 그리드 확장 */
+/* --- 하단 로그 그리드 --- */
 .sp-log-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 너비에 따라 자동 배치 */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 15px;
   margin-top: 30px;
 }
@@ -105,10 +242,10 @@
   background: rgba(0, 242, 255, 0.05);
   padding: 20px;
   border-radius: 12px;
-  border-left: 4px solid #00f2ff; /* 포인트 바 */
+  border-left: 4px solid #00f2ff;
 }
 
-/* 반응형: 화면이 작아지면 사이드바 숨기거나 아래로 내림 */
+/* --- 반응형 레이아웃 --- */
 @media (max-width: 1400px) {
   .sp-container {
     grid-template-columns: 280px 1fr 280px;
@@ -123,4 +260,63 @@
   .sp-left, .sp-right {
     position: static;
   }
+}
+
+
+/* 광고 */
+/* 서포트 가이드 도입부 */
+.ad-guide-intro {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #ccc;
+  margin-bottom: 20px !important;
+}
+
+.ad-guide-intro strong {
+  color: #00f2ff;
+  font-weight: 600;
+}
+
+/* 단계별 헤더 (배지와 금액 가로 정렬) */
+.ad-step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ad-step-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.ad-step-price {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  margin: 0 !important;
+}
+
+/* 단계별 컬러 (기존 유지 혹은 미세조정) */
+.ad-step-badge.s1 { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.ad-step-badge.s2 { background: #2ecc71; color: #fff; }
+.ad-step-badge.s3 { background: #3498db; color: #fff; }
+.ad-step-badge.s4 { background: #e74c3c; color: #fff; }
+
+.ad-step-item ul li {
+  font-size: 11.5px;
+  color: #aaa;
+  list-style: none;
+  position: relative;
+  padding-left: 12px;
+}
+
+/* 리스트 앞에 작은 점 추가 */
+.ad-step-item ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #00f2ff;
 }
