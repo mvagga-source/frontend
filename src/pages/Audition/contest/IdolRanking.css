@@ -132,6 +132,8 @@
   flex-shrink: 0;
 }
 
+.ir-av-img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: block; }
+
 /* 순위 배지 — 좌측 상단 */
 .ir-rbadge {
   position: absolute;
@@ -156,7 +158,7 @@
 .ir-av {
   width: 70px;
   height: 70px;
-  border-radius: 50%;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;

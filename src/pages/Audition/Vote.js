@@ -6,11 +6,10 @@ import {
   getRankingApi,
   getVoteStatusApi,
   submitVoteApi,
+  getAuditionListApi,
+  getVotedIdolsApi,
 } from "../../api/auditionApi";
 import "./Vote.css";
-
-// 현재 진행 중인 오디션 ID (추후 API로 동적 처리)
-const CURRENT_AUDITION_ID = 3;
 
 const AVATAR_COLORS = [
   "#1a2c4e","#1e1a2c","#1a2c1e","#2c1a1e",
@@ -33,6 +32,8 @@ export default function Vote() {
   const [rankingIdols, setRankingIdols] = useState([]);   // 순위표 모달용 랭킹 데이터
   const [loading,      setLoading]      = useState(true); // 아이돌 목록 로딩
   const [isDone,       setIsDone]       = useState(false);// 오늘 이미 투표했는지
+  const [auditionId,   setAuditionId]   = useState(null); // 동적 회차 ID
+  const [auditionInfo, setAuditionInfo] = useState(null); // 회차 정보 (제목, 기간 등)
 
   /* ── 투표 선택 상태 ── */
   const [selected,    setSelected]    = useState([]); // 선택된 idolId 배열
@@ -47,24 +48,39 @@ export default function Vote() {
   const isFull  = selected.length >= MAX_SELECT;
   const hasVote = selected.length > 0;
 
+  /* ── 진행중인 오디션 회차 조회 ── */
+  useEffect(() => {
+    getAuditionListApi()
+      .then((res) => {
+        const ongoing = res.data.find((a) => a.status === "ongoing");
+        if (ongoing) {
+          setAuditionId(ongoing.auditionId);
+          setAuditionInfo(ongoing);
+        }
+      })
+      .catch((err) => {
+        console.error("❌ 회차 조회 실패:", err);
+      });
+  }, []);
+
   /* ── 아이돌 목록 + 오늘 투표 여부 로드 ── */
   useEffect(() => {
     setLoading(true);
 
     // 아이돌 목록 조회
-    getIdolsApi(CURRENT_AUDITION_ID)
-      .then((res) => {
-        console.log("✅ 아이돌 목록:", res.data);
-        setIdols(res.data);
-      })
-      .catch((err) => {
-        console.error("❌ 아이돌 목록 실패:", err);
-      })
-      .finally(() => setLoading(false));
+    getIdolsApi(auditionId)
+    .then((res) => {
+      console.log("✅ 아이돌 목록:", res.data);
+      setIdols(res.data);
+    })
+    .catch((err) => {
+      console.error("❌ 아이돌 목록 실패:", err);
+    })
+    .finally(() => setLoading(false));
 
     // 로그인 상태일 때만 오늘 투표 여부 확인
     if (user) {
-      getVoteStatusApi(CURRENT_AUDITION_ID)
+      getVoteStatusApi(auditionId)
         .then((res) => {
           console.log("✅ 투표 여부:", res.data);
           setIsDone(res.data); // true면 오늘 이미 투표함
@@ -73,12 +89,12 @@ export default function Vote() {
           console.error("❌ 투표 여부 확인 실패:", err);
         });
     }
-  }, [user]);
+  }, [auditionId, user]);
 
   /* ── 순위표 모달 열 때 랭킹 조회 ── */
   useEffect(() => {
-    if (!showRanking) return;
-    getRankingApi(CURRENT_AUDITION_ID)
+    if (!showRanking || !auditionId) return;
+    getRankingApi(auditionId)
       .then((res) => {
         console.log("✅ 랭킹:", res.data);
         // API 응답: [[IdolDto, rawVotes, totalBonus, finalVotes], ...]
@@ -87,8 +103,21 @@ export default function Vote() {
       .catch((err) => {
         console.error("❌ 랭킹 조회 실패:", err);
       });
-  }, [showRanking]);
+  }, [auditionId, showRanking]);
 
+  /* ── isDone=true일 때 오늘 투표한 아이돌 목록 복원 ── */
+  useEffect(() => {
+    if (!isDone || !auditionId || !user) return;
+    getVotedIdolsApi(auditionId)
+      .then((res) => {
+        console.log("✅ 투표한 아이돌:", res.data);
+        setSelected(res.data);
+      })
+      .catch((err) => {
+        console.error("❌ 투표 아이돌 조회 실패:", err);
+      });
+  }, [isDone, auditionId, user]);
+  
   /* ── 최대 득표수 계산 (득표 바 기준) ── */
   const maxVotes = useMemo(() => {
     if (idols.length === 0) return 1;
@@ -124,11 +153,11 @@ export default function Vote() {
     if (!hasVote) return;
     if (isDone)   return;
 
-    submitVoteApi(CURRENT_AUDITION_ID, selected)
+    submitVoteApi(auditionId, selected)
       .then(() => {
         console.log("✅ 투표 완료");
         setIsDone(true);
-        setSelected([]);
+        // setSelected([]);
       })
       .catch((err) => {
         console.error("❌ 투표 실패:", err);
@@ -155,16 +184,26 @@ export default function Vote() {
     );
   }
 
+  if (!auditionId && !loading) {
+    return (
+      <div className="av-wrap">
+        <div className="av-loading">현재 진행 중인 투표가 없어요.</div>
+      </div>
+    );
+  }
+
   return (
     <div className="av-wrap">
 
       {/* ── 상단 고정 바 ── */}
       <div className="av-topbar">
         <div className="av-topbar-left">
-          <span className="av-round-badge">{CURRENT_AUDITION_ID}차</span>
+          <span className="av-round-badge">{auditionInfo?.round ?? "-"}차</span>
           <div>
-            <p className="av-round-title">오디션 투표</p>
-            <p className="av-round-period">진행 중</p>
+            <p className="av-round-title">{auditionInfo?.title ?? "오디션 투표"}</p>
+            <p className="av-round-period">
+              {auditionInfo ? `${auditionInfo.startDate} ~ ${auditionInfo.endDate}` : "진행 중"}
+            </p>
           </div>
         </div>
 
@@ -251,17 +290,33 @@ export default function Vote() {
           return (
             <div
               key={idol.idolId}
-              className={`av-card${isSel ? " selected" : ""}${isDone ? " voted" : ""}${isMaxed ? " maxed" : ""}`}
+              className={`av-card${isSel ? " selected" : ""}${isDone ? (isSel ? " voted-selected" : " voted-dim") : ""}${isMaxed ? " maxed" : ""}`}
               onClick={() => !isDone && toggle(idol.idolId)}
             >
-              {isDone   && <span className="av-voted-badge">투표완료</span>}
-              {isSel    && <span className="av-sel-num">{selIdx + 1}</span>}
+              {isDone && isSel && <span className="av-voted-badge">투표완료 ✓</span>}
+              {!isDone && isSel && <span className="av-sel-num">{selIdx + 1}</span>}
 
               <div
                 className="av-avatar"
                 style={{ background: AVATAR_COLORS[(idol.idolId - 1) % AVATAR_COLORS.length] }}
               >
-                <span className="av-avatar-initial">{idol.name?.charAt(0) ?? idol.idolId}</span>
+                {idol.mainImgUrl ? (
+                  <img
+                    src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/images/${idol.mainImgUrl}`}
+                    alt={idol.name}
+                    className="av-avatar-img"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "flex";
+                    }}
+                  />
+                ) : null}
+                <span
+                  className="av-avatar-initial"
+                  style={{ display: idol.mainImgUrl ? "none" : "flex" }}
+                >
+                  {idol.name?.charAt(0) ?? idol.idolId}
+                </span>
               </div>
 
               <p className="av-idol-name">{idol.name ?? `참가자 #${idol.idolId}`}</p>
