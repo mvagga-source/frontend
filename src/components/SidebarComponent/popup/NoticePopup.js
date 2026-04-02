@@ -1,77 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
+import ReactDOM from "react-dom"; // 1. 포털 사용을 위해 임포트 필수
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { getMainListApi } from "../SidebarNoticeApi";
+import { Pagination } from "swiper/modules";
 
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styles from "./NoticePopup.module.css";
-import dayjs from "dayjs";
 
-const NoticePopup = ({ startIndex = null, onClose }) => {
-  const [notices, setNotices] = useState([]);
-  const [isVisible, setIsVisible] = useState(false);
-  const swiperRef = useRef(null);
+const NoticePopup = ({ startIndex, notices, onClose }) => {
+  // 데이터가 없으면 아무것도 렌더링하지 않음
+  if (!notices || notices.length === 0) return null;
 
-  useEffect(() => {
-    // 공지 데이터 가져오기
-    const loadNotices = async () => {
-      try {
-        const response = await getMainListApi();
-        const list = response.data.list || response.data.data?.list;
-        
-        if (list && list.length > 0) {
-          setNotices(list);
-
-          // startIndex가 넘어오면 사용자가 클릭해서 연 것임
-          if (startIndex !== null) {
-            setIsVisible(true);
-          } else {
-            // startIndex가 없으면 자동 팝업 로직 (오늘 하루 보지 않기 체크)
-            const hideUntil = localStorage.getItem("hideNoticePopup");
-            
-            //if (!hideUntil || new Date().getTime() > hideUntil) {
-            // 저장된 시간이 없거나, 현재 시간이 저장된 시간(hideUntil)보다 뒤에 있으면(isAfter) 표시
-            if (!hideUntil || dayjs().isAfter(dayjs(Number(hideUntil)))) {
-              setIsVisible(true);
-            }
-          }
-        }
-      } catch (error) {
-        console.error("공지 로딩 실패:", error);
-      }
-    };
-
-    loadNotices();
-  }, [startIndex]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    if (onClose) onClose();
-  };
-
-  const closeForDay = () => {
-    //const expiry = new Date().getTime() + 24 * 60 * 60 * 1000;
-    const expiry = dayjs().add(24, "hour").valueOf();
-    localStorage.setItem("hideNoticePopup", expiry);
-    handleClose();
-  };
-
-  if (!isVisible || notices.length === 0) return null;
-
-  return (
-    <div className={styles.overlay} onClick={handleClose}>
+  // 2. 렌더링할 JSX를 변수에 담습니다.
+  const popupContent = (
+    <div className={styles.overlay} onClick={onClose}>
       <div className={styles.popupContainer} onClick={(e) => e.stopPropagation()}>
         <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          navigation
+          modules={[Pagination]}
           pagination={{ clickable: true }}
-          // 클릭한 번호(startIndex)부터 시작하게 설정
-          initialSlide={startIndex || 0} 
-          autoplay={startIndex !== null ? false : { delay: 5000 }} // 직접 열었을 땐 자동재생 끄기
+          initialSlide={startIndex} 
           className={styles.mySwiper}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
         >
           {notices.map((n) => (
             <SwiperSlide key={n.nno}>
@@ -80,7 +28,7 @@ const NoticePopup = ({ startIndex = null, onClose }) => {
                   {n.nfile ? (
                     <img src={`/upload/${n.nfile}`} alt="공지" />
                   ) : (
-                    <div className={styles.textLogo}>ACTION NOTICE</div>
+                    <div className={styles.textLogo}>ACTION101 공지사항</div>
                   )}
                 </div>
                 <div className={styles.textSection}>
@@ -95,14 +43,16 @@ const NoticePopup = ({ startIndex = null, onClose }) => {
         </Swiper>
 
         <div className={styles.footer}>
-          {startIndex === null && (
-            <button onClick={closeForDay} className={styles.footerBtn}>오늘 하루 보지 않기</button>
-          )}
-          <button onClick={handleClose} className={`${styles.footerBtn} ${styles.close}`}>닫기</button>
+          <button onClick={onClose} className={`${styles.footerBtn} ${styles.close}`}>
+            닫기
+          </button>
         </div>
       </div>
     </div>
   );
+
+  // 3. createPortal을 사용하여 DOM의 가장 바깥쪽(body)에 렌더링합니다.
+  return ReactDOM.createPortal(popupContent, document.body);
 };
 
 export default NoticePopup;
