@@ -1,124 +1,131 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './SidebarNotification.module.css';
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 import { useAuth } from "../../context/AuthContext";
-import { getInitApi, getSubscribeUrl, getMoreApi, getReadApi } from './SidebarNotificationApi';
+import { getInitApi, getMoreApi, getReadApi, readBulkNotificationsApi, deleteNotificationApi, deleteAllNotificationsApi } from './SidebarNotificationApi';
 
 const SidebarNotification = () => {
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
-    //const eventSourceRef = useRef(null);
-    // 다음 데이터가 있는지 확인하는 상태
     const [hasMore, setHasMore] = useState(true);
+    
+    const clientRef = useRef(null);
+    const scrollAreaRef = useRef(null);
 
-    // 1. 초기 데이터 동기화
-    const syncNotificationData = useCallback(async () => {
+    // 웹소켓 연결 및 실시간 수신
+    useEffect(() => {
         if (!user?.id) return;
-            getInitApi(user.id).then(res => {
-                if (res.data.success) {
-                    setNotifications(res.data.list);
-                    setUnreadCount(res.data.unreadCount);
-                    // 초기 데이터가 10개 미만이면 더 가져올 게 없다고 판단
-                    if (res.data.list.length < 10) {
-                        setHasMore(false);
-                    } else {
-                        setHasMore(true);
-                    }
-                }
-            })
-    }, [user]);
 
-    /*const handleBulkRead = async (notinoList) => {
-        try {
-            const res = await getReadBulkApi(notinoList); // API 호출
-            if (res.data.success) {
-                // 1. 현재 리스트 상태 변경 (UI 반영)
-                setNotifications(prev => 
-                    prev.map(n => notinoList.includes(n.notino) ? { ...n, isRead: 'y' } : n)
-                );
-                // 2. 안 읽은 개수 차감 (방금 읽은 개수만큼만!)
-                setUnreadCount(prev => Math.max(0, prev - prev.filter(n => notinoList.includes(n.notino)).length));
-                
-                // 💡 만약 서버의 정확한 숫자를 다시 가져오고 싶다면 syncNotificationData()를 호출해도 좋습니다.
-            }
-        } catch (err) {
-            console.error("Bulk read failed", err);
-        }
-    };*/
-
-    // 2. SSE 연결 설정
-    /*const connectSSE = useCallback(() => {
-        if (!user?.id || eventSourceRef.current) return;
-
-        // API 파일에서 가져온 URL 사용
-        const url = getSubscribeUrl(user.id);
-        const es = new EventSource(url);
-        eventSourceRef.current = es;
-
-        es.addEventListener("notification", (e) => {
-            console.log("Received notification:", e.data);
-            const newNoti = JSON.parse(e.data);
-            setNotifications(prev => {
-                if (prev.some(n => n.notino === newNoti.notino)) return prev;
-                return [newNoti, ...prev];
-            });
-            setUnreadCount(prev => prev + 1);
+        const client = new Client({
+            webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SERVER_URL}/ws-stomp`),
+            reconnectDelay: 5000,
+            onConnect: () => {
+                console.log('STOMP Connected');
+                client.subscribe(`/sub/notification/${user.id}`, (message) => {
+                    const newNoti = JSON.parse(message.body);
+                    
+                    setNotifications(prev => {
+                        // 중복 수신 방지
+                        if (prev.find(n => n.notino === newNoti.notino)) return prev;
+                        return [newNoti, ...prev];
+                    });
+                    setUnreadCount(prev => prev + 1);
+                });
+            },
         });
 
-        es.onerror = () => {
-            console.log("SSE Connection closed. Retrying...");
-            es.close();
-            eventSourceRef.current = null;
-            setTimeout(connectSSE, 5000);
-        };
-    }, [user]);*/
+        client.activate();
+        clientRef.current = client;
 
-    // 3. 탭 전환 관리 (Visibility API)
-    /*useEffect(() => {
-        if (!user?.id) return;
-
-        syncNotificationData();
-        connectSSE();
-
-        const handleVisibility = () => {
-            if (document.visibilityState === 'visible') {
-                syncNotificationData();
-                connectSSE();
-            } else {
-                if (eventSourceRef.current) {
-                    eventSourceRef.current.close();
-                    eventSourceRef.current = null;
-                }
-            }
-        };
-
-        document.addEventListener("visibilitychange", handleVisibility);
         return () => {
-            document.removeEventListener("visibilitychange", handleVisibility);
-            if (eventSourceRef.current) eventSourceRef.current.close();
+            if (clientRef.current) clientRef.current.deactivate();
         };
-    }, [user, connectSSE, syncNotificationData]);*/
+    }, [user?.id]);
+
+    // 초기 데이터 로드
+    const syncNotificationData = useCallback(async () => {
+        if (!user?.id) return;
+        try {
+            const res = await getInitApi(user.id);
+            if (res.data.success) {
+                setNotifications(res.data.list);
+                setUnreadCount(res.data.unreadCount);
+                setHasMore(res.data.list.length === 10);
+            }
+        } catch (err) {
+            console.error("초기 데이터 로드 실패", err);
+        }
+    }, [user]);
 
     useEffect(() => {
         syncNotificationData();
-    }, [user, syncNotificationData]);
+    }, [syncNotificationData]);
 
-    // 4. 더보기 (무한 스크롤)
+    // 알림창이 열려있는 동안 리스트에 안 읽은 알림이 생기면 즉시 읽음 처리
+    useEffect(() => {
+        // 1. 창이 닫혀있거나 안 읽은 알림이 없으면 중단
+        if (!isOpen) return;
+
+        const unreadIds = notifications
+            .filter(n => n.isRead === 'n')
+            .map(n => n.notino);
+
+        if (unreadIds.length > 0) {
+            // 서버에 읽음 요청
+            readBulkNotificationsApi(unreadIds)
+                .then(res => {
+                    if (res.data.success) {
+                        // 2. 전체를 0으로 만드는 게 아니라, 방금 읽은 개수만큼만 차감
+                        setUnreadCount(prev => Math.max(0, prev - unreadIds.length));
+                        
+                        // 3. 상태 업데이트 (불필요한 렌더링 방지를 위해 읽은 것만 변경)
+                        setNotifications(prev => 
+                            prev.map(n => unreadIds.includes(n.notino) ? { ...n, isRead: 'y' } : n)
+                        );
+                    }
+                })
+                .catch(err => console.error("더보기 데이터 읽음 처리 실패", err));
+        }
+    }, [isOpen, notifications.length]); // notifications.length를 추가하여 데이터가 추가될 때마다 실행
+
+    // 외부 클릭 시 닫기
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (isOpen && !e.target.closest(`.${styles.wrapper}`)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isOpen]);
+
+    // 더보기 (무한 스크롤)
     const handleLoadMore = async () => {
         if (notifications.length === 0 || !user?.id || !hasMore) return;
         const lastId = notifications[notifications.length - 1].notino;
-        getMoreApi(user.id, lastId).then(res => {
+        
+        try {
+            const res = await getMoreApi(user.id, lastId);
             if (res.data.success) {
-                if (res.data.data.length < 10) {
-                    setHasMore(false);
-                }
-                setNotifications(prev => [...prev, ...res.data.data]);
+                const newData = res.data.data;
+                if (newData.length < 10) setHasMore(false);
+                
+                setNotifications(prev => {
+                    // 기존 데이터와 중복되는 ID 필터링
+                    const existingIds = new Set(prev.map(n => n.notino));
+                    const filtered = newData.filter(n => !existingIds.has(n.notino));
+                    return [...prev, ...filtered];
+                });
             }
-        });
+        } catch (err) {
+            console.error("추가 데이터 로드 실패", err);
+        }
     };
 
-    // 5. 읽음 처리
+    // 단건 클릭 읽음 처리 (이미 읽은 건 패스)
     const handleRead = async (notino, isRead) => {
         if (isRead === 'y') return;
         try {
@@ -130,7 +137,47 @@ const SidebarNotification = () => {
                 setUnreadCount(prev => Math.max(0, prev - 1));
             }
         } catch (err) {
-            console.error("Read update failed", err);
+            console.error("읽음 처리 실패", err);
+        }
+    };
+
+    // 개별 삭제
+    const handleDelete = async (e, notino) => {
+        e.stopPropagation(); 
+        
+        // 삭제할 아이템의 정보를 미리 찾아둠
+        const targetNoti = notifications.find(n => n.notino === notino);
+        if (!targetNoti) return;
+
+        try {
+            const res = await deleteNotificationApi(notino);
+            if (res.data.success) {
+                // 1. 알림 리스트에서 제거
+                setNotifications(prev => prev.filter(n => n.notino !== notino));
+                
+                // 2. 안 읽은 알림이었다면 카운트 차감
+                if (targetNoti.isRead === 'n') {
+                    setUnreadCount(prev => Math.max(0, prev - 1));
+                }
+            }
+        } catch (err) {
+            console.error("삭제 실패", err);
+        }
+    };
+
+    // 전체 삭제
+    const handleDeleteAll = async () => {
+        if (!window.confirm("모든 알림을 삭제하시겠습니까?")) return;
+
+        try {
+            const res = await deleteAllNotificationsApi(user.id);
+            if (res.data.success) {
+                setNotifications([]);
+                setUnreadCount(0);
+                setHasMore(false);
+            }
+        } catch (err) {
+            console.error("전체 삭제 실패", err);
         }
     };
 
@@ -138,7 +185,6 @@ const SidebarNotification = () => {
 
     return (
         <div className={styles.wrapper}>
-            {/* 기존 사이드바 버튼과 동일한 느낌을 주기 위해 클래스 조합 */}
             <button 
                 className={`sb-user-btn ${styles.notiTrigger} ${isOpen ? styles.active : ''}`} 
                 onClick={() => setIsOpen(!isOpen)}
@@ -147,17 +193,21 @@ const SidebarNotification = () => {
                 {unreadCount > 0 && <span className={styles.countBadge}>{unreadCount}</span>}
             </button>
 
-            {/* 알림 창이 뜰 때 다른 버튼을 밀어내지 않도록 absolute(또는 고정) 처리 필요 */}
             {isOpen && (
                 <div className={styles.absolutePanel}>
                     <div className={styles.panelHeader}>
                         <span>최신 알림</span>
-                        <button onClick={() => setIsOpen(false)}>✕</button>
+                        <div className={styles.headerBtns}>
+                            {notifications.length > 0 && (
+                                <button className={styles.deleteAllBtn} onClick={handleDeleteAll}>전체 삭제</button>
+                            )}
+                            <button onClick={() => setIsOpen(false)}>✕</button>
+                        </div>
                     </div>
                     {notifications.length === 0 ? (
                         <div className={styles.empty}>새로운 알림이 없습니다.</div>
                     ) : (
-                        <div className={styles.scrollArea}>
+                        <div className={styles.scrollArea} ref={scrollAreaRef}>
                             <ul className={styles.list}>
                                 {notifications.map(n => (
                                     <li 
@@ -165,12 +215,22 @@ const SidebarNotification = () => {
                                         className={`${styles.item} ${n.isRead === 'n' ? styles.unread : ''}`}
                                         onClick={() => handleRead(n.notino, n.isRead)}
                                     >
-                                        <p className={styles.content}>{n.nocontent}</p>
-                                        <span className={styles.time}>{new Date(n.crdt).toLocaleString()}</span>
+                                        <div className={styles.itemMain}>
+                                            <p className={styles.content}>{n.nocontent}</p>
+                                            <span className={styles.time}>
+                                                {new Date(n.crdt).toLocaleString('ko-KR', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}
+                                            </span>
+                                        </div>
+                                        {/* 개별 삭제 버튼 */}
+                                        <button 
+                                            className={styles.deleteBtn} 
+                                            onClick={(e) => handleDelete(e, n.notino)}
+                                        >
+                                            ✕
+                                        </button>
                                     </li>
                                 ))}
                             </ul>
-                            {/* 💡 hasMore가 true일 때만 버튼을 렌더링 */}
                             {hasMore && (
                                 <button className={styles.moreBtn} onClick={handleLoadMore}>
                                     이전 알림 더보기
