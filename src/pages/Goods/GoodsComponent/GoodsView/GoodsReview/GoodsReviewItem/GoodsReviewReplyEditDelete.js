@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import dayjs from "dayjs";
 import styles from "./GoodsReviewReplyEditDelete.module.css";
 import { ReviewDeleteApi, ReviewUpdateApi } from "../../../../GoodsApi";
+import { useToast } from "../../../../../../context/ToastMsg/ToastContext";
 
 /**
  * 굿즈 답글 수정 및 삭제
@@ -11,24 +12,27 @@ import { ReviewDeleteApi, ReviewUpdateApi } from "../../../../GoodsApi";
 export default function GoodsReviewReplyEditDelete({ child, user, setReviews, refreshList }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(child.grcontents);
+    const { showToast } = useToast();
 
     // 답글 수정/삭제 전용 업데이트 함수
     const updateReplyInList = useCallback((updatedReply, isDelete = false) => {
-        setReviews((prev) =>
-            prev.map((item) => {
-                // 이 답글의 부모 리뷰인 경우
-                if (item.grno === updatedReply.parent?.grno) {
+    setReviews((prev) =>
+        prev.map((item) => {
+                // 해당 부모 리뷰 안에 수정/삭제하려는 답글이 있는지 확인
+                const hasChild = item.children?.some((c) => c.grno === updatedReply.grno);
+                
+                if (hasChild) {
                     return {
                         ...item,
                         children: isDelete
-                            ? item.children.filter((c) => c.grno !== updatedReply.grno) // 삭제 시 제외
-                            : item.children.map((c) => (c.grno === updatedReply.grno ? updatedReply : c)) // 수정 시 교체
+                            ? item.children.filter((c) => c.grno !== updatedReply.grno) // 삭제
+                            : item.children.map((c) => (c.grno === updatedReply.grno ? { ...c, ...updatedReply } : c)) // 수정
                     };
                 }
                 return item;
             })
         );
-    }, []);
+    }, [setReviews]);
 
     // 답글 삭제
     const handleDelete = async () => {
@@ -38,7 +42,8 @@ export default function GoodsReviewReplyEditDelete({ child, user, setReviews, re
         
         ReviewDeleteApi(formData).then((res) => {
             if (res.data?.success) {
-                alert("답글이 삭제되었습니다.");
+                //alert("답글이 삭제되었습니다.");
+                showToast("상품 리뷰에 대한 답글이 삭제되었습니다.");
                 updateReplyInList(child, true);
                 //refreshList();
             }
@@ -56,6 +61,7 @@ export default function GoodsReviewReplyEditDelete({ child, user, setReviews, re
         ReviewUpdateApi(formData).then((res) => {
             if (res.data?.success) {
                 //alert("답글이 수정되었습니다.");
+                showToast("상품 리뷰에 대한 답글이 수정되었습니다.");
                 // 서버에서 받은 최신 데이터(res.data.data)로 리스트 업데이트
                 const updatedData = res.data.data;
                 

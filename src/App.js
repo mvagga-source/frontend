@@ -76,6 +76,7 @@ import NotFound from "./pages/ErrorPage/NotFound";
 
 // 관리자
 import AdminMain from "./pages/Admin/AdminMain";
+import { ToastProvider } from "./context/ToastMsg/ToastContext.js";
 
 function App() {
   const navigate = useNavigate();
@@ -84,6 +85,7 @@ function App() {
     setNavigate(navigate);
   }, [navigate]);
   return (
+    <ToastProvider>
     <AuthProvider>
       {/* <BrowserRouter> */}
         <Routes>
@@ -166,7 +168,7 @@ function App() {
         </Routes>
       {/* </BrowserRouter> */}
     </AuthProvider>
-
+    </ToastProvider>
   );
 }
 

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getBoardDetailApi, BoardUpdateApi } from "./BoardApi";
 import styles from "./BoardWrite.module.css"; 
 import TiptapEditor from "../../components/CkEditor/TiptapEditor";
+import dayjs from "dayjs";
 
 function BoardUpdate() {
   const { bno } = useParams();
@@ -52,7 +53,7 @@ function BoardUpdate() {
     const previewData = {
       btitle: formData.get("btitle") || "제목 없음",
       bcontent: editorData,
-      bdate: board?.bdate || new Date().toLocaleDateString(),
+      bdate: board?.bdate || dayjs().format("YYYY-MM-DD HH:mm:ss"),
       member: { id: board?.member?.id || "작성자" },
       bhit: board?.bhit || 0
     };

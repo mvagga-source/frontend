@@ -1,0 +1,102 @@
+/* src/context/ToastMsg/Toast.module.css */
+.toastContainer {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10000;
+}
+
+.toastItem {
+    position: relative;
+    min-width: 320px;
+    /* App.js의 배경과 어우러지는 짙은 청록 + 유리 질감 */
+    background: rgba(26, 37, 59, 0.8); 
+    border: 1px solid var(--border-color, rgba(0, 242, 255, 0.2));
+    border-radius: 16px;
+    color: #e8f4f8;
+    /* 팀 경연 win 카드 느낌의 그림자와 광채 */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 
+                inset 0 0 15px rgba(0, 242, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    overflow: hidden;
+    animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.toastHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    /* 상단에 미세한 하이라이트 */
+    background: rgba(0, 242, 255, 0.08); 
+    border-bottom: 1px solid var(--border-color, rgba(0, 242, 255, 0.1));
+}
+
+.title {
+    font-size: 0.9rem;
+    color: var(--neon-blue, #00f2ff); 
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date {
+    font-size: 0.7rem;
+    color: rgba(232, 244, 248, 0.4);
+    font-family: monospace;
+}
+
+.toastBody {
+    padding: 16px 20px 20px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(232, 244, 248, 0.9);
+    /* 핵심: 이 두 줄이 줄바꿈을 결정 */
+    white-space: pre-wrap; 
+    word-break: break-all;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    color: rgba(232, 244, 248, 0.3);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.closeBtn:hover {
+    color: var(--neon-blue);
+    transform: scale(1.1);
+}
+
+.progressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    /* 진행바에 네온 광채 효과 */
+    background: linear-gradient(90deg, transparent, var(--neon-blue, #00f2ff));
+    box-shadow: 0 0 10px var(--neon-blue);
+    width: 100%;
+    animation: shrink linear forwards;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(30px) scale(0.9); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes shrink {
+    from { width: 100%; }
+    to { width: 0%; }
+}

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import styles from "./BoardCommentSaveForm.module.css";
 import { SaveBtn } from "../../../../../components/button/Button";
 import { CommentWriteApi } from "../../../BoardApi";
+import { useToast } from "../../../../../context/ToastMsg/ToastContext";
 
 function BoardCommentSaveForm({ bno, getList }) {
     const [newComment, setNewComment] = useState("");
+    const { showToast } = useToast();
 
     // 댓글 저장 로직
     const handleSave = async () => {
@@ -18,6 +20,7 @@ function BoardCommentSaveForm({ bno, getList }) {
       CommentWriteApi(formData)
       .then((res) => {
         if (res.data?.success) {
+          showToast("게시판 댓글이 성공적으로 등록되었습니다.");
           // 댓글 저장 후 새로 리스트 불러오기
           getList(0, false);
           

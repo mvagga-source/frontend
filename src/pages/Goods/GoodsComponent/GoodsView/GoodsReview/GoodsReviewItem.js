@@ -5,6 +5,7 @@ import { ReviewDeleteApi, GoodsReviewLikeSaveApi, ReviewReplyApi } from "../../.
 import ReviewEditForm from "./GoodsReviewItem/GoodsReviewEditForm";
 import GoodsReviewReplyEditDelete from "./GoodsReviewItem/GoodsReviewReplyEditDelete";
 import GoodsReviewReplySave from "./GoodsReviewItem//GoodsReviewReplySave";
+import { useToast } from "../../../../../context/ToastMsg/ToastContext";
 
 /**
  * 굿즈 리뷰 목록의 상세(개별 댓글) 리뷰
@@ -17,6 +18,8 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, setR
 
     // 답글 등록 관련 상태 추가
     const [isReplying, setIsReplying] = useState(false);
+
+    const { showToast } = useToast();
 
     useEffect(() => {
         setIsLiked(r.liked || false);
@@ -44,7 +47,8 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, setR
         formData.append("grno", r.grno);
         ReviewDeleteApi(formData).then((res) => {
             if (res.data?.success) {
-                alert("삭제되었습니다.");
+                //alert("삭제되었습니다.");
+                showToast("상품 리뷰가 삭제되었습니다.");
                 // 1. 전체 리스트를 새로고침하지 않고, 해당 리뷰만 '삭제됨' 상태로 변경
                 setReviews((prev) =>
                     prev.map((item) =>
@@ -98,7 +102,7 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, setR
             <p className={styles.content}>{r.grcontents}</p>
             {r.grImg && (
               <div className={styles.reviewThumb}>
-                <img src={r.grImg} alt="리뷰사진" onClick={() => window.open(r.grImg)} />
+                <img src={`${process.env.REACT_APP_IMG_URL}${r.grImg}`} alt="리뷰사진" onClick={() => window.open(`${process.env.REACT_APP_IMG_URL}${r.grImg}`)} />
               </div>
             )}
           </div>

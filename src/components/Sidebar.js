@@ -86,7 +86,7 @@ function Sidebar({ isOpen, onClose }) {
             <div className="sb-section">
               <p className="sb-section-title">커뮤니티 활동기록</p>
               <div className="sb-activity-list">
-                <Link to="/Community" className="sb-activity-item" onClick={onClose}>
+                <Link to={`/Community/BoardList?category=nickname&search=${user?.nickname}`} className="sb-activity-item" onClick={onClose}>
                   <span>📝</span><span className="sb-activity-label">내가 쓴 글</span>
                   <span className="sb-activity-count">3</span>
                 </Link>

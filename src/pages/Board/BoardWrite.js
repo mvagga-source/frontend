@@ -4,6 +4,7 @@ import { BoardWriteApi } from "./BoardApi";
 import styles from "./BoardWrite.module.css"; 
 import TiptapEditor from "../../components/CkEditor/TiptapEditor";
 import { SaveInput } from "../../components/input/Input";
+import dayjs from "dayjs";
 
 function BoardWrite() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function BoardWrite() {
     const previewData = {
       btitle: formData.get("btitle") || "제목 없음",
       bcontent: editorData,
-      bdate: new Date().toLocaleDateString(),
+      bdate: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       member: { id: "작성자(미리보기)" },
       bhit: 0
     };

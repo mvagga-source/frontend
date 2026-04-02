@@ -27,7 +27,11 @@ function GoodsReviewModal({ gno, gono, onClose, refreshList }) {
                             setReviewData(data);
                             setContent(data.grcontents || "");
                             setRating(data.rating || 5);
-                            setPreviewImg(data.grImg || null);
+                            if (data.grImg) {
+                                setPreviewImg(`${process.env.REACT_APP_IMG_URL}${data.grImg}`);
+                            } else {
+                                setPreviewImg(null);
+                            }
                         } else {
                             // 리뷰가 없음 -> 등록 모드 (초기값 유지)
                             setReviewData(null);

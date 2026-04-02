@@ -110,7 +110,6 @@ function GoodsView() {
             return;
         }
         toggleBookmarkApi(user.id, gno, "GOODS").then((res) => {
-            console.log(res);
             // 기존 다른 사람이 만든 북마크 사용
             setIsBookmarked(res.data); 
         });
@@ -150,7 +149,7 @@ function GoodsView() {
             {/* [상단] 상품 핵심 정보 영역 */}
             <div className={styles.goodsTop}>
             <div className={styles.imageBox}>
-                <img src={goods.gimg || "/no-image.png"} alt="굿즈이미지" />
+                <img src={`${process.env.REACT_APP_IMG_URL}${goods.gimg || "/no-image.png"}`} alt="굿즈이미지" />
             </div>
             
             <div className={styles.infoBox}>
@@ -189,7 +188,7 @@ function GoodsView() {
                 <span className={styles.priceVal}>{goods.price?.toLocaleString()}원</span>
                 {/* 잔여 재고 표시 */}
                 <span className={styles.stockInfo}>
-                (남은 수량: <strong>{goods.stockCnt}</strong>개)
+                (남은 수량: <strong>{goods.stockCnt?.toLocaleString()}</strong>개)
                 </span>
                 </div>
 

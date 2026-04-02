@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styles from "./NoticePopup.module.css";
+import dayjs from "dayjs";
 
 const NoticePopup = ({ startIndex = null, onClose }) => {
   const [notices, setNotices] = useState([]);
@@ -29,7 +30,10 @@ const NoticePopup = ({ startIndex = null, onClose }) => {
           } else {
             // startIndex가 없으면 자동 팝업 로직 (오늘 하루 보지 않기 체크)
             const hideUntil = localStorage.getItem("hideNoticePopup");
-            if (!hideUntil || new Date().getTime() > hideUntil) {
+            
+            //if (!hideUntil || new Date().getTime() > hideUntil) {
+            // 저장된 시간이 없거나, 현재 시간이 저장된 시간(hideUntil)보다 뒤에 있으면(isAfter) 표시
+            if (!hideUntil || dayjs().isAfter(dayjs(Number(hideUntil)))) {
               setIsVisible(true);
             }
           }
@@ -48,7 +52,8 @@ const NoticePopup = ({ startIndex = null, onClose }) => {
   };
 
   const closeForDay = () => {
-    const expiry = new Date().getTime() + 24 * 60 * 60 * 1000;
+    //const expiry = new Date().getTime() + 24 * 60 * 60 * 1000;
+    const expiry = dayjs().add(24, "hour").valueOf();
     localStorage.setItem("hideNoticePopup", expiry);
     handleClose();
   };
