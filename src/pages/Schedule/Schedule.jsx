@@ -31,67 +31,54 @@ function Schedule() {
   const {user} = useAuth();
   const pageType = "EVENT"; // 페이지구분
 
-
-  const getEvents  = async () => {
-
-      try {
-        const eventRes = await getEventsApi("N");
-
-        setEvents(eventRes.data.map(e => ({
-          id: e.eno,
-          title: e.title,
-          start: e.startDate,
-          end: e.endDate,
-          backgroundColor:'rgba(0, 242, 255, 0.1)',
-          borderColor:'rgba(0, 242, 255, 0.1)',
-          extendedProps: {
-            desc: e.description,            
-            bookmarked: ""
-          }
-        })));
-
-      }catch (err) {
-        console.error(err);
-      }
-      
-  };
-
-  const getBookmarkInfo = async () => {
-      console.log("getBookmarkInfo");
-      try {
-        const bookmarkRes = await getMyPageBookmarskApi(user.id, pageType);
-        const pageId = bookmarkRes.data.map(b => b.pageId);
-
-        setEvents(prev =>
-          prev.map(v =>
-            pageId.includes(v.id)
-              ? {
-                  ...v,
-                  extendedProps: {
-                    ...v.extendedProps,
-                    bookmarked: true
-                  }
-                }
-              : v
-          )
-        );
-
-      }catch (err) {
-        console.error(err);
-      }    
-  }
-
-  // 이벤트 정보 가져오기
   useEffect(() => {
+
+    const getEvents  = async () => {
+
+        console.log("getEvents");
+
+        try {
+          const eventRes = await getEventsApi("N");
+          const data = await eventRes.data.map(e => ({
+            id: e.eno,
+            title: e.title,
+            start: e.startDate,
+            end: e.endDate,
+            backgroundColor:'rgba(0, 242, 255, 0.1)',
+            borderColor:'rgba(0, 242, 255, 0.1)',
+            extendedProps: {
+              desc: e.description,            
+              bookmarked: ""
+            }
+          }));
+          setEvents(data);
+
+          if (user?.id) {
+            const bookmarkRes = await getMyPageBookmarskApi(user.id, pageType);
+            const pageId = await bookmarkRes.data.map(b => b.pageId);
+
+            setEvents(prev =>
+              prev.map(v =>
+                pageId.includes(v.id)
+                  ? {
+                      ...v,
+                      extendedProps: {
+                        ...v.extendedProps,
+                        bookmarked: true
+                      }
+                    }
+                  : v
+              )
+            );
+          }
+
+        }catch (err) {
+          console.error(err);
+        }
+    };
+
     getEvents();
   }, []);  
-
-  // 로그인 일경우 북마크 정보 가져오기
-  useEffect(() => {
-    if(!user?.id) return;
-
-    getBookmarkInfo();
-  }, [user?.id]);    
 
   const toggleBookmark = async (eno) => {
 
@@ -120,16 +107,6 @@ function Schedule() {
       }catch (err) {
         console.error(err);
       }
-  }
-
-  const hendleModal = (e) => {
-
-    setPosition({
-      x: e.clientX,
-      y: e.clientY,
-    });    
-
-    setIsModalOpen(true);
   }
 
   return (
@@ -202,7 +179,7 @@ function Schedule() {
                       toggleBookmark(eventInfo.event.id);
                     }}
                 >
-                  {bookmarked ? <span className="bookmark-status status-ongoing">북마크</span> : <span className="bookmark-status status-ended">북마크</span>}
+                  <span className={`bookmark-status ${bookmarked ?  "status-ongoing" : "status-ended"}`}>북마크</span>
                 </div>
 
                 {isModalOpen && (

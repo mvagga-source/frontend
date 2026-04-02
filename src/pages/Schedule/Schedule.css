@@ -154,7 +154,7 @@
 .bookmark-title-text {
   /* border:1px solid #fff; */
   display: inline-block;
-  max-width: 180px;
+  max-width: 170px;
   /* overflow: hidden;
   text-overflow: ellipsis; */
   white-space: nowrap;
@@ -182,14 +182,6 @@
   opacity: 1;
 }
 
-.bookmark-info-value{
-  overflow: hidden;  
-  text-overflow: ellipsis;
-  height:30px;
-  padding-left: 12px;
-  cursor: pointer;
-}
-
 .bookmark-icon{
   /* border:1px solid #fff; */
   font-size: 7px;
@@ -199,7 +191,17 @@
   line-height: 20px;
 }
 
+.bookmark-info-value{
+  /* border:1px solid #fff;   */
+  max-width: 180px;
+  /* overflow: hidden;  
+  text-overflow: ellipsis; */
+  height:30px;
+  padding: 1px 0 0 10px;
+}
+
 .bookmark-status {
+  cursor: pointer;  
   font-size: 12px;
   font-weight: 700;
   padding: 3px 10px;
