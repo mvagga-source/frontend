@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getMyOrderPageApi } from "./MyMainApi";
 import GoodsReviewModal from "../Goods/popup/GoodsReviewModal";
-import { formatDate, formatDateTime } from "../Admin/ACommon";
+import { formatDate, formatDateTime, getWeekRange, getMonthRange, getYearRange } from "../Admin/ACommon";
 import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css";
@@ -14,9 +14,14 @@ function MyPurchase () {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [dateType, setDateType] = useState("day");    
 
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);  
+  const [weekValue, setWeekValue] = useState("");
+  const [monthValue, setMonthValue] = useState("");
+  const [yearValue, setYearValue] = useState("");
+
   const [list, setList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,8 +91,37 @@ function MyPurchase () {
   return (
     <>
     <div className="my-form-wrap">
-      <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
-      <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
+
+      <select onChange={(e) => setDateType(e.target.value)}>
+        <option value="day">일</option>
+        <option value="week">주</option>
+        <option value="month">월</option>
+        <option value="year">년</option>
+      </select>
+      {dateType === "week" && <input type="week" value={weekValue} onChange={(e)=>{
+        setWeekValue(e.target.value);
+        const { startDate, endDate } = getWeekRange(e.target.value);
+        setStartDate(startDate);
+        setEndDate(endDate);          
+      }} />}
+      {dateType === "month" && <input type="month" value={monthValue} onChange={(e)=>{
+        setMonthValue(e.target.value);
+        const { startDate, endDate } = getMonthRange(e.target.value);
+        setStartDate(startDate);
+        setEndDate(endDate);        
+      }}/>}
+      {dateType === "year" && <input type="number" value={yearValue} onChange={(e)=>{
+        setYearValue(e.target.value);
+        const { startDate, endDate } = getYearRange(e.target.value);
+        setStartDate(startDate);
+        setEndDate(endDate);        
+      }} placeholder="연도" />}      
+      {dateType === "day" && 
+        <>
+          <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> - 
+          <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
+        </>
+      } 
       <button onClick={handleSearch}>검색</button>
     </div>
 

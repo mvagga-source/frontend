@@ -1,6 +1,29 @@
 
 import axiosInstance from "../../api/axiosInstance";
 
+
+
+// 페이지별 나의 북마크 (리스트 가져오기)
+export const getMyPageBookmarskApi = (memberId,pageType) => {
+
+    return axiosInstance.get("mypage/getMyPageBookmarks",{
+            params:{
+                memberId: memberId,
+                pageType: pageType,    
+            }
+    });
+}
+
+// 나의북마크 (리스트 가져오기)
+export const getMyBookmarkPageApi = (searchParams = {}) => {
+
+    return axiosInstance.get("mypage/getMyBookmarkPage",{
+            params:{
+                ...searchParams
+            }
+    });
+}
+
 // 나의 북마크 페이지별 정보 가져오기
 export const getBookmarkPageApi = (page, pageSize) => {
   return axiosInstance.get("/mypage/getBookmarkPage", {
@@ -9,14 +32,6 @@ export const getBookmarkPageApi = (page, pageSize) => {
       size: pageSize,
       sort: "id,desc",
     }
-  });
-}
-
-// 북마크 전체 가져오기
-export const getBookmarksApi = () => {
-  return axiosInstance.get("/mypage/getBookmarks", {
-    // params:{
-    // }
   });
 }
 

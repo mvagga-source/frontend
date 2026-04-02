@@ -47,7 +47,6 @@ function MySale () {
               ...searchParams,
               startDate : startDate || today, 
               endDate :endDate || today,
-              sortDir: sortDirection, // 현재 정렬 상태 포함
             });
             
             if (res.data && res.data.success) {
@@ -110,7 +109,7 @@ function MySale () {
     <div className="my-form-wrap">
       <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
       <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
-      <button onClick={handleSearch}>등록일자 검색</button>
+      <button onClick={handleSearch}>검색</button>
 
       <span style={{margin:"0 10px 0 15px"}}>/</span>
 

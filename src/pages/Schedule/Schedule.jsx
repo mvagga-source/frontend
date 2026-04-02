@@ -10,7 +10,8 @@ import koLocale from "@fullcalendar/core/locales/ko";
 
 // API
 import { getEventsApi } from "./ScheduleApi";
-import { getPageBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
+import { getMyPageBookmarskApi } from "../MyPage/MyMainApi";
+import { toggleBookmarkApi } from "../Common/BookmarkApi";
 
 // Login(user info)
 import { useAuth } from "../../context/AuthContext";
@@ -58,7 +59,7 @@ function Schedule() {
   const getBookmarkInfo = async () => {
       console.log("getBookmarkInfo");
       try {
-        const bookmarkRes = await getPageBookmarkApi(user.id, pageType);
+        const bookmarkRes = await getMyPageBookmarskApi(user.id, pageType);
         const pageId = bookmarkRes.data.map(b => b.pageId);
 
         setEvents(prev =>

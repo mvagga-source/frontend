@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 
 // Api
-import { getMyBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
+import { toggleBookmarkApi } from "../Common/BookmarkApi";
+import { getMyPageBookmarskApi } from '../MyPage/MyMainApi';
 import { getMyLikesApi, getVideoApi, getVideosApi, toggleVideoLikeApi, videoViewCountApi } from "./MVideoApi";
 
 import bg from "../../assets/images/singer_bg.png";
@@ -153,7 +154,7 @@ function MVideo() {
 
     // 나의 북마크 리스트
     const getMyBookmark = async () => {
-        const bookmarkRes = await getMyBookmarkApi(user.id, pageType);
+        const bookmarkRes = await getMyPageBookmarskApi(user.id, pageType);
         const pageId = bookmarkRes.data.data.map(b => b.pageId);
         setBookmarks(pageId);
     };    

@@ -9,7 +9,8 @@ import { useAuth } from "../../context/AuthContext";
 import DeliveryModal from "./popup/DeliveryModal";
 import { getGoodsViewApi, GoodsDeleteApi } from "./GoodsApi"; // API 함수 가정
 import GoodsContent from "./GoodsComponent/GoodsContent";
-import { getPageBookmarkApi, toggleBookmarkApi } from "../Common/BookmarkApi";
+import { toggleBookmarkApi } from "../Common/BookmarkApi";
+import { getMyPageBookmarskApi } from "../MyPage/MyMainApi";
 import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 /**
@@ -73,7 +74,7 @@ function GoodsView() {
 
         // 로그인 상태라면 북마크 여부 확인
         if (user && user.id) {
-            getPageBookmarkApi(user.id,"GOODS")
+            getMyPageBookmarskApi(user.id,"GOODS")
             .then((res) => {
                 // 내 북마크 리스트 중 현재 상품(gno)이 있는지 확인
                 // res.data는 List<BookmarkDto> 형태

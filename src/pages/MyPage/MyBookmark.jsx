@@ -1,8 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getMyBookmarkApi } from "../Common/BookmarkApi";
-import { deleteBookmarkApi } from "./MyMainApi";
+import { getMyBookmarkPageApi, deleteBookmarkApi } from "./MyMainApi";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -19,7 +18,7 @@ function MyBookmark () {
 
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);  
-  const [pageType, setPageType] = useState("");
+  const [pageType, setPageType] = useState("ALL");
   const [events, setEvents] = useState([]);
 
   const params = useRef({
@@ -42,7 +41,7 @@ function MyBookmark () {
   const loadEvents = async (searchParams) => {
 
     try {
-        const res = await getMyBookmarkApi(
+        const res = await getMyBookmarkPageApi(
             {
               ...searchParams,
               pageType: pageType,
@@ -68,11 +67,6 @@ function MyBookmark () {
       console.error("데이터 삭제실패 :",e);
     }
   };  
-
-  // 데이터 가져오기
-  useEffect (() => {
-    loadEvents();
-  },[]);
 
   useEffect (() => {
     loadEvents(params.current);
