@@ -88,7 +88,7 @@ function GoodsBanner({}) {
                         {/* 오른쪽 이미지 영역 */}
                         <div className={styles.rightImage}>
                             <img 
-                            src={banner.GIMG || banner.gimg} 
+                            src={`${process.env.REACT_APP_IMG_URL}${banner.GIMG || banner.gimg}`} 
                             alt={banner.GNAME || banner.gname} 
                             />
                         </div>

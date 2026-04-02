@@ -147,7 +147,7 @@ function GoodsList() {
                             list.map((item) => (
                                 <div key={item.gno} className={styles.productCard} onClick={() => navigate(`/GoodsView/${item.gno}`)}>
                                     <div className={styles.thumbnailBox}>
-                                        <img src={item.gimg} alt={item.gname} />
+                                        <img src={`${process.env.REACT_APP_IMG_URL}${item.gimg}`} alt={item.gname} />
                                         <div className={styles.cardOverlay}>VIEW DETAIL</div>
                                     </div>
                                     <div className={styles.productDesc}>

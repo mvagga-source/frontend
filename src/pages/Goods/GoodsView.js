@@ -150,7 +150,7 @@ function GoodsView() {
             {/* [상단] 상품 핵심 정보 영역 */}
             <div className={styles.goodsTop}>
             <div className={styles.imageBox}>
-                <img src={goods.gimg || "/no-image.png"} alt="굿즈이미지" />
+                <img src={`${process.env.REACT_APP_IMG_URL}${goods.gimg || "/no-image.png"}`} alt="굿즈이미지" />
             </div>
             
             <div className={styles.infoBox}>

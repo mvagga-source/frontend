@@ -65,7 +65,7 @@ function GoodsUpdate() {
                 setAddress(data?.gdelivAddrReturn || "");
                 // 기존 이미지가 있다면 프리뷰에 세팅 - 서버 경로
                 if (data?.gimg) {
-                    setMainImgPreview(data.gimg); 
+                    setMainImgPreview(`${process.env.REACT_APP_IMG_URL}${data.gimg}`); 
                 }
             }
         });

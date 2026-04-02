@@ -98,7 +98,7 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, setR
             <p className={styles.content}>{r.grcontents}</p>
             {r.grImg && (
               <div className={styles.reviewThumb}>
-                <img src={r.grImg} alt="리뷰사진" onClick={() => window.open(r.grImg)} />
+                <img src={`${process.env.REACT_APP_IMG_URL}${r.grImg}`} alt="리뷰사진" onClick={() => window.open(r.grImg)} />
               </div>
             )}
           </div>

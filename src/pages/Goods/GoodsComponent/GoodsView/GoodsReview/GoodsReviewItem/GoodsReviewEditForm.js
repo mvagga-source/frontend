@@ -6,7 +6,7 @@ export default function ReviewEditForm({ r, setEditingId, setReviews, refreshLis
   const [newContent, setNewContent] = useState(r.grcontents);
   const [rating, setRating] = useState(r.rating);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [previewImg, setPreviewImg] = useState(r.grImg || null);
+  const [previewImg, setPreviewImg] = useState(r.grImg ? `${process.env.REACT_APP_IMG_URL}${r.grImg}` : null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
