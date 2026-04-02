@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import styles from "./GoodsReviewReplySave.module.css";
 import { ReviewReplyApi } from "../../../../GoodsApi";
+import { useToast } from "../../../../../../context/ToastMsg/ToastContext";
 
 /**
  * 굿즈 답글 등록
@@ -10,6 +11,8 @@ import { ReviewReplyApi } from "../../../../GoodsApi";
 const GoodsReviewReplyForm = ({ gno, parentGrno, refreshList, isReplying, setReviews, setIsReplying }) => {
     // 답글 관련 상태 추가
     const [replyContent, setReplyContent] = useState("");
+
+    const { showToast } = useToast();
 
     // 특정 리뷰(parent)의 children에 새 답글을 추가하는 함수
     const addReplyToList = useCallback((newReply) => {
@@ -47,6 +50,7 @@ const GoodsReviewReplyForm = ({ gno, parentGrno, refreshList, isReplying, setRev
         ReviewReplyApi(formData).then((res) => {
             if (res.data?.success) {
                 //alert("답글이 등록되었습니다.");
+                showToast("상품리뷰에 대한 답글이 등록되었습니다.");
                 const savedData = res.data.data;
         
                 // 만약 서버 응답에 parent 정보가 빠져있다면 수동으로 넣어줌 (안전장치)

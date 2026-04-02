@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import styles from "./BoardList.module.css";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { getBoardListApi } from "./BoardApi";
@@ -10,6 +10,7 @@ import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 
 function BoardList() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { user } = useAuth();
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ function BoardList() {
     const [endPage, setEndPage] = useState(1);
     const [sortDirection, setSortDirection] = useState("DESC");
 
-    const size = 10;
+    const [size, setSize] = useState(10);
     const formRef = useRef();
     const params = useRef();
 
@@ -28,11 +29,20 @@ function BoardList() {
         { value: "", label: "전체" },
         { value: "btitle", label: "제목" },
         { value: "bcontent", label: "내용" },
+        { value: "nickname", label: "작성자" },
     ];
 
     const sortOptions = [
         { value: "DESC", label: "최신순" },
+        { value: "ASC", label: "오래된순" },
         { value: "bhit", label: "조회순" },
+    ];
+
+    const sizeOptions = [
+        { value: 10, label: "10" },
+        { value: 20, label: "20" },
+        { value: 50, label: "50" },
+        { value: 100, label: "100" },
     ];
 
     const getList = async (page, searchParams) => {
@@ -66,9 +76,33 @@ function BoardList() {
         setCurrentPage(1); // 정렬 변경 시 1페이지로 이동
     };
 
+    //페이지 불러오는 양 조절
+    const handleSizeChange = (e) => {
+        const newSize = Number(e.target.value);
+        setSize(newSize);
+        setCurrentPage(1); // 사이즈 변경 시 1페이지로 리셋
+    };
+
+    // URL 파라미터 파싱을 위한 로직
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const category = queryParams.get("category");
+        const search = queryParams.get("search");
+
+        if (category && search) {
+            // URL에 검색 조건이 있으면 해당 조건으로 ref 업데이트
+            params.current = { category, search };
+            getList(1, params.current);
+            console.log(new URLSearchParams(location.search).get("category") || "");
+        } else {
+            // 일반 접속 시 기존 로직
+            getList(currentPage, params.current);
+        }
+    }, [location.search]); // URL 변경 감지
+
     useEffect(() => {
         getList(currentPage, params.current);
-    }, [currentPage, sortDirection]);
+    }, [currentPage, sortDirection, size]);
 
     return (
         <div className={styles.neonBoardContainer}>
@@ -93,16 +127,26 @@ function BoardList() {
             </div>
 
             {/* 3. 검색 섹션 (안정적인 레이아웃) */}
-            <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
+            <form ref={formRef} onSubmit={(e) => e.preventDefault()} key={location.search}>
             <div className={styles.searchSection}>
                 <div className={styles.searchForm}>
                     <div className={styles.searchGroup}>
-                        <SearchSelect name="category" options={searchOptions} />
+                        <SearchSelect 
+                            name="category"
+                            options={searchOptions} 
+                            defaultValue={new URLSearchParams(location.search).get("category") || ""}
+                        />
                         <div className={styles.searchInputWrapper}>
                             <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#00f2ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
-                            <input name="search" type="text" placeholder="검색어를 입력하세요" className={styles.mainInput} />
+                            <input 
+                                name="search"
+                                type="text"
+                                placeholder="검색어를 입력하세요"
+                                className={styles.mainInput}
+                                defaultValue={new URLSearchParams(location.search).get("search") || ""}
+                            />
                         </div>
                         <button type="button" className={styles.searchBtn} onClick={searchData}>검색</button>
                     </div>
@@ -114,12 +158,22 @@ function BoardList() {
                 <span className={styles.countText}>
                     총 <span className={styles.highlight}>{totalCount}</span>건
                 </span>
+                <div>
+                <span style={{ marginRight: '10px' }}>
                 <SearchSelect 
                     name="sortDir" 
                     options={sortOptions} 
                     value={sortDirection}
                     onChange={handleSortChange}
                 />
+                </span>
+                <SearchSelect 
+                    name="size" 
+                    options={sizeOptions}
+                    value={size}
+                    onChange={handleSizeChange}
+                />
+                </div>
             </div>
             </form>
 
@@ -139,7 +193,10 @@ function BoardList() {
                         {list.length > 0 ? (
                             list.map((board, index) => (
                                 <tr key={board.bno}>
-                                    <td>{totalCount - (currentPage - 1) * size - index}</td>
+                                    <td>{sortDirection === "ASC" 
+                                        ? (currentPage - 1) * size + index + 1  // 오래된 순: 1, 2, 3... 순차적 증가
+                                        : totalCount - (currentPage - 1) * size - index // 최신순: 100, 99, 98... 순차적 감소
+                                    }</td>
                                     <td className={styles.textStart}>
                                         <NavLink to={`/Community/BoardView/${board.bno}`} className={styles.neonLink}>
                                             {board.btitle}

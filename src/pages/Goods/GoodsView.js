@@ -110,7 +110,6 @@ function GoodsView() {
             return;
         }
         toggleBookmarkApi(user.id, gno, "GOODS").then((res) => {
-            console.log(res);
             // 기존 다른 사람이 만든 북마크 사용
             setIsBookmarked(res.data); 
         });
@@ -189,7 +188,7 @@ function GoodsView() {
                 <span className={styles.priceVal}>{goods.price?.toLocaleString()}원</span>
                 {/* 잔여 재고 표시 */}
                 <span className={styles.stockInfo}>
-                (남은 수량: <strong>{goods.stockCnt}</strong>개)
+                (남은 수량: <strong>{goods.stockCnt?.toLocaleString()}</strong>개)
                 </span>
                 </div>
 

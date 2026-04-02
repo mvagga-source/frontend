@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import styles from "./GoodsReviewSaveForm.module.css";
 import { SaveBtn } from "../../../../../components/button/Button";
 import { ReviewWriteApi } from "../../../GoodsApi";
+import { useToast } from "../../../../../context/ToastMsg/ToastContext";
 
 function GoodsReviewSaveForm({ gno, refreshList, setSortType }) {
     const [newReview, setNewReview] = useState("");
     const [rating, setRating] = useState(5.0); // 별점 상태 추가
     const [selectedFile, setSelectedFile] = useState(null); // 실제 파일 객체
     const [previewImg, setPreviewImg] = useState(null);    // 미리보기용 URL
+    const { showToast } = useToast();
 
     // 파일 선택 핸들러 추가
     const handleFileChange = (e) => {
@@ -69,6 +71,7 @@ function GoodsReviewSaveForm({ gno, refreshList, setSortType }) {
         // 등록
         ReviewWriteApi(formData).then((res) => {
             if (res.data?.success) {
+                showToast("상품 리뷰가 성공적으로 등록되었습니다.");
                 setNewReview(""); // 리뷰 내용 취소
                 setRating(5); // 별점 초기화
                 handleRemoveFile();

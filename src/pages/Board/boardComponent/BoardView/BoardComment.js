@@ -5,11 +5,14 @@ import { CancelBtn, SaveBtn } from "../../../../components/button/Button";
 import { getCommentListApi, CommentWriteApi, CommentUpdateApi, CommentDeleteApi } from "../../BoardApi";
 import { useAuth } from "../../../../context/AuthContext";
 import BoardCommentSaveForm from "./BoardComment/BoardCommentSaveForm";
+import dayjs from "dayjs";
+import { useToast } from "../../../../context/ToastMsg/ToastContext";
 
 function BoardComment({ bno }) {
   const { user } = useAuth(); // 로그인된 사용자 정보 가져오기
   const [comments, setComments] = useState([]);    //수정예정
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   // 답글 관련 상태
   const [editingCno, setEditingCno] = useState(null); // 수정 중인 댓글 번호
@@ -42,24 +45,24 @@ function BoardComment({ bno }) {
     getCommentListApi(bno, 10, lastCno)
     .then((res) => {
       if (res.data?.success) {
-      const newComments = res.data.list || [];
-      const totalCount = res.data.totalCount || 0; // 댓글 전체 개수
-      const serverLastGroup = res.data.lastGroup || 0; // 다음 기준 그룹
-      const isLastPage = res.data.isLast; // 마지막 페이지 여부
+        const newComments = res.data.list || [];
+        const totalCount = res.data.totalCount || 0; // 댓글 전체 개수
+        const serverLastGroup = res.data.lastGroup || 0; // 다음 기준 그룹
+        const isLastPage = res.data.isLast; // 마지막 페이지 여부
 
-      if (append) {
-        setComments((prev) => [...prev, ...newComments]);
-      } else {
-        setComments(newComments);
+        if (append) {
+          setComments((prev) => [...prev, ...newComments]);
+        } else {
+          setComments(newComments);
+        }
+
+        // 2. 서버에서 받은 다음 그룹 번호와 마지막 여부 저장
+        setLastGroup(serverLastGroup);
+        setHasMore(!isLastPage);
+        
+        // (선택사항) 전체 개수 상태 업데이트
+        setTotalCount(totalCount);
       }
-
-      // 2. 서버에서 받은 다음 그룹 번호와 마지막 여부 저장
-      setLastGroup(serverLastGroup);
-      setHasMore(!isLastPage);
-      
-      // (선택사항) 전체 개수 상태 업데이트
-      setTotalCount(totalCount); 
-    }
     }).finally(() => {
       setLoading(false);
     });
@@ -85,12 +88,41 @@ function BoardComment({ bno }) {
     formData.append("cstep", parentComment.cstep);
     formData.append("cindent", parentComment.cindent);
 
-    const res = await CommentWriteApi(formData);
-    if (res.data?.success) {
-      setReplyingTo(null);
-      setReplyContent("");
-      getList(0, false); // 새로고침
-    }
+    CommentWriteApi(formData)
+    .then((res) => {
+      if (res.data?.success) {
+        showToast("게시판 답글이 성공적으로 등록되었습니다.");
+        setReplyingTo(null);
+        setReplyContent("");
+        const newReply = res.data.comment;
+
+        if (newReply) {
+          setComments((prev) => {
+            // 새 답글이 들어갈 위치 찾기: 
+            // 같은 그룹(cgroup) 내에서 본인보다 cstep이 큰 첫 번째 댓글의 인덱스를 찾기
+            const targetIndex = prev.findIndex(
+              (c) => c.cgroup === newReply.cgroup && c.cstep > parentComment.cstep
+            );
+
+            if (targetIndex === -1) {
+              // 만약 본인이 그룹의 마지막이라면, 같은 그룹의 끝에 붙임
+              const lastIndexInGroup = [...prev].reverse().findIndex(c => c.cgroup === newReply.cgroup);
+              const actualIndex = lastIndexInGroup !== -1 ? prev.length - lastIndexInGroup : prev.length;
+              
+              const newArr = [...prev];
+              newArr.splice(actualIndex, 0, newReply);
+              return newArr;
+            } else {
+              // 중간에 끼워넣기
+              const newArr = [...prev];
+              newArr.splice(targetIndex, 0, newReply);
+              return newArr;
+            }
+          });
+        }
+        //getList(0, false); // 새로고침
+      }
+    });
   };
 
   // 수정 저장
@@ -102,6 +134,7 @@ function BoardComment({ bno }) {
     .then((res) => {
       if (res.data?.success) {
         //alert("수정되었습니다.");
+        showToast("게시판 댓글이 성공적으로 수정되었습니다.");
         setEditingCno(null); // 수정 모드 종료
         //더보기 방식은 길어질 경우 사용자 불편이 있을 수 있어서
         const updatedComment = res.data.comment;
@@ -122,6 +155,7 @@ function BoardComment({ bno }) {
     .then((res) => {
       if (res.data?.success) {
         //alert("삭제되었습니다.");
+        showToast("게시판 댓글이 삭제되었습니다.");
         //더보기 방식은 길어질 경우 사용자 불편이 있을 수 있어서
         setComments((prev) =>
           prev.map((c) => (c.cno === cno ? { ...c, delYn: 'y' } : c))
@@ -177,7 +211,7 @@ function BoardComment({ bno }) {
                 {/* 1. 작성자 정보 */}
                 <div className={styles.commentInfo}>
                   <span className={styles.commentAuthor}>{c.member?.nickname}</span>
-                  <span className={styles.commentDate}>{new Date(c.cdate).toLocaleString()}</span>
+                  <span className={styles.commentDate}>{dayjs(c.cdate).format("YYYY-MM-DD HH:mm:ss")}</span>
                 </div>
 
                 {/* 2. 내용 또는 수정창 */}

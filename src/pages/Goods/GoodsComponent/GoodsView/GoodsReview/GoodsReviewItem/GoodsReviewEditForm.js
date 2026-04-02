@@ -1,12 +1,14 @@
 import React, { useState, useCallback } from "react";
 import styles from "./GoodsReviewEditForm.module.css";
 import { ReviewUpdateApi } from "../../../../GoodsApi";
+import { useToast } from "../../../../../../context/ToastMsg/ToastContext";
 
 export default function ReviewEditForm({ r, setEditingId, setReviews, refreshList }) {
   const [newContent, setNewContent] = useState(r.grcontents);
   const [rating, setRating] = useState(r.rating);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImg, setPreviewImg] = useState(r.grImg ? `${process.env.REACT_APP_IMG_URL}${r.grImg}` : null);
+  const { showToast } = useToast();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -50,6 +52,7 @@ export default function ReviewEditForm({ r, setEditingId, setReviews, refreshLis
 
     ReviewUpdateApi(formData).then((res) => {
         if (res.data?.success) {
+          showToast("상품 리뷰가 성공적으로 수정되었습니다.");
           setEditingId(null);
           updateReview(res.data.data);
           //refreshList();
