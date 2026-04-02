@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { formatDate, formatDateTime } from "./ACommon";
 
-import { getVideosApi, deleteVideosApi } from "../Video/MVideoApi";
+import { getVideoPageApi, deleteVideosApi } from "../Video/MVideoApi";
 
 import AVideoList from "./AVideoList";
 import AVideoInput from "./AVideoInput";
@@ -38,7 +38,7 @@ function AVideo() {
  
     try {
       // 비디오 리스트
-      const videoRes = await getVideosApi(page, pageSize, sortType, search, searchType,"");
+      const videoRes = await getVideoPageApi(page, pageSize, sortType, search, searchType,"");
       const vData = await videoRes.data.content;
       
       if (vData) {
