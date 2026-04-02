@@ -1,10 +1,13 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
 import styles from './Toast.module.css';
+import { useAuth } from '../AuthContext';
+import { postSendApi } from '../../components/SidebarComponent/SidebarNotificationApi';
 
 const ToastContext = createContext();
 
 export const ToastProvider = ({ children }) => {
     const [toasts, setToasts] = useState([]);
+    const { user } = useAuth(); // 로그인 유저 정보 가져오기
 
     const removeToast = useCallback((id) => {
         setToasts((prev) => prev.filter((toast) => toast.id !== id));
@@ -25,6 +28,16 @@ export const ToastProvider = ({ children }) => {
 
         setToasts((prev) => [...prev, { id, title, message, date: dateString, duration }]);
 
+        // 1. 서버에 알림 저장 요청 (memberId가 있을 때만 실행)
+        if (user?.id) {
+            postSendApi({
+                memberId: user?.id,
+                senderId: user?.id,
+                nocontent: message,
+                type: title,
+                url: window.location.pathname // 현재 페이지 경로 저장
+            });
+        }
         setTimeout(() => {
             removeToast(id);
         }, duration);

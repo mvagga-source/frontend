@@ -1,0 +1,110 @@
+.wrapper {
+    position: relative; /* 패널 위치 기준점 */
+    display: inline-block;
+}
+
+/* 알림 버튼 내부의 숫자 배지 */
+.countBadge {
+    background: #ff7a8a;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 10px;
+    margin-left: 5px;
+    font-weight: 800;
+}
+
+/* 클릭 시 버튼 강조 */
+.active {
+    border-color: var(--neon-blue) !important;
+    color: var(--neon-blue) !important;
+}
+
+/* 핵심: 다른 요소를 밀어내지 않는 절대 위치 패널 */
+.absolutePanel {
+    position: absolute;
+    top: 40px; /* 버튼 바로 아래 위치 */
+    right: -120px;
+    width: 280px;
+    max-height: 400px;
+    background: #121926;
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.panelHeader {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--neon-blue);
+    font-weight: 700;
+}
+
+.panelHeader button {
+    background: none;
+    border: none;
+    color: #ff7a8a;
+    cursor: pointer;
+}
+
+.scrollArea {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.item:hover { background: rgba(0, 242, 255, 0.05); }
+.unread { border-left: 3px solid var(--neon-blue); background: rgba(0, 242, 255, 0.02); }
+
+.content {
+    margin: 0 0 5px 0;
+    font-size: 12px;
+    color: rgba(232, 244, 248, 0.85);
+    line-height: 1.4;
+}
+
+.time { font-size: 10px; color: rgba(232, 244, 248, 0.3); }
+
+.moreBtn {
+    width: 100%;
+    padding: 10px;
+    background: none;
+    border: none;
+    color: rgba(232, 244, 248, 0.4);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: rgba(232, 244, 248, 0.3);
+    font-size: 12px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

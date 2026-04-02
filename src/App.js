@@ -85,8 +85,8 @@ function App() {
     setNavigate(navigate);
   }, [navigate]);
   return (
-    <ToastProvider>
     <AuthProvider>
+      <ToastProvider>
       {/* <BrowserRouter> */}
         <Routes>
           <Route path="/" element={<Layout><Home/></Layout>}/>
@@ -167,8 +167,8 @@ function App() {
           <Route path="*" element={<NotFound />} />{/* 404페이지 못 찾음 */}
         </Routes>
       {/* </BrowserRouter> */}
-    </AuthProvider>
     </ToastProvider>
+    </AuthProvider>
   );
 }
 

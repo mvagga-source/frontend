@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Sidebar.css";
 import SidebarNotice from "./SidebarComponent/SidebarNotice";
+import SidebarNotification from "./SidebarComponent/SidebarNotification";
 
 const AUDITION_LIST = [
   { id: 1, title: "1차 오디션", status: "ended",    competitionDate: "2026.01.15", voteStart: "2026.01.15", voteEnd: "2026.01.20", resultDate: "2026.01.21" },
@@ -64,7 +65,9 @@ function Sidebar({ isOpen, onClose }) {
             </div>
             <div className="sb-user-btns">
               <Link to="/MyMain" className="sb-user-btn" onClick={onClose}>마이페이지</Link>
-              <button className="sb-user-btn" onClick={onClose}>🔔 알림</button>
+              {/* <button className="sb-user-btn" onClick={onClose}>🔔 알림</button> */}
+              {/* 🔔 기존 버튼 대신 컴포넌트 호출 */}
+              <SidebarNotification />
               {user.id === "admin" &&
                 <a href="http://localhost:8181/admin/main">
                   <button className="sb-user-btn">관리자</button>
