@@ -66,7 +66,9 @@ function Sidebar({ isOpen, onClose }) {
               <Link to="/MyMain" className="sb-user-btn" onClick={onClose}>마이페이지</Link>
               <button className="sb-user-btn" onClick={onClose}>🔔 알림</button>
               {user.id === "admin" &&
-                <Link to="/AdminMain"><button className="sb-user-btn">관리자</button></Link>
+                <a href="http://localhost:8181/admin/main">
+                  <button className="sb-user-btn">관리자</button>
+                </a>
               }
               <button className="sb-user-btn sb-user-btn-logout" onClick={handleLogout}>로그아웃</button>
             </div>
