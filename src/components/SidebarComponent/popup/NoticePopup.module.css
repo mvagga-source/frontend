@@ -138,7 +138,7 @@
 }
 
 .close {
-  color: #ff7a8a; /* 닫기 강조 */
+  color: #f7e0e3; /* 닫기 강조 */
 }
 
 /* ── 라이브러리 커스텀 ── */
@@ -150,4 +150,33 @@
 
 :global(.swiper-pagination-bullet-active) {
   background: #00f2ff !important;
+}
+/* 라이브러리 커스텀: 화살표 숨기기 (혹시 모를 잔상 제거) */
+:global(.swiper-button-next), 
+:global(.swiper-button-prev) {
+  display: none !important;
+}
+
+/* 동그란 페이지네이션 위치 조정 (내용과 겹치지 않게) */
+:global(.swiper-pagination) {
+  bottom: 10px !important;
+}
+
+:global(.swiper-pagination-bullet) {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: #00f2ff !important;
+  width: 20px; /* 활성화된 버튼을 길게 만들면 더 세련돼 보입니다 */
+  border-radius: 4px;
+}
+
+/* 텍스트 영역 높이 조절 (하단 pagination 공간 확보) */
+.textSection {
+  padding: 24px 24px 40px 24px; /* 아래쪽 패딩 추가 */
+  display: flex;
+  flex-direction: column;
+  height: 290px; 
+  background: rgba(255, 255, 255, 0.02);
 }

@@ -31,15 +31,18 @@ const SidebarNotice = ({ onClose }) => {
   return (
     <>
       {/* activeIdx가 null이면 자동팝업 모드, 숫자면 해당 슬라이드 시작 모드 */}
-      {/* <NoticePopup 
-        startIndex={activeIdx} 
-        onClose={() => setActiveIdx(null)} 
-      /> */}
+      {activeIdx !== null && (
+        <NoticePopup
+          startIndex={activeIdx}
+          notices={notices}
+          onClose={() => setActiveIdx(null)}
+        />
+      )}
 
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
           <p className={styles.sectionTitle}>공지사항</p>
-          <Link to="/Notice" className={styles.moreBtn} onClick={onClose}>MORE +</Link>
+          {/* <Link to="/Notice" className={styles.moreBtn} onClick={onClose}>MORE +</Link> */}
         </div>
 
         {loading ? (
