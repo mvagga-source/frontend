@@ -1,37 +1,58 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { getMyOrderListApi } from "./MyMainApi";
+import { getMyOrderPageApi } from "./MyMainApi";
 import GoodsReviewModal from "../Goods/popup/GoodsReviewModal";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
+import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css";
 
 function MyPurchase () {
 
+  const date = new Date();
+  const today = formatDate(date);  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
 
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);  
   const [list, setList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);  
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const size = 10;
+
+  const {user} = useAuth();
+  const params = useRef({
+    memberId : user.id, 
+    page : page,
+    size: size,
+    startDate:"",
+    endDate:"",
+  });  
 
   const isEmpty = list.length === 0;
 
-  const getMyOrderList = async() => {
+  const getMyOrderList = async(searchParams) => {
     
       try {
-          const res = await getMyOrderListApi(page, size);
+          const res = await getMyOrderPageApi(
+            {
+              ...searchParams,
+              startDate : startDate || today, 
+              endDate :endDate || today
+            }
+          );
 
           if(res.data && res.data.success) {
-            console.log(res.data);
+
             const { list, maxPage, startPage, endPage, totalCount } = res.data; // AjaxResponse 구조 확인
 
-            console.log("list : ",list);
+            // console.log("list : ",list);
             // console.log("maxPage : ",maxPage);
             // console.log("startPage : ",startPage);
             // console.log("endPage : ",endPage);
@@ -41,7 +62,7 @@ function MyPurchase () {
             setTotalPages(maxPage || 1);
             setStartPage(startPage || 1);
             setEndPage(endPage || 1);
-            setTotalCount(totalCount || 0);            
+            setTotalCount(totalCount || 0); 
           }
           
         } catch(e){
@@ -50,31 +71,24 @@ function MyPurchase () {
   }
 
   useEffect(()=>{
-    getMyOrderList();
+    getMyOrderList(params.current);
   },[]);
 
-  // const handleAllCheck =(e)=>{
-  //   if(e.target.checked) {
-  //     const allIds = list.map((v)=>v.gono);
-  //     setSelectedIds(allIds);
-  //   }else{
-  //     setSelectedIds([]);
-  //   }
-  // }
-
-  // const handleCheck = (gono) => {
-
-  //   setSelectedIds((prev) =>
-  //     prev.includes(gono)
-  //       ? prev.filter((item) => item !== gono) // 제거
-  //       : [...prev, gono] // 추가
-  //   );
-  // };  
+  const handleSearch = () => {
+    
+    if(startDate > endDate || !startDate || !endDate) {
+      alert("날짜 입력이 잘못되었습니다. 확인 바랍니다.");
+      return;
+    }
+    getMyOrderList(params.current);
+  } 
 
   return (
     <>
     <div className="my-form-wrap">
-
+      <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
+      <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
+      <button onClick={handleSearch}>검색</button>
     </div>
 
     <table className="my-table">
@@ -94,12 +108,6 @@ function MyPurchase () {
       </colgroup>
       <thead>
         <tr>
-          {/* <th>
-            <input type="checkbox"
-                  onChange={handleAllCheck}
-                  checked={selectedIds.length === list.length}
-            />
-          </th> */}
           <th>순번</th>
           <th>주문일자</th>
           <th>주문번호</th>
@@ -121,16 +129,9 @@ function MyPurchase () {
                 데이터가 없습니다.
               </td>
             </tr>
-
         ) : 
         list.map((l, index) => (
           <tr key={l.gono}>
-            {/* <td style={{textAlign:"center"}}>
-              <input type="checkbox"
-                    checked={selectedIds.includes(l.gono)}
-                    onChange={()=>handleCheck(l.gono)}              
-              />
-            </td> */}
             <td style={{textAlign:"center"}}>{totalCount - index}</td>
             <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>            
             <td style={{textAlign:"center"}}>{l.orderId}</td>
@@ -156,7 +157,6 @@ function MyPurchase () {
     {/* 팝업 렌더링 */}
     {isModalOpen && (
         <GoodsReviewModal 
-            //gno={gno}
             gono={selectedIds} // 실제로는 주문 목록에서 가져온 번호 전달
             onClose={() => setIsModalOpen(false)}
         />

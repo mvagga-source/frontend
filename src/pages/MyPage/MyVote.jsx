@@ -1,7 +1,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { getMyVotePageApi, deleteMyVoteApi } from "./MyMainApi";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
+import { useAuth } from "../../context/AuthContext";
 
 function MyVote () {
 
@@ -15,6 +17,8 @@ function MyVote () {
   const size = 10;
 
   const isEmpty = Object.keys(grouped).length === 0;
+
+  const {user} = useAuth();
 
   const params = useRef({
     startDate:"",
@@ -34,15 +38,9 @@ function MyVote () {
 
           if(res.data && res.data.success) {
 
-            console.log("getMyVotePageApi : ",res.data.data); 
+            // console.log("getMyVotePageApi : ",res.data.data); 
 
             setGrouped(res.data.data.reduce((acc, cur) => {
-              //   if (!acc[cur.VOTE_DATE]) {
-              //     acc[cur.VOTE_DATE] = [];
-              //   }
-              //   acc[cur.VOTE_DATE].push(cur);
-              //     return acc;
-              // }, {})
 
                 const date = cur.VOTE_DATE;
                 const voitId = cur.VOTEID;   
@@ -111,6 +109,12 @@ function MyVote () {
     delteMyVote(date, voteId);
   }
 
+  // 참가자 프로필 이동  
+  const navigate = useNavigate();
+  const goToProfile = (profileId) => {
+    navigate(`/Audition/profile/${profileId}`);
+  };
+
   return (
     <>
     <div className="my-form-wrap">
@@ -158,13 +162,16 @@ function MyVote () {
 
                   {Object.keys(grouped[date][voteId]).map((round) => (
                       <div key={round} className="my-idol-wrap">
-                        <div className="my-iodl-round">{round}차 </div>
-                        {grouped[date][voteId][round].map(idol => (
-                            <ul className={idol.STATUS === "eliminated" ? "my-ended-all" : "my-ongoing-all"}>
+                        <div className="my-iodl-round">{round}차 경연</div>
+                        {grouped[date][voteId][round].map(idol => ( 
+
+                            <ul className={`av-card ${idol.STATUS === "eliminated" ? "voted-dim" : "voted-selected"}`} 
+                                onClick={() => goToProfile(idol.PROFILEID)}
+                            >
                               <li>
                                 <img 
-                                  key={idol.IDOL_ID}
-                                  src={`http://localhost:8181/upload/${idol.MAIN_IMG_URL}`}
+                                  key={idol.PROFILEID}
+                                  src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/upload/action profile/${idol.MAIN_IMG_URL}`}
                                   style={{
                                           filter: idol.STATUS === "eliminated" ? "grayscale(100%)" : "none"
                                         }}

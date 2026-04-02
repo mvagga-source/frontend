@@ -14,12 +14,22 @@ function MyBookmark () {
 
   const {user} = useAuth();
 
+  const date = new Date();
+  const today = formatDate(date);  
+
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);  
   const [pageType, setPageType] = useState("");
   const [events, setEvents] = useState([]);
-  const [totalElements, setTotalElements] = useState(0);
-  const [page, setPage] = useState(0);  
-  const pageSize = 10;
 
+  const params = useRef({
+    memberId:user.id,
+    pageType:"",
+    startDate:"",
+    endDate:"",
+  });  
+
+  //건수 확인
   const isEmpty = events.length === 0;
 
   const pageTypes = [
@@ -29,12 +39,17 @@ function MyBookmark () {
     {value : "GOODS", label : "아이돌 굿즈"},
   ]
 
-  const loadEvents = async (pageType) => {
+  const loadEvents = async (searchParams) => {
 
     try {
-        const res = await getMyBookmarkApi(user.id, pageType);
-
-        console.log("res : ",res.data);
+        const res = await getMyBookmarkApi(
+            {
+              ...searchParams,
+              pageType: pageType,
+              startDate : startDate || today, 
+              endDate :endDate || today
+            }
+        );
 
         if(res.data || res.data.success)
           setEvents(res.data.data);
@@ -60,8 +75,17 @@ function MyBookmark () {
   },[]);
 
   useEffect (() => {
-    loadEvents(pageType);
+    loadEvents(params.current);
   },[pageType]);  
+
+  const handleSearch = () => {
+    
+    if(startDate > endDate || !startDate || !endDate) {
+      alert("날짜 입력이 잘못되었습니다. 확인 바랍니다.");
+      return;
+    }
+    loadEvents(params.current);
+  }  
 
   const handelDelete = (id) => {
     
@@ -79,6 +103,11 @@ function MyBookmark () {
           <option key={v.value} value={v.value}>{v.label}</option>
         ))}
       </select>
+
+      <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
+      <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
+      <button onClick={handleSearch}>검색</button>
+
     </div>
 
     <table className="my-table">
@@ -127,7 +156,13 @@ function MyBookmark () {
                 <td style={{textAlign:"center"}}>{events.length - index}</td>
                 <td style={{textAlign:"center"}}>{formatDateTime(event.CREATEDAT)}</td>
                 <td style={{textAlign:"center"}}>{pageTypes.find(v => v.value === event.PAGETYPE)?.label ||"-" }</td>
-                <td style={{textAlign:"left"}}>{event.NAME}</td>
+                <td style={{textAlign:"left"}}>
+                {
+                  event.PAGETYPE === 'GOODS'
+                    ? <img src={event.NAME} style={{width:"80px",height:"80px"}}/>
+                    : event.NAME
+                }
+                </td>
                 <td style={{textAlign:"left"}}>{event.TITLE}</td>
                 <td style={{textAlign:"center"}}>
                  {path &&

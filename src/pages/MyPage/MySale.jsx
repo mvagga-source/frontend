@@ -1,8 +1,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getGoodsListApi, GoodsDeleteApi } from "../Goods/GoodsApi";
+import { GoodsDeleteApi } from "../Goods/GoodsApi";
+import { getMySalePageApi } from "./MyMainApi";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
+import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css"
 
@@ -11,9 +13,11 @@ function MySale () {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const formRef = useRef();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const date = new Date();
+  const today = formatDate(date);  
+
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);  
 
   const [list, setList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -21,22 +25,29 @@ function MySale () {
   const [totalPages, setTotalPages] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);  
-  const [page, setPage] = useState(1);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");  
+  const [page, setPage] = useState();
   const [sortDirection, setSortDirection] = useState("DESC"); // 정렬 상태  
   const size = 10;
 
+  const {user} = useAuth();
+  const params = useRef({
+    memberId : user.id, 
+    page : page,
+    size: size,
+    startDate:"",
+    endDate:"",
+  });    
+
   const isEmpty = list.length === 0;
 
-  const getGoodsList = async (page, searchParams) => {
+  const getGoodsList = async (searchParams) => {
         try {
-            const res = await getGoodsListApi(page, size, {
-                ...searchParams,
-                minPrice: minPrice || 0,
-                maxPrice: maxPrice || 0,
-                sortDir: sortDirection, // 현재 정렬 상태 포함
-                view: "ME"  
+            const res = await getMySalePageApi(
+            {
+              ...searchParams,
+              startDate : startDate || today, 
+              endDate :endDate || today,
+              sortDir: sortDirection, // 현재 정렬 상태 포함
             });
             
             if (res.data && res.data.success) {
@@ -53,31 +64,7 @@ function MySale () {
         }
   };  
 
-  useEffect(()=>{
-    getGoodsList();
-  },[]);  
-
-  // const handleAllCheck =(e)=>{
-  //   if(e.target.checked) {
-  //     const allIds = list.map((v)=>v.gono);
-  //     setSelectedIds(allIds);
-  //   }else{
-  //     setSelectedIds([]);
-  //   }
-  // }
-
-  // const handleCheck = (gono) => {
-
-  //   setSelectedIds((prev) =>
-  //     prev.includes(gono)
-  //       ? prev.filter((item) => item !== gono) // 제거
-  //       : [...prev, gono] // 추가
-  //   );
-  // };  
-
-  const handleDelete = async(gno) =>{
-
-    if (!window.confirm("상품 정보를 삭제하시겠습니까?")) return;
+  const GoodsDelete = async(gno) =>{
 
     try{
       const formData = new FormData();
@@ -97,21 +84,44 @@ function MySale () {
     }catch(error){
       console.error("삭제 실패 : ",error);
     }
+  }
 
+  useEffect(()=>{
+    getGoodsList();
+  },[]);  
+
+  const handleSearch = () => {
+    
+    if(startDate > endDate || !startDate || !endDate) {
+      alert("날짜 입력이 잘못되었습니다. 확인 바랍니다.");
+      return;
+    }
+    getGoodsList(params.current);
+  }  
+
+  const handleDelete = (gno) => {
+    if (!window.confirm("상품 정보를 삭제하시겠습니까?")) return;
+    GoodsDelete(gno)
   }
 
   return (
     
     <>
     <div className="my-form-wrap">
-        <button className="co-button-status co-ongoing-all" 
-                onClick={()=>{
-                  navigate("/GoodsWrite",{
-                      state: {
-                        from: location.pathname
-                  }});
-                }}
-        >상품등록</button>
+      <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
+      <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
+      <button onClick={handleSearch}>등록일자 검색</button>
+
+      <span style={{margin:"0 10px 0 15px"}}>/</span>
+
+      <button className="co-button-status co-ongoing-all" 
+              onClick={()=>{
+                navigate("/GoodsWrite",{
+                    state: {
+                      from: location.pathname
+                }});
+              }}
+      >상품등록</button>
     </div>
 
     <table className="my-table">
@@ -128,12 +138,6 @@ function MySale () {
       </colgroup>
       <thead>
         <tr>
-          {/* <th>
-            <input type="checkbox"
-                  onChange={handleAllCheck}
-                  checked={selectedIds.length === list.length}
-            />
-          </th> */}
           <th>순번</th>
           <th>등록일자</th>
           <th>이미지</th>          
@@ -151,18 +155,9 @@ function MySale () {
                 데이터가 없습니다.
               </td>
             </tr>
-
         ) :
         list.map((l, index) => (
           <tr key={l.gno}>
-            {/* 
-            <td style={{textAlign:"center"}}>
-              <input type="checkbox"
-                    checked={selectedIds.includes(l.gono)}
-                    onChange={()=>handleCheck(l.gono)}              
-              />
-            </td>
-            */}
             <td style={{textAlign:"center"}}>{totalCount - index}</td>
             <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>
             <td style={{textAlign:"center"}}><img src={l.gimg} style={{height:"90px"}}/></td>            

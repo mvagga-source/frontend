@@ -212,7 +212,7 @@
 
 
 .my-form-wrap select{
-  padding:8px 35px 8px 12px;
+  padding:9px 35px 9px 12px;
   border:1px solid rgba(0, 242, 255, 0.2);
   background: #1a253bff;
   color:#fff;
@@ -239,6 +239,35 @@
   outline: none;
 }
 
+.av-card {
+  background: rgba(0,242,255,0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 18px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  position: relative;
+}
+
+/* 통과자 */
+.av-card.voted-selected {
+  border-color: #ffd700;
+  background: rgba(255,215,0,0.08);
+  box-shadow: 0 0 14px rgba(255,215,0,0.2);
+}
+
+/* 탈락자 */
+.av-card.voted-dim {
+  opacity: 0.25;
+  filter: grayscale(40%);
+  cursor: default;
+  pointer-events: none;
+}
+
 .my-idol-wrap{
   display: flex;
   justify-content: center;
@@ -260,8 +289,8 @@
 }
 
 .my-idol-wrap ul li:last-child{
-  height:25px;
-  line-height: 25px;
+  height:20px;
+  line-height: 15px;
   align-items: center;
   justify-content: center;
 }
@@ -273,7 +302,8 @@
   object-fit: cover;
   display: block;
   margin: 0 auto;
-  border-top-left-radius:10px ;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .my-iodl-round {

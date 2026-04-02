@@ -26,9 +26,16 @@ export const deleteBookmarkApi = (id) => {
 }
 
 // 구매내역 (리스트 가져오기)
-export const getMyOrderListApi = (page = 1, size = 10) => {
-  return axiosInstance.get(`/goodsOrders/getMyOrderList`, {
-    params: { page, size }
+export const getMyOrderPageApi = (searchParams={}) => {
+  return axiosInstance.get(`/mypage/getMyOrderPage`, {
+    params: { ...searchParams }
+  });
+};
+
+// 판매내역 (리스트 가져오기)
+export const getMySalePageApi = (searchParams={}) => {
+  return axiosInstance.get(`/mypage/getMySalePage`, {
+    params: { ...searchParams }
   });
 };
 
