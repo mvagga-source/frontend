@@ -159,7 +159,7 @@ function MySale () {
           <tr key={l.gno}>
             <td style={{textAlign:"center"}}>{totalCount - index}</td>
             <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>
-            <td style={{textAlign:"center"}}><img src={l.gimg} style={{height:"90px"}}/></td>            
+            <td style={{textAlign:"center"}}><img src={`${process.env.REACT_APP_IMG_URL}${l.gimg}`} style={{height:"90px"}}/></td>            
             <td style={{textAlign:"left"}}>{l.gname}</td>
             <td style={{textAlign:"right"}}>{Number(l.price?? 0).toLocaleString()} 원</td>
             <td style={{textAlign:"center"}}>{Number(l.stockCnt?? 0).toLocaleString()}</td>            
