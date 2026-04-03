@@ -122,3 +122,34 @@
     border-radius: 8px;
     cursor: pointer;
 }
+
+/* scrollBody 영역에만 적용되는 커스텀 스크롤바 */
+
+/* 1. 스크롤바 전체 너비 설정 */
+.scrollBody::-webkit-scrollbar {
+    width: 6px;  /* 스크롤바 두께를 얇게 */
+}
+
+/* 2. 스크롤바 트랙(배경) */
+.scrollBody::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02); /* 배경은 거의 투명하게 */
+    border-radius: 10px;
+}
+
+/* 3. 스크롤바 손잡이(Thumb) */
+.scrollBody::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 255, 0.2); /* 메인 테마색인 Cyan에 투명도 부여 */
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+/* 4. 마우스 호버 시 손잡이 색상 변경 */
+.scrollBody::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 255, 0.5); /* 마우스를 올리면 조금 더 진하게 */
+}
+
+/* (선택 사항) 파이어폭스 대응 */
+.scrollBody {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 255, 0.2) rgba(255, 255, 255, 0.02);
+}
