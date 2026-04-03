@@ -9,33 +9,77 @@ export default function Support() {
   const navigate = useNavigate();
   const { user } = useAuth();
   
+  // 상태 관리
+  const [isAdOpen, setIsAdOpen] = useState(false);
+  const [isMvOpen, setIsMvOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [idol, setIdol] = useState(null);
-  const [supportData, setSupportData] = useState({
+  
+  // 서포트 관련 통합 상태
+  const [supportInfo, setSupportInfo] = useState({
+    title: "",
+    //개인광고
+    currPrice: 0,
+    goalPrice: 5000000,
     totalAmount: 0,
-    targetAmount: 5000000, // 임시 목표액 (500만원)
-    logs: [
-      { id: 1, name: "재미니왕자", amount: 10000, date: "2026-03-25" },
-      { id: 2, name: "나냥이데뷔해", amount: 5000, date: "2026-03-26" },
-    ]
+    targetAmount: 5000000,
+    //mv용
+    mvCurrPrice: 0,  // 초기값 0
+    mvGoalPrice: 100000000,   // 초기값 1 (0으로 나누기 방지)
+    logs: []
   });
 
+
   useEffect(() => {
-    // 1. 연습생 기본 정보 가져오기
     const fetchSupportInfo = async () => {
       try {
-        const response = await axiosInstance.get(`/idolProfile/${id}`);
-        setIdol(response.data.profile || response.data);
+        setLoading(true);
+        // API 병렬 호출
+        const [projectRes, logsRes, idolRes] = await Promise.all([
+          axiosInstance.get(`/support/project/${id}`), // /api 제거
+          axiosInstance.get(`/support/logs/${id}`),    // /api 제거
+          axiosInstance.get(`/idolProfile/${id}`)
+        ]);
+
+        const idolData = idolRes.data.profile || idolRes.data;
+        setIdol(idolData);
+
+        // API 응답 구조에 맞게 상태 업데이트
+        setSupportInfo({
+          title: projectRes.data.title || "서포트 프로젝트",
+          currPrice: projectRes.data.currPrice || 0,
+          goalPrice: projectRes.data.goalPrice || 5000000,
+          totalAmount: projectRes.data.currPrice || 0,
+          targetAmount: projectRes.data.goalPrice || 5000000,
+
+          // [수정] 백엔드에 값이 없을 경우를 대비해 테스트용 수치 입력
+          mvCurrPrice: projectRes.data.mvCurrPrice || 3521000, // 0 대신 테스트 값
+          mvGoalPrice: projectRes.data.mvGoalPrice || 10000000, // 0 대신 목표치 1,000만 원
+          
+          logs: logsRes.data || []
+        });
+
       } catch (err) {
         console.error("데이터 로딩 실패", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchSupportInfo();
   }, [id]);
 
-  if (!idol) return <div className="loading">로딩 중...</div>;
+  // 퍼센트 계산 함수
+  const calculatePercent = (current, target) => {
+    if (!target || target === 0) return "0.000";
+    const percent = (current / target) * 100;
+    return percent.toFixed(3);
+  };
 
-  // 퍼센트 계산
-  const percentage = Math.min((supportData.totalAmount / supportData.targetAmount) * 100, 100);
+  if (loading) return <div className="loading">데이터를 불러오는 중...</div>;
+  if (!idol) return <div className="loading">데이터를 찾을 수 없습니다.</div>;
+
+  const adPercentage = calculatePercent(supportInfo.currPrice, supportInfo.goalPrice);
+ const mvPercentage = calculatePercent(supportInfo.mvCurrPrice, supportInfo.mvGoalPrice);
 
   return (
     <div className="sp-wrap">
@@ -45,7 +89,7 @@ export default function Support() {
       </div>
 
       <div className="sp-container">
-        {/* --- [왼쪽] 프로필 사이드바 --- */}
+        {/* --- [왼쪽] 프로필 사이드바 + 실시간 로그 --- */}
         <div className="sp-left">
           <div className="sp-profile-card">
             <img 
@@ -59,6 +103,24 @@ export default function Support() {
               <span>1 MIN PR 영상 보러가기</span>
             </div>
           </div>
+
+          <div className="sp-live-logs">
+            <h5>실시간 참여 내역</h5>
+            <div className="sp-log-rolling-wrap">
+              <div className="sp-log-rolling-list">
+                {supportInfo.logs.length > 0 ? (
+                  [...supportInfo.logs, ...supportInfo.logs].map((log, index) => (
+                    <div key={`${log.logId || index}-${index}`} className="sp-log-item-mini">
+                      <span className="log-user">{log.nickname}</span>님이 
+                      <span className="log-amt"> {Number(log.amount).toLocaleString()}원</span> 참여!
+                    </div>
+                  ))
+                ) : (
+                  <div className="sp-log-item-mini">첫 후원자가 되어주세요!</div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* --- [중앙] 모금 현황 --- */}
@@ -69,66 +131,73 @@ export default function Support() {
             <p>모금에 참여해 주시는 분들께 보답하고자, 연습생 {idol.name}의 성공적인 데뷔를 위하여</p>
             <p>ACTION 101 또한 적극적인 지원이 있을 예정이오니 많은 관심과 참여 부탁드립니다.</p>
             <p>모금된 금액은 모두 연습생 {idol.name}의 개인광고 서포트 및 뮤직비디오에 사용됩니다.</p>
-            <p>금액은 자유입니다. 적은 금액이라도 소중하게 사용됩니다,</p>
             <p className="sp-notice-small">
               * 중도 방출된 연습생에게 후원된 전체 금액은 모두 <strong>초록우산 어린이재단</strong>에 연습생 {idol.name}의 이름으로 기부됩니다.
             </p>
-            {/* 추가된 점선 구분선 */}
             <div className="sp-divider"></div>
 
-
             <div className="sp-account-info">
-              {/* 왼쪽: 텍스트 정보 */}
               <div className="account-text-side">
                 <div className="account-main-details">
                   <p><strong>PAYPAL : </strong> action101@naver.com</p>
                   <p><strong>모금계좌 : </strong> 카카오 000-000-000-000</p>
                   <p className="sp-caution">* 입금자명: (연습생이름)+(본인이름 또는 닉네임)</p>
                 </div>
-                
-                <div className="account-warning-details">
-                  <p className="sp-notice-small warn">
-                    입금 후에는 환불 및 취소가 불가능합니다.<br/>
-                    본인 실수로 인한 불이익은 책임지지 않습니다. (입금자명 및 금액 오타 등)
-                  </p>
-                </div>
               </div>
-
-              {/* 오른쪽: PAYPAL 및 QR 버튼 세션 */}
               <div className="account-btn-side">
-                <a href="https://www.paypal.me/yourid" target="_blank" rel="noopener noreferrer" className="paypal-btn-styled">
-                  <img src="/images/paypal.png" alt="PAYPAL" />
-                </a>
-                
-                <div className="kakaopay-img-btn" onClick={() => window.open('https://www.kakaopay.com/')}>
-                <img src="/images/kakao.png" alt="Kakaopay" />
+                <div className="paypal-btn-styled"><img src="/images/paypal.png" alt="PAYPAL" /></div>
+                <div className="kakaopay-img-btn"><img src="/images/kakao.png" alt="Kakaopay" /></div>
               </div>
-              </div>
-            </div>
-          </div><br></br>
-
-          {/* 게이지 바 섹션 */}
-          <div className="sp-progress-section">
-            <div className="sp-prog-item">
-              <span>개인광고 모금 현황</span>
-              <div className="sp-bar-bg">
-                <div className="sp-bar-fill" style={{ width: `${percentage}%` }}></div>
-              </div>
-              <span className="sp-percent-text">{percentage}% 달성</span>
             </div>
           </div>
 
-          {/* 실시간 참여 내역 */}
-          <div className="sp-log-grid">
-            {supportData.logs.map(log => (
-              <div key={log.id} className="sp-log-item">
-                <strong>{log.name}</strong>님이 <strong>{log.amount.toLocaleString()}원</strong> 모금에 참여하셨습니다.
+          <br />
+
+          {/* 1. 개인광고 모금 섹션 */}
+          <div className="sp-progress-section">
+            <div className="sp-prog-item">
+              <div className="sp-collapse-header" onClick={() => setIsAdOpen(!isAdOpen)}>
+                <span>개인광고 모금 현황</span>
+                {/* <span>개인광고 모금 현황({Number(supportInfo.totalAmount).toLocaleString()}원)</span> */}
+                <span className="sp-arrow">{isAdOpen ? "▲" : "▼"}</span>
               </div>
-            ))}
+              {isAdOpen && (
+                <div className="sp-collapse-content">
+                  <p className="sp-ad-info-text">각 총 모금액 별로 가능한 광고는 다르며, 해당 모금액 달성 시 투표가 열립니다.</p>
+                </div>
+              )}
+              <div className="sp-bar-bg">
+                <div className="sp-bar-fill" style={{ width: `${adPercentage}%` }}>
+                  <span className="sp-bar-percent-inside">{adPercentage}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br />
+
+          {/* 2. MV 섹션 */}
+          <div className="sp-progress-section">
+            <div className="sp-prog-item">
+              <div className="sp-collapse-header" onClick={() => setIsMvOpen(!isMvOpen)}>
+                <span>MV (4차 이후에만 활성화)</span>
+                <span className="sp-arrow">{isMvOpen ? "▲" : "▼"}</span>
+              </div>
+              {isMvOpen && (
+                <div className="sp-collapse-content">
+                  <p className="sp-ad-info-text">뮤직비디오 제작 및 의상 서포트 상세 내용이 노출됩니다.</p>
+                </div>
+              )}
+              <div className="sp-bar-bg">
+                <div className="sp-bar-fill" style={{ width: `${mvPercentage}%` }}>
+                  <span className="sp-bar-percent-inside">{mvPercentage}%</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* --- [오른쪽] 주의사항 및 이용약관 --- */}
+       {/* --- [오른쪽] 주의사항 및 이용약관 --- */}
         <div className="sp-right">
           <div className="sp-notice-card">
             <h5>ACTION 101 이용약관</h5>
@@ -155,8 +224,6 @@ export default function Support() {
               본 약관은 2026년 4월 1일부터 적용됩니다.
             </div>
           </div>
-
-
           
           <div className="sp-ad-preview">
             <h5>광고 집행 가이드</h5>
@@ -166,7 +233,6 @@ export default function Support() {
             </p>
             
             <div className="sp-ad-scroll-box">
-              {/* 1단계: 소액형 */}
               <div className="ad-step-item">
                 <div className="ad-step-header">
                   <span className="ad-step-badge s1">STEP 1</span>
@@ -177,7 +243,6 @@ export default function Support() {
                 </ul>
               </div>
 
-              {/* 2단계: 실속형 */}
               <div className="ad-step-item">
                 <div className="ad-step-header">
                   <span className="ad-step-badge s2">STEP 2</span>
@@ -189,7 +254,6 @@ export default function Support() {
                 </ul>
               </div>
 
-              {/* 3단계: 집중형 */}
               <div className="ad-step-item">
                 <div className="ad-step-header">
                   <span className="ad-step-badge s3">STEP 3</span>
@@ -201,7 +265,6 @@ export default function Support() {
                 </ul>
               </div>
 
-              {/* 4단계: 프리미엄형 */}
               <div className="ad-step-item">
                 <div className="ad-step-header">
                   <span className="ad-step-badge s4">STEP 4</span>
@@ -217,5 +280,6 @@ export default function Support() {
         </div>
       </div>
     </div>
+    
   );
 }

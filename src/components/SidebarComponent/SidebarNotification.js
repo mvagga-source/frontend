@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './SidebarNotification.module.css';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from "../../context/AuthContext";
 import { getInitApi, getMoreApi, getReadApi, readBulkNotificationsApi, deleteNotificationApi, deleteAllNotificationsApi } from './SidebarNotificationApi';
+import SidebarNotificationSetting from './popup/SidebarNotificationSetting/SidebarNotificationSetting';
 
 const SidebarNotification = () => {
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [hasMore, setHasMore] = useState(true);
+
+    const [isSettingOpen, setIsSettingOpen] = useState(false); // 환경설정창 열림 상태
     
     const clientRef = useRef(null);
     const scrollAreaRef = useRef(null);
@@ -126,18 +131,33 @@ const SidebarNotification = () => {
     };
 
     // 단건 클릭 읽음 처리 (이미 읽은 건 패스)
-    const handleRead = async (notino, isRead) => {
-        if (isRead === 'y') return;
-        try {
-            const res = await getReadApi(notino);
-            if (res.data.success) {
-                setNotifications(prev => 
-                    prev.map(n => n.notino === notino ? { ...n, isRead: 'y' } : n)
-                );
-                setUnreadCount(prev => Math.max(0, prev - 1));
+    const handleRead = async (noti) => {
+        const { notino, isRead, url } = noti;
+
+        // 1. 읽지 않은 알림인 경우 서버에 읽음 처리 요청
+        if (isRead === 'n') {
+            try {
+                const res = await getReadApi(notino);
+                if (res.data.success) {
+                    setNotifications(prev => 
+                        prev.map(n => n.notino === notino ? { ...n, isRead: 'y' } : n)
+                    );
+                    setUnreadCount(prev => Math.max(0, prev - 1));
+                }
+            } catch (err) {
+                console.error("읽음 처리 실패", err);
             }
-        } catch (err) {
-            console.error("읽음 처리 실패", err);
+        }
+
+        // 2. URL이 존재한다면 해당 페이지로 이동
+        if (url) {
+            // 외부 링크(http로 시작)인지 내부 라우팅인지 체크
+            if (url.startsWith('http')) {
+                window.location.href = url;
+            } else {
+                navigate(url);
+            }
+            setIsOpen(false); // 이동 시 알림창 닫기
         }
     };
 
@@ -193,15 +213,35 @@ const SidebarNotification = () => {
                 {unreadCount > 0 && <span className={styles.countBadge}>{unreadCount}</span>}
             </button>
 
+            {/* 설정 팝업 호출 (어디에 둬도 body로 이동함) */}
+            {isSettingOpen && (
+                <SidebarNotificationSetting 
+                    memberId={user.id} 
+                    onClose={() => setIsSettingOpen(false)} 
+                />
+            )}
+
             {isOpen && (
                 <div className={styles.absolutePanel}>
                     <div className={styles.panelHeader}>
                         <span>최신 알림</span>
                         <div className={styles.headerBtns}>
+                            {/* 전체삭제버튼 */}
                             {notifications.length > 0 && (
                                 <button className={styles.deleteAllBtn} onClick={handleDeleteAll}>전체 삭제</button>
                             )}
-                            <button onClick={() => setIsOpen(false)}>✕</button>
+                            {/* 설정 토글 버튼 (톱니바퀴 아이콘) */}
+                            <button 
+                                className={`${styles.settingIconBtn} ${isSettingOpen ? styles.activeIcon : ''}`}
+                                onClick={() => setIsSettingOpen(!isSettingOpen)}
+                                title="알림 설정"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                </svg>
+                            </button>
+                            <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>✕</button>
                         </div>
                     </div>
                     {notifications.length === 0 ? (
@@ -213,13 +253,13 @@ const SidebarNotification = () => {
                                     <li 
                                         key={n.notino} 
                                         className={`${styles.item} ${n.isRead === 'n' ? styles.unread : ''}`}
-                                        onClick={() => handleRead(n.notino, n.isRead)}
+                                        onClick={() => handleRead(n)}
                                     >
                                         <div className={styles.itemMain}>
-                                            <p className={styles.content}>{n.nocontent}</p>
                                             <span className={styles.time}>
                                                 {new Date(n.crdt).toLocaleString('ko-KR', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}
                                             </span>
+                                            <p className={styles.content}>{n.nocontent}</p>
                                         </div>
                                         {/* 개별 삭제 버튼 */}
                                         <button 
