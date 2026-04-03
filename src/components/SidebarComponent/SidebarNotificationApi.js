@@ -43,3 +43,13 @@ export const deleteNotificationApi = (notino) => {
 export const deleteAllNotificationsApi = (memberId) => {
     return axiosInstance.delete(`${process.env.REACT_APP_API_URL}/notification/deleteall/${memberId}`);
 };
+
+// 설정 조회
+export const getNotificationSettingApi = (memberId) => {
+    return axiosInstance.get(`${process.env.REACT_APP_API_URL}/notification/setting/${memberId}`);
+};
+
+// 설정 수정 (PATCH 사용)
+export const updateNotificationSettingApi = (memberId, updates) => {
+    return axiosInstance.post(`${process.env.REACT_APP_API_URL}/notification/setting/${memberId}`, updates);
+};

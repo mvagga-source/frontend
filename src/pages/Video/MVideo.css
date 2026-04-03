@@ -275,19 +275,6 @@
   하단 뮤비 리스트
 */
 
-.mv-select{
-  padding:8px 35px 8px 12px;
-  border:1px solid rgba(0, 242, 255, 0.2);
-  background:#1a253bff;
-  color:#fff;
-  font-size:14px;
-  cursor:pointer;
-}
-
-.mv-select:hover{
-  border:1px solid var(--neon-blue);
-}
-
 .mv-form{
   list-style: none;
   padding: 0;
@@ -300,13 +287,57 @@
   height:50px;
   /* border:1px solid #fff;   */
   flex: 1;  
+  text-align: right;
 }
 
-.mv-form li:first-child{
+/* .mv-form li:first-child{
   text-align: left;
+} */
+
+.mv-form select{
+  padding:8px 35px 8px 12px;
+  border:1px solid rgba(0, 242, 255, 0.2);
+  background: #1a253bff;
+  color:#fff;
+  font-size:12px;
+  cursor:pointer;
+  margin-left: 15px;
 }
 
-.mv-input{
+.mv-form select:hover{
+  border:1px solid var(--neon-blue);
+}
+
+.mv-form input{
+  margin-left: 10px;
+  padding:9px 10px;
+  border:1px solid rgba(0, 242, 255, 0.2);
+  background: #1a253bff;
+  color:#fff;
+  font-size:12px;
+}
+
+.mv-form input:focus{
+  border:1px solid var(--neon-blue);  
+  outline: none;
+}
+
+.mv-form button{
+  margin-left: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding:5px 10px 7px;  
+}
+
+.mv-form button:hover{
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);  
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  cursor: pointer;
+}
+
+/* .mv-input{
   margin-left: 10px;
   padding:9px 10px;
   border:1px solid rgba(0, 242, 255, 0.2);
@@ -318,7 +349,7 @@
 .mv-input:focus{
   border:1px solid var(--neon-blue);  
   outline: none;
-}
+} */
 
 .mv-row-box{
     /* border:1px solid rgba(0, 242, 255, 0.2); */
@@ -428,15 +459,16 @@
 
 .mv-hasnext span:hover{
   border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
   background: rgba(0, 242, 255, 0.12);
 }
 
 .mv-hasnext-status {
   /* border:1px solid #fff;   */
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   padding: 10px 50px;
-  border-radius: 10px;
+  border-radius: 20px;
   letter-spacing: 0.5px;
   cursor:pointer;
 }

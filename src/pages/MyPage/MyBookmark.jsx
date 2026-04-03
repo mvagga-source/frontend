@@ -153,7 +153,7 @@ function MyBookmark () {
                 <td style={{textAlign:"left"}}>
                 {
                   event.PAGETYPE === 'GOODS'
-                    ? <img src={event.NAME} style={{width:"80px",height:"80px"}}/>
+                    ? <img src={`${process.env.REACT_APP_IMG_URL}${event.NAME}`} style={{width:"80px",height:"80px"}}/>
                     : event.NAME
                 }
                 </td>

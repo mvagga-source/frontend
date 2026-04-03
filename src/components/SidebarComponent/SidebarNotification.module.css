@@ -24,8 +24,8 @@
 .absolutePanel {
     position: absolute;
     top: 40px; /* 버튼 바로 아래 위치 */
-    right: -120px;
-    width: 280px;
+    right: -135px;
+    width: 300px;
     max-height: 400px;
     background: #121926;
     border: 1px solid rgba(0, 242, 255, 0.2);
@@ -53,7 +53,6 @@
 .panelHeader button {
     background: none;
     border: none;
-    color: #ff7a8a;
     cursor: pointer;
 }
 
@@ -65,7 +64,7 @@
 .list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin-left: 12px;
 }
 
 .item {
@@ -134,7 +133,7 @@
     color: #ccc;
     font-size: 14px;
     cursor: pointer;
-    padding: 5px;
+    padding: 10px;
     opacity: 0; /* 평소엔 숨겼다가 */
     transition: opacity 0.2s;
 }
@@ -152,4 +151,60 @@
     border-radius: 4px;
     margin-right: 10px;
     cursor: pointer;
+}
+
+.itemMain{
+    cursor: pointer;
+}
+
+/* 전체 삭제 버튼: 텍스트 형태로 차분하게 수정 */
+.deleteAllBtn {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4); /* 튀지 않는 회색 */
+    background: none;
+    border: none;
+    padding: 0;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.deleteAllBtn:hover {
+    color: #ff7a8a; /* 호버 시에만 붉은색 강조 */
+}
+
+/* 설정 아이콘 버튼 */
+.settingIconBtn {
+    border: none;
+    color: rgba(232, 244, 248, 0.4);
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.settingIconBtn:hover, .activeIcon {
+    color: #00f2ff;
+    filter: drop-shadow(0 0 5px #00f2ff);
+}
+
+/* 4. 닫기 버튼 */
+.closeBtn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    color: #fff !important;
+}
+
+/* 상단 헤더 버튼 그룹 정렬 */
+.headerBtns {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 버튼 사이 간격 고정 */
 }
