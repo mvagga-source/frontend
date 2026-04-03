@@ -9,9 +9,9 @@ import { getMyPageBookmarskApi } from '../MyPage/MyMainApi';
 import { getMyLikesApi, getVideoApi, getVideoPageApi, toggleVideoLikeApi, videoViewCountApi } from "./MVideoApi";
 
 // function
-import { getYoutubeThumbnail, statusText, sorts, searchTypes } from './MVivdeoFunction';
 import { useAuth } from "../../context/AuthContext";
 import MVideoPop from "./MVideoPop";
+import MVideoList from "./MVideoList";
 
 import bg from "../../assets/images/singer_bg.png";
 import "./MVideo.css";
@@ -26,21 +26,10 @@ function MVideo() {
     const {user} = useAuth();
 
     const pageType = "VIDEO"; // 페이지구분        
-
     const [bookmarks, setBookmarks] = useState([]);
-
     const [videos, setVideos] = useState([]);
     const [popVideos, setPopVideos] = useState([]);
-
     const [videosLike, setVideosLike] = useState([]);
-    const [sortType, setSortType] = useState("LATEST");
-    const [search, setSearch] = useState("")
-    const [searchType, setSearchType] = useState("ALL")
-
-    // pageable
-    const [page, setPage] = useState(0);
-    const [hasNext, setHasNext] = useState(true);
-    const pageSize = 10;
 
     const isBookmarked = (pageId) => {
         return bookmarks.includes(pageId);
@@ -49,6 +38,29 @@ function MVideo() {
     const isLiked = (videoId) => {
         return videosLike.includes(videoId);
     }
+
+    // API params
+    const params = useRef({
+        memberId : user.id,
+        pageType : pageType
+    });     
+
+    useEffect(()=>{
+
+        // 나의 북마크 리스트
+        const getMyPageBookmarsk = async (searchParams) => {
+            try{
+                const bookmarkRes = await getMyPageBookmarskApi(searchParams);
+                const pageId = await bookmarkRes.data.map(b => b.pageId);
+                setBookmarks(pageId);
+            }catch(e){
+                console.error("북마크 정보 호출 오류",e);
+            }
+        };
+
+        getMyPageBookmarsk(params.current);
+
+    },[params.current]);
 
     // 북마크 토글
     const toggleVideBookmark = async(pageId) => {
@@ -65,18 +77,19 @@ function MVideo() {
         }            
 
         try {
-        const res = await toggleBookmarkApi(user.id, pageId, pageType);
-        if (res.data) {
-            // 추가됨
-            setBookmarks(prev => [...prev, pageId]);
-            alert("북마크에 등록되었습니다.\n\n'마이페이지'에서 확인 가능합니다.")
-        } else {
-            // 삭제됨
-            setBookmarks(prev => prev.filter(id => id !== pageId));
-                alert("북마크 등록이 취소 되었습니다.");
-        }
+            const res = await toggleBookmarkApi(user.id, pageId, pageType);
+            const data = await res.data;
+            if (data) {
+                // 추가됨
+                setBookmarks(prev => [...prev, pageId]);
+                alert("북마크에 등록되었습니다.\n\n'마이페이지'에서 확인 가능합니다.")
+            } else {
+                // 삭제됨
+                setBookmarks(prev => prev.filter(id => id !== pageId));
+                    alert("북마크 등록이 취소 되었습니다.");
+            }
         }catch (err) {
-        console.error(err);
+            console.error(err);
         }        
     }
 
@@ -150,14 +163,26 @@ function MVideo() {
           }      
     }
 
-    const videoProps = {
-        popVideos,
-        setPopVideos,
+    const commonProps = {
         toggleVideBookmark,
         videoViewCount,
         toggleVideoLike,
         isBookmarked,
         isLiked
+    };
+
+    // 인기 슬라이드 props 프러퍼티
+    const videoPopProps = {
+        ...commonProps,
+        popVideos,
+        setPopVideos,
+    };
+    
+    // 인기 슬라이드 props 프러퍼티
+    const videoListProps = {
+        ...commonProps,
+        videos,
+        setVideos,
     };    
 
     return(
@@ -165,28 +190,24 @@ function MVideo() {
         <div className="mv-main-container">
 
                 <div className="mv-main-head" style={{
-                                                    backgroundImage: `url(${bg})`,
-                                                    backgroundSize: "auto 100%",
-                                                    backgroundRepeat: "no-repeat",
-                                                    backgroundPosition: "70% 0"
-                                                    }}>
+                            backgroundImage: `url(${bg})`,
+                            backgroundSize: "auto 100%",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "70% 0"
+                            }}>
                     <div className="mv-main-title">
                         <h1>Video</h1>
                     </div>
                 </div>
 
-                
-
                 <MVideoPop
-                    dataParams={videoProps}
+                    dataParams={videoPopProps}
                 />
 
-          
-
-                <div className="mv-sidebar-divider"></div>
-
+                <MVideoList
+                    dataParams={videoListProps}
+                />                
             </div>
-
     );
 }
 

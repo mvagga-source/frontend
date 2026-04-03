@@ -5,15 +5,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 
 // Api
-import { toggleBookmarkApi } from "../Common/BookmarkApi";
 import { getVideoPageApi, videoViewCountApi } from "./MVideoApi";
 
 // function
 import { getYoutubeThumbnail, statusText } from './MVivdeoFunction';
-import "./MVideo.css";
 
 
-function MVideo({ dataParams }) {
+function MVideoPop({ dataParams }) {
 
     const {
         popVideos,
@@ -30,10 +28,11 @@ function MVideo({ dataParams }) {
     const location = useLocation();
     const {user} = useAuth();
     
+    // API params
     const params = useRef({
         page : 0,
         size : 10,
-        sort : "POPULAR", 
+        sortType : "POPULAR", 
         search : "",
         searchType : "",
         deletedFlag : "N"
@@ -44,13 +43,18 @@ function MVideo({ dataParams }) {
 
         const getPopular = async (searchParams) => {
 
-            const res = await getVideoPageApi(searchParams);
-            const data = await res.data.list;
+            console.log("pop : ",searchParams);
+            try{
+                const res = await getVideoPageApi(searchParams);
+                const data = await res.data.list;
 
-            setPopVideos(prev => [...prev, ...data.slice(0, 10)]);
+                setPopVideos(data.slice(0, 10));
+            }catch(e){
+                console.error("비디오 인기순위 호출 실패",e);
+            }
         };
 
-        getPopular();
+        getPopular(params.current);
 
     }, [params.current]);
 
@@ -152,8 +156,9 @@ function MVideo({ dataParams }) {
                     <button className="mv-slider-btn mv-right" onClick={scrollRight}>❯</button>
                 </div>
             </div>
+            <div className="mv-sidebar-divider"></div>
         </div>
     );
 }
 
-export default MVideo;
+export default MVideoPop;

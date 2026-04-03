@@ -4,12 +4,11 @@ import axiosInstance from "../../api/axiosInstance";
 
 
 // 페이지별 나의 북마크 (리스트 가져오기)
-export const getMyPageBookmarskApi = (memberId,pageType) => {
+export const getMyPageBookmarskApi = (searchParams = {}) => {
 
     return axiosInstance.get("mypage/getMyPageBookmarks",{
             params:{
-                memberId: memberId,
-                pageType: pageType,    
+                ...searchParams                
             }
     });
 }
