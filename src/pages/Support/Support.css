@@ -40,6 +40,52 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* 실시간 로그 컨테이너 (왼쪽 사이드바 애니메이션) */
+.sp-live-logs {
+  height: 430px;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+  border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.sp-live-logs h5 {
+  color: #00f2ff;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sp-log-rolling-wrap {
+  height: 380px; /* 보여줄 높이 */
+  overflow: hidden;
+  position: relative;
+}
+
+.sp-log-rolling-list {
+  display: flex;
+  flex-direction: column;
+  animation: rolling 200s linear infinite;
+}
+
+.sp-log-rolling-list:hover {
+  animation-play-state: paused;
+}
+
+.sp-log-item-mini {
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.log-user { font-weight: bold;  margin-right: 4px; }
+.log-amt { color: #f1dc88; font-weight: bold; margin-left: 4px; }
+
 /* --- [중앙] 모금 메인 컨텐츠 --- */
 .sp-center {
   width: 100%;
@@ -69,30 +115,31 @@
   color: #2ecc71;
   font-weight: 600;
 }
-/* --- 점선 구분선 스타일 --- */
+
 .sp-divider {
   width: 100%;
   height: 1px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.2); /* 흰색 점선 */
-  margin: 30px 0; /* 위아래 여백 */
+  border-top: 1px dashed rgba(255, 255, 255, 0.2); 
+  margin: 30px 0;
 }
-/* --- 계좌 및 후원 수단 영역 --- */
+
+/* 계좌 및 후원 수단 영역 */
 .sp-account-info {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 10px 0; /* 배경이 없으므로 내부 패딩 축소 */
-  background: none; /* 박스 배경 제거 */
-  border: none;     /* 박스 테두리 제거 */
+  padding: 10px 0;
+  background: none;
+  border: none;
 }
 
-/* 왼쪽 텍스트 사이드 */
 .account-text-side {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
+
 .account-main-details p {
   margin: 5px 0;
   font-size: 15px;
@@ -110,7 +157,6 @@
   margin-top: 5px;
 }
 
-/* 오른쪽 버튼 세션 (세로 배치 및 정렬) */
 .account-btn-side {
   display: flex;
   flex-direction: column;
@@ -118,7 +164,6 @@
   gap: 7px;
 }
 
-/* PAYPAL 버튼 스타일 */
 .paypal-btn-styled {
   width: 150px;
   height: 35px;
@@ -129,15 +174,13 @@
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.2s;
-  
 }
 
 .paypal-btn-styled img {
   height: 35px;
 }
 
-/* QR 박스 (노란색 이미지 자체가 깎이는 스타일 핵심) */
-.kakaopay-img-btn{
+.kakaopay-img-btn {
   width: 100px;
   height: 33px;
   background: #000;
@@ -147,7 +190,6 @@
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.2s;
-  
 }
 
 .kakaopay-img-btn img {
@@ -155,31 +197,93 @@
   height: 100%;
 }
 
-.paypal-btn-styled:hover, .qr-box-btn-styled:hover {
+.paypal-btn-styled:hover, .kakaopay-img-btn:hover {
   transform: translateY(-3px);
 }
 
-/* --- 게이지 바 --- */
+/* --- 아코디언 및 게이지 바 --- */
+.sp-collapse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.03); 
+  border: 1px solid rgba(148, 163, 184, 0.15); 
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.sp-collapse-header:hover {
+  background-color: rgba(148, 163, 184, 0.1);
+}
+
+.sp-arrow {
+  color: #94a3b8;
+  text-align: right;
+}
+
 .sp-bar-bg {
   width: 100%;
-  height: 40px;
-  background: #111;
-  border-radius: 20px;
+  height: 28px;
+  background: #0f172a;
+  border-radius: 50px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7);
   overflow: hidden;
-  border: 1px solid #333;
-  margin: 20px 0;
+  position: relative;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  margin: 10px 0;
 }
 
 .sp-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00f2ff, #0072ff, #00f2ff);
-  background-size: 200% 100%;
-  animation: shine 3s infinite linear;
+  background: linear-gradient(90deg, #334155 0%, #94a3b8 50%, #cbd5e1 100%); 
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 12px rgba(148, 163, 184, 0.4);
 }
 
-@keyframes shine {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+.sp-bar-percent-inside {
+  color: #ffffff;
+  font-family: 'Montserrat', 'Poppins', sans-serif; 
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.2px;
+  margin-right: 15px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.sp-collapse-content {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+.sp-ad-info-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #d4fafc;
+  margin-bottom: 10px;
+}
+
+.sp-ad-images {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.sp-ad-images img {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 /* --- [오른쪽] 정보 사이드바 --- */
@@ -201,7 +305,7 @@
   height: 400px;
 }
 
-.sp-notice-card h5 {
+.sp-notice-card h5, .sp-ad-preview h5 {
   margin-bottom: 15px;
   color: #00f2ff;
   font-size: 16px;
@@ -230,41 +334,6 @@
   border-radius: 20px;
 }
 
-/* --- 하단 로그 그리드 --- */
-.sp-log-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.sp-log-item {
-  background: rgba(0, 242, 255, 0.05);
-  padding: 20px;
-  border-radius: 12px;
-  border-left: 4px solid #00f2ff;
-}
-
-/* --- 반응형 레이아웃 --- */
-@media (max-width: 1400px) {
-  .sp-container {
-    grid-template-columns: 280px 1fr 280px;
-    padding: 0 20px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .sp-container {
-    grid-template-columns: 1fr;
-  }
-  .sp-left, .sp-right {
-    position: static;
-  }
-}
-
-
-/* 광고 */
-/* 서포트 가이드 도입부 */
 .ad-guide-intro {
   font-size: 13px;
   line-height: 1.6;
@@ -277,14 +346,6 @@
   font-weight: 400;
 }
 
-.sp-ad-preview h5 {
-  margin-bottom: 15px;
-  color: #00f2ff;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-/* 단계별 헤더 (배지와 금액 가로 정렬) */
 .ad-step-header {
   display: flex;
   justify-content: space-between;
@@ -306,7 +367,6 @@
   margin: 0 !important;
 }
 
-/* 단계별 컬러 (기존 유지 혹은 미세조정) */
 .ad-step-badge.s1 { background: rgba(255, 255, 255, 0.2); color: #fff; }
 .ad-step-badge.s2 { background: #2ecc71; color: #fff; }
 .ad-step-badge.s3 { background: #3498db; color: #fff; }
@@ -320,10 +380,51 @@
   padding-left: 12px;
 }
 
-/* 리스트 앞에 작은 점 추가 */
 .ad-step-item ul li::before {
   content: "•";
   position: absolute;
   left: 0;
   color: #00f2ff;
+}
+
+/* --- 하단 로그 그리드 (필요시 사용) --- */
+.sp-log-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.sp-log-item {
+  background: rgba(0, 242, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #00f2ff;
+}
+
+/* --- 애니메이션 및 반응형 --- */
+@keyframes rolling {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1400px) {
+  .sp-container {
+    grid-template-columns: 280px 1fr 280px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sp-container {
+    grid-template-columns: 1fr;
+  }
+  .sp-left, .sp-right {
+    position: static;
+  }
 }
