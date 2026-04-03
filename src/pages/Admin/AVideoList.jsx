@@ -1,11 +1,8 @@
 
 import React from "react";
-
 import { formatDate, formatDateTime } from "./ACommon";
 
 function AVideoList({videos, selectedIds, setSelectedIds}) {
-
-  console.log("videos : "+videos.length);
 
   const statusText = {
       "1": "통과",
@@ -35,48 +32,36 @@ function AVideoList({videos, selectedIds, setSelectedIds}) {
       <>
         <table className="av-table">
           <colgroup>
-            <col style={{width:"5%"}}/>                    
-            <col style={{width:"5%"}}/>          
-            <col style={{width:"5%"}}/>
-            <col style={{width:"10%"}}/>
-            <col style={{width:"20%"}}/>
-            <col style={{width:"20%"}}/>
-            <col style={{width:"5%"}}/>
-            <col style={{width:"5%"}}/>
-            <col style={{width:"5%"}}/>
-            <col style={{width:"5%"}}/>            
+            <col style={{width:"5%"}}/>  {/* 순번 */} 
+            <col style={{width:"10%"}}/>  {/* 탈락여부 */}        
+            <col style={{width:"10%"}}/>   {/* 연습생 이름 */}
+            <col style={{width:"10%"}}/>  {/* 노래 제목 */}
+            <col style={{width:"15%"}}/>  {/* 유튜브 URL */}
+            <col style={{width:"10%"}}/>   {/* 좋아요 */}
+            <col style={{width:"10%"}}/>   {/* 조회 */}
+            <col style={{width:"10%"}}/>  {/* 생성일 */}
+            <col style={{width:"5%"}}/>  {/* 삭제 */}
+            <col style={{width:"15%"}}/>  {/* 처리 */}
           </colgroup>
           <thead>
             <tr>
-              <th><input 
-                    type="checkbox"
-                    onChange={handleAllCheck}
-                    checked={selectedIds.length === videos.length}
-                  />
-              </th>
               <th>순번</th>
               <th>탈락여부</th>
-              <th>연습생 이름</th>
+              <th>이름</th>
               <th>노래 제목</th>
               <th>유튜브 URL</th>
               <th>좋아요</th>
               <th>조회</th>
               <th>생성일</th>
-              <th>삭제</th>              
+              <th>삭제</th>        
+              <th>처리</th>
             </tr>
           </thead>
           <tbody>
             {videos.map((video,index) => (
               <tr key={video.id}>
-                <td style={{textAlign:"center"}}>
-                  <input type="checkbox" 
-                         checked={selectedIds.includes(video.id)}
-                         onChange={()=>handleCheck(video.id)}
-                  />
-                </td>
                 <td style={{textAlign:"center"}}>{videos.length - index}</td>
                 <td style={{textAlign:"center"}}>
-
                   <span className={`co-sign-status ${
                     video.status === "1" ? "co-ongoing-fc" : "co-upcoming-fc"
                   }`}>●</span>
@@ -89,6 +74,10 @@ function AVideoList({videos, selectedIds, setSelectedIds}) {
                 <td style={{textAlign:"center"}}>{video.viewCount}</td>
                 <td style={{textAlign:"center"}}>{formatDate(video.createdAt)}</td>
                 <td style={{textAlign:"center"}}>{video.deletedFlag}</td>
+                <td>
+                  <button className="co-button-status co-ended-all" >수정</button>
+                  <button className="co-button-status co-ended-all" >삭제</button>
+                </td>
               </tr>            
             ))}
 

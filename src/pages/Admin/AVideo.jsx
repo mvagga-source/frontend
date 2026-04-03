@@ -29,25 +29,34 @@ function AVideo() {
   
   const pageSize = 100;  
 
-  useEffect(()=>{
-    setVideos([]);
-    getVideos();    
-  },[]);
+  // API params
+  const [params, setParams] = useState({
+      page : 0,
+      size : pageSize,
+      sortType : "LATEST", 
+      search : "",
+      searchType : "",
+      deletedFlag : "N"
+  });          
 
-  const getVideos = async () => {
+  const getVideos = async (searchParams) => {
  
     try {
       // 비디오 리스트
-      const videoRes = await getVideoPageApi(page, pageSize, sortType, search, searchType,"");
-      const vData = await videoRes.data.content;
+      const res = await getVideoPageApi(searchParams);
+      const data = await res.data.list;
       
-      if (vData) {
-          setVideos(prev => [...prev, ...vData]);
+      if (data) {
+          setVideos(data);
       }
     } catch (err) {
-        console.error(err);
+        console.error("비디오 리스트 호출 오류 : ",err);
     }
   };
+
+  useEffect(()=>{
+    getVideos(params);    
+  },[params]);  
 
   const deleteVideos = async() => {
     try {
@@ -98,8 +107,6 @@ function AVideo() {
 
         <div className="av-do-wrap">
           <button className="co-button-status co-ended-all" onClick={() => {setIsModalOpen(true); setIsType("I");}}>등록</button>
-          <button className="co-button-status co-ended-all" onClick={() => hendleUpdate()}>수정</button>
-          <button className="co-button-status co-ended-all" onClick={() => hendleDelete()}>삭제</button>
         </div>
 
         <AVideoList 

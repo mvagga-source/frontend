@@ -26,7 +26,6 @@ function MySale () {
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);  
   const [page, setPage] = useState();
-  const [sortDirection, setSortDirection] = useState("DESC"); // 정렬 상태  
   const size = 10;
 
   const {user} = useAuth();
