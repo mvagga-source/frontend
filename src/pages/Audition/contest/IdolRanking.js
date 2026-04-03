@@ -68,6 +68,7 @@ function RankCard({ idol, rank, total, imgMap, profileMap }) {
   const idolId    = idol[0];
   const name      = idol[1];
   const finalVotes = Number(idol[4] ?? 0);
+  const mainImgUrl = imgMap?.[idolId];
   const pct        = total > 0 ? (finalVotes / total * 100).toFixed(1) : "0.0";
   const profileId = profileMap?.[idolId];
 
@@ -80,7 +81,17 @@ function RankCard({ idol, rank, total, imgMap, profileMap }) {
         {String(rank).padStart(2, "0")}
       </span>
       <div className="ir-rc-av" style={{ background: avColor(idolId) }}>
-        {name?.charAt(0) ?? "#"}
+        {mainImgUrl ? (
+            <img
+              src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/images/${mainImgUrl}`}
+              alt={name}
+              className="ir-av-img"
+              onError={(e) => { e.target.style.display="none"; e.target.nextSibling.style.display="flex"; }}
+            />
+          ) : null}
+          <span style={{ display: mainImgUrl ? "none" : "flex" }}>
+            {name?.charAt(0) ?? "#"}
+          </span>
       </div>
       <div className="ir-rc-info">
         <div className="ir-rc-name">{name ?? `참가자 #${idolId}`}</div>
