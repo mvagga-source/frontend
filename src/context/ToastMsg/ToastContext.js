@@ -29,7 +29,7 @@ export const ToastProvider = ({ children }) => {
         setToasts((prev) => [...prev, { id, title, message, date: dateString, duration }]);
 
         // 1. 서버에 알림 저장 요청 (memberId가 있을 때만 실행)
-        if (user?.id) {
+        /*if (user?.id) {
             postSendApi({
                 memberId: user?.id,
                 senderId: user?.id,
@@ -37,7 +37,7 @@ export const ToastProvider = ({ children }) => {
                 type: title,
                 url: window.location.pathname // 현재 페이지 경로 저장
             });
-        }
+        }*/
         setTimeout(() => {
             removeToast(id);
         }, duration);

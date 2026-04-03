@@ -67,12 +67,12 @@ function BoardView() {
 
     BoardLikeSaveApi(voteData).then((res) => {
       if (res.data.success) {
-        console.log(res.data);
-        setBoard(res.data.board);
+        getBoardView();
+        /*setBoard(res.data.board);
         const myLike = res.data.myLike;
         if (myLike === 1) setPostVote('up');
         else if (myLike === -1) setPostVote('down');
-        else setPostVote(null);
+        else setPostVote(null);*/
       }
     });
   };
