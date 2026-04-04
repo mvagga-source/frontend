@@ -129,23 +129,16 @@ function MVideoList({ dataParams }) {
                         <div className="mv-column" key={video.id}>
                             <div className="mv-card">
                                 <div className={`mv-info-box ${idolStatus.includes(video.idol_profile?.profileId || "") ? "mv-passed-bb" : "mv-ended-bb" }`}>
-                                    <div className='thumb-wrap'>
-                                        <img
-                                            src={getYoutubeThumbnail(video.url)}
-                                            onClick={() => {
-                                                videoViewCount(video.id)
-                                                window.open(video.url, "_blank")
-                                            }}
-                                            style={{
-                                            filter: idolStatus.includes(video.idol_profile?.profileId || "") ? "none" : "grayscale(100%)"
-                                            }}
-                                        />
-                                        <svg className="bookmark-icon" width="22" height="22" viewBox="0 0 24 24"
-                                            onClick={()=>{toggleVideBookmark(video.id)}} 
-                                            fill={`${isBookmarked(video.id) ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
-                                            <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
-                                        </svg>
-                                    </div>
+                                    <img
+                                        src={getYoutubeThumbnail(video.url)}
+                                        onClick={() => {
+                                            videoViewCount(video.id)
+                                            window.open(video.url, "_blank")
+                                        }}
+                                        style={{
+                                        filter: idolStatus.includes(video.idol_profile?.profileId || "") ? "none" : "grayscale(100%)"
+                                        }}
+                                    />
                                     <div className="mv-row-hitlike">
                                         <span><FontAwesomeIcon icon={faEye} /> {video.viewCount}</span>
                                         <span onClick={()=> toggleVideoLike(video.id)} style={{cursor:'pointer'}}>
@@ -157,11 +150,18 @@ function MVideoList({ dataParams }) {
                                     <div className="mv-row-info-name">{video.idol_profile?.name || "" }</div>
                                     <div className="mv-row-info-title ellipsis-multi">{video.title}</div>
                                     <ul>
+                                        <li></li>
                                         <li className={`mv-row-status ${idolStatus.includes(video.idol_profile?.profileId || "") ? "mv-ongoing-all" : "mv-ended-all"}`}
                                             onClick={() => goToProfile(video.idol_profile?.profileId || "")}
                                         >
                                             프로필
                                         </li>
+                                        <li className={`mv-row-status ${isBookmarked(video.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
+                                            onClick={()=>{toggleVideBookmark(video.id)}} style={{cursor:'pointer'}}
+                                        >
+                                            북마크
+                                        </li>
+                                        <li></li>
                                     </ul>
                                 </div>
                             </div>

@@ -98,7 +98,7 @@ function MVideoPop({ dataParams }) {
 
         <div className="mv-main-scroll">
 
-            <div className="mv-sidebar-divider"></div>
+            {/* <div className="mv-sidebar-divider"></div> */}
 
             {/* 상단 스크롤 */}
             <div className="mv-container-scroll">
@@ -109,32 +109,30 @@ function MVideoPop({ dataParams }) {
                         {popVideos.map((popVideo,index) => (
                             
                             <div className="mv-scroll-card" key={popVideo.id}>
-                                <img
-                                    src={getYoutubeThumbnail(popVideo.url)}
-                                    onClick={() =>{
-                                        videoViewCount(popVideo.id)
-                                        window.open(popVideo.url, "_blank")
-                                    }}
-                                    style={{
-                                        filter: idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "none" : "grayscale(100%)"
-                                    }}
-                                />
+                                <div className='thumb-wrap'>
+                                    <img
+                                        src={getYoutubeThumbnail(popVideo.url)}
+                                        onClick={() =>{
+                                            videoViewCount(popVideo.id)
+                                            window.open(popVideo.url, "_blank")
+                                        }}
+                                    />
+                                    <svg className="bookmark-icon" width="22" height="22" viewBox="0 0 24 24"
+                                        onClick={()=>{toggleVideBookmark(popVideo.id)}} 
+                                        fill={`${isBookmarked(popVideo.id) ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
+                                        <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
+                                    </svg>
+                                </div>
 
                                 <div className="mv-scroll-info-wrap">
                                     <div className="mv-scroll-linfo">
-                                        <div className={`mv-scroll-rank ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-bc" : "mv-ended-bc" }`}>
-                                            <div className={`${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-fc" : "mv-ended-fc" }`}>{index + 1}</div>
+                                        <div className={`mv-scroll-rank ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-upcoming-bc" : "mv-ended-bc" }`}>
+                                            {index + 1}
                                         </div>
                                         <div className={`mv-scroll-bookmark ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-all" : "mv-ended-all"}`}
                                             onClick={() => goToProfile(popVideo.idol_profile?.profileId || "")}>
                                             프로필
                                         </div>                                        
-                                        <div className={`mv-scroll-bookmark ${isBookmarked(popVideo.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
-                                            onClick={()=>{toggleVideBookmark(popVideo.id)}} style={{cursor:'pointer'}}
-                                        >
-                                            북마크
-                                        </div>
-
                                     </div>
                                     <div className="mv-scroll-rinfo">
                                         <div className="mv-scroll-hit-like">
@@ -156,7 +154,7 @@ function MVideoPop({ dataParams }) {
                     <button className="mv-slider-btn mv-right" onClick={scrollRight}>❯</button>
                 </div>
             </div>
-            <div className="mv-sidebar-divider"></div>
+            {/* <div className="mv-sidebar-divider"></div> */}
         </div>
     );
 }

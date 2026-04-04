@@ -2,6 +2,7 @@ import { faEye, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import Content from "../../components/Title/ContentComp";
 
 // Api
 import { toggleBookmarkApi } from "../Common/BookmarkApi";
@@ -12,8 +13,6 @@ import { getIdolStatusApi, toggleVideoLikeApi, videoViewCountApi } from "./MVide
 import { useAuth } from "../../context/AuthContext";
 import MVideoPop from "./MVideoPop";
 import MVideoList from "./MVideoList";
-
-import bg from "../../assets/images/singer_bg.png";
 import "./MVideo.css";
 
 
@@ -213,27 +212,19 @@ function MVideo() {
 
     return(
         
-        <div className="mv-main-container">
+        <Content TitleName="비디오">
 
-                <div className="mv-main-head" style={{
-                            backgroundImage: `url(${bg})`,
-                            backgroundSize: "auto 100%",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "70% 0"
-                            }}>
-                    <div className="mv-main-title">
-                        <h1>Video</h1>
-                    </div>
-                </div>
+            <div className="mv-sidebar-divider"></div>
+            <MVideoPop
+                dataParams={videoPopProps}
+            />
+            <div className="mv-sidebar-divider"></div>
 
-                <MVideoPop
-                    dataParams={videoPopProps}
-                />
+            <MVideoList
+                dataParams={videoListProps}
+            />                
 
-                <MVideoList
-                    dataParams={videoListProps}
-                />                
-            </div>
+        </Content>
     );
 }
 

@@ -62,6 +62,10 @@ function MySale () {
         }
   };  
 
+  useEffect(()=>{
+    getGoodsList(params.current);
+  },[]);  
+
   const GoodsDelete = async(gno) =>{
 
     try{
@@ -128,9 +132,10 @@ function MySale () {
         <col style={{width:"5%"}}/>
         <col style={{width:"15%"}}/>        
         <col style={{width:"15%"}}/>          
-        <col style={{width:"25%"}}/>
+        <col style={{width:"15%"}}/>
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>                
+        <col style={{width:"10%"}}/>        
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
       </colgroup>
@@ -143,6 +148,7 @@ function MySale () {
           <th>가격</th>
           <th>재고</th>          
           <th>상태</th>
+          <th>이동</th>          
           <th>처리</th>
         </tr>
       </thead>
@@ -163,6 +169,16 @@ function MySale () {
             <td style={{textAlign:"right"}}>{Number(l.price?? 0).toLocaleString()} 원</td>
             <td style={{textAlign:"center"}}>{Number(l.stockCnt?? 0).toLocaleString()}</td>            
             <td style={{textAlign:"center"}}>{l.status}</td>
+            <td style={{textAlign:"center"}}>
+
+              <button className="co-button-status co-ongoing-all"
+                onClick={()=>{
+                  navigate(`/GoodsView/${l.gno}`,{
+                    state: {from: location.pathname}
+                  })
+                }}
+              >이동</button>              
+            </td>
             <td>
               <button className="co-button-status co-ongoing-all"
                       onClick={()=>{

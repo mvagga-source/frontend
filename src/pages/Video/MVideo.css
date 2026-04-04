@@ -142,16 +142,16 @@
 }
 
 .mv-slider-wrapper{
-  /* border:1px solid rgba(0, 242, 255, 0.2) ; */
+  /* border:1px solid #fff; */
   padding:15px;
   position:relative;
   width:1530px;
 }
 
 .mv-slider{
+  /* border:1px solid #fff;   */
   display:flex;
   gap:6px;
-  height:300px;
   box-sizing: border-box;
   overflow-x:auto;
   scroll-behavior:smooth;
@@ -171,14 +171,15 @@
   padding:10px;
   flex-shrink:0;
   width: 300px;
-  height:350px;
+  height:300px;
 }
 
 .mv-scroll-card img{
-  width:100%;
+  width:280px;
   height:150px;
   object-fit: cover;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .mv-scroll-hit-like{
@@ -214,8 +215,8 @@
 
 .mv-scroll-rank {
   font-size:30px;  
-  line-height: 40px;
-  height:45px;
+  line-height: 85px;
+  height:85px;
 }
 
  .mv-scroll-rank-bg{
@@ -440,14 +441,14 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex; 
+  /* display: flex;  */
   gap: 10px;     
 }
 
 .mv-info-box ul li{
   flex: 1;  
   text-align: center;
-  margin-top: 7px;
+  margin: 10px;
 }
 
 .mv-row-status {
@@ -455,7 +456,7 @@
   font-weight: 700;
   padding: 5px 10px;
   /* letter-spacing: 0.5px; */
-  border-radius: 15px;
+  /* border-radius: 15px; */
   margin:5px 0;
   cursor: pointer;
 }
@@ -504,4 +505,46 @@
 
   text-overflow: ellipsis; /* 일부 브라우저 대비 */
   word-break: break-word;  /* 긴 단어 줄바꿈 */
+}
+
+
+.thumb-wrap {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.thumb-wrap {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* hover 시 살짝 확대 */
+.thumb-wrap:hover img {
+  transform: scale(1.05);
+}
+
+/* 북마크 아이콘 */
+.bookmark-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+
+  background: rgba(0,0,0,0.5);
+  border-radius: 6px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+/* hover 시 등장 */
+.thumb-wrap:hover .bookmark-icon {
+  opacity: 1;
+  transform: translateY(0);
 }

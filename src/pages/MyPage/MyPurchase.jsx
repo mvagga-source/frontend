@@ -127,7 +127,6 @@ function MyPurchase () {
 
     <table className="my-table">
       <colgroup>
-        {/* <col style={{width:"5%"}}/> */}
         <col style={{width:"5%"}}/>
         <col style={{width:"10%"}}/>        
         <col style={{width:"15%"}}/>          
@@ -152,7 +151,7 @@ function MyPurchase () {
           <th>주문수량</th>          
           <th>주문금액</th>
           <th>배송상태</th>
-          <th>작업</th>          
+          <th>처리</th>          
         </tr>
       </thead>
       <tbody>

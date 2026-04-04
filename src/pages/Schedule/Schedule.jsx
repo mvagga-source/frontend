@@ -15,6 +15,7 @@ import { toggleBookmarkApi } from "../Common/BookmarkApi";
 
 // Login(user info)
 import { useAuth } from "../../context/AuthContext";
+import Content from "../../components/Title/ContentComp";
 
 // CSS
 import "./Schedule.css";
@@ -111,14 +112,7 @@ function Schedule() {
 
   return (
 
-    <div className="main-container">
-
-      <div className="main-head">
-        <div className="main-title">
-          <h1>Audition Schedule</h1>
-        </div>
-      </div>
-      <div className="sidebar-divider"></div>
+    <Content TitleName="Schedule">
 
       <div className="main-list">
         
@@ -205,7 +199,7 @@ function Schedule() {
         /> }
       </div> {/* end main-list */} 
 
-    </div>
+    </Content>
   );
 }
 

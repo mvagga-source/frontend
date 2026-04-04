@@ -106,13 +106,9 @@ function MyBookmark () {
 
     <table className="my-table">
       <colgroup>
-        <col style={{width:"5%"}}/>
-        <col style={{width:"10%"}}/>        
-        <col style={{width:"15%"}}/>          
-        <col style={{width:"20%"}}/>
-        <col style={{width:"35%"}}/>
-        <col style={{width:"7%"}}/>        
-        <col style={{width:"8%"}}/>                
+        {["5%","10%","15%","20%","35%","7%","8%"].map((c,i) => (
+          <col key={i} style={{width:c}}/>  
+        ) )}
       </colgroup>
       <thead>
         <tr>
@@ -121,8 +117,8 @@ function MyBookmark () {
           <th>화면</th>
           <th>제목</th>          
           <th>내용</th>
-          <th>처리</th>
-          <th>이동</th>          
+          <th>이동</th>
+          <th>처리</th>          
         </tr>
       </thead>
       <tbody>

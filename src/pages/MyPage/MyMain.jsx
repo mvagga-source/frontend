@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import bg from "../../assets/images/singer_bg.png";
 
+import Content from "../../components/Title/ContentComp";
 
 import './MyMain.css';
 
@@ -20,18 +21,10 @@ const MyMain = () => {
 
   return (
 
-    <div className="my-main-container" >
+    <Content TitleName="마이페이지">
       
-        <div className="my-main-head" style={{
-          backgroundImage: `url(${bg})`,
-          backgroundSize: "auto 100%",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "75% 0"
-          }}>
-            <div className="my-main-title">
-              <h1>MYPAGE</h1>
-            </div>
-            <div className="my-sidebar-divider"></div>
+        <div className="my-main-menu">
+            {/* <div className="my-sidebar-divider"></div> */}
             <ul>
                 {tabs.map((tab) => (
                 <li
@@ -53,7 +46,7 @@ const MyMain = () => {
             <Outlet />
         </div>        
 
-    </div>
+    </Content>
   );
 };
 
