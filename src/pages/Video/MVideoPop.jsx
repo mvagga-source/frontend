@@ -1,7 +1,6 @@
 import { faEye, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 
 // Api
@@ -24,8 +23,6 @@ function MVideoPop({ dataParams }) {
     } = dataParams;     
 
     const sliderRef = useRef(null);
-    const navigate = useNavigate();
-    const location = useLocation();
     const {user} = useAuth();
     
     // API params

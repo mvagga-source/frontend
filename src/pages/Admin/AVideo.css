@@ -18,9 +18,16 @@
 }
 
 .av-table td{
-  height:40px;
+  min-height: 40px;
   font-size: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.av-tform-wrap{
+  text-align: center;
+}
+.av-tform-wrap button{
+  margin-left: 10px;
 }
 
 .av-card-row-title {
@@ -43,14 +50,14 @@
   margin-bottom: 15px;
 }
 
-.av-do-wrap {
+.av-form-wrap {
   /* border:1px solid #fff; */
   width:1400px;
   text-align: right;
   margin:0 auto;
 }
 
-.av-do-wrap button {
+.av-form-wrap button {
   margin-left: 10px;
 }
 

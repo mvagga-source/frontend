@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { saveVideoApi } from "../Video/MVideoApi";
 
-function AVideoInput({ video, setVideos, onClose }) {
+function AVideoToggle({ dataParams, onClose }) {
+
+  const {
+    idolProfile,
+    setVideos,
+    video,
+  } = dataParams;    
 
   const [form, setForm] = useState(()=>{
     return video ? {...video} : {
-      name: "",
+      id : "",
+      profileId : "",
       title: "",    
       url: "",
-      status: "1",
     }
   });
 
@@ -21,54 +27,53 @@ function AVideoInput({ video, setVideos, onClose }) {
     }));
   };
 
+  const saveVideo = async () => {
+ 
+    try {
+      // 비디오 저장
+      const res = await saveVideoApi(form);
+      const data = res.data;
+
+      if (data) {
+        if (video.id) {
+          // 수정
+          setVideos(prev => prev.map(v => v.id === video.id ? data : v));
+          onClose();
+        }else{
+          // 등록
+          setVideos(prev => [data, ...prev]);    
+        }
+      }
+    } catch (err) {
+        console.error(err);
+    }
+
+    // 입력폼 초기화
+    setForm({
+        id : "",
+        profileId : "",            
+        title: "",    
+        url: "",
+    });
+  };  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     saveVideo();
-  };
-
-  const saveVideo = async () => {
- 
-          try {
-            // 비디오 저장
-            const videoRes = await saveVideoApi(form);
-
-            if (video && video.id) {
-              setVideos(prev =>
-                prev.map(v => v.id === video.id ? videoRes.data : v)
-              );
-
-              onClose();
-              
-            }else{
-              setVideos(prev => [videoRes.data, ...prev]);
-            }
-            
-          } catch (err) {
-              console.error(err);
-          }
-
-          // 입력폼 초기화
-          setForm({
-              name: "",
-              title: "",    
-              url: "",
-              status: "1",
-          });
   };  
 
   return (
     <form onSubmit={handleSubmit} className="av-finput">
 
-      {/* 작성자 */}
+      {/* 아이돌 선택 */}
       <div className="co-info-row">
-        <span className="co-info-label">이름</span>
+        <span className="co-info-label">아이돌</span>
         <span className="co-info-val">
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-          />
+          <select name="profileId" value={form.profileId} onChange={handleChange}>
+            {idolProfile.map(idol => (
+              <option value={idol.value}>{idol.label}</option>  
+            ))}
+          </select>
         </span>
       </div>
 
@@ -98,17 +103,6 @@ function AVideoInput({ video, setVideos, onClose }) {
         </span>
       </div>
 
-      {/* 상태 */}
-      <div className="co-info-row">
-        <span className="co-info-label">상태</span>
-        <span className="co-info-val">
-          <select name="status" value={form.status} onChange={handleChange}>
-            <option value="1">통과</option>
-            <option value="0">탈락</option>
-          </select>
-        </span>
-      </div>
-
       <div className="co-button-row">
         <button type="submit" className="co-button-status co-ongoing-bc">저장</button>
         <button type="button" className="co-button-status co-ended-bc" onClick={onClose}>닫기</button>
@@ -118,4 +112,4 @@ function AVideoInput({ video, setVideos, onClose }) {
   );
 }
 
-export default AVideoInput;
+export default AVideoToggle;

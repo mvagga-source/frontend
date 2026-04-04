@@ -41,8 +41,6 @@ export const videoViewCountApi = (videoId) => {
 }
 
 export const saveVideoApi = (form) => {
-
-  // console.log("saveVideoApi : ",form);
   return axiosInstance.post("/video/saveVideo", form);
 }
 

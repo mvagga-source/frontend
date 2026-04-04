@@ -1,22 +1,22 @@
 
 import React, { useEffect, useState } from "react";
-import { formatDate, formatDateTime } from "./ACommon";
-
-import { getVideoPageApi, deleteVideosApi } from "../Video/MVideoApi";
+import { getIdolSelectBoxApi } from "../Audition/idolApi";
 
 import AVideoList from "./AVideoList";
-import AVideoInput from "./AVideoInput";
+import AVideoToggle from "./AVideoToggle";
 
 import "./AVideo.css";
 import "./ACommon.css";
-
 
 function AVideo() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // I : Insert, U : Update
-    const [isType, setIsType] = useState("I");
+  const [isType, setIsType] = useState("I");
+  const titleMap = {
+    I: "비디오 등록",
+    U: "비디오 수정",
+  };
 
   const [videos, setVideos] = useState([]);
   const [video, setVideo] = useState([]);  
@@ -24,95 +24,72 @@ function AVideo() {
   const [sortType, setSortType] = useState("LATEST");
   const [search, setSearch] = useState("");
   const [searchType, setSearchType] = useState("ALL");
-
-  const [selectedIds, setSelectedIds] = useState([]);
-  
+  const [idolProfile, setIdolProfile] = useState([]);
   const pageSize = 100;  
 
   // API params
   const [params, setParams] = useState({
-      page : 0,
+      page : page,
       size : pageSize,
-      sortType : "LATEST", 
-      search : "",
-      searchType : "",
+      sortType : sortType, 
+      search : search,
+      searchType : searchType,
       deletedFlag : "N"
-  });          
+  });    
 
-  const getVideos = async (searchParams) => {
- 
-    try {
-      // 비디오 리스트
-      const res = await getVideoPageApi(searchParams);
-      const data = await res.data.list;
-      
-      if (data) {
-          setVideos(data);
-      }
-    } catch (err) {
-        console.error("비디오 리스트 호출 오류 : ",err);
-    }
-  };
-
-  useEffect(()=>{
-    getVideos(params);    
-  },[params]);  
-
-  const deleteVideos = async() => {
-    try {
-      await deleteVideosApi(selectedIds);
-
-      //setVideos(prev => prev.filter(v => !selectedIds.includes(v.id))); // 리스트 제거
-
-      setVideos(prev =>
-          prev.map(v => selectedIds.includes(v.id) ? { ...v, deletedFlag:"Y" } : v)
-        );      
-
-      setSelectedIds([]); // 체크 초기화      
-
-      alert("삭제완료!!");
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const hendleUpdate = () => {
-
-     if(selectedIds.length !== 1) {
-       alert("하나의 영상만 선택해서 수정할 수 있습니다.");
-      return;
-     }
-
-    const video = videos.find(v => v.id === selectedIds[0]);
-    setVideo(video);
+  const openModal = (type, id) => {
+    setIsType(type);    
     setIsModalOpen(true);
-    setIsType("U");
-  }
+  };  
 
-  const hendleDelete = () => {
+  useEffect(() => {
+    try{
 
-    if (selectedIds.length === 0){
-      alert("삭제할 항목을 선택하세요.");
-      return;
+      getIdolSelectBoxApi({}).then((res) => {
+          if (res.data.success) {
+              const data = res.data.data.map(i => ({
+                  value: i.profileId, 
+                  label: i.name       
+              }));
+              setIdolProfile(data);
+          }
+      });
+
+    }catch(e){
+      console.error("아이돌 프로필 정보 호출",e);
     }
 
-    if (!window.confirm("선택한 항목을 삭제하시겠습니까?")) return;
+  },[]);  
 
-    deleteVideos();
+  const videoListProps = {
+    videos,
+    setVideos,
+    params,
+    setParams,
+    openModal,
+    setIsType,
+  };  
+
+  const videoToggleProps = {
+    idolProfile,
+    setVideos,
+    video,
   }
 
   return (
 
       <div className="av-main-list">
 
-        <div className="av-do-wrap">
-          <button className="co-button-status co-ended-all" onClick={() => {setIsModalOpen(true); setIsType("I");}}>등록</button>
+        <div className="av-form-wrap">
+          <button type="button" className="co-button-status co-ongoing-bc" 
+            onClick={() => openModal("I","")}
+          >
+              등록
+          </button>
         </div>
 
         <AVideoList 
-          videos={videos}
-          selectedIds={selectedIds}
-          setSelectedIds={setSelectedIds}
+          dataParams={videoListProps}
         />
 
         {/* 입력창 */}
@@ -120,13 +97,12 @@ function AVideo() {
           <div className="co-modal-overlay">
               <div className="co-modal-item">
                   <div className="co-modal-row">
-                    <span className="co-modal-title">{isType === "I" ? "비디오 등록" : "비디오 수정"}</span> 
+                    <span className="co-modal-title">{titleMap[isType]}</span> 
                     <button className="co-close" onClick={() => setIsModalOpen(false)}>✕</button>
                   </div>
                   <div className="co-modal-detail">
-                      <AVideoInput 
-                        video={video}
-                        setVideos={setVideos} 
+                      <AVideoToggle
+                        dataParams={videoToggleProps}
                         onClose={() => setIsModalOpen(false)} />
                   </div>
               </div>
