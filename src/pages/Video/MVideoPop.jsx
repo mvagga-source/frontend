@@ -13,13 +13,15 @@ import { getYoutubeThumbnail, statusText } from './MVivdeoFunction';
 function MVideoPop({ dataParams }) {
 
     const {
+        idolStatus,
         popVideos,
         setPopVideos,
         toggleVideBookmark,
         videoViewCount,
         toggleVideoLike,
         isBookmarked,
-        isLiked
+        isLiked,
+        goToProfile
     } = dataParams;     
 
     const sliderRef = useRef(null);
@@ -114,26 +116,27 @@ function MVideoPop({ dataParams }) {
                                         window.open(popVideo.url, "_blank")
                                     }}
                                     style={{
-                                        filter: popVideo.status === "1" ? "none" : "grayscale(100%)"
+                                        filter: idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "none" : "grayscale(100%)"
                                     }}
                                 />
 
-                                <div className="mv-scroll-info-body">
-                                    <div className="mv-scroll-rank">
-                                        <div className={`${popVideo.status === "1" ? "mv-ongoing-bc" : "mv-ended-bc" }`}>
-                                            <div className={`${popVideo.status === "1" ? "mv-ongoing-fc" : "mv-ended-fc" }`}>{index + 1}</div>
-                                            <div className={`mv-scroll-status ${popVideo.status === "1" ? "mv-ongoing-fc" : "mv-upcoming-fc" }`}>
-                                                {statusText[popVideo.status]}
-                                            </div>
+                                <div className="mv-scroll-info-wrap">
+                                    <div className="mv-scroll-linfo">
+                                        <div className={`mv-scroll-rank ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-bc" : "mv-ended-bc" }`}>
+                                            <div className={`${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-fc" : "mv-ended-fc" }`}>{index + 1}</div>
                                         </div>
-                                        <div className={`mv-scroll-status ${isBookmarked(popVideo.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
+                                        <div className={`mv-scroll-bookmark ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-all" : "mv-ended-all"}`}
+                                            onClick={() => goToProfile(popVideo.idol_profile?.profileId || "")}>
+                                            프로필
+                                        </div>                                        
+                                        <div className={`mv-scroll-bookmark ${isBookmarked(popVideo.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
                                             onClick={()=>{toggleVideBookmark(popVideo.id)}} style={{cursor:'pointer'}}
                                         >
                                             북마크
                                         </div>
 
                                     </div>
-                                    <div className="mv-scroll-info">
+                                    <div className="mv-scroll-rinfo">
                                         <div className="mv-scroll-hit-like">
                                             <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
                                             <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
@@ -141,7 +144,7 @@ function MVideoPop({ dataParams }) {
                                                 {popVideo.likeCount}
                                             </span>
                                         </div>
-                                        <div className="mv-scroll-name">{popVideo.name}</div>
+                                        <div className="mv-scroll-name">{popVideo.idol_profile?.name || ""}</div>
                                         <div className="mv-scroll-title ellipsis-multi">{popVideo.title}</div>
                                     </div>
                                 </div>

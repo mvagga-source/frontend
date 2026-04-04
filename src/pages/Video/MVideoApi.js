@@ -50,3 +50,8 @@ export const deleteVideosApi = (selectedIds) => {
       data:{ids: selectedIds}
     });
 }
+
+// Video 전체 가져오기
+export const getIdolStatusApi = (searchParams={}) => {
+  return axiosInstance.get("/video/getIdolStatus", );
+}

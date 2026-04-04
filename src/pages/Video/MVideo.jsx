@@ -6,7 +6,7 @@ import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 // Api
 import { toggleBookmarkApi } from "../Common/BookmarkApi";
 import { getMyPageBookmarskApi } from '../MyPage/MyMainApi';
-import { getMyLikesApi, getVideoApi, getVideoPageApi, toggleVideoLikeApi, videoViewCountApi } from "./MVideoApi";
+import { getIdolStatusApi, toggleVideoLikeApi, videoViewCountApi } from "./MVideoApi";
 
 // function
 import { useAuth } from "../../context/AuthContext";
@@ -30,6 +30,7 @@ function MVideo() {
     const [videos, setVideos] = useState([]);
     const [popVideos, setPopVideos] = useState([]);
     const [videosLike, setVideosLike] = useState([]);
+    const [idolStatus, SetIdolStatus] = useState([]);
 
     const isBookmarked = (pageId) => {
         return bookmarks.includes(pageId);
@@ -44,6 +45,25 @@ function MVideo() {
         memberId : user.id,
         pageType : pageType
     });     
+
+    useEffect(()=>{
+
+        const getIdolStatus = async () => {
+            try {
+            // 아이돌 진출 상태
+                const res = await getIdolStatusApi({});
+                if (res.data.success) {
+                    const data = await res.data.data.map(i=> i.IDOL_PROFILE_ID);
+                    console.log(data)
+                    SetIdolStatus(data);
+                }
+            } catch (e) {
+                console.error("비디오 리스트 호출 오류 : ",e);
+            }
+        }
+
+        getIdolStatus();
+    },[]);
 
     useEffect(()=>{
 
@@ -163,12 +183,18 @@ function MVideo() {
           }      
     }
 
+    const goToProfile = (profileId) => {
+        navigate(`/Audition/profile/${profileId}`);
+    };    
+
     const commonProps = {
+        idolStatus,
         toggleVideBookmark,
         videoViewCount,
         toggleVideoLike,
         isBookmarked,
-        isLiked
+        isLiked,
+        goToProfile,
     };
 
     // 인기 슬라이드 props 프러퍼티
@@ -183,7 +209,7 @@ function MVideo() {
         ...commonProps,
         videos,
         setVideos,
-    };    
+    };
 
     return(
         

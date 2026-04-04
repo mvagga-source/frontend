@@ -37,21 +37,21 @@ function AVideo() {
       deletedFlag : "N"
   });    
 
-  const openModal = (type, id) => {
-    setIsType(type);    
+  const openModal = (type) => {
+    if(type === "I") setVideo([]);
+    setIsType(type);
     setIsModalOpen(true);
   };  
 
   useEffect(() => {
     try{
-
       getIdolSelectBoxApi({}).then((res) => {
           if (res.data.success) {
               const data = res.data.data.map(i => ({
                   value: i.profileId, 
                   label: i.name       
               }));
-              setIdolProfile(data);
+              setIdolProfile([{ value: "", label: "== 아이돌 선택 ==" }, ...data]);
           }
       });
 
@@ -62,12 +62,12 @@ function AVideo() {
   },[]);  
 
   const videoListProps = {
+    setVideo,
     videos,
     setVideos,
     params,
     setParams,
     openModal,
-    setIsType,
   };  
 
   const videoToggleProps = {
@@ -82,7 +82,7 @@ function AVideo() {
 
         <div className="av-form-wrap">
           <button type="button" className="co-button-status co-ongoing-bc" 
-            onClick={() => openModal("I","")}
+            onClick={() => openModal("I")}
           >
               등록
           </button>

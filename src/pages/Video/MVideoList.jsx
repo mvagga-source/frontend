@@ -12,13 +12,15 @@ import { getYoutubeThumbnail, statusText, sorts, searchTypes } from './MVivdeoFu
 function MVideoList({ dataParams }) {
 
     const {
+        idolStatus,
         videos,
         setVideos,
         toggleVideBookmark,
         videoViewCount,
         toggleVideoLike,
         isBookmarked,
-        isLiked
+        isLiked,
+        goToProfile
     } = dataParams;      
 
     const [sortType, setSortType] = useState("LATEST");
@@ -126,7 +128,7 @@ function MVideoList({ dataParams }) {
 
                         <div className="mv-column" key={video.id}>
                             <div className="mv-card">
-                                <div className={`mv-info-box ${video.status === "1" ? "mv-passed-bb" : "mv-ended-bb" }`}>
+                                <div className={`mv-info-box ${idolStatus.includes(video.idol_profile?.profileId || "") ? "mv-passed-bb" : "mv-ended-bb" }`}>
                                     <img
                                         src={getYoutubeThumbnail(video.url)}
                                         onClick={() => {
@@ -134,7 +136,7 @@ function MVideoList({ dataParams }) {
                                             window.open(video.url, "_blank")
                                         }}
                                         style={{
-                                        filter: video.status === "1" ? "none" : "grayscale(100%)"
+                                        filter: idolStatus.includes(video.idol_profile?.profileId || "") ? "none" : "grayscale(100%)"
                                         }}
                                     />
                                     <div className="mv-row-hitlike">
@@ -145,22 +147,21 @@ function MVideoList({ dataParams }) {
                                         </span>
                                         {/* <FontAwesomeIcon icon={faCrown} /> */}
                                     </div>
-                                    <div className="mv-row-info-name">{video.name}</div>
+                                    <div className="mv-row-info-name">{video.idol_profile?.name || "" }</div>
                                     <div className="mv-row-info-title ellipsis-multi">{video.title}</div>
                                     <ul>
-                                        <li>
-                                            {video.status === "1" ? 
-                                                <span className="mv-row-status mv-ongoing-fc">●</span>
-                                                :
-                                                <span className="mv-row-status mv-upcoming-fc">●</span>
-                                            }
-                                        </li>
                                         <li></li>
-                                        <li className={`mv-row-status ${isBookmarked(video.id) ? "mv-ongoing-all" : "mv-ended-all"} `}
+                                        <li className={`mv-row-status ${idolStatus.includes(video.idol_profile?.profileId || "") ? "mv-ongoing-all" : "mv-ended-all"}`}
+                                            onClick={() => goToProfile(video.idol_profile?.profileId || "")}
+                                        >
+                                            프로필
+                                        </li>
+                                        <li className={`mv-row-status ${isBookmarked(video.id) ? "mv-ongoing-all" : "mv-ended-all"}`}
                                             onClick={()=>{toggleVideBookmark(video.id)}} style={{cursor:'pointer'}}
                                         >
                                             북마크
                                         </li>
+                                        <li></li>
                                     </ul>
                                 </div>
                             </div>

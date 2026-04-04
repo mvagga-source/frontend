@@ -171,7 +171,7 @@
   padding:10px;
   flex-shrink:0;
   width: 300px;
-  height:100%;
+  height:350px;
 }
 
 .mv-scroll-card img{
@@ -192,55 +192,70 @@
   margin-left:10px;
 }
 
-.mv-scroll-info-body {
+.mv-scroll-info-wrap {
   /* border:1px solid #fff; */
   box-sizing: border-box;
   font-size: 16px;
   display:flex;
   border-bottom: 1px solid rgba(0, 242, 255, 0.3);
   border-right: 1px solid rgba(0, 242, 255, 0.3);
+  height:130px;
 }
 
-.mv-scroll-rank{
+.mv-scroll-linfo{
   /* border:1px solid #fff; */
   /* background: rgba(255, 122, 138, 0.1); */
   /* color: #ff7a8a; */
   /* line-height:80px; */  
   text-align:center;
-  width:90px;
-  font-size:40px;
+  width:80px;
   font-weight: bold;  
  }
+
+.mv-scroll-rank {
+  font-size:30px;  
+  line-height: 40px;
+  height:45px;
+}
 
  .mv-scroll-rank-bg{
   background: rgba(0, 242, 255, 0.12);
  }
 
-.mv-scroll-info {
+.mv-scroll-rinfo {
   /* border:1px solid #fff;   */
   width:155px;
   padding:0 15px;
 }
 
 .mv-scroll-name{
+  /* border:1px solid #fff;     */
   font-weight: bold; 
   margin: 10px 0 8px;
   font-size: 18px;
+  height:30px;
 }
 
 .mv-scroll-title{
+  /* border:1px solid #fff;   */
   /* font-weight: bold;  */
   height:45px;
   margin: 10px 0 8px;
   font-size: 16px;
 }
 
-.mv-scroll-status {
+.mv-scroll-bookmark {
   /* border:1px solid #fff;   */
   font-size: 12px;
   font-weight: 700;
-  padding: 5px 10px;
+  padding: 7px 10px;
   letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.mv-scroll-bookmark:hover {
+ border:1px solid var(--neon-blue);
+  background: rgba(0, 242, 255, 0.12);
 }
 
 /* 좌우 버튼 */
@@ -439,12 +454,13 @@
   font-size: 12px;
   font-weight: 700;
   padding: 5px 10px;
-  letter-spacing: 0.5px;
+  /* letter-spacing: 0.5px; */
   border-radius: 15px;
-  margin:0 5px 5px 0;
+  margin:5px 0;
+  cursor: pointer;
 }
 
-.mv-info-box ul li:last-child:hover{
+.mv-row-status:hover{
   border:1px solid var(--neon-blue);
   background: rgba(0, 242, 255, 0.12);
 }

@@ -9,15 +9,24 @@ function AVideoToggle({ dataParams, onClose }) {
     video,
   } = dataParams;    
 
+  // form박스 초기값 설정
   const [form, setForm] = useState(()=>{
-    return video ? {...video} : {
-      id : "",
-      profileId : "",
-      title: "",    
-      url: "",
-    }
+    return video 
+    ? {
+        id : video.id || "",
+        idol_profile : video.idol_profile?.profileId || "",
+        title: video.title || "",    
+        url: video.url || "",
+      } 
+    : {
+        id : "",
+        idol_profile : "",
+        title: "",    
+        url: "",
+      }
   });
 
+  // form box 상태변경
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -27,17 +36,22 @@ function AVideoToggle({ dataParams, onClose }) {
     }));
   };
 
+  // 비디오 저장
   const saveVideo = async () => {
  
     try {
-      // 비디오 저장
       const res = await saveVideoApi(form);
       const data = res.data;
+
+      console.log(data);
 
       if (data) {
         if (video.id) {
           // 수정
-          setVideos(prev => prev.map(v => v.id === video.id ? data : v));
+          setVideos(prev => prev.map(v => 
+                v.id === video.id 
+                ? data
+                : v));
           onClose();
         }else{
           // 등록
@@ -48,17 +62,30 @@ function AVideoToggle({ dataParams, onClose }) {
         console.error(err);
     }
 
-    // 입력폼 초기화
+    // 등록화면 초기화
     setForm({
         id : "",
-        profileId : "",            
+        idol_profile : "",            
         title: "",    
         url: "",
     });
   };  
 
+  const validate = () => {
+    if (!form.idol_profile) return "아이돌 선택!";
+    if (!form.title?.trim()) return "제목 입력!";
+    if (!form.url?.trim()) return "URL 입력!";
+    return null;
+  };
+  
   const handleSubmit = (e) => {
+
     e.preventDefault();
+    const error = validate();
+    if(error){
+      alert(error);
+      return;
+    }
     saveVideo();
   };  
 
@@ -69,7 +96,7 @@ function AVideoToggle({ dataParams, onClose }) {
       <div className="co-info-row">
         <span className="co-info-label">아이돌</span>
         <span className="co-info-val">
-          <select name="profileId" value={form.profileId} onChange={handleChange}>
+          <select name="idol_profile" value={form.idol_profile} onChange={handleChange}>
             {idolProfile.map(idol => (
               <option value={idol.value}>{idol.label}</option>  
             ))}

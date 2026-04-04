@@ -44,7 +44,7 @@ function ASchedule() {
       
       if (eData) {
           setEvents(prev => [...prev, ...eData]);
-          console.log(eData);
+          // console.log(eData);
       }
     } catch (err) {
         console.error(err);
