@@ -147,7 +147,7 @@ function MVideoPop({ dataParams }) {
                                             </div>
                                             <div className="mv-slider-card__profile mv-ongoing-all"
                                                 onClick={() => goToProfile(popVideo.idol_profile?.profileId || "")}>
-                                                <span className={`${passed ? "mv-ongoing-fc":"mv-upcoming-fc"}`}>●</span>
+                                                <span className={`${passed ? "mv-ongoing-fc":"mv-ended-fc"}`}>●</span>
                                                 <span>프로필</span>
                                             </div>                                        
                                         </div>

@@ -67,7 +67,7 @@
 }
 
 .mv-passed-bb {
-  background: rgba(10, 16, 28, 0.98);
+  background: rgba(21, 34, 60, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -235,9 +235,10 @@
   line-height: 75px;
   height:75px;
   margin-bottom: 7px;
-  background: rgba(255, 173, 122, 0.1); 
-  color: #ff7a8a;          
-  border: 1px solid rgba(255, 49, 73, 0.2);
+  background: rgba(255,215,0,0.08); 
+  color: #ffd700;          
+  /* border: 1px solid #ffd700; */
+  /* box-shadow: 0 0 14px rgba(255,215,0,0.2); */
 }
 
 .mv-slider-card__profile {
@@ -255,6 +256,10 @@
 .mv-slider-card__profile:hover {
  border:1px solid var(--neon-blue);
   background: rgba(0, 242, 255, 0.12);
+}
+
+.mv-slider-card__profile span:first-child{
+  font-size: 8px;
 }
 
 .mv-slider-card__right {
@@ -370,7 +375,7 @@
 }
 
 .mv-list-card {
-  background: rgba(255, 255, 255, 0.06);
+  /* background: rgba(255, 255, 255, 0.06); */
   width:220px;
   flex-shrink:0;  
   box-shadow:0 5px 15px rgba(0,0,0,0.1);  
@@ -389,8 +394,15 @@
   width:100%;
   height:120px;
   object-fit: cover;
+  transition: transform 0.3s ease;  
   cursor: pointer;
 }
+
+/* hover 시 살짝 확대 */
+.mv-list-card__thumb img:hover {
+  transform: scale(1.05);
+}
+
 
 /* hover 시 등장 */
 .mv-list-card__thumb:hover .mv-card__bookmark {
@@ -443,6 +455,10 @@
 .mv-list-card__profile:hover {
   border:1px solid var(--neon-blue);
   background: rgba(0, 242, 255, 0.12);
+}
+
+.mv-list-card__profile span:first-child{
+  font-size: 8px;
 }
 
 .mv-list-hasnext {

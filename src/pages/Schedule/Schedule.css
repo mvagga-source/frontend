@@ -44,7 +44,7 @@
   /* display: -webkit-box; */
   /* -webkit-line-clamp: 3; */
   /* -webkit-box-orient: vertical; */
-  height:55px;
+  height:30px;
 }
 
 .bookmark-info-title{
@@ -73,13 +73,13 @@
   visibility: hidden;
   position: absolute;
   bottom: 120%;
-  left: 50%;
+  left: 70%;
   transform: translateX(-50%);
   
-  background: #333;
+  background: #B8860B;
   color: #fff;
   padding: 5px 10px;
-  /* border-radius: 5px; */
+  border-radius: 15px;
   white-space: nowrap;
 
   opacity: 0;
@@ -101,13 +101,26 @@
 }
 
 .bookmark-info-value{
-  /* border:1px solid #fff;   */
-  max-width: 180px;
-  /* overflow: hidden;  
-  text-overflow: ellipsis; */
-  height:30px;
-  padding: 1px 0 0 10px;
+  /* border: 1px solid #fff; */
+  width: 24px;
+  height: 24px;
+
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+
+  color: var(--neon-blue);
+  background: rgba(0,0,0,0.5);
+  border-radius: 6px;
+  padding: 3px;
+  cursor: pointer;
 }
+
+/* hover 시 등장 */
+/* .bookmark-info__thumb:hover bookmark-info-value{
+  opacity: 1;
+  transform: translateY(0);
+} */
 
 .bookmark-status {
   cursor: pointer;  

@@ -1,5 +1,5 @@
 // hooks
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // JavaScript Lib
@@ -32,6 +32,13 @@ function Schedule() {
   const {user} = useAuth();
   const pageType = "EVENT"; // 페이지구분
 
+  const params = useRef({
+    memberId:user.id,
+    pageType:pageType,
+    startDate:"",
+    endDate:"",
+  });    
+
   useEffect(() => {
 
     const getEvents  = async () => {
@@ -55,8 +62,11 @@ function Schedule() {
           setEvents(data);
 
           if (user?.id) {
-            const bookmarkRes = await getMyPageBookmarskApi(user.id, pageType);
+
+            const bookmarkRes = await getMyPageBookmarskApi(params.current);
             const pageId = await bookmarkRes.data.map(b => b.pageId);
+
+            console.log("pageId : ",pageId);
 
             setEvents(prev =>
               prev.map(v =>
@@ -146,7 +156,28 @@ function Schedule() {
               <div className="bookmark-info">
                 <div className="bookmark-info-title"> 
                   <ul>
-                    <li className="bookmark-icon">●</li>
+                    <li className="bookmark-icon">
+                      <svg className="bookmark-info-value" width="22" height="22" viewBox="0 0 24 24"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            {
+                              if (!user?.id){
+                                if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
+                                  navigate("/UserLogin",{
+                                          state: {
+                                            from: location.pathname
+                                          }
+                                });
+                                }
+                                return;
+                              }
+                            }
+                            toggleBookmark(eventInfo.event.id);
+                          }}
+                          fill={`${bookmarked ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
+                          <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>                  
+                      </svg>                      
+                    </li>
                     <li className="bookmark-title-text">
                       {getDateDiff(eventInfo.event.start, eventInfo.event.end) > 1 ? eventInfo.event.title : truncate(eventInfo.event.title,16)}
                     </li>
@@ -155,27 +186,6 @@ function Schedule() {
                     {eventInfo.event.title}                    
                   </span>
                 </div>
-                <div className="bookmark-info-value"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      {
-                        if (!user?.id){
-                          if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
-                            navigate("/UserLogin",{
-                                    state: {
-                                      from: location.pathname
-                                    }
-                          });
-                          }
-                          return;
-                        }
-                      }
-                      toggleBookmark(eventInfo.event.id);
-                    }}
-                >
-                  <span className={`bookmark-status ${bookmarked ?  "status-ongoing" : "status-ended"}`}>북마크</span>
-                </div>
-
                 {isModalOpen && (
                   <div style={{
                         position: "fixed",

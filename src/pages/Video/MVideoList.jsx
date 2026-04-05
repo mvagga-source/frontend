@@ -129,7 +129,7 @@ function MVideoList({ dataParams }) {
 
                         return(
 
-                            <div className="mv-list-card" key={video.id}>
+                            <div className={`mv-list-card ${passed? "mv-passed-bb" : "mv-ended-bb"}`} key={video.id}>
 
                                 {/* 썸네일 */}
                                 <div className='mv-list-card__thumb'>
@@ -166,7 +166,7 @@ function MVideoList({ dataParams }) {
                                 <div className="mv-list-card__profile mv-ongoing-all"
                                     onClick={() => goToProfile(video.idol_profile?.profileId || "")}
                                 >
-                                    <span className={`${passed ? "mv-ongoing-fc":"mv-upcoming-fc"}`}>●</span>
+                                    <span className={`${passed ? "mv-ongoing-fc":"mv-ended-fc"}`}>●</span>
                                     <span>프로필</span>
                                 </div>
                             </div>
