@@ -25,11 +25,7 @@ const NoticePopup = ({ startIndex, notices, onClose }) => {
             <SwiperSlide key={n.nno}>
               <div className={styles.slideContent}>
                 <div className={styles.imagePlaceholder}>
-                  {n.nfile ? (
-                    <img src={`/upload/${n.nfile}`} alt="공지" />
-                  ) : (
-                    <div className={styles.textLogo}>ACTION101 공지사항</div>
-                  )}
+                  <div className={styles.textLogo}>ACTION101 공지사항</div>
                 </div>
                 <div className={styles.textSection}>
                   <h3 className={styles.title}>{n.ntitle}</h3>

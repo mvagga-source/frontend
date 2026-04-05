@@ -89,28 +89,37 @@ const ReportList = () => {
             </div>
 
             <ul>
-            {reports.map((report, index) => {
-                const isLast = reports.length === index + 1;
-                return (
-                <li 
-                    key={report.repono} 
-                    ref={isLast ? lastElementRef : null} 
-                    className={styles.ideaItem}
-                >
-                    <div className={styles.ideaTitle}>
-                    [{report.reportType}] {maskId(report.member.nickname)}님이 '{report?.idol?.name}'에 대한 {report.reportType} 내용을 신고하였습니다.
+            {reports.length > 0 ? (
+                // 1. 신고 내역이 있을 때
+                reports.map((report, index) => {
+                    const isLast = reports.length === index + 1;
+                    return (
+                    <li 
+                        key={report.repono} 
+                        ref={isLast ? lastElementRef : null} 
+                        className={styles.ideaItem}
+                    >
+                        <div className={styles.ideaTitle}>
+                        [{report.reportType}] {maskId(report.member.nickname)}님이 '{report?.idol?.name}'에 대한 {report.reportType} 내용을 신고하였습니다.
+                        </div>
+                        <div className={styles.ideaMeta}>
+                        <span style={{ color: report.status === "처리완료" ? "#00f2ff" : "#64748b" }}>
+                            {report.status}
+                        </span>
+                        {/* <span>사유: {report.reason}</span> */}
+                        {/* [수정] 날짜 대신 상대 시간 표시 */}
+                        <span className={styles.timeTag}>{formatRelativeTime(report.crdt)}</span>
+                        </div>
+                    </li>
+                    );
+                })) : (
+                    // 신고 내역이 없을 때
+                    !loading && (
+                    <div className={styles.noData}>
+                        신고 내역이 존재하지 않습니다.
                     </div>
-                    <div className={styles.ideaMeta}>
-                    <span style={{ color: report.status === "처리완료" ? "#00f2ff" : "#64748b" }}>
-                        {report.status}
-                    </span>
-                    {/* <span>사유: {report.reason}</span> */}
-                    {/* [수정] 날짜 대신 상대 시간 표시 */}
-                    <span className={styles.timeTag}>{formatRelativeTime(report.crdt)}</span>
-                    </div>
-                </li>
-                );
-            })}
+                    )
+            )}
             </ul>
             {loading && <LoadingScreen />}
         </div>

@@ -190,3 +190,15 @@
     align-items: center; /* 세로 정렬 */
     gap: 12px;
 }
+
+/* 데이터가 없을 때 스타일 */
+.noData {
+    text-align: center;
+    padding: 80px 0; /* 신고 내역은 가독성을 위해 여백을 좀 더 줌 */
+    color: #64748b;
+    font-size: 0.95rem;
+    border: 1px dashed rgba(0, 242, 255, 0.15);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.01);
+    margin-top: 10px;
+}

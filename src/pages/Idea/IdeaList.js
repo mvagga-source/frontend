@@ -92,27 +92,37 @@ function IdeaList() {
             <div className={styles.ideaList}>
                 <div className={styles.listHeader}>
                     <h2>아이디어 제안</h2>
-                    <span>총{totalCount? totalCount : 0}건</span>
+                    <span>총 {totalCount? totalCount : 0}건</span>
                 </div>
 
                 <ul>
-                    {ideas.map((idea, index) => {
-                        const isLast = ideas.length === index + 1;
-                        return (
-                            <li 
-                                key={idea.ideano} 
-                                ref={isLast ? lastElementRef : null}
-                                className={styles.ideaItem}
-                            >
-                                <div className={styles.categoryBadge}>[{idea.ideacategory}] {idea.ideatitle}</div>
-                                {/* <div className={styles.ideaTitle}>{idea.ideatitle}</div> */}
-                                <div className={styles.ideaMeta}>
-                                    <span>{maskId(idea.member?.nickname)}</span>
-                                    <span>{formatTime(idea.crdt)}</span>
-                                </div>
-                            </li>
-                        );
-                    })}
+                    {ideas.length > 0 ? (
+                        // 아이디어가 있을 때 리스트 렌더링
+                        ideas.map((idea, index) => {
+                            const isLast = ideas.length === index + 1;
+                            return (
+                                <li 
+                                    key={idea.ideano} 
+                                    ref={isLast ? lastElementRef : null}
+                                    className={styles.ideaItem}
+                                >
+                                    <div className={styles.categoryBadge}>[{idea.ideacategory}] {idea.ideatitle}</div>
+                                    {/* <div className={styles.ideaTitle}>{idea.ideatitle}</div> */}
+                                    <div className={styles.ideaMeta}>
+                                        <span>{maskId(idea.member?.nickname)}</span>
+                                        <span>{formatTime(idea.crdt)}</span>
+                                    </div>
+                                </li>
+                            );
+                        })
+                    ) : (
+                    // 아이디어가 없을 때
+                    !loading && (
+                        <div className={styles.noData}>
+                            등록된 아이디어 제안이 없습니다. <br />
+                            여러분의 소중한 아이디어를 제안해 보세요!
+                        </div>
+                    ))}
                 </ul>
                 {loading && <LoadingScreen />}
             </div>

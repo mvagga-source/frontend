@@ -47,7 +47,7 @@ const SidebarNotice = ({ onClose }) => {
 
         {loading ? (
           <div className={styles.loading}>Loading...</div>
-        ) : (
+        ) : notices.length > 0 ?(
           <ul className={styles.noticeList}>
             {notices.map((n, index) => (
               <li key={n.nno} className={styles.noticeItem}>
@@ -58,6 +58,8 @@ const SidebarNotice = ({ onClose }) => {
               </li>
             ))}
           </ul>
+        ) : ( // 2. 공지가 하나도 없을 때 (추가된 부분)
+          <div className={styles.empty}>등록된 공지사항이 없습니다.</div>
         )}
       </div>
     </>
