@@ -1,0 +1,77 @@
+.ab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  font-size: 13px;
+  padding: 6px 12px;
+
+  border: none;
+}
+
+/* hover */
+.ab-btn:hover {
+  filter: brightness(1.15);
+}
+
+/* disabled */
+.ab-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ab-btn--sm {
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.ab-btn--md {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.ab-btn--lg {
+  font-size: 15px;
+  padding: 10px 16px;
+}
+
+/* primary */
+.ab-btn--primary {
+  background: #2a2f45;
+  color: #fff;
+}
+
+/* secondary */
+.ab-btn--secondary {
+  background: rgba(255,255,255,0.08);
+  color: #ddd;
+}
+
+/* ghost */
+.ab-btn--ghost {
+  background: transparent;
+  color: #aaa;
+}
+
+.ab-btn--ongoing {
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);
+  box-shadow: inset 0 0 0 1px rgba(0, 242, 255, 0.3);
+}
+
+.ab-btn--ended {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.ab-btn--upcoming {
+  background: rgba(255, 122, 138, 0.1);
+  color: #ff7a8a;
+  box-shadow: inset 0 0 0 1px rgba(255, 122, 138, 0.25);
+}

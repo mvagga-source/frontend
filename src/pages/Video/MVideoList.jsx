@@ -20,6 +20,7 @@ function MVideoList({ dataParams }) {
         toggleVideoLike,
         isBookmarked,
         isLiked,
+        isPassed,
         goToProfile
     } = dataParams;      
 
@@ -43,8 +44,6 @@ function MVideoList({ dataParams }) {
     const getVideos = async (searchParams) => {
 
         try {
-
-            console.log("searchParams : ",searchParams);
 
             // 비디오 리스트
             const res = await getVideoPageApi(searchParams);
@@ -84,9 +83,9 @@ function MVideoList({ dataParams }) {
 
     return(
 
-        <div className="mv-main-list">
+        <div className="mv-list">
             
-            <ul className="mv-form">
+            <ul className="mv-list__filter">
                 <li>
                     <select onChange={(e) => {
                         const value = e.target.value;
@@ -122,57 +121,62 @@ function MVideoList({ dataParams }) {
                 </li>
             </ul>
 
-            <div className="mv-row-box">
-                <div className="mv-row">
-                    {videos.map(video => (
+            <div className="mv-list__grid">
 
-                        <div className="mv-column" key={video.id}>
-                            <div className="mv-card">
-                                <div className={`mv-info-box ${idolStatus.includes(video.idol_profile?.profileId || "") ? "mv-passed-bb" : "mv-ended-bb" }`}>
-                                    <div className='thumb-wrap'>
-                                        <img
-                                            src={getYoutubeThumbnail(video.url)}
-                                            onClick={() => {
-                                                videoViewCount(video.id)
-                                                window.open(video.url, "_blank")
-                                            }}
-                                            style={{
-                                            filter: idolStatus.includes(video.idol_profile?.profileId || "") ? "none" : "grayscale(100%)"
-                                            }}
-                                        />
-                                        <svg className="bookmark-icon" width="22" height="22" viewBox="0 0 24 24"
-                                            onClick={()=>{toggleVideBookmark(video.id)}} 
-                                            fill={`${isBookmarked(video.id) ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
-                                            <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
-                                        </svg>
-                                    </div>
-                                    <div className="mv-row-hitlike">
-                                        <span><FontAwesomeIcon icon={faEye} /> {video.viewCount}</span>
-                                        <span onClick={()=> toggleVideoLike(video.id)} style={{cursor:'pointer'}}>
-                                            <FontAwesomeIcon icon={faHeart} color={isLiked(video.id) ? "red" : "gray"}/>
-                                            {video.likeCount}
-                                        </span>
-                                        {/* <FontAwesomeIcon icon={faCrown} /> */}
-                                    </div>
-                                    <div className="mv-row-info-name">{video.idol_profile?.name || "" }</div>
-                                    <div className="mv-row-info-title ellipsis-multi">{video.title}</div>
-                                    <ul>
-                                        <li className={`mv-row-status ${idolStatus.includes(video.idol_profile?.profileId || "") ? "mv-ongoing-all" : "mv-ended-all"}`}
-                                            onClick={() => goToProfile(video.idol_profile?.profileId || "")}
-                                        >
-                                            프로필
-                                        </li>
-                                    </ul>
+                    {videos.map(video => {
+
+                        const passed = isPassed(video.idol_profile?.profileId || "");
+
+                        return(
+
+                            <div className="mv-list-card" key={video.id}>
+
+                                {/* 썸네일 */}
+                                <div className='mv-list-card__thumb'>
+                                    <img
+                                        src={getYoutubeThumbnail(video.url)}
+                                        onClick={() => {
+                                            videoViewCount(video.id)
+                                            window.open(video.url, "_blank")
+                                        }}
+                                        style={{
+                                        filter: passed ? "none" : "grayscale(100%)"
+                                        }}
+                                    />
+                                    <svg className="mv-card__bookmark" width="22" height="22" viewBox="0 0 24 24"
+                                        onClick={()=>{toggleVideBookmark(video.id)}} 
+                                        fill={`${isBookmarked(video.id) ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
+                                        <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
+                                    </svg>
+                                </div>
+                                {/* 메타 정보 */}
+                                <div className="mv-list-card__meta">
+                                    <span>
+                                        <FontAwesomeIcon icon={faEye} /> {video.viewCount}
+                                    </span>
+                                    <span style={{cursor:'pointer'}}>
+                                        <FontAwesomeIcon icon={faHeart} color={isLiked(video.id) ? "red" : "gray"} onClick={()=> toggleVideoLike(video.id)}/> {video.likeCount}
+                                    </span>
+                                </div>
+                                {/* 이름 */}
+                                <div className="mv-list-card-name">{video.idol_profile?.name || "" }</div>
+                                {/* 제목 */}
+                                <div className="mv-list-card-title ellipsis-multi">{video.title}</div>
+                                {/* 프로필 */}
+                                <div className="mv-list-card__profile mv-ongoing-all"
+                                    onClick={() => goToProfile(video.idol_profile?.profileId || "")}
+                                >
+                                    <span className={`${passed ? "mv-ongoing-fc":"mv-upcoming-fc"}`}>●</span>
+                                    <span>프로필</span>
                                 </div>
                             </div>
 
-                        </div>
-                    ))}
-                </div>
+                        );
+                    })}
             </div>
             
             {hasNext === true && 
-                <div className="mv-hasnext">
+                <div className="mv-list-hasnext">
                     <span onClick={(()=>{
                         setPage(prev => {
                             const nextPage = prev + 1;
@@ -185,17 +189,9 @@ function MVideoList({ dataParams }) {
                         });
                     })}
                     
-                    className="mv-hasnext-status mv-ended-all">더보기...</span>
+                    className="mv-list-hasnext__status mv-ended-all">더보기...</span>
                 </div>
             }
-
-            {/* {pageId &&
-                <div className="mv-hasnext">
-                    <Link to="/MyMain">
-                        <span className="mv-hasnext-status mv-ended-all">이전 화면으로</span>
-                    </Link>
-                </div>                
-            } */}
         </div>
     );
 }

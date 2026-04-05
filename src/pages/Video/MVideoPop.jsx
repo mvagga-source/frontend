@@ -13,7 +13,6 @@ import { getYoutubeThumbnail, statusText } from './MVivdeoFunction';
 function MVideoPop({ dataParams }) {
 
     const {
-        idolStatus,
         popVideos,
         setPopVideos,
         toggleVideBookmark,
@@ -21,6 +20,7 @@ function MVideoPop({ dataParams }) {
         toggleVideoLike,
         isBookmarked,
         isLiked,
+        isPassed,
         goToProfile
     } = dataParams;     
 
@@ -96,62 +96,72 @@ function MVideoPop({ dataParams }) {
 
     return(
 
-        <div className="mv-main-scroll">
+        <div className="mv-slider">
 
             {/* <div className="mv-sidebar-divider"></div> */}
 
             {/* 상단 스크롤 */}
-            <div className="mv-container-scroll">
+            <div className="mv-slider__wrapper">
                 <div className="mv-slider-wrapper">
-                    <button className="mv-slider-btn mv-left" onClick={scrollLeft}>❮</button>
-                    <div className="mv-slider" ref={sliderRef}>
+                    
+                    <button className="mv-slider__btn mv-slider__btn--left" onClick={scrollLeft}>❮</button>
+                    <div className="mv-slider__track" ref={sliderRef}>
 
-                        {popVideos.map((popVideo,index) => (
+                        {popVideos.map((popVideo,index) => {
                             
-                            <div className="mv-scroll-card" key={popVideo.id}>
-                                <div className='thumb-wrap'>
-                                    <img
-                                        src={getYoutubeThumbnail(popVideo.url)}
-                                        onClick={() =>{
-                                            videoViewCount(popVideo.id)
-                                            window.open(popVideo.url, "_blank")
-                                        }}
-                                    />
-                                    <svg className="bookmark-icon" width="22" height="22" viewBox="0 0 24 24"
-                                        onClick={()=>{toggleVideBookmark(popVideo.id)}} 
-                                        fill={`${isBookmarked(popVideo.id) ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
-                                        <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
-                                    </svg>
-                                </div>
+                            const passed = isPassed(popVideo.idol_profile?.profileId || "");
 
-                                <div className="mv-scroll-info-wrap">
-                                    <div className="mv-scroll-linfo">
-                                        <div className={`mv-scroll-rank ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-upcoming-bc" : "mv-ended-bc" }`}>
-                                            {index + 1}
-                                        </div>
-                                        <div className={`mv-scroll-bookmark ${idolStatus.includes(popVideo.idol_profile?.profileId || "") ? "mv-ongoing-all" : "mv-ended-all"}`}
-                                            onClick={() => goToProfile(popVideo.idol_profile?.profileId || "")}>
-                                            프로필
-                                        </div>                                        
+                            return(
+
+                                <div className="mv-slider-card" key={popVideo.id}>
+                                    {/* 썸네일 */}
+                                    <div className='mv-slider-card__thumb'>
+                                        <img
+                                            src={getYoutubeThumbnail(popVideo.url)}
+                                            onClick={() =>{
+                                                videoViewCount(popVideo.id)
+                                                window.open(popVideo.url, "_blank")
+                                            }}
+                                        />
+                                        <svg className="mv-card__bookmark" width="22" height="22" viewBox="0 0 24 24"
+                                            onClick={()=>{toggleVideBookmark(popVideo.id)}} 
+                                            fill={`${isBookmarked(popVideo.id) ? "currentColor" : "none"}`} stroke="currentColor" strokeWidth="2">
+                                            <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
+                                        </svg>
                                     </div>
-                                    <div className="mv-scroll-rinfo">
-                                        <div className="mv-scroll-hit-like">
-                                            <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
-                                            <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
-                                                <FontAwesomeIcon icon={faHeart} color={isLiked(popVideo.id) ? "red" : "gray"}/>
-                                                {popVideo.likeCount}
-                                            </span>
+                                    
+                                    {/* 메타 */}
+                                    <div className="mv-slider-card__meta">
+                                        <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
+                                        <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
+                                            <FontAwesomeIcon icon={faHeart} color={isLiked(popVideo.id) ? "red" : "gray"}/>
+                                            {popVideo.likeCount}
+                                        </span>
+                                    </div>                                
+
+                                    {/* 정보 */}
+                                    <div className="mv-slider-card__info">
+                                        <div className="mv-slider-card__left">
+                                            <div className="mv-slider-card__rank">
+                                                {index + 1}
+                                            </div>
+                                            <div className="mv-slider-card__profile mv-ongoing-all"
+                                                onClick={() => goToProfile(popVideo.idol_profile?.profileId || "")}>
+                                                <span className={`${passed ? "mv-ongoing-fc":"mv-upcoming-fc"}`}>●</span>
+                                                <span>프로필</span>
+                                            </div>                                        
                                         </div>
-                                        <div className="mv-scroll-name">{popVideo.idol_profile?.name || ""}</div>
-                                        <div className="mv-scroll-title ellipsis-multi">{popVideo.title}</div>
+                                        <div className="mv-slider-card__right">
+                                            <div className="mv-slider-card__name">{popVideo.idol_profile?.name || ""}</div>
+                                            <div className="mv-slider-card__title ellipsis-multi">{popVideo.title}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        ))}
+                            );
+                        })}
 
                     </div>
-                    <button className="mv-slider-btn mv-right" onClick={scrollRight}>❯</button>
+                    <button className="mv-slider__btn mv-slider__btn--right" onClick={scrollRight}>❯</button>
                 </div>
             </div>
             {/* <div className="mv-sidebar-divider"></div> */}

@@ -1,5 +1,3 @@
-import { faEye, faHeart } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import Content from "../../components/Title/ContentComp";
@@ -7,7 +5,7 @@ import Content from "../../components/Title/ContentComp";
 // Api
 import { toggleBookmarkApi } from "../Common/BookmarkApi";
 import { getMyPageBookmarskApi } from '../MyPage/MyMainApi';
-import { getIdolStatusApi, toggleVideoLikeApi, videoViewCountApi } from "./MVideoApi";
+import { getIdolStatusApi, toggleVideoLikeApi, videoViewCountApi, getMyLikesApi } from "./MVideoApi";
 
 // function
 import { useAuth } from "../../context/AuthContext";
@@ -39,6 +37,10 @@ function MVideo() {
         return videosLike.includes(videoId);
     }
 
+    const isPassed = (videoId) => {
+        return idolStatus.includes(videoId);
+    }    
+
     // API params
     const params = useRef({
         memberId : user.id,
@@ -53,7 +55,7 @@ function MVideo() {
                 const res = await getIdolStatusApi({});
                 if (res.data.success) {
                     const data = await res.data.data.map(i=> i.IDOL_PROFILE_ID);
-                    console.log(data)
+                    // console.log(data)
                     SetIdolStatus(data);
                 }
             } catch (e) {
@@ -62,9 +64,34 @@ function MVideo() {
         }
 
         getIdolStatus();
+
     },[]);
 
     useEffect(()=>{
+
+        if (!user?.id) return;
+
+        const getMyLikes = async () => {
+            try {
+            // 나의 좋아요 리스트
+                const res = await getMyLikesApi(user.id);
+                if (res.data) {
+                    const data = await res.data.map(l=> l.video.id);
+                    // console.log(data);
+                    setVideosLike(data);
+                }
+            } catch (e) {
+                console.error("좋아요 리스트 호출 오류 : ",e);
+            }
+        }
+
+        getMyLikes();
+
+    },[]);    
+
+    useEffect(()=>{
+
+        if (!user?.id) return;
 
         // 나의 북마크 리스트
         const getMyPageBookmarsk = async (searchParams) => {
@@ -115,36 +142,47 @@ function MVideo() {
     // 좋아요 처리
     const toggleVideoLike = async(videoId) => {
 
-          try {
-            const res = await toggleVideoLikeApi(user.id, videoId);
+        if (!user?.id){
+            if (window.confirm("로그인후 사용가능 합니다. 로그인 하시겠습니까?")){
+                navigate("/UserLogin",{
+                    state: {
+                        from: location.pathname,
+                    }                    
+                });
+            }
+            return;
+        }          
 
-            if (res.data.liked) {
-                setVideosLike(prev => [...prev, videoId]);
-            } else {
-                setVideosLike(prev => prev.filter(id => id !== videoId));
-            }            
+        try {
+        const res = await toggleVideoLikeApi(user.id, videoId);
 
-            // 상단
-            setPopVideos(prev =>
-                prev.map(v =>
-                v.id === videoId
-                    ? { ...v, likeCount: res.data.likeCount }
-                    : v
-                )
-            );                 
+        if (res.data.liked) {
+            setVideosLike(prev => [...prev, videoId]);
+        } else {
+            setVideosLike(prev => prev.filter(id => id !== videoId));
+        }            
 
-            //하단 
-            setVideos(prev =>
-                prev.map(v =>
-                v.id === videoId
-                    ? { ...v, likeCount: res.data.likeCount }
-                    : v
-                )
-            );
+        // 상단
+        setPopVideos(prev =>
+            prev.map(v =>
+            v.id === videoId
+                ? { ...v, likeCount: res.data.likeCount }
+                : v
+            )
+        );                 
 
-          }catch (err) {
-            console.error(err);
-          }        
+        //하단 
+        setVideos(prev =>
+            prev.map(v =>
+            v.id === videoId
+                ? { ...v, likeCount: res.data.likeCount }
+                : v
+            )
+        );
+
+        }catch (err) {
+        console.error(err);
+        }        
     }      
 
     // 조회수 처리
@@ -187,11 +225,11 @@ function MVideo() {
     };    
 
     const commonProps = {
-        idolStatus,
         toggleVideBookmark,
         videoViewCount,
         toggleVideoLike,
         isBookmarked,
+        isPassed, 
         isLiked,
         goToProfile,
     };

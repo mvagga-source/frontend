@@ -35,97 +35,6 @@
 
 
 /*
-  Fullcalendar style info
-*/
-
-.fc {
-  width:100%;
-  margin:0 auto;
-  pointer-events: auto;
-}
-
-.fc-theme-standard td,
-.fc-theme-standard th {
-  border-color: rgba(0, 242, 255, 0.2);
-}
-
-.fc-theme-standard .fc-scrollgrid {
-  border: 1px solid rgba(0, 242, 255, 0.2);
-}
-
-/* 요일의 높이 */
-.fc-theme-standard th {
-    height: 40px;
-    line-height: 40px;
-    background:#1a253bff;
-}
-
-/* .fc-day-today {
-  border: 2px solid #ff0000 !important;
-} */
-.fc .fc-daygrid-day.fc-day-today {
-    background-color: transparent;
-    border: 2px solid #ff7a8a;
-}
-
-.fc .fc-button {
-  background: transparent;
-  /* border: 1px solid #e9e9e7; */
-  /* color: #efefef; */
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-.fc .fc-button:hover {
-  background:#fff;
-  color: #606060;
-}
-
-.fc .fc-button-primary:not(:disabled).fc-button-active {
-  background: #f1f1ef;
-  border-color: #e9e9e7;
-}
-
-.fc-event {
-  border: 0;
-  border-radius: 0 !important;
-}
-
-.fc-event-main {
-  padding:10px 10px;
-}
-
-.fc-daygrid-event {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-
-/* 일요일 날짜: 빨간색 */
-.fc .fc-day-sun a {
-    color: rgb(221, 164, 164);
-}
-
-.fc-daygrid-day-frame {
-  min-height: 120px;
-}
-
-.fc-daygrid-event {
-  overflow: visible !important;
-}
-
-/* .fc-event-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-} */
-
-/* .fc-daygrid-day-events {
-  max-height: 100px;
-  overflow-y: auto;
-} */
-
-/*
   북마크
 */
 
@@ -222,4 +131,80 @@
   background: rgba(255, 122, 138, 0.1);
   color: #ff7a8a;
   border: 1px solid rgba(255, 122, 138, 0.25);
+}
+
+
+
+/*
+  Fullcalendar style info
+*/
+
+.fc {
+  width:100%;
+  margin:0 auto;
+  pointer-events: auto;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: rgba(0, 242, 255, 0.2);
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+/* 요일의 높이 */
+.fc-theme-standard th {
+    height: 40px;
+    line-height: 40px;
+    background:#1a253bff;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent;
+    outline: 2px solid #ff7a8a;
+    outline-offset: -2px; /* 안쪽으로 */
+}
+
+.fc .fc-button {
+  background: transparent;
+  /* border: 1px solid #e9e9e7; */
+  /* color: #efefef; */
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.fc .fc-button:hover {
+  background:#fff;
+  color: #606060;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: #f1f1ef;
+  border-color: #e9e9e7;
+}
+
+.fc-event {
+  border: 0;
+  border-radius: 0 !important;
+}
+
+.fc-event-main {
+  padding:10px 10px;
+}
+
+.fc-daygrid-event {
+  margin: 0 2px !important;
+}
+
+
+/* 일요일 날짜: 빨간색 */
+.fc .fc-day-sun a {
+    color: rgb(221, 164, 164);
+}
+
+.fc-daygrid-day-frame {
+  overflow: visible !important;
+  min-height: 120px;
 }
