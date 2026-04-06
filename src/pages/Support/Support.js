@@ -58,6 +58,8 @@ export default function Support() {
           
           logs: logsRes.data || []
         });
+        console.log("프로젝트 데이터:", projectRes.data);
+        console.log("개인광고 금액:", projectRes.data.currPrice);
 
       } catch (err) {
         console.error("데이터 로딩 실패", err);
