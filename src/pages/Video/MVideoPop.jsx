@@ -29,7 +29,7 @@ function MVideoPop({ dataParams }) {
     
     // API params
     const params = useRef({
-        page : 0,
+        page : 1,
         size : 10,
         sortType : "POPULAR", 
         search : "",

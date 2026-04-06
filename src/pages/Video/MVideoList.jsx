@@ -33,7 +33,7 @@ function MVideoList({ dataParams }) {
 
     // API params
     const [params, setParams] = useState({
-        page : 0,
+        page : 1,
         size : pageSize,
         sortType : "LATEST", 
         search : "",
