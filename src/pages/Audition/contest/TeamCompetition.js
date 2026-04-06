@@ -42,12 +42,15 @@ function MatchCard({ match, idx }) {
       </div>
 
       <div className="tc-mrow">
-        <div className={`tc-team${aWin ? " win" : " lose"}`} style={{ alignItems: "flex-end" }}>
-          <div className="tc-team-av" style={{ background: aBg }}>
-            {match.teamAName.charAt(0)}
+        <div className={`tc-team${aWin ? "" : " lose"}`}>
+          <div className="tc-team-img-wrap">
+            {match.teamAImgUrl
+              ? <img src={match.teamAImgUrl} className="tc-team-img" alt={match.teamAName} />
+              : <div className="tc-team-av" style={{ background: aBg }}>{match.teamAName.charAt(0)}</div>
+            }
+            {aWin && <span className="tc-win-b">🏆 승리</span>}
           </div>
           <p className="tc-team-name">{match.teamAName}</p>
-          {aWin && <span className="tc-win-b">🏆 승리</span>}
         </div>
 
         <div className="tc-vsbox">
@@ -60,12 +63,15 @@ function MatchCard({ match, idx }) {
           <span className="tc-vstxt tc-pct-label">득표율(%)</span>
         </div>
 
-        <div className={`tc-team${!aWin ? " win" : " lose"}`} style={{ alignItems: "flex-start" }}>
-          <div className="tc-team-av" style={{ background: bBg }}>
-            {match.teamBName.charAt(0)}
+        <div className={`tc-team${!aWin ? "" : " lose"}`}>
+          <div className="tc-team-img-wrap">
+            {match.teamBImgUrl
+              ? <img src={match.teamBImgUrl} className="tc-team-img" alt={match.teamBName} />
+              : <div className="tc-team-av" style={{ background: bBg }}>{match.teamBName.charAt(0)}</div>
+            }
+            {!aWin && <span className="tc-win-b">🏆 승리</span>}
           </div>
           <p className="tc-team-name">{match.teamBName}</p>
-          {!aWin && <span className="tc-win-b">🏆 승리</span>}
         </div>
       </div>
 
