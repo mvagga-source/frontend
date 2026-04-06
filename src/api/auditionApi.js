@@ -31,6 +31,10 @@ export const submitVoteApi = (auditionId, idolIds) => {
 // 회차 목록 조회 (ended + ongoing)
 export const getAuditionListApi = () =>
     axiosInstance.get(`/audition/list`);
+
+// 전체 회차 목록 조회 (upcoming 포함 — Sidebar용)
+export const getAllAuditionListApi = () =>
+    axiosInstance.get(`/audition/all`);
  
 // 팀경연 결과 조회
 export const getMatchesApi = (auditionId) =>
