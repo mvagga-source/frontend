@@ -37,32 +37,6 @@ function GoodsView() {
     };
 
     useEffect(() => {
-        // [가상 데이터 세팅] 
-        // 실제 API 호출 대신 0.5초 뒤에 데이터를 불러오는 것처럼 연출
-        /*const mockData = {
-        success: true,
-        goods: {
-            gno: gno || 1,
-            gname: "[Limited Edition] 공식 굿즈 응원봉 세트\n본 상품은 한정판으로 제작된 공식 응원봉입니다.\n패키지 구성: 응원봉 1개, 포토카드 5종, 스트랩 1개.\n화려한 네온 블루 라이팅을 경험해보세요!",
-            gcontent: "[Limited Edition] 공식 굿즈 응원봉 세트\n본 상품은 한정판으로 제작된 공식 응원봉입니다.\n패키지 구성: 응원봉 1개, 포토카드 5종, 스트랩 1개.\n화려한 네온 블루 라이팅을 경험해보세요!",
-            price: 45000,
-            stockCnt: 100000,
-            status:"판매중",
-            gdelPrice: 3000,
-            gdelType: "일반배송",
-            gdelivAddr: "서울시 강남구 물류센터",
-            gimg: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=1000", // 테스트용 이미지
-            member: {
-            id: "Official_Store"
-            },
-            delYn: "n"
-        }
-        };
-
-        setTimeout(() => {
-        setGoods(mockData.goods);
-        }, 500);*/
-
         if (loading) return;
         setLoading(true);
         // 상품 데이터 가져오기 로직 (예시)
@@ -77,7 +51,6 @@ function GoodsView() {
             getMyPageBookmarskApi(user.id,"GOODS")
             .then((res) => {
                 // 내 북마크 리스트 중 현재 상품(gno)이 있는지 확인
-                // res.data는 List<BookmarkDto> 형태
                 const exists = res.data.some(bookmark => String(bookmark.pageId) === String(gno));
                 setIsBookmarked(exists);
             });
