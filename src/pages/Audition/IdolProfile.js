@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import "./IdolProfile.css";
 import axios from "axios"; 
 import { IdolViewVoteApi, getIdolProfileApi } from "./idolApi";
+import { getVideoPageApi } from "../Video/MVideoApi";
 import axiosInstance from "../../api/axiosInstance";
 
 // 임시 데이터 (스토리보드 및 손그림 기반)
@@ -34,6 +35,7 @@ const IDOL_DATA = {
   ],
 };
 
+
 /* --- [채팅방] 컴포넌트 --- */
 function ChatRoom() {
   const [chats] = useState([
@@ -62,6 +64,7 @@ function ChatRoom() {
 
 /* --- [메인 페이지] --- */
 export default function IdolDetail() {
+
   const navigate = useNavigate();
   const { id } = useParams(); 
   
@@ -142,6 +145,7 @@ console.log("실제 유저 데이터 구조:", user);
   }
 };
 
+  
   useEffect(() => {
     if (!id) return;
   const fetchIdolData = async () => {
@@ -196,6 +200,35 @@ console.log("실제 유저 데이터 구조:", user);
       else {
         console.error("❌ 서버에서 빈 데이터를 보냈습니다. DB를 확인하세요.");
       }
+
+      // 비디오 정보 불러오기
+      const res = await getVideoPageApi(
+            {
+              page : 1,
+              size : 4,
+              sortType : "LATEST", 
+              search : dbData.name,
+              searchType : "NAME",
+              deletedFlag : "N"
+            }
+      );
+
+      const data = await res.data.list;
+
+      // 더이상 불러올 자료 없음
+      // if (!Array.isArray(data)) {
+      //     setHasNext(false)
+      //     return;
+      // }      
+
+
+
+
+
+
+
+
+
     } catch (err) {
       console.error("❌ API 호출 자체 실패:", err);
     } finally {
