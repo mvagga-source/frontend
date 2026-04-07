@@ -56,7 +56,7 @@
 .bookmark-info-title ul{
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 5px 0;
   display: flex;
 } 
 
@@ -176,7 +176,7 @@
 
 .fc .fc-daygrid-day.fc-day-today {
     background-color: transparent;
-    outline: 2px solid #ff7a8a;
+    outline: 2px solid #ffd07a;
     outline-offset: -2px; /* 안쪽으로 */
 }
 
@@ -220,4 +220,30 @@
 .fc-daygrid-day-frame {
   overflow: visible !important;
   min-height: 120px;
+}
+
+
+/* .highlight-day {
+  background-color: transparent;
+  outline: 2px solid orange !important;
+  outline-offset: -2px; 
+} */
+
+.highlight-day {
+  position: relative;
+}
+
+.highlight-day::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid red;
+  border-radius: 6px;
+  animation: borderBlink 1s infinite;
+}
+
+@keyframes borderBlink {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
 }

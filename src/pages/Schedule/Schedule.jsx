@@ -28,6 +28,8 @@ function Schedule() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  const [highlightDates, setHighlightDates] = useState([]);
+
   const [events, setEvents] = useState([]);
   const {user} = useAuth();
   const pageType = "EVENT"; // 페이지구분
@@ -47,24 +49,39 @@ function Schedule() {
 
         try {
           const eventRes = await getEventsApi("N");
-          const data = await eventRes.data.map(e => ({
-            id: e.eno,
-            title: e.title,
-            start: e.startDate,
-            end: e.endDate,
-            backgroundColor:'rgba(0, 242, 255, 0.1)',
-            borderColor:'rgba(0, 242, 255, 0.1)',
-            extendedProps: {
-              desc: e.description,            
-              bookmarked: ""
-            }
-          }));
-          setEvents(data);
+
+          if (eventRes) {
+            const data = await eventRes.data.map(e => ({
+              id: e.eno,
+              title: e.title,
+              start: e.startDate,
+              end: e.endDate,
+              backgroundColor:'rgba(0, 242, 255, 0.1)',
+              borderColor:'rgba(0, 242, 255, 0.1)',
+              extendedProps: {
+                desc: e.description,            
+                bookmarked: ""
+              }
+            }));
+            setEvents(data);
+
+            setHighlightDates( 
+              eventRes.data
+                .filter(e => e.highlightFlag === "Y")
+                .map(e => {
+                  const date = new Date(e.startDate);
+                  date.setDate(date.getDate()-1);
+                  return date.toISOString().slice(0,10);
+                })
+            );
+
+            console.log("highlightDates : ",highlightDates);
+          }
 
           if (user?.id) {
 
             const bookmarkRes = await getMyPageBookmarskApi(params.current);
-            const pageId = await bookmarkRes.data.map(b => b.pageId);
+            const pageId = bookmarkRes.data.map(b => b.pageId);
 
             console.log("pageId : ",pageId);
 
@@ -139,6 +156,14 @@ function Schedule() {
             right: 'prev,next'
           }}
 
+          dayCellClassNames={(arg) => {
+            const dateStr = arg.date.toISOString().slice(0, 10);
+            if (highlightDates.includes(dateStr)) {
+              return ['highlight-day']; // CSS 클래스 지정
+            }
+            return [];
+          }}
+
           eventContent={(eventInfo) => {
             const bookmarked = eventInfo.event.extendedProps.bookmarked;
             const truncate = (text, max = 10) => {
@@ -183,7 +208,7 @@ function Schedule() {
                     </li>
                   </ul>
                   <span className="tooltip-text">
-                    {eventInfo.event.title}                    
+                    {eventInfo.event.title} {eventInfo.event.extendedProps.desc ? ` - ${eventInfo.event.extendedProps.desc}` : ''}
                   </span>
                 </div>
                 {isModalOpen && (

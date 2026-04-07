@@ -28,12 +28,14 @@ function MVideoList({ dataParams }) {
     const [searchType, setSearchType] = useState("ALL")
     const [search, setSearch] = useState("")
     const [hasNext, setHasNext] = useState(true);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const pageSize = 10;
+
+    const isEmpty = videos.length === 0;
 
     // API params
     const [params, setParams] = useState({
-        page : 1,
+        page : page,
         size : pageSize,
         sortType : "LATEST", 
         search : "",
@@ -58,7 +60,7 @@ function MVideoList({ dataParams }) {
             
             // [기존 데이터] + [새 데이터]
             if (data) {
-                setVideos(prev => page === 0 ? data : [...prev, ...data]);
+                setVideos(prev => page === 1 ? data : [...prev, ...data]);
             }
 
         }catch (e) {
@@ -72,10 +74,10 @@ function MVideoList({ dataParams }) {
 
     const handleSearch = (e) => {
         setHasNext(true);
-        setPage(0);
+        setPage(1);
         setParams(prev => ({
             ...prev,
-            page : 0,
+            page : 1,
             search : search,
             searchType : searchType,
         }))
@@ -91,12 +93,13 @@ function MVideoList({ dataParams }) {
                         const value = e.target.value;
                         setHasNext(true);
                         setSortType(value);
-                        setPage(0);
+                        setPage(1);
                         setParams(prev => ({
                             ...prev,
                             sortType : value,
-                            page : 0,
-                            search : search,
+                            page : 1,
+                            search : "",
+                            searchType : "",
                         }))
                     }} >
 
@@ -123,7 +126,12 @@ function MVideoList({ dataParams }) {
 
             <div className="mv-list__grid">
 
-                    {videos.map(video => {
+                {isEmpty ? (
+                    <div className='mv-nodata-card'>
+                        조회된 데이터가 없습니다.
+                    </div>
+                ) :
+                    videos.map(video => {
 
                         const passed = isPassed(video.idol_profile?.profileId || "");
 
