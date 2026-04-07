@@ -203,13 +203,13 @@ console.log("실제 유저 데이터 구조:", user);
         console.error("❌ 서버에서 빈 데이터를 보냈습니다. DB를 확인하세요.");
       }
 
-      // 비디오 정보 불러오기
+      // 비디오 정보 불러오기 start  ===========================================================
       const res = await getVideoPageApi(
             {
               page : 1,
               size : 4,
               sortType : "LATEST", 
-              search : dbData.name,
+              search : dbData.name || dbData.idolName,
               searchType : "NAME",
               deletedFlag : "N"
             }
@@ -231,6 +231,8 @@ console.log("실제 유저 데이터 구조:", user);
               thumb: v.url || ""
         })) : [],
       }));
+
+      // 비디오 정보 불러오기 end ===========================================================
 
     } catch (err) {
       console.error("❌ API 호출 자체 실패:", err);
@@ -394,7 +396,20 @@ fetchIdolData();
       <div className="id-bottom-content">
         <h4 className="id-sec-title">관련 영상 및 사진</h4>
         <div className="id-video-grid">
-          {idol.videos.map(v => (
+          {idol.videos.length === 0 ?
+            (
+              <div className="id-video-item">
+                <div className="id-v-thumb" style={{cursor:"pointer"}}>
+                  <img />
+                  <div className="id-v-play">▶</div>
+                </div>
+                <div className="id-v-body">
+                  <p>준비된 영상이 없습니다.(모금에 참여하세요~)</p>
+                </div>
+              </div>
+            ) 
+          : 
+          idol.videos.map(v => (
             <div key={v.id} className="id-video-item">
               <div className="id-v-thumb" style={{cursor:"pointer"}}>
                 <img src={getYoutubeThumbnail(v.thumb)} alt={v.title} />
