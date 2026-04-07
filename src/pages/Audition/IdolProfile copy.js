@@ -4,10 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import "./IdolProfile.css";
 import axios from "axios"; 
 import { IdolViewVoteApi, getIdolProfileApi } from "./idolApi";
-import axiosInstance from "../../api/axiosInstance";
-
 import { getVideoPageApi } from "../Video/MVideoApi";
-import { getYoutubeThumbnail } from "../Video/MVivdeoFunction";
+import axiosInstance from "../../api/axiosInstance";
 
 // 임시 데이터 (스토리보드 및 손그림 기반)
 const API_URL = process.env.REACT_APP_API_URL;
@@ -215,22 +213,44 @@ console.log("실제 유저 데이터 구조:", user);
             }
       );
 
-      const videoData = await res.data.list;
-      console.log("videoData : ",videoData);
+      const data = await res.data.list;
+
+      // 더이상 불러올 자료 없음
+      if (!Array.isArray(data)) {
+           return;
+      }      
+
       setIdol(prev => ({
-        ...prev,
-        // videos: [
-        //   { id: 1, title: "추천 카메라", thumb: "/default_profile.png" },
-        //   { id: 2, title: "1 MIN PR", thumb: "/default_profile.png" },
-        //   { id: 3, title: "연습 직캠 영상", thumb: "/default_profile.png" },
-        //   { id: 4, title: "비하인드 & 인터뷰", thumb: "/default_profile.png" },
-        // ]
-        videos: videoData ? videoData.map(v => ({
-              id: v.id || "",
-              title: v.title || "",
-              thumb: v.url || ""
-        })) : [],
+          ...prev,
+          profile: {
+            ...prev.profile,
+            name: dbData.name || dbData.idolName,
+            nameEn: dbData.nameEn || prev.profile.nameEn,
+            birth: dbData.birth || prev.profile.birth,
+            height: dbData.height || prev.profile.height,
+            mbti: dbData.mbti || prev.profile.mbti,
+            hobby: dbData.hobby || prev.profile.hobby,
+            keyword: dbData.keyword || prev.profile.keyword,
+            mainImgUrl: dbData.mainImgUrl || prev.profile.mainImgUrl,
+            votes: { 
+              rank: dbData.rank || "-", 
+              current: dbData.voteCount || 0 
+            },
+          },
+         photos: mediaList ? mediaList.map(m => ({
+              // 서버가 보내주는 실제 데이터 구조를 console.log(mediaList)로 꼭 확인하세요!
+              id: m.mediaId || m.MEDIAID || m.id || m.ID,
+              url: m.url || m.URL || m.fileName || m.FILENAME, 
+              desc: m.description || m.DESCRIPTION || ""
+          })) : [],
+          
       }));
+
+
+
+
+
+
 
     } catch (err) {
       console.error("❌ API 호출 자체 실패:", err);
@@ -396,9 +416,9 @@ fetchIdolData();
         <div className="id-video-grid">
           {idol.videos.map(v => (
             <div key={v.id} className="id-video-item">
-              <div className="id-v-thumb" style={{cursor:"pointer"}}>
-                <img src={getYoutubeThumbnail(v.thumb)} alt={v.title} />
-                <div className="id-v-play" onClick={() =>{window.open(v.thumb, "_blank")}}>▶</div>
+              <div className="id-v-thumb">
+                <img src={v.thumb} alt={v.title} />
+                <div className="id-v-play">▶</div>
               </div>
               <div className="id-v-body">
                 <p>{v.title}</p>
