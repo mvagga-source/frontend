@@ -218,7 +218,73 @@
 .sp-collapse-header:hover {
   background-color: rgba(148, 163, 184, 0.1);
 }
+/* 전체 카드 컨테이너 */
+.sp-ad-content-card {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03); /* 배경보다 아주 살짝 밝게 */
+  border-radius: 12px;
+  text-align: center; /* 텍스트 중앙 정렬로 난잡함 해소 */
+  margin: 10px 0 20px 0;
+}
 
+/* LIVE 표시부 */
+.sp-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.sp-live-indicator .dot {
+  width: 6px; height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+}
+
+/* 광고 제목 */
+.sp-ad-title {
+  font-size: 20px;
+  color: #fff;
+  margin: 0 0 4px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.sp-ad-subtitle {
+  font-size: 15px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* 아래쪽 강조 박스 */
+.sp-ad-footer-box {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sp-main-text {
+  font-size: 15px;
+  color: #e2e8f0;
+  margin-bottom: 4px;
+}
+
+.sp-main-text strong {
+  color: #fbbf24; /* 골드 포인트 */
+  font-size: 18px;
+}
+
+.sp-sub-text {
+  font-size: 12px;
+  color: #94a3b8;
+}
 .sp-arrow {
   color: #94a3b8;
   text-align: right;
@@ -427,4 +493,128 @@
   .sp-left, .sp-right {
     position: static;
   }
+}
+
+
+/* MV 섹션 전용 포인트 */
+.mv-special-section {
+  border: 1px solid rgba(147, 197, 253, 0.2); /* 은은한 푸른 테두리 */
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.mv-description {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  text-align: center;
+  padding: 25px !important;
+}
+
+/* 리스트 정렬 */
+.sp-support-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left; /* 리스트는 가독성을 위해 왼쪽 정렬 */
+  display: inline-block; /* 중앙 배치를 위해 인라인 블록화 */
+}
+
+.sp-support-list li {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 18px;
+}
+
+.sp-support-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #60a5fa;
+}
+
+/* 강조 문구 */
+.sp-main-msg {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #fff;
+  font-weight: 500;
+}
+
+.sp-footer-quote {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #94a3b8;
+  font-style: italic;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 15px;
+}
+
+/* MV 바 컬러 변경 (차별화) */
+.mv-bar-fill {
+  background: linear-gradient(90deg, #6366f1, #a855f7) !important; /* 보라색 계열로 특별함 강조 */
+}
+
+/* 잠금 아이콘 */
+.lock-icon {
+  margin-right: 5px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* 공통 섹션 간격 최적화 */
+.sp-progress-section { margin-bottom: 12px; } /* 섹션 사이 간격 축소 */
+
+/* 공통 카드 스타일 (통일) */
+.sp-ad-content-card {
+  padding: 16px; /* 패딩 축소 */
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  text-align: center;
+  margin: 8px 0; /* 상하 마진 축소 */
+}
+
+/* 제목 및 서브타이틀 간격 축소 */
+.sp-ad-title { font-size: 18px; margin-bottom: 2px; color: #fff; }
+.sp-ad-subtitle { font-size: 12px; color: #64748b; margin-bottom: 12px; }
+
+/* 푸터 박스 최적화 */
+.sp-ad-footer-box {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px; /* 패딩 축소 */
+  border-radius: 8px;
+}
+
+/* MV 섹션 전용 (통일감 유지하며 컬러만 변경) */
+.mv-card-bg { border: 1px solid rgba(99, 102, 241, 0.2); }
+.mv-fill { background: linear-gradient(90deg, #6366f1, #a855f7) !important; }
+
+/* 리스트 및 인용구 간격 축소 */
+.sp-support-list { 
+  display: inline-block; 
+  text-align: left; 
+  font-size: 12px; 
+  margin: 10px 0; 
+  color: #cbd5e1; 
+}
+.sp-footer-quote { 
+  font-size: 11px; 
+  color: #94a3b8; 
+  border-top: 1px solid rgba(255, 255, 255, 0.05); 
+  padding-top: 8px; 
+  margin-top: 8px; 
+}
+
+/* 배지 스타일 */
+.sp-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  margin-bottom: 8px;
 }

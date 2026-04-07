@@ -155,19 +155,28 @@ export default function Support() {
 
           <br />
 
-          {/* 1. 개인광고 모금 섹션 */}
+         {/* 1. 개인광고 모금 섹션 */}
           <div className="sp-progress-section">
             <div className="sp-prog-item">
               <div className="sp-collapse-header" onClick={() => setIsAdOpen(!isAdOpen)}>
-                <span>개인광고 모금 현황</span>
-                {/* <span>개인광고 모금 현황({Number(supportInfo.totalAmount).toLocaleString()}원)</span> */}
+                <span className="sp-header-title">개인광고 모금 현황</span>
                 <span className="sp-arrow">{isAdOpen ? "▲" : "▼"}</span>
               </div>
+
               {isAdOpen && (
-                <div className="sp-collapse-content">
-                  <p className="sp-ad-info-text">각 총 모금액 별로 가능한 광고는 다르며, 해당 모금액 달성 시 투표가 열립니다.</p>
+                <div className="sp-ad-content-card">
+                  <div className="sp-ad-header">
+                    <div className="sp-live-indicator"><span className="dot"></span> NOW</div>
+                    <h3 className="sp-ad-title">공항철도 미디어 터널 광고</h3>
+                    <p className="sp-ad-subtitle">인증샷은 공식 SNS에서 확인 가능합니다.</p>
+                  </div>
+                  <div className="sp-ad-footer-box">
+                    <p className="sp-main-text">팬 여러분의 마음이 모여 <strong>{adPercentage}%</strong> 도달!</p>
+                    <p className="sp-sub-text">목표 달성 시 다음 단계 투표가 오픈됩니다.</p>
+                  </div>
                 </div>
               )}
+
               <div className="sp-bar-bg">
                 <div className="sp-bar-fill" style={{ width: `${adPercentage}%` }}>
                   <span className="sp-bar-percent-inside">{adPercentage}%</span>
@@ -176,20 +185,35 @@ export default function Support() {
             </div>
           </div>
 
-          <br />
-
-          {/* 2. MV 섹션 */}
-          <div className="sp-progress-section">
+          {/* 2. MV 섹션 (개인광고와 동일한 포맷 적용) */}
+          <div className="sp-progress-section mv-special-section">
             <div className="sp-prog-item">
               <div className="sp-collapse-header" onClick={() => setIsMvOpen(!isMvOpen)}>
-                <span>MV (4차 이후에만 활성화)</span>
+                <span className="sp-header-title">
+                  MV 제작 서포트 (4차 이후 활성화)
+                </span>
                 <span className="sp-arrow">{isMvOpen ? "▲" : "▼"}</span>
               </div>
+
               {isMvOpen && (
-                <div className="sp-collapse-content">
-                  <p className="sp-ad-info-text">뮤직비디오 제작 및 의상 서포트 상세 내용이 노출됩니다.</p>
+                <div className="sp-ad-content-card mv-card-bg">
+                  <div className="sp-ad-header">
+                    <div className="sp-live-indicator"><span className="dot"></span> NOW</div>
+                    <h3 className="sp-ad-title"> DEBUT BUILD-UP PROJECT</h3>
+                    <p className="sp-ad-subtitle">{idol.name}의 성공적인 데뷔를 위한 마지막 조각</p>
+                  </div>
+                  <div className="sp-ad-footer-box">
+                    <p className="sp-main-msg">첫 번째 오리지널 뮤직비디오를 함께 완성해 주세요.</p>
+                    <ul className="sp-support-list">
+                      <li>범위: 영상 프로덕션, 아트 디렉팅, 로케이션 대관 등</li>
+                      <li>리워드: 달성 시 현장 비하인드 & 메이킹 필름 공개</li>
+                    </ul>
+                    <p className="sp-footer-quote">"팬들의 참여가 전 세계로 연결되는 통로가 됩니다."</p>
+                  </div>
                 </div>
               )}
+
+
               <div className="sp-bar-bg">
                 <div className="sp-bar-fill" style={{ width: `${mvPercentage}%` }}>
                   <span className="sp-bar-percent-inside">{mvPercentage}%</span>
