@@ -307,7 +307,39 @@
   font-weight: 700;
 }
 
+/* 
+  페이지 버튼
+*/
 
+.my-pagination {
+  margin-top: 50px;
+  width: 100%;
+  text-align: center;
+}
+
+.my-next-prev__button{
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding:5px 10px 7px;
+  margin: 0 15px;  
+}
+
+.my-pages__button{
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding:8px 10px;    
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.my-pagination button.active{
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);  
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  cursor: default;
+}
 
 
 
