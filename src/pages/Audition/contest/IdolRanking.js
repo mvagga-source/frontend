@@ -39,11 +39,12 @@ function PyramidCard({ idol, rank, total, imgMap, profileMap }) {
   const profileId = profileMap?.[idolId];
 
   return (
-    <div className="ir-pcard" 
-    // 개인프로필로 등수 데이터 넘김
-    onClick={() => navigate(`/Audition/profile/${profileId}`, { 
-        state: { rank: rank, finalVotes: finalVotes } 
-      })}>
+      <div className="ir-pcard" 
+      // 개인프로필로 등수 데이터 넘김
+        onClick={() => navigate(`/Audition/profile/${profileId}`, { 
+            state: { rank: rank, finalVotes: finalVotes } 
+          })}>
+            
       <div className="ir-av-wrap">
         <div className="ir-av" style={{ background: avColor(idolId) }}>
           {mainImgUrl ? (

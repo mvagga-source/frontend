@@ -71,11 +71,13 @@ export default function IdolDetail() {
   const { id } = useParams(); 
   const loc = useLocation();
 
+  const [finalVotes, SetFinalVotes] = useState(0);
+
   // 1. state에서 데이터를 먼저 꺼냅니다 (idol 변수 참조 금지!)
   const stateData = loc.state || {};
   const displayRank = stateData.rank || "-";
   //const finalVotes = Number(idol[4] ?? 0);
-  const finalVotes = stateData.finalVotes || 0;
+  //const finalVotes = stateData.finalVotes || 0;
 
   // 2. [★가장 중요] 그 다음에 idol 상태를 선언합니다.
   const [idol, setIdol] = useState(IDOL_DATA); 
@@ -196,14 +198,10 @@ console.log("실제 유저 데이터 구조:", user);
             hobby: dbData.hobby || prev.profile.hobby,
             keyword: dbData.keyword || prev.profile.keyword,
             mainImgUrl: dbData.mainImgUrl || prev.profile.mainImgUrl,
-            votes: { 
-              //rank: dbData.rank || "-", 
-              // rank:dbData.idolId || dbData.id || id,
-              rank: displayRank !== "-" ? displayRank : (dbData.idolId || dbData.id || id),
-              
-              current: (finalVotes !== 0) ? finalVotes : (dbData.voteCount || dbData.votes || finalVotes)
-              //current: dbData.voteCount || 0 
-            },
+            // votes: { 
+            //   rank: displayRank !== "-" ? displayRank : (dbData.idolId || dbData.id || id),
+            //   current: (finalVotes !== 0) ? finalVotes : (dbData.voteCount || dbData.votes || finalVotes)
+            // },
           },
          photos: mediaList ? mediaList.map(m => ({
               // 서버가 보내주는 실제 데이터 구조를 console.log(mediaList)로 꼭 확인하세요!
@@ -249,6 +247,44 @@ console.log("실제 유저 데이터 구조:", user);
       }));
 
       // 비디오 정보 불러오기 end ===========================================================
+
+      // 랭킹 정보 불러오기 start ===========================================================
+      const ALres =  await getAuditionListApi()
+      const ALdata = ALres.data;
+      const activeRound = ALdata[ALdata.length -1];
+
+      const RKres = await getRankingApi(activeRound.auditionId);
+      const RKdata = RKres.data;
+
+      console.log("RKdata : ", RKdata);
+
+      // 초기화
+      setIdol(prev => ({
+        ...prev,
+        votes: 
+            { 
+              round : activeRound.auditionId,
+              rank: 0, 
+              finalVotes: 0 
+            }
+      }));
+
+      // 일치하는 랭킹 정보 
+      RKdata.forEach((idol, i) => {
+        if (idol[1] === dbData.name) {
+          console.log("i, value :", i, ",", idol[1], ",", idol[4]);
+
+          setIdol(prev => ({
+            ...prev,
+            votes: 
+                { 
+                    round : activeRound.auditionId,
+                    rank: i + 1, 
+                    finalVotes: idol[4] 
+                }
+          }));
+        }
+      });
 
     } catch (err) {
       console.error("❌ API 호출 자체 실패:", err);
@@ -379,11 +415,16 @@ fetchIdolData();
           
           <div className="id-vote-card">
             <div className="id-v-stat">
-              <strong>{displayRank !== "-" ? displayRank : idol.profile.votes.rank}위</strong>
+              <strong>{idol.votes.rank ? `${idol.votes.round} 차`: ""}</strong>
+            </div>
+            <div className="id-v-stat">
+              {/* <strong>{displayRank !== "-" ? displayRank : idol.profile.votes.rank}위</strong> */}
+              <strong>{idol.votes.rank ? idol.votes.rank : "탈락"}</strong>
               <span>현재 순위</span>
             </div>
             <div className="id-v-stat">
-              <strong>{finalVotes.toLocaleString()}</strong>
+              {/* <strong>{finalVotes.toLocaleString()}</strong> */}
+              <strong>{idol.votes.finalVotes ? idol.votes.finalVotes : 0}</strong>
               <span>득표수</span>
             </div>
           </div>
