@@ -235,8 +235,11 @@
   line-height: 75px;
   height:75px;
   margin-bottom: 7px;
-  background: rgba(255,215,0,0.08); 
-  color: #ffd700;          
+  background: rgba(255, 122, 138, 0.1);
+  color: #ff7a8a;
+  border: 1px solid rgba(255, 122, 138, 0.25);
+  /* background: rgba(255,215,0,0.08); 
+  color: #ffd700;           */
   /* border: 1px solid #ffd700; */
   /* box-shadow: 0 0 14px rgba(255,215,0,0.2); */
 }
