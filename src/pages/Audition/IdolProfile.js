@@ -319,8 +319,8 @@ fetchIdolData();
                     </tr>
                   ))}
 
-
-                  {/* ✅ user가 존재하고(로그인 상태), role이 'ADMIN'일 때만 렌더링 */}
+{/* 
+                  
                   {user && (
                     <tr>
                       <td colSpan="2">
@@ -342,7 +342,7 @@ fetchIdolData();
                         </div>
                       </td>
                     </tr>
-                  )}
+)} */}
 
                   </tbody>
               </table>
