@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./IdolProfile.css";
 import axios from "axios"; 
 import { IdolViewVoteApi, getIdolProfileApi } from "./idolApi";
 import axiosInstance from "../../api/axiosInstance";
-
+import { getAuditionListApi, getRankingApi, getAllIdolsApi } from "../../api/auditionApi";
 import { getVideoPageApi } from "../Video/MVideoApi";
 import { getYoutubeThumbnail } from "../Video/MVivdeoFunction";
 
@@ -69,9 +69,21 @@ export default function IdolDetail() {
 
   const navigate = useNavigate();
   const { id } = useParams(); 
-  
+  const loc = useLocation();
+
+  // 1. state에서 데이터를 먼저 꺼냅니다 (idol 변수 참조 금지!)
+  const stateData = loc.state || {};
+  const displayRank = stateData.rank || "-";
+  //const finalVotes = Number(idol[4] ?? 0);
+  const finalVotes = stateData.finalVotes || 0;
+
+  // 2. [★가장 중요] 그 다음에 idol 상태를 선언합니다.
   const [idol, setIdol] = useState(IDOL_DATA); 
   const [loading, setLoading] = useState(true);
+
+  // 3. 로그는 반드시 위 선언들이 다 끝난 "다음에" 찍으세요.
+  console.log("넘겨받은 순위:", displayRank);
+  console.log("현재 아이돌 상태:", idol);
 
   // ✅ 안전하게 수정 (user가 있을 때만 role을 읽고 소문자로 변환)
   const { user } = useAuth();
@@ -185,8 +197,12 @@ console.log("실제 유저 데이터 구조:", user);
             keyword: dbData.keyword || prev.profile.keyword,
             mainImgUrl: dbData.mainImgUrl || prev.profile.mainImgUrl,
             votes: { 
-              rank: dbData.rank || "-", 
-              current: dbData.voteCount || 0 
+              //rank: dbData.rank || "-", 
+              // rank:dbData.idolId || dbData.id || id,
+              rank: displayRank !== "-" ? displayRank : (dbData.idolId || dbData.id || id),
+              
+              current: (finalVotes !== 0) ? finalVotes : (dbData.voteCount || dbData.votes || finalVotes)
+              //current: dbData.voteCount || 0 
             },
           },
          photos: mediaList ? mediaList.map(m => ({
@@ -363,11 +379,11 @@ fetchIdolData();
           
           <div className="id-vote-card">
             <div className="id-v-stat">
-              <strong>{idol.profile.votes.rank}위</strong>
+              <strong>{displayRank !== "-" ? displayRank : idol.profile.votes.rank}위</strong>
               <span>현재 순위</span>
             </div>
             <div className="id-v-stat">
-              <strong>{idol.profile.votes.current.toLocaleString()}</strong>
+              <strong>{finalVotes.toLocaleString()}</strong>
               <span>득표수</span>
             </div>
           </div>

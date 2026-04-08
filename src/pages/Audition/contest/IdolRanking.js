@@ -33,12 +33,17 @@ function PyramidCard({ idol, rank, total, imgMap, profileMap }) {
   const idolId     = idol[0];
   const name       = idol[1];
   const finalVotes = Number(idol[4] ?? 0);
+  console.log(`${name}의 투표수 확인:`, finalVotes);
   const mainImgUrl = imgMap?.[idolId];
   const pct        = total > 0 ? (finalVotes / total * 100).toFixed(1) : "0.0";
   const profileId = profileMap?.[idolId];
 
   return (
-    <div className="ir-pcard" onClick={() => navigate(`/Audition/profile/${profileId}`)}>
+    <div className="ir-pcard" 
+    // 개인프로필로 등수 데이터 넘김
+    onClick={() => navigate(`/Audition/profile/${profileId}`, { 
+        state: { rank: rank, finalVotes: finalVotes } 
+      })}>
       <div className="ir-av-wrap">
         <div className="ir-av" style={{ background: avColor(idolId) }}>
           {mainImgUrl ? (
@@ -75,7 +80,11 @@ function RankCard({ idol, rank, total, imgMap, profileMap }) {
   return (
     <div
       className="ir-rescard"
-      onClick={() => navigate(`/Audition/profile/${profileId}`)}
+      onClick={() => {
+      console.log("보내는 데이터:", { rank, finalVotes: finalVotes }); // 보내기 직전 확인
+      navigate(`/Audition/profile/${profileId}`, { 
+        state: { rank: rank, finalVotes: finalVotes } // <-- 개인프로필 데이터 넘김
+      });}}
     >
       <span className="ir-rc-rank" style={{ color: rankColor(rank) }}>
         {String(rank).padStart(2, "0")}
