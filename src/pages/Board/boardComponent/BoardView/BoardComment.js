@@ -201,8 +201,16 @@ function BoardComment({ bno }) {
               className={`${styles.commentItem} ${c.cindent > 0 ? styles.replyItem : ""}`}
               style={{ marginLeft: `${c.cindent * 20}px` }} // 들여쓰기 적용
           >
-            {/* 삭제 여부 확인: 'y' 이면 삭제된 메시지만 표시 */}
-            {c.delYn === 'y' ? (
+            {/* 1. 관리자에 의한 신고 삭제 처리 (최우선) */}
+            {c.reportYn === 'y' ? (
+              <div className={styles.deletedWrapper}>
+                <p className={styles.deletedText}>
+                  🚨 운영 정책 위반으로 관리자에 의해 블라인드 처리된 댓글입니다.
+                </p>
+              </div>
+            ) : 
+            /* 2. 사용자에 의한 일반 삭제 처리 */
+            c.delYn === 'y' ? (
               <div className={styles.deletedWrapper}>
                 <p className={styles.deletedText}>삭제된 댓글입니다.</p>
               </div>
