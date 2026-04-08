@@ -65,6 +65,7 @@ export default function Vote() {
 
   /* ── 아이돌 목록 + 오늘 투표 여부 로드 ── */
   useEffect(() => {
+    if (!auditionId) return;
     setLoading(true);
 
     // 아이돌 목록 조회
