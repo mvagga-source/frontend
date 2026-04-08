@@ -30,7 +30,7 @@ function MVideoPop({ dataParams }) {
     // API params
     const params = useRef({
         page : 1,
-        size : 10,
+        size : 15,
         sortType : "POPULAR", 
         search : "",
         searchType : "",
@@ -47,7 +47,7 @@ function MVideoPop({ dataParams }) {
                 const res = await getVideoPageApi(searchParams);
                 const data = await res.data.list;
 
-                setPopVideos(data.slice(0, 10));
+                setPopVideos(data.slice(0, 15));
             }catch(e){
                 console.error("비디오 인기순위 호출 실패",e);
             }
@@ -129,15 +129,6 @@ function MVideoPop({ dataParams }) {
                                             <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>
                                         </svg>
                                     </div>
-                                    
-                                    {/* 메타 */}
-                                    <div className="mv-slider-card__meta">
-                                        <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
-                                        <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
-                                            <FontAwesomeIcon icon={faHeart} color={isLiked(popVideo.id) ? "red" : "gray"}/>
-                                            {popVideo.likeCount}
-                                        </span>
-                                    </div>                                
 
                                     {/* 정보 */}
                                     <div className="mv-slider-card__info">
@@ -145,13 +136,21 @@ function MVideoPop({ dataParams }) {
                                             <div className="mv-slider-card__rank">
                                                 {index + 1}
                                             </div>
-                                            <div className="mv-slider-card__profile mv-ongoing-all"
+                                            <div className="mv-slider-card__profile mv-ongoing-fc"
                                                 onClick={() => goToProfile(popVideo.idol_profile?.profileId || "")}>
                                                 <span className={`${passed ? "mv-ongoing-fc":"mv-ended-fc"}`}>●</span>
                                                 <span>프로필</span>
                                             </div>                                        
                                         </div>
                                         <div className="mv-slider-card__right">
+                                            {/* 메타 */}
+                                            <div className="mv-slider-card__meta">
+                                                <span><FontAwesomeIcon icon={faEye} /> {popVideo.viewCount}</span>
+                                                <span onClick={()=> toggleVideoLike(popVideo.id)} style={{cursor:'pointer'}}>
+                                                    <FontAwesomeIcon icon={faHeart} color={isLiked(popVideo.id) ? "red" : "gray"}/>
+                                                    {popVideo.likeCount}
+                                                </span>
+                                            </div>                                  
                                             <div className="mv-slider-card__name">{popVideo.idol_profile?.name || ""}</div>
                                             <div className="mv-slider-card__title ellipsis-multi">{popVideo.title}</div>
                                         </div>
