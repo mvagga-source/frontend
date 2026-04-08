@@ -23,6 +23,7 @@ function MySale () {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);  
   const [page, setPage] = useState();
@@ -155,7 +156,7 @@ function MySale () {
       <tbody>
         {isEmpty ? (
             <tr>
-              <td colSpan="8" style={{ textAlign: "center", height:"50px" }}>
+              <td colSpan="9" style={{ textAlign: "center", height:"50px" }}>
                 데이터가 없습니다.
               </td>
             </tr>
@@ -199,6 +200,35 @@ function MySale () {
       </tbody>
       
     </table>
+
+    {/* 페이징 */}
+    <div className="my-pagination">
+
+        <button className="my-next-prev__button" onClick={() => setPage(p => Math.max(p - 1, 1))}>
+          이전
+        </button>
+
+        {/* 페이지 번호 */}
+        {Array.from(
+          { length: endPage - startPage + 1 },
+          (_, i) => startPage + i
+        ).map((page) => (
+          <button
+            className="my-pages__button active"
+            key={page}
+            onClick={() => setPage(page)}
+            style={{
+              fontWeight: page === page ? "bold" : "normal",
+            }}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button className="my-next-prev__button" onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
+          다음
+        </button>        
+    </div>      
 
     </>
 
