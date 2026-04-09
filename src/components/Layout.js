@@ -1,4 +1,4 @@
-import Header from "./__Header";
+import Header from "./Header";
 import Footer from "./Footer";
 import "./Layout.css"
 // sidebar 추가 import
