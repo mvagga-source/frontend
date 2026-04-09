@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { Link } from 'react-router-dom';
 import "./IdolProfile.css";
 import axios from "axios"; 
 import { IdolViewVoteApi, getIdolProfileApi } from "./idolApi";
@@ -8,6 +9,7 @@ import axiosInstance from "../../api/axiosInstance";
 import { getAuditionListApi, getRankingApi, getAllIdolsApi } from "../../api/auditionApi";
 import { getVideoPageApi } from "../Video/MVideoApi";
 import { getYoutubeThumbnail } from "../Video/MVivdeoFunction";
+import Content from "../../components/Title/ContentComp";
 
 // 임시 데이터 (스토리보드 및 손그림 기반)
 const API_URL = process.env.REACT_APP_API_URL;
@@ -39,26 +41,108 @@ const IDOL_DATA = {
 
 
 /* --- [채팅방] 컴포넌트 --- */
-function ChatRoom() {
-  const [chats] = useState([
-    { id: 1, user: "팬A", msg: "혼수야 데뷔하자! 💙" },
-    { id: 2, user: "국프B", msg: "오늘 무대 최고였어 ㅠㅠ" },
-    { id: 3, user: "AJU_LOVE", msg: "투표 완료! 1등 가즈아" },
-  ]);
+/* --- [방명록] 컴포넌트 --- */
+function GuestBook({ idolId , user }) { // 부모(IdolDetail)로부터 아이돌 ID를 받습니다.
+  const [messages, setMessages] = useState([]);
+  const [inputName, setInputName] = useState("");
+  const [inputMsg, setInputMsg] = useState("");
+
+  // 1. 페이지 로드 시 해당 아이돌의 방명록 목록 가져오기
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (!idolId) return;
+      try {
+        const response = await axiosInstance.get(`http://localhost:8181/api/guestbook/${idolId}`);
+        setMessages(response.data);
+        
+        setInputMsg("");
+      } catch (error) {
+        console.error("방명록 로딩 실패:", error);
+      }
+    };
+    if (idolId) fetchMessages();
+  }, [idolId]);
+
+  // 1. 금지어 리스트 (여기에 원하는 단어를 추가하세요)
+  const forbiddenWords = ["바보", "멍청이", "돼지", "뚱땡", "죽어", "ㅅㅂ", "시발", "나가"];
+
+
+  // 2. 방명록 남기기 (DB 저장)
+  const handleSubmit = async () => {
+    if (!user || !user.nickname) {
+    alert("로그인이 필요한 서비스입니다!");
+    return;
+  }
+  // 2. 내용 확인
+    if (!inputMsg.trim()) {
+      alert("내용을 입력해주세요!");
+      return;
+    }
+    // 2. 욕설 체크 로직
+    // inputMsg 안에 forbiddenWords 중 하나라도 포함되어 있는지 확인
+    const hasBadWord = forbiddenWords.some(word => inputMsg.includes(word));
+
+    if (hasBadWord) {
+      alert("부적절한 표현이 포함되어 있습니다. 예쁜 말을 사용해주세요! 😊");
+      return; // 여기서 함수를 종료시켜 서버로 보내지 않음
+    }
+
+
+    const newPost = {
+      profileId: idolId,  // 백엔드 DTO의 profileId와 매칭
+      writer: user.nickname,  // 백엔드 DTO의 writer와 매칭
+      content: inputMsg,  // 백엔드 DTO의 content와 매칭
+    };
+
+    try {
+      const response = await axiosInstance.post(`http://localhost:8181/api/guestbook/add`, newPost);
+      
+      // 서버에서 필터링되어 저장된 최신 데이터를 리스트 최상단에 추가
+      setMessages(prev => [response.data, ...prev]);
+      
+      // 입력창 초기화
+      
+      setInputMsg("");
+      alert("응원이 성공적으로 등록되었습니다! 💙");
+    } catch (error) {
+      console.error("전송 에러:", error);
+      alert("전송에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
-    <div className="id-chat-room">
-      <h4 className="id-chat-title">실시간 팬채팅</h4>
-      <div className="id-chat-list">
-        {chats.map(c => (
-          <p key={c.id} className="id-chat-item">
-            <span>{c.user}</span>: {c.msg}
-          </p>
+    <div className="id-guestbook">
+      <h4 className="id-chat-title">응원 방명록</h4>
+      <div className="id-gb-list">
+        {messages.map((m, index) => (
+          <div key={m.id || index} className="id-gb-card">
+          <div className="id-gb-header">
+            {/* 백엔드 DTO의 필드명인 writer와 content를 정확히 사용하세요 */}
+            <span className="id-gb-user">{m.writer || "익명"}</span>
+            <span className="id-gb-date">
+              {m.createAt ? new Date(m.createAt).toLocaleDateString() : "방금 전"}
+            </span>
+          </div>
+          <p className="id-gb-msg">{m.content}</p>
+        </div>
+              
         ))}
       </div>
-      <div className="id-chat-input">
-        <input type="text" placeholder="응원 메시지 입력..." />
-        <button>전송</button>
+      <div className="id-gb-form">
+        <div className="id-gb-user-info">
+          {user ? (
+            <span className="id-gb-current-user"><strong>{user.nickname} </strong>님, 응원 메세지를 남겨보세요!</span>
+          ) : (
+            <span className="id-gb-login-plez">로그인이 필요합니다</span>
+          )}
+        </div>
+        <textarea 
+          placeholder={user ? "따뜻한 응원을 남겨주세요" : "로그인 후 작성이 가능합니다"} 
+          value={inputMsg}
+          onChange={(e) => setInputMsg(e.target.value)} 
+          disabled={!user} // 로그인 안 하면 입력 못 하게 막음
+        />
+        <button onClick={handleSubmit}>남기기</button>
       </div>
     </div>
   );
@@ -429,8 +513,17 @@ fetchIdolData();
             </div>
           </div>
 
-          <button className="id-btn-sub">투표 하러가기</button>
+          <button 
+            className="id-btn-sub" 
+            onClick={() => window.location.href = '/Audition/vote'}
+          >
+            투표 하러가기
+          </button>
+
+
           <button className="id-btn-sub">굿즈 보러가기</button>
+
+
           <button 
           className="id-btn-sponsor" 
           onClick={() => navigate(`/support/${id}`)}
@@ -438,7 +531,7 @@ fetchIdolData();
           후원하기
         </button>
 
-          <ChatRoom />
+          <GuestBook idolId={id} user={user} />
 
           <div className="id-calendar-room">
             <h4 className="id-chat-title">아이돌 스케줄</h4>
