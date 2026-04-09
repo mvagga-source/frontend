@@ -183,7 +183,7 @@ export default function IdolList() {
                 <div className="il-avatar" style={{ background: color }}>
                     {idol.mainImgUrl ? (
                         <img
-                            src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/images/${idol.mainImgUrl}`}
+                            src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/profile/${idol.mainImgUrl}`}
                             alt={idol.name}
                             className="il-avatar-img"
                             onError={(e) => {
