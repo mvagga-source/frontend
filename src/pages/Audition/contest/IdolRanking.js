@@ -49,7 +49,7 @@ function PyramidCard({ idol, rank, total, imgMap, profileMap }) {
         <div className="ir-av" style={{ background: avColor(idolId) }}>
           {mainImgUrl ? (
             <img
-              src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/images/${mainImgUrl}`}
+              src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/profile/${mainImgUrl}`}
               alt={name}
               className="ir-av-img"
               onError={(e) => { e.target.style.display="none"; e.target.nextSibling.style.display="flex"; }}
@@ -93,7 +93,7 @@ function RankCard({ idol, rank, total, imgMap, profileMap }) {
       <div className="ir-rc-av" style={{ background: avColor(idolId) }}>
         {mainImgUrl ? (
             <img
-              src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/images/${mainImgUrl}`}
+              src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/profile/${mainImgUrl}`}
               alt={name}
               className="ir-av-img"
               onError={(e) => { e.target.style.display="none"; e.target.nextSibling.style.display="flex"; }}
