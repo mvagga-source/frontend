@@ -139,7 +139,8 @@ function Schedule() {
 
   return (
 
-    <Content TitleName="Schedule">
+    // <Content TitleName="Schedule">
+    <>
 
       <div className="main-list">
         
@@ -233,8 +234,8 @@ function Schedule() {
           
         /> }
       </div> {/* end main-list */} 
-
-    </Content>
+    </>
+    // </Content>
   );
 }
 

@@ -20,7 +20,8 @@ function Community() {
     const activeTab = getActiveTab();
 
     return (
-        <Content TitleName="Community">
+        // <Content TitleName="Community">
+        <>
             <div className={styles.communityContainer}>
                 <div className={styles.tabWrapper}>
                     {/* 경로를 반드시 /Community/BoardList 처럼 풀 경로로 적어주세요 */}
@@ -47,7 +48,8 @@ function Community() {
                     <Outlet /> 
                 </div>
             </div>
-        </Content>
+        </>
+        // </Content>
     );
 }
 

@@ -250,7 +250,8 @@ function MVideo() {
 
     return(
         
-        <Content TitleName="비디오">
+        // <Content TitleName="비디오">
+        <>
 
             {/* <div className="mv-sidebar-divider"></div> */}
             <MVideoPop
@@ -262,7 +263,8 @@ function MVideo() {
                 dataParams={videoListProps}
             />                
 
-        </Content>
+        {/* </Content> */}
+        </>
     );
 }
 

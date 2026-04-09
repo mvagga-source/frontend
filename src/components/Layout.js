@@ -1,5 +1,6 @@
 import Header from "./Header";
 import Footer from "./Footer";
+import "./Header.css";
 import "./Layout.css"
 // sidebar 추가 import
 import { useState } from "react";
@@ -15,7 +16,7 @@ function Layout({ children }) {
       <div className="bg-glow"></div>
       {/* header에서 사이드바 열기 함수 전달 */}
       <Header onSidebarOpen={() => setSidebarOpen(true)} />
-      <main>
+      <main style={{paddingTop:"340px"}}>
         <ScrollToTopButton/>
         {children}
       </main>

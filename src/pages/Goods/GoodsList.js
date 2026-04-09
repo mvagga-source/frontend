@@ -81,7 +81,8 @@ function GoodsList() {
     };
 
     return (
-        <Content TitleName="K-POP GOODS SHOP">
+        // <Content TitleName="K-POP GOODS SHOP">
+        <>
             <div className={styles.wrapper}>
                 <div className={styles.contentContainer}>
                     
@@ -180,7 +181,8 @@ function GoodsList() {
                     />
                 </div>
             </div>
-        </Content>
+        </>
+        // </Content>
     );
 }
 

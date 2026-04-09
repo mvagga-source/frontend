@@ -64,9 +64,9 @@ const Home = () => {
 
         <div className="content">
 
-          <div className="logoWrap">
+          {/* <div className="logoWrap">
             <img src={logo} alt="logo" className="logo" />
-          </div>
+          </div> */}
 
           <div className="watermark">ACTION101</div>
 
