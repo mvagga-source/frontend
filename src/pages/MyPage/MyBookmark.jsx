@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getMyBookmarkPageApi, deleteBookmarkApi } from "./MyMainApi";
 
 import { useAuth } from "../../context/AuthContext";
@@ -12,6 +12,8 @@ import "./MyMain.css";
 function MyBookmark () {
 
   const {user} = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();  
 
   const date = new Date();
   const today = formatDate(date);  
@@ -26,15 +28,16 @@ function MyBookmark () {
   const [maxPage, setMaxPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);
-  const size = 5;
+  const size = 10;
 
+  const saved = JSON.parse(localStorage.getItem("myBookmarkDate") || "{}");
   const [params, setParams] = useState({
     memberId:user.id,
     page : page,
     size : size,
     pageType: pageType,
-    startDate: today,
-    endDate: today,
+    startDate: saved.startDate || today,
+    endDate: saved.endDate || today,
   });  
 
   //건수 확인
@@ -194,11 +197,17 @@ function MyBookmark () {
                 <td style={{textAlign:"left"}}>{list.TITLE}</td>
                 <td style={{textAlign:"center"}}>
                  {path &&
-                    <Link to={path}>
-                      <button className="my-status_btn my-ongoing-all">
+                      <button className="my-status_btn my-ongoing-all"
+                        onClick={()=>{
+                          localStorage.setItem("myBookmarkDate",JSON.stringify({ startDate, endDate }));
+                          navigate(path,{
+                              state: {
+                                from: location.pathname
+                          }});
+                        }}
+                      >
                         이동
                       </button>                    
-                    </Link>                    
                   }                
                 </td>                
                 <td style={{textAlign:"center"}}>

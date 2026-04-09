@@ -16,9 +16,6 @@ function MySale () {
   const date = new Date();
   const today = formatDate(date);  
 
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(today);  
-
   const [lists, setLists] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
@@ -27,19 +24,24 @@ function MySale () {
   const [page, setPage] = useState();
   const size = 10;
 
+  const saved = JSON.parse(localStorage.getItem("mySaleDate") || "{}");
   const {user} = useAuth();
   const [params, setParams] = useState({
     memberId:user.id,
     page : page,
     size : size,
     pageType: "",
-    startDate: today,
-    endDate: today,
+    startDate: saved.startDate || today,
+    endDate: saved.endDate || today,
   });   
+
+  const [startDate, setStartDate] = useState(saved.startDate || today);
+  const [endDate, setEndDate] = useState(saved.endDate || today);    
 
   const isEmpty = lists.length === 0;
 
   const getGoodsList = async (searchParams) => {
+
         try {
             const res = await getMySalePageApi(searchParams);
 
@@ -178,6 +180,7 @@ function MySale () {
 
               <button className="co-button-status co-ongoing-all"
                 onClick={()=>{
+                  localStorage.setItem("mySaleDate",JSON.stringify({ startDate, endDate }));
                   navigate(`/GoodsView/${list.gno}`,{
                     state: {from: location.pathname}
                   })
@@ -187,6 +190,7 @@ function MySale () {
             <td>
               <button className="co-button-status co-ongoing-all"
                       onClick={()=>{
+                        localStorage.setItem("mySaleDate",JSON.stringify({ startDate, endDate }));
                         navigate(`/GoodsUpdate/${list.gno}`,{
                             state: {
                               from: location.pathname
