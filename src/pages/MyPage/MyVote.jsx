@@ -38,12 +38,12 @@ function MyVote () {
 
           if(res.data && res.data.success) {
 
-            // console.log("getMyVotePageApi : ",res.data.data); 
+             console.log("getMyVotePageApi : ",res.data.data); 
 
             setGrouped(res.data.data.reduce((acc, cur) => {
 
                 const date = cur.VOTE_DATE;
-                const voitId = cur.VOTEID;   
+                const voitId = cur.VOTE_ID;   
                 const round = cur.AUDITION_ID;
 
                 if (!acc[date]) acc[date] = {};

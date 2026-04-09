@@ -22,10 +22,8 @@ function MyPurchase () {
   const [monthValue, setMonthValue] = useState("");
   const [yearValue, setYearValue] = useState("");
 
-  const [list, setList] = useState([]);
+  const [lists, setLists] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [maxPage, setMaxPage] = useState(1);  
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);  
@@ -33,39 +31,28 @@ function MyPurchase () {
   const size = 10;
 
   const {user} = useAuth();
-  const params = useState({
-    memberId : user.id, 
+  const [params, setParams] = useState({
+    memberId:user.id,
     page : page,
-    size: size,
-    startDate:"",
-    endDate:"",
-  });  
+    size : size,
+    pageType: "",
+    startDate: today,
+    endDate: today,
+  });    
 
-  const isEmpty = list.length === 0;
+  const isEmpty = lists.length === 0;
 
   const getMyOrderList = async(searchParams) => {
     
       try {
-          const res = await getMyOrderPageApi(
-            {
-              ...searchParams,
-              startDate : startDate || today, 
-              endDate :endDate || today
-            }
-          );
+          const res = await getMyOrderPageApi(searchParams);
 
-          if(res.data && res.data.success) {
+          if(res.data) {
 
             const { list, maxPage, startPage, endPage, totalCount } = res.data; // AjaxResponse 구조 확인
 
-            // console.log("list : ",list);
-            // console.log("maxPage : ",maxPage);
-            // console.log("startPage : ",startPage);
-            // console.log("endPage : ",endPage);
-            // console.log("totalCount : ",totalCount);
-
-            setList(list || []);
-            setTotalPages(maxPage || 1);
+            setLists(list || []);
+            setMaxPage(maxPage || 1);
             setStartPage(startPage || 1);
             setEndPage(endPage || 1);
             setTotalCount(totalCount || 0); 
@@ -76,18 +63,35 @@ function MyPurchase () {
         }    
   }
 
-  useEffect(()=>{
-    getMyOrderList(params.current);
-  },[]);
-
+  // 검색 버튼
   const handleSearch = () => {
     
     if(startDate > endDate || !startDate || !endDate) {
       alert("날짜 입력이 잘못되었습니다. 확인 바랍니다.");
       return;
     }
-    getMyOrderList(params.current);
+
+    setParams(prev => ({
+      ...prev,
+      page : 1,
+      startDate : startDate || today, 
+      endDate :endDate || today
+    }));
   } 
+
+  useEffect(() => {
+
+    getMyOrderList(params);    
+
+  }, [params]);
+
+  useEffect(() => {
+
+    setParams(prev => ({
+      ...prev,
+      page: page,
+    }));
+  }, [page]);
 
   return (
     <>
@@ -164,21 +168,21 @@ function MyPurchase () {
               </td>
             </tr>
         ) : 
-        list.map((l, index) => (
-          <tr key={l.gono}>
-            <td style={{textAlign:"center"}}>{totalCount - index}</td>
-            <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>            
-            <td style={{textAlign:"center"}}>{l.orderId}</td>
-            <td>{l.receiverName}</td>
-            <td style={{textAlign:"center"}}>{l.receiverPhone}</td>
-            <td>{l.paymentMethod}</td>
-            <td>{l.status}</td>
-            <td style={{textAlign:"center"}}>{Number(l.cnt?? 0).toLocaleString()}</td>            
-            <td style={{textAlign:"right"}}>{Number(l.totalPrice?? 0).toLocaleString()} 원</td>
-            <td style={{textAlign:"center"}}>{l.delivStatus}</td>
+        lists.map((list, index) => (
+          <tr key={list.gono}>
+            <td style={{textAlign:"center"}}>{totalCount - ((page -1) * size + index)}</td>
+            <td style={{textAlign:"center"}}>{formatDateTime(list.crdt)}</td>            
+            <td style={{textAlign:"center"}}>{list.orderId}</td>
+            <td>{list.receiverName}</td>
+            <td style={{textAlign:"center"}}>{list.receiverPhone}</td>
+            <td>{list.paymentMethod}</td>
+            <td>{list.status}</td>
+            <td style={{textAlign:"center"}}>{Number(list.cnt?? 0).toLocaleString()}</td>            
+            <td style={{textAlign:"right"}}>{Number(list.totalPrice?? 0).toLocaleString()} 원</td>
+            <td style={{textAlign:"center"}}>{list.delivStatus}</td>
             <td>
               <button className="co-button-status co-ongoing-all" onClick={() => {
-                setSelectedIds(l.gono);
+                setSelectedIds(list.gono);
                 setIsModalOpen(true);
               }}>리뷰 작성하기</button>
             </td>
@@ -191,31 +195,32 @@ function MyPurchase () {
     {/* 페이징 */}
     <div className="my-pagination">
 
-        <button className="my-next-prev__button" onClick={() => setPage(p => Math.max(p - 1, 1))}>
+        <button className={`my-next-prev__button ${page > 1 ? "active" : "" }`}
+              onClick={() => setPage(p => Math.max(p - 1, 1))}>
           이전
         </button>
 
         {/* 페이지 번호 */}
-        {Array.from(
+        {
+        Array.from(
           { length: endPage - startPage + 1 },
           (_, i) => startPage + i
-        ).map((page) => (
-          <button
-            className="my-pages__button active"
-            key={page}
-            onClick={() => setPage(page)}
-            style={{
-              fontWeight: page === page ? "bold" : "normal",
-            }}
-          >
-            {page}
-          </button>
+        ).map((p) => (
+            <button
+                  className={`my-pages__button ${p === page ? "active" : ""}`}
+                  key={p}
+                  disabled={p === page}
+                  onClick={() => setPage(p)}
+            >
+              {p}
+            </button>
         ))}
 
-        <button className="my-next-prev__button" onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
+        <button className={`my-next-prev__button ${page < maxPage ? "active" : "" }`}
+                onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
           다음
         </button>        
-    </div>    
+    </div>  
 
     {/* 팝업 렌더링 */}
     {isModalOpen && (
