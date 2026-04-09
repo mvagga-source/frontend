@@ -31,6 +31,8 @@ const MyMain = () => {
                     key={tab.id}
                     className={`tab-btn ${actived === tab.url ? 'active' : ''}`}
                     onClick={() => {
+                      if(tab.id === 'bookmark') localStorage.removeItem("myBookMarkDate");
+                      if(tab.id === 'sale') localStorage.removeItem("mySaleDate");
                       navigate(tab.url)
                     }}
                 >
