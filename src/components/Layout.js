@@ -1,4 +1,4 @@
-import Header from "./Header";
+import Header from "./__Header";
 import Footer from "./Footer";
 import "./Layout.css"
 // sidebar 추가 import
@@ -12,6 +12,7 @@ function Layout({ children }) {
 
   return (
     <div className="main-container">
+      <div className="bg-glow"></div>
       {/* header에서 사이드바 열기 함수 전달 */}
       <Header onSidebarOpen={() => setSidebarOpen(true)} />
       <main>

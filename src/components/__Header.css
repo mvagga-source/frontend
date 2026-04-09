@@ -1,0 +1,312 @@
+/* ================================================
+   Header.css — ACTION101 헤더 리뉴얼
+   참조: Produce 101 Japan 스타일 (네이비 + 로고 중앙 + 수평 nav)
+================================================ */
+
+/* ── 헤더 전체 래퍼 ── */
+.hd-header {
+  width: 100%;
+  background: linear-gradient(180deg, #0d1535 0%, #0a1228 60%, #060d1e 100%);
+  border-bottom: 1px solid rgba(0, 140, 255, 0.25);
+  position: relative;
+  overflow: visible;
+  z-index: 1000;
+}
+
+/* 중앙 glow 효과 (삼각형 빛 분위기) */
+.hd-header::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(30, 100, 255, 0.16) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ── 로고 영역 ── */
+.hd-logo-area {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.hd-logo-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+}
+
+/* 실제 로고 이미지 사용 시 */
+.hd-logo-img {
+  height: 70px;
+  object-fit: contain;
+}
+
+/* 텍스트 로고 (이미지 없을 때) */
+.hd-logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.hd-logo-pre {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 7px;
+  color: rgba(160, 200, 255, 0.65);
+  text-transform: uppercase;
+}
+
+.hd-logo-number {
+  font-size: 54px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -2px;
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(60, 140, 255, 0.45);
+}
+
+.hd-logo-sub {
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: rgba(100, 165, 255, 0.75);
+  text-transform: uppercase;
+}
+
+.hd-logo-tagline {
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(140, 185, 255, 0.5);
+  text-transform: uppercase;
+}
+
+
+/* ── 네비게이션 바 ── */
+.hd-nav-bar {
+  border-top: 1px solid rgba(0, 120, 255, 0.2);
+  background: rgba(4, 12, 36, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hd-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* 공통 링크 */
+.hd-nav-link {
+  color: rgba(190, 215, 255, 0.72);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  padding: 14px 20px;
+  position: relative;
+  transition: color 0.2s;
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+}
+
+.hd-nav-link:hover {
+  color: #ffffff;
+}
+
+/* active 상태 (현재 페이지) */
+.hd-nav-link.active {
+  color: #6bbfff;
+}
+
+.hd-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background: #5bb3ff;
+  border-radius: 1px;
+}
+
+/* 구분선 */
+.hd-nav-divider {
+  width: 1px;
+  height: 13px;
+  background: rgba(80, 130, 220, 0.22);
+  flex-shrink: 0;
+}
+
+/* 드롭다운 화살표 */
+.hd-arrow {
+  font-size: 9px;
+  opacity: 0.5;
+  margin-left: 1px;
+}
+
+
+/* ── 드롭다운 ── */
+.hd-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hd-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  min-width: 148px;
+  background: #0d1c3e;
+  border: 1px solid rgba(80, 150, 255, 0.25);
+  border-radius: 10px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+  z-index: 200;
+}
+
+.hd-dropdown-menu a {
+  text-decoration: none;
+  padding: 7px 14px;
+  border-radius: 7px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: rgba(180, 215, 255, 0.78);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.hd-dropdown-menu a:hover {
+  background: rgba(60, 120, 255, 0.18);
+  color: #fff;
+}
+
+/* hover 시 표시 */
+.has-dropdown:hover .hd-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* ── 우측 버튼 영역 ── */
+.hd-nav-right {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hd-btn-login {
+  background: transparent;
+  border: 1px solid rgba(91, 179, 255, 0.38);
+  color: rgba(160, 210, 255, 0.8);
+  font-size: 12px;
+  letter-spacing: 1px;
+  padding: 6px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hd-btn-login:hover {
+  background: rgba(91, 179, 255, 0.1);
+  border-color: rgba(91, 179, 255, 0.65);
+  color: #fff;
+}
+
+.hd-btn-vote {
+  background: rgba(91, 179, 255, 0.14);
+  border: 1px solid rgba(91, 179, 255, 0.55);
+  color: #7cc8ff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hd-btn-vote:hover {
+  background: rgba(91, 179, 255, 0.26);
+  color: #fff;
+}
+
+/* 사이드바 열기 버튼 */
+.hd-nav-sidebar-btn {
+  background: rgba(0, 180, 255, 0.08);
+  border: 1px solid rgba(0, 180, 255, 0.3);
+  border-radius: 6px;
+  color: rgba(130, 200, 255, 0.85);
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  line-height: 1;
+}
+
+.hd-nav-sidebar-btn:hover {
+  background: rgba(0, 180, 255, 0.18);
+  color: #fff;
+}
+
+
+/* ── 반응형 ── */
+@media (max-width: 900px) {
+  .hd-nav-right .hd-btn-login,
+  .hd-nav-right .hd-btn-vote {
+    display: none;
+  }
+
+  .hd-nav-link {
+    padding: 14px 12px;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+  }
+}
+
+@media (max-width: 680px) {
+  .hd-nav-links {
+    display: none;
+  }
+
+  .hd-nav-bar {
+    justify-content: flex-end;
+    padding-right: 16px;
+  }
+
+  .hd-nav-right {
+    position: static;
+  }
+}

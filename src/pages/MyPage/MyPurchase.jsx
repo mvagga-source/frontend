@@ -103,6 +103,7 @@ function MyPurchase () {
         <option value="month">월</option>
         <option value="year">년</option>
       </select>
+      
       {dateType === "week" && <input type="week" value={weekValue} onChange={(e)=>{
         setWeekValue(e.target.value);
         const { startDate, endDate } = getWeekRange(e.target.value);
