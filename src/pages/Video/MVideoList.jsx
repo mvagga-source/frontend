@@ -32,7 +32,7 @@ function MVideoList({ dataParams }) {
     const pageSize = 10;
 
     const isEmpty = videos.length === 0;
-
+  
     // API params
     const [params, setParams] = useState({
         page : page,
@@ -127,9 +127,11 @@ function MVideoList({ dataParams }) {
             <div className="mv-list__grid">
 
                 {isEmpty ? (
-                    <div className='mv-nodata-card'>
-                        조회된 데이터가 없습니다.
-                    </div>
+                    <>
+                        <div className='mv-nodata-card'>
+                            조회된 데이터가 없습니다.
+                        </div>                    
+                    </>
                 ) :
                     videos.map(video => {
 

@@ -16,31 +16,29 @@ function MyBookmark () {
   const date = new Date();
   const today = formatDate(date);  
 
-
   const [pageType, setPageType] = useState("ALL");
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);  
 
-  const [list, setList] = useState([]);
+  const [lists, setLists] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);
-  const size = 10;
+  const size = 5;
 
   const [params, setParams] = useState({
     memberId:user.id,
     page : page,
     size : size,
     pageType: pageType,
-    startDate:"",
-    endDate:"",
+    startDate: today,
+    endDate: today,
   });  
 
   //건수 확인
-  const isEmpty = list.length === 0;
+  const isEmpty = lists.length === 0;
 
   const pageTypes = [
     {value : "ALL", label : "전체"},    
@@ -60,11 +58,14 @@ function MyBookmark () {
 
           // 지역변수 선언
           const { list, maxPage, startPage, endPage, totalCount } = res.data;
-          setList(list || []);
-          setTotalPages(maxPage || 1);
+          setLists(list || []);
+          setMaxPage(maxPage || 1);
           setStartPage(startPage || 1);
           setEndPage(endPage || 1);
           setTotalCount(totalCount || 0);
+
+          console.log("startPage : ", startPage);
+          console.log("endPage : ", endPage);
         }
       } catch(e){
         console.error("데이터 불러오기 실패 :",e);
@@ -76,12 +77,19 @@ function MyBookmark () {
 
     try {
       await deleteBookmarkApi(id);
-      setList(prev => prev.filter(event => event.id !== id));
+      setLists(prev => prev.filter(event => event.id !== id));
       alert("삭제 되었습니다.")
     } catch(e){
       console.error("데이터 삭제실패 :",e);
     }
   };  
+
+  const handelDelete = (id) => {
+    
+    if (!window.confirm("북마크 정보를 삭제하시겠습니까?")) return;
+
+    deleteEvent(id);
+  }  
 
   // 검색 버튼
   const handleSearch = () => {
@@ -99,24 +107,19 @@ function MyBookmark () {
     }));
   }  
 
-  const handelDelete = (id) => {
-    
-    if (!window.confirm("북마크 정보를 삭제하시겠습니까?")) return;
+  useEffect(() => {
 
-    deleteEvent(id);
-  }  
+    getMyBookmarkPage(params);    
 
-  const handelPage = (page) => {
+  }, [params]);
+
+  useEffect(() => {
+
     setParams(prev => ({
       ...prev,
       page: page,
     }));
-  }
-
-  useEffect (() => {
-
-    getMyBookmarkPage(params);
-  },[params]);  
+  }, [page]);
 
   return (
 
@@ -167,8 +170,7 @@ function MyBookmark () {
             </tr>
 
         ) : 
-
-        list.map((list,index) => {
+        lists.map((list,index) => {
 
           const pathMap = {
             GOODS: `/GoodsView/${list.PAGEID}`,
@@ -179,7 +181,7 @@ function MyBookmark () {
 
           return (
             <tr key={list.ID}>
-                <td style={{textAlign:"center"}}>{list.length - index}</td>
+                <td style={{textAlign:"center"}}>{totalCount - ((page -1) * size + index)}</td>
                 <td style={{textAlign:"center"}}>{formatDateTime(list.CREATEDAT)}</td>
                 <td style={{textAlign:"center"}}>{pageTypes.find(v => v.value === list.PAGETYPE)?.label ||"-" }</td>
                 <td style={{textAlign:"left"}}>
@@ -214,13 +216,8 @@ function MyBookmark () {
    {/* 페이징 */}
     <div className="my-pagination">
 
-        <button className="my-next-prev__button"
-              onClick={() => (
-                setPage(p => {
-                  handelPage(p-1);
-                  return Math.max(p - 1, 1);
-                })
-              )}>
+        <button className={`my-next-prev__button ${page > 1 ? "active" : "" }`}
+              onClick={() => setPage(p => Math.max(p - 1, 1))}>
           이전
         </button>
 
@@ -234,22 +231,14 @@ function MyBookmark () {
                   className={`my-pages__button ${p === page ? "active" : ""}`}
                   key={p}
                   disabled={p === page}
-                  onClick={() => {
-                    setPage(p);
-                    handelPage(p);
-                  }}
+                  onClick={() => setPage(p)}
             >
               {p}
             </button>
         ))}
 
-        <button className="my-next-prev__button" 
-                onClick={() => (
-                  setPage(p => {
-                    handelPage(p + 1);
-                    return Math.min(p + 1, maxPage);
-                  })
-                )}>
+        <button className={`my-next-prev__button ${page < maxPage ? "active" : "" }`}
+                onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
           다음
         </button>        
     </div>      

@@ -19,10 +19,8 @@ function MySale () {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);  
 
-  const [list, setList] = useState([]);
+  const [lists, setLists] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [endPage, setEndPage] = useState(1);  
@@ -30,30 +28,25 @@ function MySale () {
   const size = 10;
 
   const {user} = useAuth();
-  const params = useRef({
-    memberId : user.id, 
+  const [params, setParams] = useState({
+    memberId:user.id,
     page : page,
-    size: size,
-    startDate:"",
-    endDate:"",
-  });    
+    size : size,
+    pageType: "",
+    startDate: today,
+    endDate: today,
+  });   
 
-  const isEmpty = list.length === 0;
+  const isEmpty = lists.length === 0;
 
   const getGoodsList = async (searchParams) => {
         try {
-            const res = await getMySalePageApi(
-            {
-              ...searchParams,
-              startDate : startDate || today, 
-              endDate :endDate || today,
-            });
-            
-            if (res.data && res.data.success) {
-                console.log(res);
+            const res = await getMySalePageApi(searchParams);
+
+            if (res.data) {
                 const { list, maxPage, startPage, endPage, totalCount } = res.data; // AjaxResponse 구조 확인
-                setList(list || []);
-                setTotalPages(maxPage || 1);
+                setLists(list || []);
+                setMaxPage(maxPage || 1);
                 setStartPage(startPage || 1);
                 setEndPage(endPage || 1);
                 setTotalCount(totalCount || 0);
@@ -62,10 +55,6 @@ function MySale () {
             console.error("상품 목록 로딩 실패:", error);
         }
   };  
-
-  useEffect(()=>{
-    getGoodsList(params.current);
-  },[]);  
 
   const GoodsDelete = async(gno) =>{
 
@@ -76,7 +65,7 @@ function MySale () {
       const res = await GoodsDeleteApi(formData);
 
       if(res.data.success) {
-        setList(prev => 
+        setLists(prev => 
           prev.map(v => v.gno === gno
             ? { ...v, delYn : "Y" } 
             : v
@@ -89,9 +78,10 @@ function MySale () {
     }
   }
 
-  useEffect(()=>{
-    getGoodsList();
-  },[]);  
+  const handleDelete = (gno) => {
+    if (!window.confirm("상품 정보를 삭제하시겠습니까?")) return;
+    GoodsDelete(gno)
+  }
 
   const handleSearch = () => {
     
@@ -99,13 +89,27 @@ function MySale () {
       alert("날짜 입력이 잘못되었습니다. 확인 바랍니다.");
       return;
     }
-    getGoodsList(params.current);
+    setParams(prev => ({
+      ...prev,
+      page : 1,
+      startDate : startDate || today, 
+      endDate :endDate || today
+    }));
   }  
 
-  const handleDelete = (gno) => {
-    if (!window.confirm("상품 정보를 삭제하시겠습니까?")) return;
-    GoodsDelete(gno)
-  }
+  useEffect(() => {
+
+    getGoodsList(params);    
+
+  }, [params]);
+
+  useEffect(() => {
+
+    setParams(prev => ({
+      ...prev,
+      page: page,
+    }));
+  }, [page]);
 
   return (
     
@@ -161,20 +165,20 @@ function MySale () {
               </td>
             </tr>
         ) :
-        list.map((l, index) => (
-          <tr key={l.gno}>
+        lists.map((list, index) => (
+          <tr key={list.gno}>
             <td style={{textAlign:"center"}}>{totalCount - index}</td>
-            <td style={{textAlign:"center"}}>{formatDateTime(l.crdt)}</td>
-            <td style={{textAlign:"center"}}><img src={`${process.env.REACT_APP_IMG_URL}${l.gimg}`} style={{height:"90px"}}/></td>            
-            <td style={{textAlign:"left"}}>{l.gname}</td>
-            <td style={{textAlign:"right"}}>{Number(l.price?? 0).toLocaleString()} 원</td>
-            <td style={{textAlign:"center"}}>{Number(l.stockCnt?? 0).toLocaleString()}</td>            
-            <td style={{textAlign:"center"}}>{l.status}</td>
+            <td style={{textAlign:"center"}}>{formatDateTime(list.crdt)}</td>
+            <td style={{textAlign:"center"}}><img src={`${process.env.REACT_APP_IMG_URL}${list.gimg}`} style={{height:"90px"}}/></td>            
+            <td style={{textAlign:"left"}}>{list.gname}</td>
+            <td style={{textAlign:"right"}}>{Number(list.price?? 0).toLocaleString()} 원</td>
+            <td style={{textAlign:"center"}}>{Number(list.stockCnt?? 0).toLocaleString()}</td>            
+            <td style={{textAlign:"center"}}>{list.status}</td>
             <td style={{textAlign:"center"}}>
 
               <button className="co-button-status co-ongoing-all"
                 onClick={()=>{
-                  navigate(`/GoodsView/${l.gno}`,{
+                  navigate(`/GoodsView/${list.gno}`,{
                     state: {from: location.pathname}
                   })
                 }}
@@ -183,7 +187,7 @@ function MySale () {
             <td>
               <button className="co-button-status co-ongoing-all"
                       onClick={()=>{
-                        navigate(`/GoodsUpdate/${l.gno}`,{
+                        navigate(`/GoodsUpdate/${list.gno}`,{
                             state: {
                               from: location.pathname
                         }});
@@ -191,7 +195,7 @@ function MySale () {
               >수정</button>
               <button className="co-button-status co-upcoming-all"
                       onClick={()=>{
-                        handleDelete(l.gno);
+                        handleDelete(list.gno);
                       }}
               >삭제</button>
             </td>
@@ -204,31 +208,32 @@ function MySale () {
     {/* 페이징 */}
     <div className="my-pagination">
 
-        <button className="my-next-prev__button" onClick={() => setPage(p => Math.max(p - 1, 1))}>
+        <button className={`my-next-prev__button ${page > 1 ? "active" : "" }`}
+              onClick={() => setPage(p => Math.max(p - 1, 1))}>
           이전
         </button>
 
         {/* 페이지 번호 */}
-        {Array.from(
+        {
+        Array.from(
           { length: endPage - startPage + 1 },
           (_, i) => startPage + i
-        ).map((page) => (
-          <button
-            className="my-pages__button active"
-            key={page}
-            onClick={() => setPage(page)}
-            style={{
-              fontWeight: page === page ? "bold" : "normal",
-            }}
-          >
-            {page}
-          </button>
+        ).map((p) => (
+            <button
+                  className={`my-pages__button ${p === page ? "active" : ""}`}
+                  key={p}
+                  disabled={p === page}
+                  onClick={() => setPage(p)}
+            >
+              {p}
+            </button>
         ))}
 
-        <button className="my-next-prev__button" onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
+        <button className={`my-next-prev__button ${page < maxPage ? "active" : "" }`}
+                onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
           다음
         </button>        
-    </div>      
+    </div>   
 
     </>
 
