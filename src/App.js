@@ -32,6 +32,7 @@ import MyBookmark from "./pages/MyPage/MyBookmark";
 import MyVote from "./pages/MyPage/MyVote";
 import MyPurchase from "./pages/MyPage/MyPurchase";
 import MySale from "./pages/MyPage/MySale";
+import MyReturn from "./pages/MyPage/MyReturn.jsx";
 
 
 //커뮤니티
@@ -67,6 +68,7 @@ import GoodsWrite from "./pages/Goods/GoodsWrite";
 import GoodsUpdate from "./pages/Goods/GoodsUpdate";
 import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
+import GoodsReturn from "./pages/Goods/GoodsReturn.js";
 import PaymentResult from "./components/kakaoPay/PaymentResult";
 
 import Process from "./pages/Process/Process";
@@ -116,6 +118,7 @@ function App() {
             <Route path="MyVote" element={<MyVote />} />
             <Route path="MyPurchase" element={<MyPurchase />} />
             <Route path="MySale" element={<MySale />} />
+            <Route path="MyReturn" element={<MyReturn />} />
           </Route>
 
           <Route path="/Community" element={<Layout><Community/></Layout>}>
@@ -153,6 +156,7 @@ function App() {
 
           <Route path="/GoodsList" element={<Layout><GoodsList/></Layout>} />
           <Route path="/GoodsView/:gno" element={<Layout><GoodsView/></Layout>} />
+          <Route path="/GoodsReturn/:gono" element={<Layout><GoodsReturn /></Layout>} />
           <Route path="/GoodsWrite" element={<ProtectedRoute><Layout><GoodsWrite/></Layout></ProtectedRoute>} />
           <Route path="/GoodsUpdate/:gno" element={<ProtectedRoute><Layout><GoodsUpdate/></Layout></ProtectedRoute>} />
           <Route path="/GoodsPreview" element={<ProtectedRoute><Layout><GoodsPreview /></Layout></ProtectedRoute>} />

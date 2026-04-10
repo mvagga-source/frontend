@@ -82,6 +82,36 @@ export const ReviewReplyApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReview/reply`, commentData);
 };
 
+// 카카오 페이 결제준비
 export const GoodsOrderApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/ready`, commentData);
+};
+
+// 주문 상세 조회
+export const getOrderDetailApi = (gono) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsOrders/detail`, {
+    params: { gono: gono }
+  });
+};
+
+//카카오페이 결제 후 결제취소처리
+export const GoodsOrderCancelApi = (commentData) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/cancel`, commentData);
+};
+
+//반품처리
+export const GoodsReturnApi = (commentData) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/save`, commentData);
+};
+
+//반품리스트
+export const getGoodsReturnListApi = (params) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/list`, {
+    params: params
+  });
+};
+
+// 반품 신청 취소 (삭제)
+export const GoodsReturnDeleteApi = (rno) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/goodsReturn/delete/${rno}`);
 };

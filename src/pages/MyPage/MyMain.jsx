@@ -16,6 +16,7 @@ const MyMain = () => {
     { id: 'vote', label: '투표 관리', url:'/MyMain/MyVote' },
     { id: 'purchase', label: '구매내역', url:'/MyMain/MyPurchase' },
     { id: 'sale', label: '상품내역', url:'/MyMain/MySale' },
+    { id: 'return', label: '반품/교환내역', url:'/MyMain/MyReturn' },
   ];
   const actived  = location.pathname === "/MyMain" ? "/MyMain/Mybookmark" : location.pathname;
 
