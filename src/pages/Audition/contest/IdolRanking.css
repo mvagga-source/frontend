@@ -2,7 +2,7 @@
 .ir-wrap {
   display: flex;
   flex-direction: column;
-  padding-top: 80px;
+  /* padding-top: 80px; */
   padding-bottom: 60px;
   min-height: 80vh;
 }

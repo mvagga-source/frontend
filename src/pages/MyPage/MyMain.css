@@ -85,10 +85,10 @@
 
 .my-main-menu {
   /* border:1px solid #fff;   */
-  width:100%;
+  width:1200px;
   margin:0 auto;
   text-align: center;
-  background: rgba(10, 16, 28, 0.98);
+  /* background: rgba(10, 16, 28, 0.98); */
 }
 
 .my-main-menu ul{
@@ -98,7 +98,7 @@
   margin:0;
   gap:10px;  
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   box-sizing: border-box;
 }
 

@@ -63,19 +63,14 @@ const Home = () => {
         {/* <div className="overlay" /> */}
 
         <div className="content">
-
-          {/* <div className="logoWrap">
-            <img src={logo} alt="logo" className="logo" />
-          </div> */}
-
           <div className="watermark">ACTION101</div>
           {/* <h3 className="subTitle">NEXT IDOL, YOUR VOTE</h3> */}
-          <div className="title">
+          {/* <div className="title">
             디렉터 여러분, <br/>당신의 선택이 <span>아이돌</span>을 만듭니다
           </div>
           <p className="desc">
             실시간 투표 · 인기 랭킹 · 오디션 진행 지금 바로 스타를 선택하세요
-          </p>
+          </p> */}
           <p className="deadline">
             {ongoingTitle ? `${ongoingTitle} 투표 마감까지 남은 시간` : "투표 마감까지 남은 시간"}
           </p>
@@ -96,8 +91,12 @@ const Home = () => {
           )}
 
           <div className="buttons">
-            <button className="primary">지금 투표하기</button>
-            <button className="secondary">일정 보기</button>
+            <button className="primary">
+              지금 투표하기
+            </button>
+            <button className="secondary">
+              일정 보기
+            </button>
           </div>
         </div>
       </div>

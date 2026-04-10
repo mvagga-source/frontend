@@ -16,7 +16,7 @@ function Layout({ children }) {
       <div className="bg-glow"></div>
       {/* header에서 사이드바 열기 함수 전달 */}
       <Header onSidebarOpen={() => setSidebarOpen(true)} />
-      <main style={{paddingTop:"30px"}}>
+      <main>
         <ScrollToTopButton/>
         {children}
       </main>

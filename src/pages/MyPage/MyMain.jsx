@@ -21,7 +21,8 @@ const MyMain = () => {
 
   return (
 
-    <Content TitleName="마이페이지">
+    // <Content TitleName="마이페이지">
+    <>
       
         <div className="my-main-menu">
             {/* <div className="my-sidebar-divider"></div> */}
@@ -40,7 +41,7 @@ const MyMain = () => {
                 </li>
                 ))}
             </ul>      
-            <div className="my-sidebar-divider"></div>
+            {/* <div className="my-sidebar-divider"></div> */}
         </div>
 
         {/* 탭 컨텐츠 영역 */}
@@ -48,7 +49,8 @@ const MyMain = () => {
             <Outlet />
         </div>        
 
-    </Content>
+    </>
+    // </Content>
   );
 };
 

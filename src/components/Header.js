@@ -34,7 +34,7 @@ function Header({ onSidebarOpen }) {
         <div className="hd-nav-divider" />
 
         {/* 오디션 드롭다운 */}
-        <div className="hd-nav-item has-dropdown">
+        {/* <div className="hd-nav-item has-dropdown">
           <span className="hd-nav-link">
             오디션 <span className="hd-arrow">▾</span>
           </span>
@@ -43,7 +43,11 @@ function Header({ onSidebarOpen }) {
             <NavLink to="/Schedule">일정표</NavLink>
             <NavLink to="/Audition/idols">참가자 명단</NavLink>
           </div>
-        </div>
+        </div> */}
+
+        <NavLink to="/Audition/idols" className={({ isActive }) => "hd-nav-link" + (isActive ? " active" : "")}>
+          참가자 명단
+        </NavLink>        
 
         <div className="hd-nav-divider" />
 
