@@ -108,10 +108,8 @@ const Home = () => {
                   </div>
                 )}
 
-                <NavLink to="/Audition/vote">
-                <button>
+                <NavLink to="/Audition/vote" className="hm-btn">
                   지금 투표하기
-                </button>
                 </NavLink>
               </div>
             </div>
@@ -128,12 +126,12 @@ const Home = () => {
               <div className="hm-sidebar-divider"></div>
               <div className="hm-section--nav">
                 <span>단계별 평가 ❯ 팀 미션  ❯<br></br> 콘셉트 평가 ❯ 파이널 ❯ 최종 데뷔</span>
-                <button>
+                <NavLink to="/Process" className="hm-btn">
                   프로그램 소개
-                </button>
-                <button>
+                </NavLink>
+                <NavLink to="/schedule" className="hm-btn">
                   일정 보기
-                </button>
+                </NavLink>
               </div>
             </div>
 
