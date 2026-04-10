@@ -24,7 +24,7 @@ function Header({ onSidebarOpen }) {
         <div className="hd-nav-links">
 
           <NavLink to="/" end className={({ isActive }) => "hd-nav-link" + (isActive ? " active" : "")}>
-            최신 소식
+            ACTION101
           </NavLink>
 
           <div className="hd-nav-divider" />

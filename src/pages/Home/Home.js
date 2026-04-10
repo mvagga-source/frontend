@@ -60,7 +60,7 @@ const Home = () => {
     <>
       <div className="hero">
 
-        <div className="overlay" />
+        {/* <div className="overlay" /> */}
 
         <div className="content">
 
@@ -69,23 +69,18 @@ const Home = () => {
           </div> */}
 
           <div className="watermark">ACTION101</div>
-
-          <h3 className="subTitle">NEXT IDOL, YOUR VOTE</h3>
-
-          <h1 className="title">
+          {/* <h3 className="subTitle">NEXT IDOL, YOUR VOTE</h3> */}
+          <div className="title">
             디렉터 여러분, <br/>당신의 선택이 <span>아이돌</span>을 만듭니다
-          </h1>
-
+          </div>
           <p className="desc">
-            실시간 투표 · 인기 랭킹 · 오디션 진행 <br />
-            지금 바로 스타를 선택하세요
+            실시간 투표 · 인기 랭킹 · 오디션 진행 지금 바로 스타를 선택하세요
           </p>
-
           <p className="deadline">
             {ongoingTitle ? `${ongoingTitle} 투표 마감까지 남은 시간` : "투표 마감까지 남은 시간"}
           </p>
 
-                    {timeLeft ? (
+          {timeLeft ? (
             <div className="timer">
               {Object.entries(timeLeft).map(([key, value]) => (
                 <div key={key} className="timeBox">
