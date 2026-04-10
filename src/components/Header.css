@@ -5,7 +5,7 @@
 
 /* ── 헤더 전체 래퍼 ── */
 .hd-header {
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   background: linear-gradient(180deg, #0d1535 0%, #0a1228 60%, #060d1e 100%);
   border-bottom: 1px solid rgba(0, 140, 255, 0.25);
@@ -93,7 +93,7 @@
 
 
 /* ── 네비게이션 바 ── */
-.hd-nav-bar {
+/* .hd-nav-bar {
   border-top: 1px solid rgba(0, 120, 255, 0.2);
   background: rgba(4, 12, 36, 0.55);
   display: flex;
@@ -101,6 +101,28 @@
   justify-content: center;
   position: relative;
   z-index: 1;
+} */
+
+.hd-nav-bar {
+  border-top: 1px solid rgba(0, 120, 255, 0.2);
+  background: rgba(4, 12, 36, 0.75); /* 살짝 진하게 */
+  backdrop-filter: blur(10px);       /* 고급 느낌 */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 1001; /* header보다 위 */
+
+  transition: all 0.3s ease;
+}
+
+.hd-nav-bar.scrolled {
+  background: rgba(4, 12, 36, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 140, 255, 0.4);
 }
 
 .hd-nav-links {
@@ -174,13 +196,16 @@
 
 .hd-dropdown-menu {
   position: absolute;
-  top: calc(100% + 4px);
+  /* top: calc(100% + 4px); */
+  top: calc(100%);
   left: 50%;
   transform: translateX(-50%) translateY(6px);
   min-width: 148px;
   background: #0d1c3e;
   border: 1px solid rgba(80, 150, 255, 0.25);
-  border-radius: 10px;
+  /* border-radius: 5px; */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   padding: 8px 6px;
   display: flex;
   flex-direction: column;
