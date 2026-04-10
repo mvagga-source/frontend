@@ -11,6 +11,10 @@ import { getVideoPageApi } from "../Video/MVideoApi";
 import { getYoutubeThumbnail } from "../Video/MVivdeoFunction";
 import Content from "../../components/Title/ContentComp";
 
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import koLocale from "@fullcalendar/core/locales/ko";
+
 // 임시 데이터 (스토리보드 및 손그림 기반)
 const API_URL = process.env.REACT_APP_API_URL;
 const IDOL_DATA = {
@@ -147,6 +151,125 @@ function GuestBook({ idolId , user }) { // 부모(IdolDetail)로부터 아이돌
     </div>
   );
 }
+
+
+// -----------------------------------------------------------------------------
+
+/* --- [미니 달력] 컴포넌트 --- */
+function MiniCalendar() {
+  const [events, setEvents] = useState([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const navigate = useNavigate(); // 페이지 이동을 위해 추가
+  // 호버된 이벤트 정보를 저장할 상태
+  const [hoveredEvent, setHoveredEvent] = useState({ display: false, title: '', x: 0, y: 0 });
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await axiosInstance.get("/schedule/getEvents", {
+          params: { deletedFlag: "N" }
+        });
+        if (res.data) {
+          setEvents(res.data.map(e => ({
+            id: e.eno,
+            title: e.title,
+            start: e.startDate,
+            // display: 'background', // 바(Bar) 대신 배경/점으로 처리하기 위한 설정
+            backgroundColor: 'transparent', 
+            borderColor: 'transparent'
+          })));
+        }
+      } catch (err) { console.error(err); }
+    };
+    fetchEvents();
+  }, []);
+
+  return (
+    <div className="id-calendar-room">
+      <div className="id-calendar-header">
+        <h4 className="id-chat-title">아이돌 스케줄</h4>
+        {/* 년도.월 표시를 타이틀 우측으로 이동 */}
+        <span className="id-calendar-date-info">
+          {currentDate.getFullYear()}. {String(currentDate.getMonth() + 1).padStart(2, '0')}
+        </span>
+      </div>
+      
+      <div className="id-mini-calendar-wrapper">
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          initialView="dayGridMonth"
+          locale={koLocale}
+          height="auto"
+          events={events}
+          headerToolbar={false} // 기본 헤더 제거
+          dayHeaders={false}    // 요일(일~월) 행 제거
+          dayMaxEvents={1}
+
+          
+          // 일정 있을 때 점(Dot)으로 커스텀 렌더링
+          eventContent={(arg) => (
+            <div className="event-dot" title={arg.event.title}></div>
+          )}
+
+        /* 2. 호버 시 일정 제목 보여주기 (브라우저 기본 툴팁 활용 혹은 커스텀) */
+          
+          eventMouseEnter={(info) => {
+            const { clientX, clientY } = info.jsEvent;
+            // 달력 박스 기준으로 위치를 잡기 위해 getBoundingClientRect 활용 가능
+            setHoveredEvent({
+              display: true,
+              title: info.event.title,
+              x: clientX, // 마우스 가로 위치
+              y: clientY - 15 // 마우스보다 약간 위쪽
+              // x: info.el.getBoundingClientRect().left, 
+              // y: info.el.getBoundingClientRect().top - 30 // 점 위로 30px 띄움
+            });
+          }}
+          /* 마우스가 나가면 숨김 */
+          eventMouseLeave={() => {
+            setHoveredEvent({ ...hoveredEvent, display: false });
+            
+          }}
+
+          /* 3. 클릭 시 이동 */
+          eventClick={(info) => {
+            navigate('/Schedule'); 
+            // 특정 날짜로 이동하고 싶다면: navigate(`/Schedule?date=${info.event.startStr}`);
+          }}
+
+        />
+
+          {hoveredEvent.display && (
+        <div 
+          className="id-calendar-tooltip" 
+          style={{ 
+            left: `${hoveredEvent.x}px`, 
+            top: `${hoveredEvent.y}px` 
+          }}
+        >
+          {hoveredEvent.title}
+        </div>
+      )}
+
+
+      </div>
+      <button className="id-btn-more" onClick={() => window.location.href='/Schedule'}>
+        전체보기
+      </button>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /* --- [메인 페이지] --- */
 export default function IdolDetail() {
@@ -513,15 +636,18 @@ fetchIdolData();
             </div>
           </div>
 
-          <button 
-            className="id-btn-sub" 
-            onClick={() => window.location.href = '/Audition/vote'}
-          >
-            투표 하러가기
-          </button>
+          <div className="id-btn-group">
+            <button 
+              className="id-btn-sub" 
+              onClick={() => window.location.href = '/Audition/vote'}
+            >
+              투표 하러가기
+            </button>
 
-
-          <button className="id-btn-sub">굿즈 보러가기</button>
+            <button className="id-btn-sub">
+              굿즈 보러가기
+            </button>
+          </div>
 
 
           <button 
@@ -533,13 +659,7 @@ fetchIdolData();
 
           <GuestBook idolId={id} user={user} />
 
-          <div className="id-calendar-room">
-            <h4 className="id-chat-title">아이돌 스케줄</h4>
-            <div className="id-calendar-box">
-              <p>2026. 03</p>
-              <small>스케줄 로딩 중...</small>
-            </div>
-          </div>
+          <MiniCalendar />
         </div>
       </div>
 
