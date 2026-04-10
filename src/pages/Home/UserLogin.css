@@ -1,9 +1,9 @@
 .ul-wrap {
-  min-height: 80vh;
+  min-height: 65vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  /* padding: 60px 20px; */
 }
 
 .ul-card {

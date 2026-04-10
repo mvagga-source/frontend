@@ -22,42 +22,6 @@
   max-width: 900px;
 }
 
-/* 중앙 강렬한 스포트라이트 (사진의 핵심) */
-.content::before {
-  content: '';  
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80vw;
-  height: 140vh;
-
-  background: conic-gradient(
-    from 160deg at 50% 0%,
-    transparent 0deg,
-    rgba(255, 255, 255, 0.12) 20deg,
-    rgba(0, 140, 255, 0.08) 40deg,
-    rgba(0, 140, 255, 0.04) 70deg,
-    transparent 110deg
-  );
-
-  filter: blur(60px);
-  opacity: 0.7;
-
-  animation: main-spotlight 10s infinite ease-in-out;
-}
-
-@keyframes main-spotlight {
-  0% {
-    transform: translateX(-50%) rotate(-6deg) scale(1);
-  }
-  50% {
-    transform: translateX(-50%) rotate(6deg) scale(1.05);
-  }
-  100% {
-    transform: translateX(-50%) rotate(-6deg) scale(1);
-  }
-}
 
 .watermark {
   position: absolute;
