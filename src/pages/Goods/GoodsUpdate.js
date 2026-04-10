@@ -121,7 +121,7 @@ function GoodsUpdate() {
         const previewData = {
             gname: formData.get("gname") || "상품명 없음",
             // GoodsView가 gcontent의 첫 줄을 제목으로 쓰므로 형식 유지
-            gcontent: (formData.get("gname") || "상품명") + "\n" + editorData,
+            gcontent: editorData,
             price: parseInt(formData.get("price")) || 0,
             stockCnt: parseInt(formData.get("stockCnt")) || 0,
             status: formData.get("status") || "판매중",
@@ -169,7 +169,22 @@ function GoodsUpdate() {
     }
 
     return (
-        <Content TitleName="Goods Update">
+        <>
+        {/* <Content TitleName="Goods Update"> */}
+            {/* 굿즈수정 헤더 & 주의사항 섹션 */}
+            <div className={styles.header}>
+                <h2 className={styles.title}>굿즈수정</h2>
+                <div className={styles.infoBox}>
+                    <p className={styles.infoTitle}>⚠️ 상품 수정 시 주의사항</p>
+                    <ul className={styles.infoList}>
+                        <li>현재 **판매상태, 출고지, 배송정보, 반품주소, 재고수량**만 수정이 가능합니다.</li>
+                        <li>상품명, 판매가, 상세 설명은 소비자 보호를 위해 **수정이 제한**되어 있습니다.</li>
+                        <li><strong>외부 결제 사기 경고:</strong> 안전결제(에스크로)를 사칭하여 외부 링크 결제를 유도하는 행위는 범죄입니다.</li>
+                        <li>재고를 0으로 변경할 경우, 판매 상태가 자동으로 <strong>'품절'</strong>로 전환됩니다.</li>
+                        <li>이미 수정이 완료된 사항은 이전으로 되돌릴 수 없으니 신중하게 저장해 주세요.</li>
+                    </ul>
+                </div>
+            </div>
             <div className={styles.wrapper}>
                 <div className={styles.container}>
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
@@ -332,7 +347,8 @@ function GoodsUpdate() {
                     </form>
                 </div>
             </div>
-        </Content>
+        {/* </Content> */}
+        </>
     );
 }
 

@@ -83,6 +83,7 @@ function GoodsList() {
     return (
         // <Content TitleName="K-POP GOODS SHOP">
         <>
+        {/* <h2 className={styles.pageTitle}>ACTION101 GOODS SHOP</h2> */}
             <div className={styles.wrapper}>
                 <div className={styles.contentContainer}>
                     

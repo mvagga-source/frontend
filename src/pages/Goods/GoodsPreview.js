@@ -57,7 +57,8 @@ function GoodsView() {
     };
 
     return (
-        <Content TitleName="Goods Preview (미리보기 모드)">
+        <>
+        {/* <Content TitleName="Goods Preview (미리보기 모드)"> */}
         <div className={commonStyles.viewContainer}>
             
             {/* [상단] 상품 핵심 정보 영역 */}
@@ -167,7 +168,7 @@ function GoodsView() {
                 <p>- 결제 완료 후 2-3일 이내 출고됩니다.</p>
                 <p>- 도서산간 지역은 배송비가 추가될 수 있습니다.</p>
                 <h4>[교환/반품 안내]</h4>
-                <p>- 상품 수령 후 7일 이내 고객센터를 통해 신청 가능합니다.</p>
+                <p>- 상품 수령 후 7일 이내 마이페이지를 통해 신청 가능합니다.</p>
                 <p>- 단순 변심의 경우 왕복 배송비({goods.gdelPrice !== 0?(goods.gdelPrice*2)?.toLocaleString():'6,000'}원)는 구매자가 부담하며, 환불 금액에서 차감 후 정산됩니다.</p>
                 <p>- 상품 가치가 훼손된 경우 교환 및 반품이 불가합니다.</p>
                 <h4>[주의 사항 (반품 불가)]</h4>
@@ -180,7 +181,8 @@ function GoodsView() {
             )}
             </div>
         </div>
-        </Content>
+        {/* </Content> */}
+        </>
     );
 }
 

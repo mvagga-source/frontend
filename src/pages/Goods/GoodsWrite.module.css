@@ -1,3 +1,81 @@
+/* 헤더: 구분선을 더 은은하게 */
+/* 헤더 전체 컨테이너: 아래 .container와 너비 맞춤 */
+.header {
+  width: 100%;
+  max-width: 850px; /* .container와 동일하게 설정 */
+  margin: 0 auto; /* 중앙 정렬 및 아래 컨테이너와의 간격 */
+  box-sizing: border-box;
+}
+
+.title {
+  /*font-size: 2.2rem;*/
+  color: #e8f4f8;
+  /*font-weight: 800;*/
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+  /* 타이틀 아래 강조 선 */
+  display: inline-block; 
+  position: relative;
+  padding-bottom: 20px;
+}
+
+/* 타이틀 아래 짧고 굵은 포인트 선 (선택 사항) */
+.title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 850px;
+  height: 1px;
+  background: #00f2ff;
+  border-radius: 2px;
+}
+
+/* 헤더 섹션 자체의 구분선 (전체 너비) */
+.headerDivider {
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 242, 255, 0.15);
+  margin-bottom: 30px;
+}
+
+.infoBox {
+  background: rgba(0, 242, 255, 0.03);
+  border: 1px solid rgba(0, 242, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px; /* 구분선 위 여백 */
+  max-width: 850px;
+}
+
+.infoTitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: #00f2ff;
+    margin-bottom: 10px;
+}
+
+.infoList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.infoList li {
+    font-size: 13px;
+    color: rgba(232, 244, 248, 0.7);
+    line-height: 1.6;
+    position: relative;
+    padding-left: 15px;
+}
+
+.infoList li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #00f2ff;
+}
+
 /* 박스 크기를 200px로 엄격하게 고정 */
 /* 컨테이너 크기 고정 */
 .imagePreviewContainer {
@@ -135,7 +213,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 20px;
+  padding: 0px 20px;
 }
 
 .container {

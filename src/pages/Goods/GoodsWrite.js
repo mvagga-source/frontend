@@ -96,7 +96,7 @@ function GoodsWrite() {
         const previewData = {
             gname: formData.get("gname") || "상품명 없음",
             // GoodsView가 gcontent의 첫 줄을 제목으로 쓰므로 형식 유지
-            gcontent: (formData.get("gname") || "상품명") + "\n" + editorData,
+            gcontent: editorData,
             price: parseInt(formData.get("price")) || 0,
             stockCnt: parseInt(formData.get("stockCnt")) || 0,
             status: formData.get("status") || "판매중",
@@ -140,7 +140,22 @@ function GoodsWrite() {
     };
 
     return (
-        <Content TitleName="Goods Write">
+        <>
+        {/* <Content TitleName="Goods Write"> */}
+            {/* 굿즈등록 헤더 & 주의사항 섹션 */}
+            <div className={styles.header}>
+                <h2 className={styles.title}>굿즈등록</h2>
+                <div className={styles.infoBox}>
+                    <p className={styles.infoTitle}>⚠️ 상품 등록 시 주의사항</p>
+                    <ul className={styles.infoList}>
+                        <li>등록 후에는 <strong>판매상태, 출고지주소, 택배사, 배송비, 반품주소, 재고수량</strong>만 수정이 가능합니다.</li>
+                        <li><strong>외부 결제 사기 경고:</strong> 안전결제(에스크로)를 사칭하여 외부 링크 결제를 유도하는 행위는 범죄입니다.</li>
+                        <li>플랫폼 내 공식 결제 시스템을 통하지 않은 직거래로 발생한 피해는 보호받을 수 없습니다.</li>
+                        <li>상품명과 가격은 신중하게 입력해 주세요. (등록 후 수정 불가)</li>
+                        <li>대표 이미지는 권장 사이즈(500x500px)에 최적화되어 있습니다.</li>
+                    </ul>
+                </div>
+            </div>
             <div className={styles.wrapper}>
                 <div className={styles.container}>
                     <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
@@ -288,7 +303,8 @@ function GoodsWrite() {
                     </form>
                 </div>
             </div>
-        </Content>
+        {/* </Content> */}
+        </>
     );
 }
 
