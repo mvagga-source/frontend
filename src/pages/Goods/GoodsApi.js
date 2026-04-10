@@ -99,6 +99,12 @@ export const GoodsOrderCancelApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/cancel`, commentData);
 };
 
+export const getReturnDetailApi = (gono) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/detail`, {
+    params: { gono: gono }
+  });
+};
+
 //반품처리
 export const GoodsReturnApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/save`, commentData);
@@ -112,6 +118,6 @@ export const getGoodsReturnListApi = (params) => {
 };
 
 // 반품 신청 취소 (삭제)
-export const GoodsReturnDeleteApi = (rno) => {
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/goodsReturn/delete/${rno}`);
+export const GoodsReturnDeleteApi = (data) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/delete`, data);
 };

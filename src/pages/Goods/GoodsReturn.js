@@ -5,13 +5,14 @@ import { SaveInput } from "../../components/input/Input";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 import styles from "./GoodsWrite.module.css"; // 기존 스타일 재활용
-import { getOrderDetailApi, GoodsReturnApi } from "./GoodsApi";
+import { getReturnDetailApi, GoodsReturnApi } from "./GoodsApi";
 
 function GoodsReturn() {
     const navigate = useNavigate();
     const { gono } = useParams(); // 주문번호 기반
     const [loading, setLoading] = useState(true);
     const [orderDetail, setOrderDetail] = useState(null);
+    const [availableQty, setAvailableQty] = useState(0); // [추가] 반품 가능 잔여 수량
 
     // 서버로 보낼 상태값들
     const [returnType, setReturnType] = useState("반품");
@@ -41,11 +42,21 @@ function GoodsReturn() {
 
     useEffect(() => {
         // 서버에서 주문 상세 정보 가져오기
-        getOrderDetailApi(gono)
+        getReturnDetailApi(gono)
             .then(res => {
+                console.log(res);
                 const data = res.data.data;
+                const alreadyReturned = res.data.alreadyReturned || 0;
+                const remaining = data.cnt - alreadyReturned;
+
+                if (remaining <= 0) {
+                    alert("이미 모든 수량이 반품/교환 처리되었습니다.");
+                    navigate(-1);
+                    return;
+                }
                 setOrderDetail(data);
-                setReturnQty(data.cnt); // 초기 수량 설정 (서버 필드명이 cnt인 경우)
+                setAvailableQty(remaining);
+                setReturnQty(1); // 초기 수량 설정 (서버 필드명이 cnt인 경우)
                 setLoading(false);
             })
             .catch(err => {
@@ -79,15 +90,14 @@ function GoodsReturn() {
 
         if (window.confirm(`반품 수량 ${returnQty}개로 신청하시겠습니까?`)) {
             const formData = new FormData(formRef.current);
-
             // 추가 데이터 삽입 (ref에 없는 값들)
-            formData.append("order.gono", gono); 
+            formData.append("order.gono", gono);
             formData.append("refundPrice", calculateRefund());
 
             GoodsReturnApi(formData).then(res => {
                 if (res.data.success) {
                     alert("반품 접수가 완료되었습니다.");
-                    navigate("/MyMain/MyPurchase");
+                    navigate("/MyMain/MyReturn");
                 }
             });
         }
@@ -168,17 +178,26 @@ function GoodsReturn() {
                         <div className={styles.formGroup}>
                             <label className={styles.label}>반품 수량 선택</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                <select 
-                                    name="returnCnt" 
-                                    value={returnQty}
-                                    onChange={(e) => setReturnQty(Number(e.target.value))}
-                                    style={{ padding: '10px', borderRadius: '4px', backgroundColor: '#333', color: '#fff' }}
-                                >
-                                    {[...Array(orderDetail?.cnt || 0)].map((_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1} 개</option>
-                                    ))}
-                                </select>
-                                <span style={{ color: '#aaa' }}>(전체 구매 수량: {orderDetail?.cnt}개)</span>
+                                {availableQty > 0 ? (
+                                    <select 
+                                        name="returnCnt" 
+                                        value={returnQty}
+                                        onChange={(e) => setReturnQty(Number(e.target.value))}
+                                        style={{ padding: '10px', borderRadius: '4px', backgroundColor: '#333', color: '#fff', width: '100px' }}
+                                    >
+                                        {/* Array.from을 사용하여 확실하게 숫자로 배열 생성 */}
+                                        {Array.from({ length: availableQty }, (_, i) => i + 1).map((num) => (
+                                            <option key={num} value={num}>
+                                                {num} 개
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <span style={{ color: '#ff4d4d' }}>반품 가능한 수량이 없습니다.</span>
+                                )}
+                                <span style={{ color: '#aaa' }}>
+                                    (반품 가능: {availableQty}개 / 전체 구매: {orderDetail?.cnt}개)
+                                </span>
                             </div>
                         </div>
 

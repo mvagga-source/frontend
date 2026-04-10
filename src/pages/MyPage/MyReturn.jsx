@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Form } from "react-router-dom";
 import { getGoodsReturnListApi, GoodsReturnDeleteApi } from "../Goods/GoodsApi";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
 import { useAuth } from "../../context/AuthContext";
@@ -74,20 +74,16 @@ function MyReturn() {
       alert("접수 완료된 이후에는 취소가 불가능합니다. 고객센터에 문의해주세요.");
       return;
     }
-
+    
     if (!window.confirm("반품/교환 신청을 취소하시겠습니까?")) return;
-
-    try {
-      GoodsReturnDeleteApi(rno).then(res => {
-        if (res.status === 200) {
-          alert("취소되었습니다.");
-          getReturnList(params);
-        }
-      });
-    } catch (error) {
-      console.error("취소 실패:", error);
-      alert("처리 중 오류가 발생했습니다.");
-    }
+    const formData = new FormData();
+    formData.append("rno", rno);
+    GoodsReturnDeleteApi(formData).then(res => {
+      if (res.data.success) {
+        alert("취소되었습니다.");
+        getReturnList(params);
+      }
+    });
   };
 
   useEffect(() => {
@@ -104,7 +100,7 @@ function MyReturn() {
       <div className="my-form-wrap">
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} /> -
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-        <button onClick={handleSearch}>조회</button>
+        <button onClick={handleSearch}>검색</button>
       </div>
 
       <table className="my-table">
@@ -173,35 +169,33 @@ function MyReturn() {
       </table>
 
       {/* 페이징 로직 동일 */}
-      {/* 페이징 */}
-    <div className="my-pagination">
+      <div className="my-pagination">
+          <button className={`my-next-prev__button ${page > 1 ? "active" : "" }`}
+                onClick={() => setPage(p => Math.max(p - 1, 1))}>
+            이전
+          </button>
 
-        <button className={`my-next-prev__button ${page > 1 ? "active" : "" }`}
-              onClick={() => setPage(p => Math.max(p - 1, 1))}>
-          이전
-        </button>
+          {/* 페이지 번호 */}
+          {
+          Array.from(
+            { length: endPage - startPage + 1 },
+            (_, i) => startPage + i
+          ).map((p) => (
+              <button
+                    className={`my-pages__button ${p === page ? "active" : ""}`}
+                    key={p}
+                    disabled={p === page}
+                    onClick={() => setPage(p)}
+              >
+                {p}
+              </button>
+          ))}
 
-        {/* 페이지 번호 */}
-        {
-        Array.from(
-          { length: endPage - startPage + 1 },
-          (_, i) => startPage + i
-        ).map((p) => (
-            <button
-                  className={`my-pages__button ${p === page ? "active" : ""}`}
-                  key={p}
-                  disabled={p === page}
-                  onClick={() => setPage(p)}
-            >
-              {p}
-            </button>
-        ))}
-
-        <button className={`my-next-prev__button ${page < maxPage ? "active" : "" }`}
-                onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
-          다음
-        </button>        
-    </div>
+          <button className={`my-next-prev__button ${page < maxPage ? "active" : "" }`}
+                  onClick={() => setPage(p => Math.min(p + 1, maxPage))}>
+            다음
+          </button>        
+      </div>
     </>
   );
 }

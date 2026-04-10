@@ -5,6 +5,7 @@ import { getMyOrderPageApi } from "./MyMainApi";
 import GoodsReviewModal from "../Goods/popup/GoodsReviewModal";
 import { formatDate, formatDateTime, getWeekRange, getMonthRange, getYearRange } from "../Admin/ACommon";
 import { useAuth } from "../../context/AuthContext";
+import { GoodsOrderCancelApi } from "../Goods/GoodsApi";
 
 import "./MyMain.css";
 
@@ -140,12 +141,13 @@ function MyPurchase () {
         <col style={{width:"12%"}}/>          
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
-        <col style={{width:"10%"}}/>                
+        <col style={{width:"6%"}}/>                
         <col style={{width:"5%"}}/>
         <col style={{width:"5%"}}/>        
         <col style={{width:"10%"}}/>
-        <col style={{width:"10%"}}/>
-        <col style={{width:"13%"}}/>
+        <col style={{width:"6%"}}/>
+        <col style={{width:"8%"}}/>
+        <col style={{width:"8%"}}/>
       </colgroup>
       <thead>
         <tr>
@@ -159,7 +161,8 @@ function MyPurchase () {
           <th>주문수량</th>          
           <th>주문금액</th>
           <th>배송상태</th>
-          <th>처리</th>          
+          <th>리뷰작성</th>          
+          <th>처리</th>
         </tr>
       </thead>
       <tbody>
@@ -188,10 +191,43 @@ function MyPurchase () {
                 setSelectedIds(list.gono);
                 setIsModalOpen(true);
               }}>리뷰 작성</button>
-
-              <button className="co-button-status co-ongoing-all" onClick={() => {
-                 navigate(`/GoodsReturn/${list.gono}`)
-              }}>반품</button>
+            </td>
+            <td>
+              {/* 상태별 취소/반품 버튼 제어 */}
+              {list.delivStatus === "배송대기" ? (
+                // 배송대기일 때: 결제취소 버튼
+                <button 
+                  className="co-button-status co-ongoing-all" 
+                  style={{ backgroundColor: "#ff4d4d", color: "#fff" }} // 취소 느낌의 색상
+                  onClick={() => {
+                    if(window.confirm("결제를 취소하시겠습니까?")) {
+                      const formData = new FormData();
+                      formData.append("gono", list.gono);
+                      // 결제 취소 API 연동 또는 관련 페이지 이동
+                      GoodsOrderCancelApi(formData).then((res) => {
+                        console.log(res);
+                        if (res.data.success) {
+                          alert("결제가 취소되었습니다.");
+                        }
+                      });
+                    }
+                  }}
+                >
+                  결제취소
+                </button>
+              ) : list.delivStatus === "배송완료" ? (
+                // 배송완료일 때: 기존 반품 버튼
+                <button className="co-button-status co-ongoing-all" onClick={() => {
+                  navigate(`/GoodsReturn/${list.gono}`)
+                }}>
+                  반품처리
+                </button>
+              ) : (
+                // 배송중 등 기타 상태일 때
+                <button className="co-button-status co-ongoing-all">
+                <span style={{ fontSize: "12px", color: "#888" }}>변경불가</span>
+                </button>
+              )}
             </td>
           </tr>
         ))}
