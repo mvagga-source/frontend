@@ -64,7 +64,7 @@ const Home = () => {
 
         {/* 제목 */}
         <div className="hm-content--title">
-          <span>디렉터 여러분,</span> <br></br> 당신의 선택이 아이돌을 만듭니다.
+          <strong>디렉터 여러분,</strong> <br></br> 당신의 선택이 아이돌을 만듭니다.
         </div>
 
         {/* <div className="hm-sidebar-divider"></div> */}
@@ -90,7 +90,7 @@ const Home = () => {
                   <span className="deadline">
                     {ongoingTitle}
                   </span>
-                  <span>투표 종료까지 남은 시간</span>
+                  <span className="deadline-etc">투표 종료까지 남은 시간</span>
                 </div>
 
                 {timeLeft ? (

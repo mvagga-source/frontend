@@ -1,33 +1,5 @@
-.main-container {
-  width:100%;
-  min-height: 100vh;
-  padding-bottom:50px;
-}
 
-.main-head {
-  width:100%;
-  height:100px;
-  margin:0 auto;
-  padding-top:70px;
-  text-align: center;
-  background: rgba(10, 16, 28, 0.98);
-}
-
-.main-title {
-  /* border:1px solid black; */
-  width:1400px;
-  height:50px;  
-  margin:0 auto;
-}
-
-.main-title h1{
-  font-size: 30px;
-  letter-spacing: 4px;
-  color: var(--neon-blue);
-  text-shadow: 0 0 16px rgba(0, 242, 255, 0.4);
-}
-
-.main-list {
+.bkMainList {
   padding-top:30px;
   width:1400px;
   margin:0 auto;
@@ -38,29 +10,30 @@
   북마크
 */
 
-.bookmark-info{
-  /* display: flex; */
-  /* justify-content: space-between; */
+.bookmarkInfo{
+  display: flex;
+  justify-content: space-between;
   /* display: -webkit-box; */
   /* -webkit-line-clamp: 3; */
   /* -webkit-box-orient: vertical; */
   height:30px;
 }
 
-.bookmark-info-title{
+.bookmarkInfoTitle{
+  /* border:1px solid #fff; */
   position: relative;
   display: inline-block;  
   height:30px;
  }
 
-.bookmark-info-title ul{
+.bookmarkInfoTitle ul{
   list-style: none;
   padding: 0;
   margin: 5px 0;
   display: flex;
 } 
 
-.bookmark-title-text {
+.bookmarkTitleText {
   /* border:1px solid #fff; */
   display: inline-block;
   max-width: 170px;
@@ -69,7 +42,7 @@
   white-space: nowrap;
 }
 
-.tooltip-text {
+.tooltipText {
   visibility: hidden;
   position: absolute;
   bottom: 120%;
@@ -86,12 +59,12 @@
   transition: 0.2s;
 }
 
-.bookmark-info-title:hover .tooltip-text {
+.bookmarkInfoTitle:hover .tooltipText {
   visibility: visible;
   opacity: 1;
 }
 
-.bookmark-icon{
+.bookmarkIcon{
   /* border:1px solid #fff; */
   font-size: 7px;
   font-weight: 700;
@@ -100,7 +73,7 @@
   line-height: 20px;
 }
 
-.bookmark-info-value{
+.bookmarkInfoValue{
   /* border: 1px solid #fff; */
   width: 24px;
   height: 24px;
@@ -122,7 +95,7 @@
   transform: translateY(0);
 } */
 
-.bookmark-status {
+.bookmarkStatus {
   cursor: pointer;  
   font-size: 12px;
   font-weight: 700;
@@ -130,17 +103,17 @@
   border-radius: 10px;
   letter-spacing: 0.5px;
 }
-.status-ongoing {
+.statusOngoing {
   background: rgba(0, 242, 255, 0.12);
   color: var(--neon-blue);
   border: 1px solid rgba(0, 242, 255, 0.3);
 }
-.status-ended {
+.statusEnded {
   background: rgba(255, 255, 255, 0.06);
   color: rgba(232, 244, 248, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.status-upcoming {
+.statusUpcoming {
   background: rgba(255, 122, 138, 0.1);
   color: #ff7a8a;
   border: 1px solid rgba(255, 122, 138, 0.25);
@@ -152,73 +125,74 @@
   Fullcalendar style info
 */
 
-.fc {
-  width:100%;
-  margin:0 auto;
+.bkMainList :global(.fc) {
+  width: 100%;
+  margin: 0 auto;
   pointer-events: auto;
 }
 
-.fc-theme-standard td,
-.fc-theme-standard th {
+.bkMainList :global(.fc td),
+.bkMainList :global(.fc th) {
   border-color: rgba(0, 242, 255, 0.2);
 }
 
-.fc-theme-standard .fc-scrollgrid {
+.bkMainList :global(.fc .fc-scrollgrid) {
   border: 1px solid rgba(0, 242, 255, 0.2);
 }
 
-/* 요일의 높이 */
-.fc-theme-standard th {
-    height: 40px;
-    line-height: 40px;
-    background:#1a253bff;
+/* 요일 */
+.bkMainList :global(.fc th) {
+  height: 40px;
+  line-height: 40px;
+  background: #1a253bff;
 }
 
-.fc .fc-daygrid-day.fc-day-today {
-    background-color: transparent;
-    outline: 2px solid #ffd07a;
-    outline-offset: -2px; /* 안쪽으로 */
+/* 오늘 */
+.bkMainList :global(.fc .fc-daygrid-day.fc-day-today) {
+  background-color: transparent;
+  outline: 2px solid #ffd07a;
+  outline-offset: -2px;
 }
 
-.fc .fc-button {
+/* 버튼 */
+.bkMainList :global(.fc .fc-button) {
   background: transparent;
-  /* border: 1px solid #e9e9e7; */
-  /* color: #efefef; */
   border-radius: 6px;
   font-size: 12px;
 }
 
-.fc .fc-button:hover {
-  background:#fff;
+.bkMainList :global(.fc .fc-button:hover) {
+  background: #fff;
   color: #606060;
 }
 
-.fc .fc-button-primary:not(:disabled).fc-button-active {
+.bkMainList :global(.fc .fc-button-primary:not(:disabled).fc-button-active) {
   background: #f1f1ef;
   border-color: #e9e9e7;
 }
 
-.fc-event {
+/* 이벤트 */
+.bkMainList :global(.fc .fc-event) {
   border: 0;
-  border-radius: 0 !important;
+  border-radius: 0; /* !important 제거 */
 }
 
-.fc-event-main {
-  padding:10px 10px;
+.bkMainList :global(.fc .fc-event-main) {
+  padding: 10px;
 }
 
-.fc-daygrid-event {
-  margin: 0 2px !important;
+.bkMainList :global(.fc .fc-daygrid-event) {
+  margin: 0 2px;
 }
 
-
-/* 일요일 날짜: 빨간색 */
-.fc .fc-day-sun a {
-    color: rgb(221, 164, 164);
+/* 일요일 */
+.bkMainList :global(.fc .fc-day-sun a) {
+  color: rgb(221, 164, 164);
 }
 
-.fc-daygrid-day-frame {
-  overflow: visible !important;
+/* 셀 높이 */
+.bkMainList :global(.fc .fc-daygrid-day-frame) {
+  overflow: visible;
   min-height: 120px;
 }
 
@@ -229,11 +203,11 @@
   outline-offset: -2px; 
 } */
 
-.highlight-day {
+:global(.highlight-day) {
   position: relative;
 }
 
-.highlight-day::before {
+:global(.highlight-day::before) {
   content: '';
   position: absolute;
   inset: 0;

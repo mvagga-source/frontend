@@ -4,9 +4,10 @@
   display: flex;
   flex-direction: column;
   gap: 60px;
-  padding: 40px 0;
+  /* padding: 40px 0; */
   color: #fff;
   background: linear-gradient(180deg, #0d1535 0%, #0a1228 60%, #060d1e 100%);
+  min-height: 80vh;
 }
 
 /* =========================
@@ -15,26 +16,49 @@
 .hm-content--title {
   width:100%;
   margin: 0 auto;
-  padding:30px 0 70px;
+  padding:60px 0 70px;
   font-size: 30px;
   font-weight: 700;
   letter-spacing: 1px;
   text-align: center;
+  animation: fadeUp 0.8s ease 0.2s both;
   /* color: rgba(200, 220, 255, 0.85); */
 }
 
-.hm-content--title span{
-  font-size:40px;
-  color:#00f0ff;
+/* 핵심 강조 */
+.hm-content--title strong {
+  display: block;
+  font-size: 52px;
+  font-weight: 800;
+
+  background: linear-gradient(90deg, #00f2ff, #4facfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+  animation: fadeUp 0.8s ease 0.4s both, glow 2s infinite alternate;
 }
 
-.hm-watermark {
-  /* transform: translate(-50%, -50%); */
-  font-size: 100px;
-  opacity: 0.05;
-  font-weight: bold;
-  letter-spacing: 10px;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(0, 242, 255, 0.7);
+  }
+}
+
 
 /* =========================
    SECTION 공통
@@ -121,12 +145,12 @@
   border-radius: 10px; */
 }
 
-.hm-section--nav span {
+.deadline-etc {
   font-size: 14px;
 }
 
 .deadline-wrap{
-  font-size: 12px;  
+  /* font-size: 12px;   */
 }
 
 .deadline-wrap span{
@@ -135,7 +159,8 @@
 
 /* 타이머 제목 */
 .deadline {
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 700;
   color: #ff7a8a;
   text-align: center;
 }
@@ -161,7 +186,7 @@
 }
 
 .num {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: #00eaff;
 }

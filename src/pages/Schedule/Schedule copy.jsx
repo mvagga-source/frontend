@@ -142,7 +142,7 @@ function Schedule() {
     // <Content TitleName="Schedule">
     <>
 
-      <div className={styles.bkMainList}>
+      <div className={styles.bk-main-list}>
         
         { <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
@@ -179,11 +179,11 @@ function Schedule() {
             };
 
             return (
-              <div className={styles.bookmarkInfo}>
-                <div className={styles.bookmarkInfoTitle}> 
+              <div className="bookmark-info">
+                <div className="bookmark-info-title"> 
                   <ul>
-                    <li className={styles.bookmarkIcon}>
-                      <svg className={styles.bookmarkInfoValue} width="22" height="22" viewBox="0 0 24 24"
+                    <li className="bookmark-icon">
+                      <svg className="bookmark-info-value" width="22" height="22" viewBox="0 0 24 24"
                           onClick={(e) => {
                             e.stopPropagation();
                             {
@@ -204,11 +204,11 @@ function Schedule() {
                           <path d="M19 21l-7-4-7 4V5c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v16z"/>                  
                       </svg>                      
                     </li>
-                    <li className={styles.bookmarkTitleText}>
+                    <li className="bookmark-title-text">
                       {getDateDiff(eventInfo.event.start, eventInfo.event.end) > 1 ? eventInfo.event.title : truncate(eventInfo.event.title,16)}
                     </li>
                   </ul>
-                  <span className={styles.tooltipText}>
+                  <span className="tooltip-text">
                     {eventInfo.event.title} {eventInfo.event.extendedProps.desc ? ` - ${eventInfo.event.extendedProps.desc}` : ''}
                   </span>
                 </div>
