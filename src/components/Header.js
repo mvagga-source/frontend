@@ -12,7 +12,7 @@ function Header({ onSidebarOpen }) {
           {/* 로고 이미지 있을 때: <img src={logo} alt="ACTION101" className="hd-logo-img" /> */}
           <div className="hd-logo-text">
             <span className="hd-logo-pre">ACTION 101</span>
-            <span className="hd-logo-number"><img src={logo} alt="logo" className="logo" style={{width:"200px"}} /></span>
+            <span className="hd-logo-number"><img src={logo} alt="logo" className="logo" style={{width:"150px"}} /></span>
             <span className="hd-logo-sub">KOREA</span>
           </div>
           <span className="hd-logo-tagline">FIND YOUR STAR</span>
