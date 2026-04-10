@@ -86,13 +86,14 @@
 .my-main-menu {
   /* border:1px solid #fff;   */
   width:1200px;
-  margin:0 auto;
+  margin:50px auto 0;
   text-align: center;
   /* background: rgba(10, 16, 28, 0.98); */
 }
 
 .my-main-menu ul{
   /* border:1px solid #fff; */
+  background: rgba(10, 16, 28, 0.98);
   list-style: none;
   padding: 0;
   margin:0;
@@ -104,11 +105,11 @@
 
 .my-main-menu ul li{
     /* border:1px solid #fff;   */
-    position: relative;
-    width:150px;
-    padding: 12px 5px;
-    font-size: 14px;
-    cursor: pointer;
+  position: relative;
+  width:150px;
+  padding: 12px 5px;
+  font-size: 14px;
+  cursor: pointer;
   box-sizing: border-box;    
 }
 
@@ -182,8 +183,9 @@
 }
 
 .my-form-wrap{
+  /* border:1px solid #fff; */
   width:100%;
-  height:30px;
+  height:37px;
   text-align:right;
   margin-bottom: 20px;
 }
@@ -343,18 +345,10 @@
 
 
 
-
-
-
-
-
-
-
-
 .my-main-list {
   padding:10px;
   width:1200px;
-  margin:50px auto;
+  margin:20px auto;
   /* border:1px solid black; */
 }
 

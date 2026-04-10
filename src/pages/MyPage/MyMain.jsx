@@ -26,7 +26,7 @@ const MyMain = () => {
     <>
       
         <div className="my-main-menu">
-            {/* <div className="my-sidebar-divider"></div> */}
+
             <ul>
                 {tabs.map((tab) => (
                 <li

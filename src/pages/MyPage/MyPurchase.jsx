@@ -1,5 +1,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getMyOrderPageApi } from "./MyMainApi";
 import GoodsReviewModal from "../Goods/popup/GoodsReviewModal";
 import { formatDate, formatDateTime, getWeekRange, getMonthRange, getYearRange } from "../Admin/ACommon";
@@ -11,6 +12,7 @@ function MyPurchase () {
 
   const date = new Date();
   const today = formatDate(date);  
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -135,7 +137,7 @@ function MyPurchase () {
       <colgroup>
         <col style={{width:"5%"}}/>
         <col style={{width:"10%"}}/>        
-        <col style={{width:"15%"}}/>          
+        <col style={{width:"12%"}}/>          
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>                
@@ -143,7 +145,7 @@ function MyPurchase () {
         <col style={{width:"5%"}}/>        
         <col style={{width:"10%"}}/>
         <col style={{width:"10%"}}/>
-        <col style={{width:"10%"}}/>
+        <col style={{width:"13%"}}/>
       </colgroup>
       <thead>
         <tr>
@@ -185,7 +187,11 @@ function MyPurchase () {
               <button className="co-button-status co-ongoing-all" onClick={() => {
                 setSelectedIds(list.gono);
                 setIsModalOpen(true);
-              }}>리뷰 작성하기</button>
+              }}>리뷰 작성</button>
+
+              <button className="co-button-status co-ongoing-all" onClick={() => {
+                 navigate(`/GoodsReturn/${list.gono}`)
+              }}>반품</button>
             </td>
           </tr>
         ))}
