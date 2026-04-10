@@ -22,7 +22,6 @@
   max-width: 900px;
 }
 
-
 .watermark {
   position: absolute;
   top: 10%;
@@ -113,7 +112,7 @@
   transform: scale(1.05);
 }
 
-.secondary {
+button {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.3);
   padding: 12px 30px;

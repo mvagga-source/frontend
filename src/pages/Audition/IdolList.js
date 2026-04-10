@@ -99,10 +99,10 @@ export default function IdolList() {
     <div className="il-wrap">
 
       {/* ── 페이지 헤더 ── */}
-      <div className="il-page-header">
+      {/* <div className="il-page-header">
         <h2 className="il-page-title">참가자</h2>
         <p className="il-page-sub">총 {filtered.length}명의 참가자</p>
-      </div>
+      </div> */}
 
       {/* 요약 섹션 */}
       <div className="il-summary">

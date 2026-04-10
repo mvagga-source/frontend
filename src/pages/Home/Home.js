@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "./Hero.css";
-import logo from "../../assets/logo/23.png";
-import singer from "../../assets/images/singer_bg.png";
+import { NavLink } from "react-router-dom";
+import "./Home.css";
 import { getAllAuditionListApi } from "../../api/auditionApi";
 
 const Home = () => {
+
   const [ongoingTitle, setOngoingTitle] = useState(null); // ongoing 회차 제목
   const [targetDate, setTargetDate] = useState(null);     // 투표 마감일 (Date 객체)
   const [timeLeft, setTimeLeft] = useState(null);
@@ -34,6 +34,7 @@ const Home = () => {
  
   // ongoing 회차 endDate 가져오기
   useEffect(() => {
+
     getAllAuditionListApi()
       .then((res) => {
         const ongoing = res.data.find((a) => a.status === "ongoing");
@@ -57,50 +58,90 @@ const Home = () => {
   }, [targetDate]);
 
   return (
-    <>
-      <div className="hero">
+    <div className="hm-content">
 
-        {/* <div className="overlay" /> */}
+      <div className="hm-section-wrap">
 
-        <div className="content">
-          <div className="watermark">ACTION101</div>
-          {/* <h3 className="subTitle">NEXT IDOL, YOUR VOTE</h3> */}
-          {/* <div className="title">
-            디렉터 여러분, <br/>당신의 선택이 <span>아이돌</span>을 만듭니다
-          </div>
-          <p className="desc">
-            실시간 투표 · 인기 랭킹 · 오디션 진행 지금 바로 스타를 선택하세요
-          </p> */}
-          <p className="deadline">
-            {ongoingTitle ? `${ongoingTitle} 투표 마감까지 남은 시간` : "투표 마감까지 남은 시간"}
-          </p>
-
-          {timeLeft ? (
-            <div className="timer">
-              {Object.entries(timeLeft).map(([key, value]) => (
-                <div key={key} className="timeBox">
-                  <span className="num">{String(value).padStart(2, "0")}</span>
-                  <span className="label">{key.toUpperCase()}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="timer">
-              <p className="timerEmpty">현재 진행 중인 투표가 없습니다</p>
-            </div>
-          )}
-
-          <div className="buttons">
-            <button className="primary">
-              지금 투표하기
-            </button>
-            <button className="secondary">
-              일정 보기
-            </button>
-          </div>
+        {/* 제목 */}
+        <div className="hm-content--title">
+          <span>디렉터 여러분,</span> <br></br> 당신의 선택이 아이돌을 만듭니다.
         </div>
+
+        {/* <div className="hm-sidebar-divider"></div> */}
+
+        
+        <div className="hm-section">
+
+            {/* left */}
+            <div className="hm-section--left">
+              {/* 투표 */}
+              <div className="hm-section--header">
+                오디션 투표
+              </div>
+              <div className="hm-section--body">
+                실시간 투표와 인기 랭킹으로<br></br>
+                당신의 스타를 직접 선택하세요
+              </div>
+
+              <div className="hm-sidebar-divider"></div>
+
+              <div className="hm-section--nav">
+                <div className="deadline-wrap">
+                  <span className="deadline">
+                    {ongoingTitle}
+                  </span>
+                  <span>투표 종료까지 남은 시간</span>
+                </div>
+
+                {timeLeft ? (
+                  <div className="timer">
+                    {Object.entries(timeLeft).map(([key, value]) => (
+                      <div key={key} className="timeBox">
+                        <span className="num">{String(value).padStart(2, "0")}</span>
+                        <span className="label">{key.toUpperCase()}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="timer">
+                    <p className="timerEmpty">현재 진행 중인 투표가 없습니다</p>
+                  </div>
+                )}
+
+                <NavLink to="/Audition/vote">
+                <button>
+                  지금 투표하기
+                </button>
+                </NavLink>
+              </div>
+            </div>
+
+            {/* right */}
+            <div className="hm-section--right">
+              <div className="hm-section--header">
+                오디션 진행
+              </div>
+              <div className="hm-section--body">
+                평가부터 최종 데뷔까지 이어지는<br></br>
+                성장 서바이벌<br></br>
+              </div>
+              <div className="hm-sidebar-divider"></div>
+              <div className="hm-section--nav">
+                <span>단계별 평가 ❯ 팀 미션  ❯<br></br> 콘셉트 평가 ❯ 파이널 ❯ 최종 데뷔</span>
+                <button>
+                  프로그램 소개
+                </button>
+                <button>
+                  일정 보기
+                </button>
+              </div>
+            </div>
+
+        </div>
+
       </div>
-    </>
+
+    </div>
   );
 };
 

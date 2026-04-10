@@ -27,7 +27,7 @@ function Header({ onSidebarOpen }) {
     <nav className="hd-nav-bar">
       <div className="hd-nav-links">
 
-        <NavLink to="/" end className={({ isActive }) => "hd-nav-link" + (isActive ? " active" : "")}>
+        <NavLink to="/" end className={({ isActive }) => "hd-nav-link" + (isActive ? " active" : "")} style={{fontWeight:"700"}}>
           ACTION101
         </NavLink>
 
