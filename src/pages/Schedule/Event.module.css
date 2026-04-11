@@ -1,0 +1,181 @@
+
+.evMain{
+  min-height: 80vh;
+  width:100%;
+  margin-top: 100px;
+}
+
+.evMainWrap {
+  height: 800px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.evYearMonth {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.evYearMonthLeft {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.evYearMonthRight button {
+  margin-left: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(232, 244, 248, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding:10px;
+  cursor: pointer;
+}
+
+.evYearMonthRight button:hover {
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);  
+  border: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+.evBookmarkInfo {
+  display: flex;
+  justify-content: space-between;
+  /* padding:5px 5px 0px 5px; */
+  /* height:30px; */
+  font-size: 12px;
+  /* line-height: 30px; */
+  background:  rgba(0, 242, 255, 0.12);
+}
+
+.evBookmarkInfo ul{
+  list-style: none;
+  padding: 0;
+  margin: 5px 0;
+  display: flex;
+} 
+
+.evBookmarkInfoValue{
+  /* border: 1px solid #fff; */
+  width: 24px;
+  height: 24px;
+
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+
+  color: var(--neon-blue);
+  background: rgba(0,0,0,0.5);
+  border-radius: 6px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.evBookmarkIcon{
+  /* border:1px solid #fff; */
+  padding:0 5px;
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--neon-blue);
+}
+
+.evBookmarkTitleText {
+  /* border:1px solid #fff; */
+  /* display: inline-block; */
+  /* overflow: hidden;
+  text-overflow: ellipsis; */
+  padding-top:3px;  
+  max-width: 170px;
+  white-space: nowrap;
+}
+
+/* =========================
+   달력 테두리 색 설정
+========================= */
+:global(.rbc-calendar) {
+  background: transparent !important;
+}
+/* 
+
+/* 기본 제거 */
+:global(.rbc-month-view),
+:global(.rbc-day-bg),
+:global(.rbc-month-row),
+:global(.rbc-row-bg),
+:global(.rbc-header) {
+  border: none !important;
+}
+
+:global(.rbc-month-view) {
+  border: 1px solid rgba(0, 242, 255, 0.2) ;
+}
+
+:global(.rbc-day-bg) {
+  border: 1px solid rgba(0, 242, 255, 0.2) !important;
+}
+
+:global(.rbc-header) {
+  border: 1px solid rgba(0, 242, 255, 0.2) !important;
+}
+
+/* 월 ~ 일 */
+:global(.rbc-header) {
+  /* justify-content: center; */
+  line-height: 40px;
+  height:40px;
+  background: #1a253bff;
+}
+
+/* 일요일 */
+:global(.rbc-row-content .rbc-date-cell:nth-child(1)) {
+  color: rgb(221, 164, 164) !important;
+}
+
+/* 토요일 */
+/* :global(.rbc-row-content .rbc-date-cell:nth-child(7)) {
+  color: #3b82f6 !important;
+} */
+
+
+/* 오늘 */
+:global(.rbc-today) {
+  background-color: transparent;
+  outline: 2px solid #ffd07a;
+  outline-offset: -2px;
+}
+
+:global(.rbc-off-range-bg) {
+  background-color: #020617;
+  opacity: 0.5;
+}
+
+:global(.highlightDay) {
+  position: relative;
+}
+
+:global(.highlightDay::before) {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid red;
+  border-radius: 6px;
+  animation: borderBlink 1s infinite;
+}
+
+:global(.rbc-date-cell) {
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #64748b;
+  text-align: right;
+}
+
+:global(.rbc-event) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0;
+  padding:0;
+}
+
+

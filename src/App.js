@@ -13,6 +13,7 @@ import UserSignUp from "./pages/Home/UserSignUp";
 
 
 import Schedule from "./pages/Schedule/Schedule";
+import Event from "./pages/Schedule/Event";
 import MVideo from "./pages/Video/MVideo";
 
 // Audition pages
@@ -110,6 +111,7 @@ function App() {
 
           {/* 오디션 일정 */}
           <Route path="/Schedule" element={<Layout><Schedule/></Layout>}/>          
+          <Route path="/Event" element={<Layout><Event/></Layout>}/>
 
           {/* 내페이지 관리*/}
           <Route path="/MyMain" element={<ProtectedRoute><Layout><MyMain/></Layout></ProtectedRoute>}>

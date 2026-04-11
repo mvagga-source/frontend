@@ -129,7 +129,7 @@ const Home = () => {
                 <NavLink to="/Process" className="hm-btn">
                   프로그램 소개
                 </NavLink>
-                <NavLink to="/schedule" className="hm-btn">
+                <NavLink to="/Event" className="hm-btn">
                   일정 보기
                 </NavLink>
               </div>
