@@ -108,7 +108,7 @@ const Home = () => {
                   </div>
                 )}
 
-                <NavLink to="/Audition/vote" className="hm-btn">
+                <NavLink to="/Audition/vote" className="hm-btn__highlight">
                   지금 투표하기
                 </NavLink>
               </div>

@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import { faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import koLocale from "@fullcalendar/core/locales/ko";
 import moment from "moment";
@@ -21,6 +24,13 @@ const localizer = momentLocalizer(moment);
 function Schedule() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    content: '',
+  });
 
   const [events, setEvents] = useState([]);
   const [highlightDates, setHighlightDates] = useState([]);
@@ -51,7 +61,7 @@ function Schedule() {
 
           const data = eventRes.data.map((e) => ({
             id: e.eno,
-            title: e.title,
+            title: e.description ? `${e.title} / ${e.description}` : e.title,
             start: parseDateString(e.startDate, 0, 0),
             end: parseDateString(e.endDate, 23, 59),
             desc: e.description,
@@ -106,6 +116,19 @@ function Schedule() {
     }
   };
 
+  const handleMouseEnter = (event, e) => {
+    setTooltip({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY,
+      content: event.title,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip({ ...tooltip, visible: false });
+  };
+
   const EventComponent = ({ event }) => {
     const truncate = (text, max = 10) => {
       const chars = [...text];
@@ -115,6 +138,7 @@ function Schedule() {
     };
 
     return (
+      <>
       <div className={styles.evBookmarkInfo}>
         <ul>
           <li className={styles.evBookmarkIcon}>
@@ -144,6 +168,13 @@ function Schedule() {
           </li>
         </ul>
       </div>
+      {/* <div
+          onMouseEnter={(e) => handleMouseEnter(event, e)}
+          onMouseLeave={handleMouseLeave}
+        >
+        {event.title}
+      </div> */}
+      </>
     );
   };
 
@@ -151,18 +182,15 @@ function Schedule() {
     const key = date.toDateString();
     if (highlightDates.includes(key)) {
       return {
-        style: {
-          backgroundColor: "rgba(199, 95, 95, 0.1)",
-          border: '2px solid red !important',
-          boxSizing: 'border-box',
-        },
+        className: "highlightDay",
+        style: {},
       };
     }
     return {};
   };
 
   const CustomToolbar = ({ date, onNavigate }) => {
-    const formatted = moment(date).format("YYYY년 M월");
+    const formatted = moment(date).format("YYYY. M.");
 
     return (
       <div className={styles.evYearMonth}>
@@ -171,8 +199,8 @@ function Schedule() {
         </div>
 
         <div className={styles.evYearMonthRight}>
-          <button onClick={() => onNavigate("PREV")}>이전</button>
-          <button onClick={() => onNavigate("NEXT")}>다음</button>
+          <button onClick={() => onNavigate("PREV")}><FontAwesomeIcon icon={faCaretLeft} />이전 달</button>
+          <button onClick={() => onNavigate("NEXT")}>다음 달 <FontAwesomeIcon icon={faCaretRight} /></button>
         </div>
       </div>
     );
@@ -203,7 +231,27 @@ function Schedule() {
           }}
         />
       </div>
+
+      {tooltip.visible && (
+        <div
+          style={{
+            position: 'fixed',
+            top: tooltip.y + 10,
+            left: tooltip.x + 10,
+            background: '#000',
+            color: '#fff',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            fontSize: '12px',
+            zIndex: 9999,
+          }}
+        >
+          {tooltip.content}
+        </div>
+      )}
+
     </div>
+
   );
 }
 

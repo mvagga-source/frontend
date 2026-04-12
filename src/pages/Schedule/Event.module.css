@@ -2,11 +2,11 @@
 .evMain{
   min-height: 80vh;
   width:100%;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .evMainWrap {
-  height: 800px;
+  height: 900px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -16,7 +16,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin: 0 0 20px 0;
 }
 
 .evYearMonthLeft {
@@ -26,8 +26,11 @@
 
 .evYearMonthRight button {
   margin-left: 10px;
+  background: rgba(0, 242, 255, 0.12);
+  color: var(--neon-blue);  
+  /* border: 1px solid rgba(0, 242, 255, 0.3);   */
   background: rgba(255, 255, 255, 0.06);
-  color: rgba(232, 244, 248, 0.4);
+  /* color: rgba(232, 244, 248, 0.4); */
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding:10px;
   cursor: pointer;
@@ -46,7 +49,7 @@
   /* height:30px; */
   font-size: 12px;
   /* line-height: 30px; */
-  background:  rgba(0, 242, 255, 0.12);
+  background:  rgba(255, 122, 138, 0.25);
 }
 
 .evBookmarkInfo ul{
@@ -65,7 +68,7 @@
   transform: translateY(0);
   transition: all 0.3s ease;
 
-  color: var(--neon-blue);
+  color: #ff7a8a;
   background: rgba(0,0,0,0.5);
   border-radius: 6px;
   padding: 3px;
@@ -133,23 +136,25 @@
 }
 
 /* 토요일 */
-/* :global(.rbc-row-content .rbc-date-cell:nth-child(7)) {
-  color: #3b82f6 !important;
-} */
+:global(.rbc-row-content .rbc-date-cell:nth-child(7)) {
+  color: #7caaf4 !important;
+}
 
 
 /* 오늘 */
 :global(.rbc-today) {
   background-color: transparent;
-  outline: 2px solid #ffd07a;
+  outline: 2px solid var(--neon-blue);
   outline-offset: -2px;
 }
 
+/* 해당달 이외 일자 */
 :global(.rbc-off-range-bg) {
   background-color: #020617;
   opacity: 0.5;
 }
 
+/* 중요 일자 */
 :global(.highlightDay) {
   position: relative;
 }
@@ -158,9 +163,15 @@
   content: '';
   position: absolute;
   inset: 0;
-  border: 2px solid red;
-  border-radius: 6px;
+  border: 1px solid var(--neon-blue);
+  border-radius: 3px;
   animation: borderBlink 1s infinite;
+}
+
+@keyframes borderBlink {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
 }
 
 :global(.rbc-date-cell) {
@@ -169,6 +180,8 @@
   color: #64748b;
   text-align: right;
 }
+
+/* 이벤트 초기 설정값 삭제 */
 
 :global(.rbc-event) {
   background: transparent !important;

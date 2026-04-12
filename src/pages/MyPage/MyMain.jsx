@@ -23,8 +23,12 @@ const MyMain = () => {
   return (
 
     // <Content TitleName="마이페이지">
-    <>
+    <div className='my-main-container'>
       
+        <div className="my-main-hwrap">
+          <h2 className="my-main-hwrap-title">마이 페이지</h2>
+          <p className="my-main-hwrap-sub">나의 활동 현황</p>
+        </div>
         <div className="my-main-menu">
 
             <ul>
@@ -50,8 +54,7 @@ const MyMain = () => {
             <Outlet />
         </div>        
 
-    </>
-    // </Content>
+    </div>
   );
 };
 

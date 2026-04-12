@@ -79,14 +79,25 @@
 
 .my-main-container {
   width:100%;
-  /* min-height: 100vh; */
+  min-height: 50vh;
   /* padding-bottom:50px; */
 }
 
+.my-main-hwrap {
+  width: 1200px;
+  margin:0 auto;
+  box-sizing: border-box;
+}
+
+/* ── 페이지 헤더 ── */
+.my-main-hwrap { padding: 20px 0 0; }
+.my-main-hwrap-title  { font-size: 22px; font-weight: 700; margin: 0;}
+.my-main-hwrap-sub    { font-size: 13px; color: rgba(232,244,248,0.4); margin: 0;}
+
 .my-main-menu {
-  /* border:1px solid #fff;   */
+  border: 1px solid rgba(0, 242, 255, 0.3); 
   width:1200px;
-  margin:50px auto 0;
+  margin:30px auto 50px;
   text-align: center;
   /* background: rgba(10, 16, 28, 0.98); */
 }
@@ -97,7 +108,7 @@
   list-style: none;
   padding: 0;
   margin:0;
-  gap:10px;  
+  /* gap:10px;   */
   display: flex;
   /* justify-content: center; */
   box-sizing: border-box;
@@ -105,23 +116,29 @@
 
 .my-main-menu ul li{
     /* border:1px solid #fff;   */
+  flex:1;
   position: relative;
   width:150px;
   padding: 12px 5px;
   font-size: 14px;
   cursor: pointer;
-  box-sizing: border-box;    
+  box-sizing: border-box;
+  /* border-right: 1px solid rgba(0, 242, 255, 0.3); */
 }
 
 .my-main-menu ul li:hover{
-  border:1px solid var(--neon-blue);
+  /* border:1px solid var(--neon-blue); */
+  background: rgba(0, 242, 255, 0.06);
+  box-sizing: border-box;
 }
 
 .my-main-menu ul li.active {
   background: rgba(0, 242, 255, 0.06);
   color: var(--neon-blue);
   cursor:default;
-  border:1px solid var(--neon-blue);
+  /* border:1px solid var(--neon-blue); */
+  outline-offset: -2px;
+  box-sizing: border-box;
 }
 
 .my-main-menu ul li span{

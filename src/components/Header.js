@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
 import logo from "../assets/logo/23.png";
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Header({ onSidebarOpen }) {
   return (
@@ -60,7 +62,8 @@ function Header({ onSidebarOpen }) {
         {/* 경연 결과 드롭다운 */}
         <div className="hd-nav-item has-dropdown">
           <span className="hd-nav-link">
-            경연 결과 <span className="hd-arrow">▾</span>
+            경연 결과 <FontAwesomeIcon icon={faCaretDown} />
+            {/* <span className="hd-arrow">▾</span> */}
           </span>
           <div className="hd-dropdown-menu">
             <NavLink to="/Audition/contest/ranking">개인 순위</NavLink>
