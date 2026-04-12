@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
 import logo from "../assets/logo/23.png";
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown,faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Header({ onSidebarOpen }) {
@@ -90,7 +90,7 @@ function Header({ onSidebarOpen }) {
         </NavLink>
 
         <div className="hd-nav-divider" />
-        <button className="hd-nav-sidebar-btn" onClick={onSidebarOpen}>☰</button>
+        <button className="hd-nav-sidebar-btn" onClick={onSidebarOpen}><FontAwesomeIcon icon={faBars} /></button>
       </div>
 
       {/* 우측 버튼 영역 */}

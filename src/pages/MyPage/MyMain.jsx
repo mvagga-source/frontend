@@ -35,24 +35,26 @@ const MyMain = () => {
                 {tabs.map((tab) => (
                 <li
                     key={tab.id}
-                    className={`tab-btn ${actived === tab.url ? 'active' : ''}`}
+                    className={`my-tab-btn ${actived === tab.url ? 'active' : ''}`}
                     onClick={() => {
                       if(tab.id === 'bookmark') localStorage.removeItem("myBookMarkDate");
                       if(tab.id === 'sale') localStorage.removeItem("mySaleDate");
                       navigate(tab.url)
                     }}
                 >
-                    {tab.label}
+                    <span>●</span> {tab.label}
                 </li>
                 ))}
             </ul>      
             {/* <div className="my-sidebar-divider"></div> */}
-        </div>
 
-        {/* 탭 컨텐츠 영역 */}
-        <div className="my-main-list">
-            <Outlet />
-        </div>        
+
+          {/* 탭 컨텐츠 영역 */}
+          <div className="my-main-list">
+              <Outlet />
+          </div>        
+          
+        </div>
 
     </div>
   );
