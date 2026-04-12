@@ -72,15 +72,21 @@
   /* background: rgba(0,242,255,0.03); */
 }
 
+.hm-section-outline {
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .hm-section {
   /* border:1px solid #fff; */
+  
   width:100%;
+  height:300px;
   display: flex;
   justify-content: space-between;
-  gap: 40px;
+  gap: 1px;
+  margin:30px 0;
   border: 1px solid rgba(0, 242, 255, 0.3);
-  padding: 30px;
-
+  /* background: rgba(255, 255, 255, 0.06); */
   /* padding: 30px 40px; */
   /* border-radius: 12px; */
   /* background: rgba(255, 255, 255, 0.03); */
@@ -93,14 +99,16 @@
 ========================= */
 .hm-section--left {
   /* border:1px solid #fff;   */
+  /* box-shadow: 0 0 14px rgba(255,215,0,0.2);   */
   background: rgba(255, 255, 255, 0.06);
-  /* box-shadow: 0 0 14px rgba(255,215,0,0.2); */
   width:50%;
 }
 
 .hm-section--header {
   width:100%;
-  font-size: 30px;
+  height:100px;
+  line-height: 100px;
+  font-size: 35px;
   font-weight: 700;
   text-align: center;
   padding: 30px 0 30px 0;
@@ -109,6 +117,9 @@
 }
 
 .hm-section--body {
+  /* border:1px solid #fff;   */
+  padding: 30px 0 10px;
+  /* justify-content: center; */
   text-align: center;
   font-size: 18px;
   line-height: 1.6;
@@ -137,8 +148,8 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  padding: 20px;
-  height:200px;
+  padding: 30px 0 10px;
+  height:250px;
   justify-content: center;
   /* background: rgba(10, 20, 50, 0.4);
   border: 1px solid rgba(120, 170, 255, 0.15);
@@ -146,7 +157,7 @@
 }
 
 .deadline-etc {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .deadline-wrap{
@@ -159,7 +170,7 @@
 
 /* 타이머 제목 */
 .deadline {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: #ff7a8a;
   text-align: center;
@@ -205,7 +216,13 @@
 /* =========================
    BUTTON
 ========================= */
-.hm-section--nav button {
+
+
+.hm-btn-wrap {
+  padding: 20px 0;
+}
+
+/* .hm-section--nav button {
   width:150px;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.3);
@@ -220,11 +237,12 @@
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
   color: #000;
   transform: translateY(-1px);
-}
+} */
 
 .hm-btn{
-  margin-top: 10px;
-  width:100px;
+  display:inline-block;
+  width:80px;
+  margin: 10px;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.3);
   padding: 12px 30px;
@@ -239,7 +257,7 @@
 
 .hm-btn:hover {
   background: linear-gradient(135deg, #00f0ff, #00c6ff);
-  /* box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); */
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
   color: #000;
   transform: translateY(-1px);
 }
@@ -250,6 +268,7 @@
   width:100px;
   text-align: center;  
   padding: 12px 30px;
+  margin-top:20px;
 
   position: relative;
   background: transparent;
@@ -309,9 +328,17 @@
 }
 
 .hm-sidebar-divider{
-  width:400px;
+  width:100%;
   margin:0 auto;
   height: 1px;
   background: var(--border-color);
+  flex-shrink: 0;
+}
+
+.hm-insidebar-divider{
+  width:400px;
+  margin:0 auto;
+  height: 1px;
+  background: #fff;
   flex-shrink: 0;
 }

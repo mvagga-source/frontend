@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import "./Home.css";
+import { faHeadset, faUserCheck, faMicrophoneLines } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getAllAuditionListApi } from "../../api/auditionApi";
+
+import "./Home.css";
 
 const Home = () => {
 
@@ -64,26 +67,30 @@ const Home = () => {
 
         {/* 제목 */}
         <div className="hm-content--title">
-          <strong>디렉터 여러분,</strong> <br></br> 당신의 선택이 아이돌을 만듭니다.
+          <strong>디렉터 여러분,</strong> 당신의 선택이 아이돌을 만듭니다.
         </div>
 
         {/* <div className="hm-sidebar-divider"></div> */}
 
-        
-        <div className="hm-section">
+        <div className="hm-section-outline">        
+          <div className="hm-section">
 
             {/* left */}
             <div className="hm-section--left">
               {/* 투표 */}
               <div className="hm-section--header">
-                오디션 투표
+                <FontAwesomeIcon icon={faUserCheck} /> 오디션 투표
               </div>
+              <div className="hm-insidebar-divider"></div>
               <div className="hm-section--body">
                 실시간 투표와 인기 랭킹으로<br></br>
                 당신의 스타를 직접 선택하세요
               </div>
 
-              <div className="hm-sidebar-divider"></div>
+            </div>
+
+            {/* right */}
+            <div className="hm-section--right">
 
               <div className="hm-section--nav">
                 <div className="deadline-wrap">
@@ -112,30 +119,44 @@ const Home = () => {
                   지금 투표하기
                 </NavLink>
               </div>
-            </div>
 
-            {/* right */}
-            <div className="hm-section--right">
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="hm-sidebar-divider"></div> */}
+
+        <div className="hm-section">
+
+            {/* left */}
+            <div className="hm-section--left">
+              {/* 진행 */}
               <div className="hm-section--header">
-                오디션 진행
+                <FontAwesomeIcon icon={faHeadset} /> 오디션 진행
               </div>
+              <div className="hm-insidebar-divider"></div>
               <div className="hm-section--body">
                 평가부터 최종 데뷔까지 이어지는<br></br>
                 성장 서바이벌<br></br>
               </div>
-              <div className="hm-sidebar-divider"></div>
+            </div>
+
+            {/* right */}
+            <div className="hm-section--right">
               <div className="hm-section--nav">
                 <span>단계별 평가 ❯ 팀 미션  ❯<br></br> 콘셉트 평가 ❯ 파이널 ❯ 최종 데뷔</span>
-                <NavLink to="/Process" className="hm-btn">
-                  프로그램 소개
-                </NavLink>
-                <NavLink to="/Event" className="hm-btn">
-                  일정 보기
-                </NavLink>
+                <div className="hm-btn-wrap">
+                  <NavLink to="/Process" className="hm-btn">
+                    프로그램 소개
+                  </NavLink>
+                  <NavLink to="/Event" className="hm-btn">
+                    일정 보기
+                  </NavLink>
+                </div>
               </div>
             </div>
 
-        </div>
+        </div>        
 
       </div>
 
