@@ -70,6 +70,7 @@ import GoodsUpdate from "./pages/Goods/GoodsUpdate";
 import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
 import GoodsReturn from "./pages/Goods/GoodsReturn.js";
+import GoodsOrderSale from "./pages/Goods/GoodsOrderSale.js";
 import PaymentResult from "./components/kakaoPay/PaymentResult";
 
 import Process from "./pages/Process/Process";
@@ -161,6 +162,8 @@ function App() {
           <Route path="/GoodsReturn/:gono" element={<Layout><GoodsReturn /></Layout>} />
           <Route path="/GoodsWrite" element={<ProtectedRoute><Layout><GoodsWrite/></Layout></ProtectedRoute>} />
           <Route path="/GoodsUpdate/:gno" element={<ProtectedRoute><Layout><GoodsUpdate/></Layout></ProtectedRoute>} />
+          <Route path="/GoodsOrderSale/:gono" element={<ProtectedRoute><Layout><GoodsOrderSale /></Layout></ProtectedRoute>} />
+          <Route path="/GoodsReturn/:gono" element={<ProtectedRoute><Layout><GoodsReturn /></Layout></ProtectedRoute>} />
           <Route path="/GoodsPreview" element={<ProtectedRoute><Layout><GoodsPreview /></Layout></ProtectedRoute>} />
 
           <Route path="/Payment/Success" element={<ProtectedRoute><PaymentResult type="success" /></ProtectedRoute>} />

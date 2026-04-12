@@ -29,6 +29,8 @@ function GoodsBanner({}) {
     }, []);
 
     return (
+        <>
+        {bannerList.length > 0 ? (
         <div className={styles.heroSlider}>
             <Swiper 
                 modules={[Navigation, Pagination, Autoplay]}
@@ -39,8 +41,7 @@ function GoodsBanner({}) {
                 loop={bannerList.length > 1}
                 className={styles.mySwiper}
             >
-                {bannerList.length > 0 ? (
-                bannerList.map((banner, index) => {
+                {bannerList.map((banner, index) => {
                     const avg = Number(banner.AVGRATING || banner.avgRating || 0);
                     const reviewCnt = banner.REVIEWCNT || banner.reviewCnt || 0;
 
@@ -96,19 +97,34 @@ function GoodsBanner({}) {
                         </div>
                     </SwiperSlide>
                     );
-                })
-                ) : (
-                <SwiperSlide>
-                    <div className={styles.mainSlide}>
-                    <div className={styles.leftContent}>
-                        <h2>인기 굿즈를 만나보세요</h2>
-                        <p>리뷰가 증명하는 베스트 아이템</p>
-                    </div>
-                    </div>
-                </SwiperSlide>
-                )}
+                })}
             </Swiper>
-        </div>
+            </div>
+            ) : (
+                <>
+                <div className={styles.heroSlider}>
+                <Swiper 
+                    modules={[Navigation, Pagination, Autoplay]}
+                    navigation
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 4000, disableOnInteraction: false }}
+                    speed={800}
+                    loop={bannerList.length > 1}
+                    className={styles.mySwiper}
+                >
+                    <SwiperSlide>
+                        <div className={styles.mainSlide}>
+                            <div className={styles.leftContent}>
+                            <h2>인기 굿즈를 만나보세요</h2>
+                            <p>리뷰가 증명하는 베스트 아이템</p>
+                        </div>
+                        </div>
+                    </SwiperSlide>
+                </Swiper>
+                </div>
+                </>
+            )}
+        </>
     );
 }
 

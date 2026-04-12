@@ -17,12 +17,6 @@ function GoodsList() {
     const [maxPrice, setMaxPrice] = useState("");
 
     const [list, setList] = useState([]);
-    /*const [list, setList] = useState([
-        { gno: 1, gname: "에스파 응원봉 (OFFICIAL LIGHT STICK)", price: 50000, gimg: "https://fanplee.com/web/product/big/202404/73e492cd6b7a4a4d918047d49a6dbb87.png", group: "aespa" },
-        { gno: 2, gname: "아이브 포토카드 세트", price: 12000, gimg: "https://fanplee.com/web/product/big/202404/73e492cd6b7a4a4d918047d49a6dbb87.png", group: "IVE" },
-        { gno: 3, gname: "뉴진스 공식 티셔츠 (White)", price: 35000, gimg: "https://fanplee.com/web/product/big/202404/73e492cd6b7a4a4d918047d49a6dbb87.png", group: "NewJeans" },
-        { gno: 4, gname: "르세라핌 미니 3집 앨범", price: 18000, gimg: "https://fanplee.com/web/product/big/202404/73e492cd6b7a4a4d918047d49a6dbb87.png", group: "LE SSERAFIM" },
-    ]);*/
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);

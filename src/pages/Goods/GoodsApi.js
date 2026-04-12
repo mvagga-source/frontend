@@ -121,3 +121,28 @@ export const getGoodsReturnListApi = (params) => {
 export const GoodsReturnDeleteApi = (data) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/delete`, data);
 };
+
+// 판매자: 배송 상태 변경 (배송대기 -> 배송중 -> 배송완료 등)
+export const updateDelivStatusApi = (gono, data) => {
+  // data 예시: { delivStatus: "배송중" }
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/updateStatus`, {
+    gono: gono,
+    ...data
+  });
+};
+
+// 판매자: 주문 강제 취소 (재고부족, 잔고부족 등)
+export const cancelOrderApi = (gono, data) => {
+  // data 예시: { reason: "재고 부족으로 인한 판매자 취소" }
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/adminCancel`, {
+    gono: gono,
+    ...data
+  });
+};
+
+// 판매자: 정산 정보 확인 (선택 사항)
+export const getSettlementDetailApi = (gono) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsSettlement/detail`, {
+    params: { gono: gono }
+  });
+};

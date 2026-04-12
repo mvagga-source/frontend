@@ -169,7 +169,7 @@ function MyPurchase () {
 
         {isEmpty ? (
             <tr>
-              <td colSpan="11" style={{ textAlign: "center", height:"50px" }}>
+              <td colSpan="12" style={{ textAlign: "center", height:"50px" }}>
                 데이터가 없습니다.
               </td>
             </tr>
