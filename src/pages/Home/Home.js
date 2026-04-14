@@ -68,7 +68,7 @@ const Home = () => {
 
         {/* 제목 */}
         <div className="hm-content--title">
-          <strong>디렉터 여러분,</strong> 당신의 선택이 아이돌을 만듭니다.
+          <strong>"디렉터 여러분"</strong> 당신의 선택이 아이돌을 만듭니다.
         </div>
 
         {/* <div className="hm-sidebar-divider"></div> */}

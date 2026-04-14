@@ -35,6 +35,9 @@ function MatchCard({ match, idx }) {
   const aColor = aWin ? "tc-color-win" : "tc-color-lose";
   const bColor = !aWin ? "tc-color-win" : "tc-color-lose";
 
+  // 대표이미지
+  const BASE_URL = process.env.REACT_APP_API_URL.replace(/\/api$/, "");
+
   return (
     <div className="tc-mcard">
       <div className="tc-mtop">
@@ -45,7 +48,7 @@ function MatchCard({ match, idx }) {
         <div className={`tc-team${aWin ? "" : " lose"}`}>
           <div className="tc-team-img-wrap">
             {match.teamAImgUrl
-              ? <img src={match.teamAImgUrl} className="tc-team-img" alt={match.teamAName} />
+              ? <img src={`${BASE_URL}${match.teamAImgUrl}`} className="tc-team-img" alt={match.teamAName} />
               : <div className="tc-team-av" style={{ background: aBg }}>{match.teamAName.charAt(0)}</div>
             }
             {aWin && <span className="tc-win-b">🏆 승리</span>}
@@ -66,7 +69,7 @@ function MatchCard({ match, idx }) {
         <div className={`tc-team${!aWin ? "" : " lose"}`}>
           <div className="tc-team-img-wrap">
             {match.teamBImgUrl
-              ? <img src={match.teamBImgUrl} className="tc-team-img" alt={match.teamBName} />
+              ? <img src={`${BASE_URL}${match.teamBImgUrl}`} className="tc-team-img" alt={match.teamBName} />
               : <div className="tc-team-av" style={{ background: bBg }}>{match.teamBName.charAt(0)}</div>
             }
             {!aWin && <span className="tc-win-b">🏆 승리</span>}
