@@ -46,6 +46,13 @@ export const getMyOrderPageApi = (searchParams={}) => {
   });
 };
 
+//판매내역 (리스트 가져오기)
+export const getMySaleRecordPageApi = (searchParams={}) => {
+  return axiosInstance.get(`/mypage/getMySaleRecordPage`, {
+    params: { ...searchParams }
+  });
+};
+
 // 판매내역 (리스트 가져오기)
 export const getMySalePageApi = (searchParams={}) => {
   return axiosInstance.get(`/mypage/getMySalePage`, {

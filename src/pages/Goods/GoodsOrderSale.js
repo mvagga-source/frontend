@@ -207,7 +207,7 @@ function GoodsOrderSale() {
                     </div>
 
                     <div className={styles.btnWrapper}>
-                        <MoveBtn type="button" onClick={() => navigate(-1)}>목록으로</MoveBtn>
+                        <MoveBtn type="button" onClick={() => navigate("/MyMain/MySaleRecord")}>목록으로</MoveBtn>
                     </div>
                 </div>
             </div>

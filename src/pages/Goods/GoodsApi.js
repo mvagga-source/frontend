@@ -110,10 +110,34 @@ export const GoodsReturnApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/save`, commentData);
 };
 
-//반품리스트
+//반품리스트(구매자)
 export const getGoodsReturnListApi = (params) => {
   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/list`, {
     params: params
+  });
+};
+
+//반품리스트(판매자)
+export const getGoodsReturnSellerListApi = (params) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/SellerList`, {
+    params: params
+  });
+};
+
+//반품 상세페이지(판매자)
+export const getReturnDetailByRnoApi = (rno) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/detailSeller`, {
+    params: { rno: rno }
+  });
+};
+
+
+//반품 상태변경
+export const updateReturnStatusApi = (rno, data) => {
+  // data 예시: { delivStatus: "배송중" }
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/updateStatus`, {
+    rno: rno,
+    ...data
   });
 };
 

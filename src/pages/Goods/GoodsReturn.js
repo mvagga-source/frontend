@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { SaveBtn, MoveBtn } from "../../components/button/Button";
+import { SaveBtn, MoveBtn, SearchBtn } from "../../components/button/Button";
 import { SaveInput } from "../../components/input/Input";
 import { SearchSelect } from "../../components/SelectBox/SelectBox";
 import LoadingScreen from "../../components/LoadingBar/LoadingBar";
 import styles from "./GoodsWrite.module.css"; // 기존 스타일 재활용
 import { getReturnDetailApi, GoodsReturnApi } from "./GoodsApi";
+import DaumAddrSearchModal from "../../components/DaumAddrModal/DaumAddrModal";
 
 function GoodsReturn() {
     const navigate = useNavigate();
@@ -13,6 +14,20 @@ function GoodsReturn() {
     const [loading, setLoading] = useState(true);
     const [orderDetail, setOrderDetail] = useState(null);
     const [availableQty, setAvailableQty] = useState(0); // [추가] 반품 가능 잔여 수량
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [pickupAddr, setPickupAddr] = useState("");
+
+    // 주소 검색 버튼을 눌렀을 때 DaumAddrSearchModal을 여는 함수
+    const handleAddressSearch = () => {
+        setIsModalOpen(true);
+    };
+
+    // 주소 선택이 완료되었을 때 실행되는 함수
+    const handleAddressComplete = (data) => {
+        setPickupAddr(data.address || data); 
+        setIsModalOpen(false); // 주소 선택 후 모달 닫기
+    };
 
     // 서버로 보낼 상태값들
     const [returnType, setReturnType] = useState("반품");
@@ -54,6 +69,7 @@ function GoodsReturn() {
                     navigate(-1);
                     return;
                 }
+                setPickupAddr(data?.address || "");
                 setOrderDetail(data);
                 setAvailableQty(remaining);
                 setReturnQty(1); // 초기 수량 설정 (서버 필드명이 cnt인 경우)
@@ -116,6 +132,7 @@ function GoodsReturn() {
                         <li>교환은 불량 또는 주문한 것과 다른 상품이 왔거나 구성품이 빠진 경우만 <strong>왕복 배송비가 차감</strong>됩니다.</li>
                         <li>상품 택 제거, 사용 흔적, 포장 훼손 시 반품이 거부될 수 있습니다.</li>
                         <li><strong>허위 반품 접수:</strong> 고의로 상품을 훼손하여 반품을 시도할 경우 서비스 이용이 제한될 수 있습니다.</li>
+                        <li>주소가 변경되었다면 직접 수정해 주세요.</li>
                     </ul>
                 </div>
             </div>
@@ -201,6 +218,65 @@ function GoodsReturn() {
                             </div>
                         </div>
 
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>수거 관련 연락처</label>
+                            <SaveInput 
+                                type="text"
+                                name="pickupPhone" // DTO 필드명과 일치
+                                placeholder="연락 가능한 번호"
+                                style={{minWidth:'100%'}}
+                                defaultValue={orderDetail?.receiverPhone}
+                                onInput={(e) => {
+                                    e.target.value = e.target.value
+                                        .replace(/[^0-9]/, '')
+                                        .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+                                }}
+                            />
+                        </div>
+
+                        {/* 상품 수거지 주소 */}
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>📍 상품 수거지 주소 (기사님 방문 주소)</label>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div>
+                                <SaveInput 
+                                    type="text" 
+                                    name="pickupAddr"
+                                    readOnly
+                                    value={pickupAddr}
+                                    className={styles.input} // 기존 스타일 활용
+                                    placeholder="주소를 검색하세요"
+                                    style={{minWidth:'82%'}}
+                                />
+                                <SearchBtn type="button" style={{marginLeft:'2%'}} onClick={handleAddressSearch}>주소 검색</SearchBtn>
+                                </div>
+                                <textarea 
+                                    type="text" 
+                                    name="pickupAddrDetail"
+                                    className={styles.input}
+                                    placeholder="상세 주소를 입력하세요"
+                                    style={{ 
+                                        width: '100%', height: '150px', 
+                                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                        border: '1px solid rgba(0, 242, 255, 0.2)',
+                                        borderRadius: '8px', color: '#fff'
+                                    }}
+                                >
+                                    {orderDetail?.detailAddress}
+                                </textarea>
+                                <div className={styles.formGroup}>
+                                    <label className={styles.label}>기사님 확인 요청사항</label>
+                                    <SaveInput 
+                                        type="text" 
+                                        name="orderRequest" 
+                                        placeholder="문 앞에 두었습니다." 
+                                        className={styles.input}
+                                        style={{minWidth:'100%'}} 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
                         {/* 5. 환불 예상 금액 안내 */}
                         <div className={styles.formGroup} style={{ marginTop: '30px' }}>
                             <div style={{ 
@@ -235,6 +311,12 @@ function GoodsReturn() {
                                 </div>
                             </div>
                         </div>
+
+                        <DaumAddrSearchModal
+                            isOpen={isModalOpen} 
+                            onClose={() => setIsModalOpen(false)} 
+                            onComplete={handleAddressComplete} 
+                        />
 
                         <div className={styles.btnWrapper}>
                             <MoveBtn type="button" onClick={() => navigate(-1)}>이전으로</MoveBtn>

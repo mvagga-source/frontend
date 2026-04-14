@@ -1,13 +1,13 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation, Form } from "react-router-dom";
-import { getGoodsReturnListApi, GoodsReturnDeleteApi } from "../Goods/GoodsApi";
+import { getGoodsReturnSellerListApi, GoodsReturnDeleteApi } from "../Goods/GoodsApi";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
 import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css"
 
-function MyReturn() {
+function MySaleReturn() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -41,7 +41,7 @@ function MyReturn() {
 
   // 데이터 로딩 함수
   const getReturnList = async (searchParams) => {
-    getGoodsReturnListApi(searchParams).then(res => {
+    getGoodsReturnSellerListApi(searchParams).then(res => {
       if (res.data) {
         const { list, maxPage, startPage, endPage, totalCount } = res.data;
         setLists(list || []);
@@ -67,25 +67,6 @@ function MyReturn() {
     }));
   };
 
-  // 취소(삭제) 처리 함수 추가
-  const handleCancelReturn = async (rno, currentStatus) => {
-    // '접수' 상태일 때만 취소가 가능하도록 방어 로직
-    if (currentStatus !== "접수") {
-      alert("접수 완료된 이후에는 취소가 불가능합니다. 고객센터에 문의해주세요.");
-      return;
-    }
-    
-    if (!window.confirm("반품/교환 신청을 취소하시겠습니까?")) return;
-    const formData = new FormData();
-    formData.append("rno", rno);
-    GoodsReturnDeleteApi(formData).then(res => {
-      if (res.data.success) {
-        alert("취소되었습니다.");
-        getReturnList(params);
-      }
-    });
-  };
-
   useEffect(() => {
     getReturnList(params);
   }, [params]);
@@ -94,6 +75,12 @@ function MyReturn() {
   useEffect(() => {
     setParams(prev => ({ ...prev, page: page }));
   }, [page]);
+
+  // 상세 페이지 이동 함수
+  const handleDetail = (rno) => {
+    // 반품 상세 페이지 경로로 이동 (경로는 프로젝트 설정에 맞게 수정하세요)
+    navigate(`/GoodsSaleReturn/${rno}`);
+  };
 
   return (
     <>
@@ -145,7 +132,7 @@ function MyReturn() {
                 </td>
                 <td style={{ textAlign: "left" }}>
                   {/* order.goods.gname 구조에 접근 */}
-                  {item.order?.goods?.gname} ({item.returnCnt}개)
+                  {item?.gname} ({item.returnCnt}개)
                 </td>
                 <td style={{ textAlign: "center" }}>{item.returnReason}</td>
                 <td style={{ textAlign: "right" }}>
@@ -156,10 +143,10 @@ function MyReturn() {
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <button 
-                    className="my-status_btn my-upcoming-all"
-                    onClick={() => handleCancelReturn(item.rno, item.returnStatus)}
+                    className="my-status_btn my-ongoing-all" // 상세보기 버튼 (파란색 계열 클래스 가정)
+                    onClick={() => handleDetail(item.rno)}
                   >
-                    취소
+                    상세페이지
                   </button>
                 </td>
               </tr>
@@ -200,4 +187,4 @@ function MyReturn() {
   );
 }
 
-export default MyReturn;
+export default MySaleReturn;

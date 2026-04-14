@@ -32,8 +32,10 @@ import MyMain from "./pages/MyPage/MyMain";
 import MyBookmark from "./pages/MyPage/MyBookmark";
 import MyVote from "./pages/MyPage/MyVote";
 import MyPurchase from "./pages/MyPage/MyPurchase";
+import MySaleRecord from "./pages/MyPage/MySaleRecord.jsx";
 import MySale from "./pages/MyPage/MySale";
 import MyReturn from "./pages/MyPage/MyReturn.jsx";
+import MySaleReturn from "./pages/MyPage/MySaleReturn.jsx";
 
 
 //커뮤니티
@@ -71,6 +73,7 @@ import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
 import GoodsReturn from "./pages/Goods/GoodsReturn.js";
 import GoodsOrderSale from "./pages/Goods/GoodsOrderSale.js";
+import GoodsSaleReturn from "./pages/Goods/GoodsSaleReturn.js";
 import PaymentResult from "./components/kakaoPay/PaymentResult";
 
 import Process from "./pages/Process/Process";
@@ -120,8 +123,10 @@ function App() {
             <Route path="MyBookmark" element={<MyBookmark />} />
             <Route path="MyVote" element={<MyVote />} />
             <Route path="MyPurchase" element={<MyPurchase />} />
+            <Route path="MySaleRecord" element={<MySaleRecord />} />
             <Route path="MySale" element={<MySale />} />
             <Route path="MyReturn" element={<MyReturn />} />
+            <Route path="MySaleReturn" element={<MySaleReturn />} />
           </Route>
 
           <Route path="/Community" element={<Layout><Community/></Layout>}>
@@ -164,6 +169,7 @@ function App() {
           <Route path="/GoodsUpdate/:gno" element={<ProtectedRoute><Layout><GoodsUpdate/></Layout></ProtectedRoute>} />
           <Route path="/GoodsOrderSale/:gono" element={<ProtectedRoute><Layout><GoodsOrderSale /></Layout></ProtectedRoute>} />
           <Route path="/GoodsReturn/:gono" element={<ProtectedRoute><Layout><GoodsReturn /></Layout></ProtectedRoute>} />
+          <Route path="/GoodsSaleReturn/:rno" element={<ProtectedRoute><Layout><GoodsSaleReturn /></Layout></ProtectedRoute>} />
           <Route path="/GoodsPreview" element={<ProtectedRoute><Layout><GoodsPreview /></Layout></ProtectedRoute>} />
 
           <Route path="/Payment/Success" element={<ProtectedRoute><PaymentResult type="success" /></ProtectedRoute>} />
