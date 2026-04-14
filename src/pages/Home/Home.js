@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getAllAuditionListApi } from "../../api/auditionApi";
 
 import "./Home.css";
+import "../../assets/images/bg_02.jpg";
 
 const Home = () => {
 

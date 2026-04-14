@@ -6,14 +6,34 @@
   gap: 60px;
   /* padding: 40px 0; */
   color: #fff;
-  background: linear-gradient(180deg, #0d1535 0%, #0a1228 60%, #060d1e 100%);
+  /* 배경은 여기서만 관리 */
+  position: relative;
+  background: url('../../assets/images/bg_02.jpg') center / cover no-repeat fixed;
+  /* opacity: 0.5; */
   min-height: 80vh;
+}
+
+/* 배경 어둡게 + 그라데이션 오버레이 — 밝기는 여기서 조절 */
+.hm-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(13, 21, 53, 0.95) 0%,    /* ← 숫자 높일수록 어두워짐 */
+    rgba(10, 18, 40, 0.85) 60%,
+    rgba(6, 13, 30, 0.92) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* =========================
    전체 타이틀
 ========================= */
 .hm-content--title {
+  position: relative;
+  z-index: 1;
   width:100%;
   margin: 0 auto;
   padding:60px 0 70px;
@@ -65,6 +85,8 @@
 ========================= */
 
 .hm-section-wrap {
+  position: relative;
+  z-index: 1;
   /* border:1px solid #fff; */
   margin: 0 auto;
   padding:10px;

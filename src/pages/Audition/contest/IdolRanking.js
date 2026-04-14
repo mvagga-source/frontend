@@ -29,7 +29,8 @@ function PyramidCard({ idol, rank, total, imgMap, profileMap }) {
   const navigate = useNavigate();
   if (!idol) return <div className="ir-pcard" />;
 
-  // API 응답: [idolId, name, rawVotes, totalBonus, finalVotes, mainImgUrl]
+  // API 응답: [idolId, name, rawVotes, totalBonus(고정 표수), finalVotes]
+  // finalVotes = rawVotes + totalBonus (백엔드 JPQL에서 계산됨)
   const idolId     = idol[0];
   const name       = idol[1];
   const finalVotes = Number(idol[4] ?? 0);
