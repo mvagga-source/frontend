@@ -644,7 +644,7 @@ fetchIdolData();
               투표 하러가기
             </button>
 
-            <button className="id-btn-sub">
+            <button className="id-btn-sub" onClick={() => navigate(`/GoodsList?category=idol&search=${idol.profile.name}`)}>
               굿즈 보러가기
             </button>
           </div>
