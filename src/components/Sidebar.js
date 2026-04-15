@@ -82,7 +82,7 @@ function Sidebar({ isOpen, onClose }) {
               {/* 🔔 기존 버튼 대신 컴포넌트 호출 */}
               <SidebarNotification />
               {user.id === "admin" &&
-                <a href="http://localhost:8181/admin/main">
+                <a href={`${process.env.REACT_APP_SERVER_URL}/admin/main`}>
                   <button className="sb-user-btn">관리자</button>
                 </a>
               }
