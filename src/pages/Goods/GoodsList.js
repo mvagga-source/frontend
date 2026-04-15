@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { SearchBar, NumberInput } from "../../components/input/Input";
 import { SearchBtn } from "../../components/button/Button";
@@ -13,6 +13,7 @@ import GoodsBanner from "./GoodsComponent/GoodsList/GoodsBannerList";
 
 function GoodsList() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
 
@@ -37,7 +38,7 @@ function GoodsList() {
 
     // 데이터를 가져오는 핵심 함수
     const getList = async (page, searchParams) => {
-        getGoodsListApi(page, size, {
+        /*getGoodsListApi(page, size, {
             ...searchParams,
             minPrice: minPrice || 0,
             maxPrice: maxPrice || 0,
@@ -51,27 +52,89 @@ function GoodsList() {
                 setEndPage(endPage || 1);
                 setTotalCount(totalCount || 0);
             }
+        });*/
+        getGoodsListApi(page, size, searchParams) 
+        .then((res) => {
+            if (res.data && res.data.success) {
+                const { list, maxPage, startPage, endPage, totalCount } = res.data;
+                setList(list || []);
+                setTotalPages(maxPage || 1);
+                setStartPage(startPage || 1);
+                setEndPage(endPage || 1);
+                setTotalCount(totalCount || 0);
+            }
         });
     };
 
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+
+        // URL에서 현재 값들을 읽어옴
+        const page = Number(queryParams.get("page")) || 1;
+        const searchParams = {
+            category: queryParams.get("category") || "",
+            search: queryParams.get("search") || "",
+            minPrice: queryParams.get("minPrice") || 0,
+            maxPrice: queryParams.get("maxPrice") || 0,
+            sortDir: queryParams.get("sortDir") || "DESC"
+        };
+
+        // 상태값들도 URL 기준으로 업데이트 (뒤로가기 시 동기화)
+        setCurrentPage(page);
+        setSortDirection(searchParams.sortDir);
+        params.current = searchParams; // 페이징 시 사용
+
+        // 실제 데이터 호출
+        getList(page, searchParams);
+    }, [location.search]);
+
     // 정렬 변경 시 1페이지로 이동하며 호출
     const handleSortChange = (dir) => {
-        setSortDirection(dir);
-        setCurrentPage(1);
+        /*setSortDirection(dir);
+        setCurrentPage(1);*/
+        const query = new URLSearchParams(location.search);
+        query.set("sortDir", dir);
+        query.set("page", "1");
+        navigate(`?${query.toString()}`);
     };
 
     // 페이지 변경이나 정렬 변경 시 데이터 호출
-    useEffect(() => {
+    /*useEffect(() => {
         getList(currentPage, params.current);
-    }, [currentPage, sortDirection]);
+    }, [currentPage, sortDirection]);*/
+
+    // 페이지 번호 클릭 시 실행될 함수
+    const handlePageChange = (newPage) => {
+        // 1. 현재 URL의 쿼리 파라미터를 가져옴
+        const query = new URLSearchParams(location.search);
+        
+        // 2. 페이지 번호만 새로운 값으로 세팅
+        query.set("page", newPage);
+        
+        // 3. 해당 URL로 이동 (이때 location.search가 변하면서 useEffect가 실행됨)
+        navigate(`?${query.toString()}`);
+        
+        // 4. (선택) 페이지 이동 시 상단으로 스크롤
+        //window.scrollTo(0, 0);
+    };
 
     // 검색 버튼 클릭 시
     const searchData = async (e) => {
         const formData = new FormData(formRef.current);
         const newParams = Object.fromEntries(formData.entries());
-        params.current = newParams; // 검색 조건 저장
+        /*params.current = newParams; // 검색 조건 저장
         setCurrentPage(1);      //검색시 1페이지부터
-        getList(currentPage, params.current);
+        getList(currentPage, params.current);*/
+        const query = new URLSearchParams();
+        query.set("page", "1"); // 검색 시 항상 1페이지로
+        query.set("category", newParams.category || "");
+        query.set("search", newParams.search || "");
+        query.set("minPrice", minPrice || "");
+        query.set("maxPrice", maxPrice || "");
+        query.set("sortDir", sortDirection);
+
+        // 주소창을 변경 (이동) 시킵니다. 
+        navigate(`?${query.toString()}`);
     };
 
     return (
@@ -85,18 +148,19 @@ function GoodsList() {
                     <GoodsBanner />
 
                     {/* 2. 쇼핑몰형 상세 검색 필터 (디자인 수정) */}
-                    <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
+                    <form ref={formRef} onSubmit={(e) => e.preventDefault()} key={location.search}>
                     <div className={styles.filterSection}>
                         <div className={styles.filterBar}>
                             <div className={styles.searchFilterGroup}>
                                 {/* z-index 이슈 해결을 위해 컴포넌트를 감싸는 div 추가 가능 */}
-                                <SearchSelectBar options={searchOptions} name="category"/>
+                                <SearchSelectBar options={searchOptions} name="category" defaultValue={new URLSearchParams(location.search).get("category") || ""}/>
                                 <div className={styles.innerDivider}></div>
                                 <input 
                                     name="search"
                                     type="text" 
                                     placeholder="상품명 또는 오디션참가자를 검색하세요" 
                                     className={styles.mainSearchInput}
+                                    defaultValue={new URLSearchParams(location.search).get("search") || ""}
                                 />
                                 {/* 가격 팝업 */}
                                 <PriceFilter
@@ -172,7 +236,8 @@ function GoodsList() {
                         totalPages={totalPages}
                         startPage={startPage}
                         endPage={endPage}
-                        onPageChange={setCurrentPage} 
+                        //onPageChange={setCurrentPage}
+                        onPageChange={handlePageChange}
                     />
                 </div>
             </div>

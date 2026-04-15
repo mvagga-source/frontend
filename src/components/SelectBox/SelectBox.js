@@ -33,11 +33,15 @@ export const SearchSelect = ({ options, className, ...props }) => {
 };
 
 // 검색바 내부 전용 셀렉트 박스 (기존 것과 별도로 생성)
-export const SearchSelectBar = ({ options = [], placeholder = "전체", name = "category" }) => {
+export const SearchSelectBar = ({ options = [], placeholder = "전체", name = "category", defaultValue = "" }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const ref = React.useRef();
-
+  
+  React.useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+  
   const selectedOption = options.find(opt => opt.value === value);
 
   React.useEffect(() => {
