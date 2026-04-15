@@ -99,19 +99,16 @@ function GoodsSaleReturn() {
                         <div style={{ padding: '15px', background: 'rgba(0, 242, 255, 0.05)', border: '1px solid rgba(0, 242, 255, 0.2)', borderRadius: '8px', color: '#fff' }}>
                             <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '10px' }}>
                                 <span style={{ color: '#aaa' }}>수거 성함</span>
-                                <span>{returnDetail.returnReceiverName || returnDetail.member?.name}</span>
+                                <span>{returnDetail.pickupName}</span>
                                 
                                 <span style={{ color: '#aaa' }}>수거 연락처</span>
                                 <span style={{ color: '#00f2ff', fontWeight: 'bold' }}>
-                                    {returnDetail.returnReceiverPhone || returnDetail.order?.receiverPhone}
+                                    {returnDetail.pickupPhone}
                                 </span>
                                 
                                 <span style={{ color: '#aaa' }}>수거 주소</span>
                                 <span>
-                                    {returnDetail.returnAddress ? 
-                                        `[${returnDetail.returnAddress}] ${returnDetail.returnDetailAddress}` : 
-                                        `[${returnDetail.order?.address}] ${returnDetail.order?.detailAddress}`
-                                    }
+                                    [{returnDetail.pickupAddr}] {returnDetail.pickupAddrDetail}
                                 </span>
 
                                 <span style={{ color: '#aaa' }}>수거 요청사항</span>

@@ -175,7 +175,7 @@ function GoodsReturn() {
 
                         {/* 3. 상세 사유 */}
                         <div className={styles.formGroup}>
-                            <label className={styles.label}>상세 사유 설명</label>
+                            <label className={styles.label}><span className={styles.required}>*</span> 상세 사유 설명</label>
                             <textarea 
                                 name="returnReasonDetail"
                                 className={styles.textarea}
@@ -193,7 +193,7 @@ function GoodsReturn() {
 
                         {/* 4. 수량 선택 */}
                         <div className={styles.formGroup}>
-                            <label className={styles.label}>반품 수량 선택</label>
+                            <label className={styles.label}><span className={styles.required}>*</span> 반품 수량 선택</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                 {availableQty > 0 ? (
                                     <select 
@@ -218,8 +218,20 @@ function GoodsReturn() {
                             </div>
                         </div>
 
+                        {/* 수거인 이름 */}
                         <div className={styles.formGroup}>
-                            <label className={styles.label}>수거 관련 연락처</label>
+                            <label className={styles.label}><span className={styles.required}>*</span> {/*반품 보내시는 분*/}수거인성함</label>
+                            <SaveInput 
+                                type="text"
+                                name="pickupName" // DTO 필드명과 일치
+                                placeholder="반품 보내시는 분"
+                                style={{minWidth:'100%'}}
+                                defaultValue={orderDetail?.receiverName}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}><span className={styles.required}>*</span> 수거 관련 연락처</label>
                             <SaveInput 
                                 type="text"
                                 name="pickupPhone" // DTO 필드명과 일치
@@ -236,7 +248,7 @@ function GoodsReturn() {
 
                         {/* 상품 수거지 주소 */}
                         <div className={styles.formGroup}>
-                            <label className={styles.label}>📍 상품 수거지 주소 (기사님 방문 주소)</label>
+                            <label className={styles.label}><span className={styles.required}>*</span> 상품 수거지 주소 (기사님 방문 주소)</label>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <div>
                                 <SaveInput 
@@ -250,6 +262,7 @@ function GoodsReturn() {
                                 />
                                 <SearchBtn type="button" style={{marginLeft:'2%'}} onClick={handleAddressSearch}>주소 검색</SearchBtn>
                                 </div>
+                                <label className={styles.label}><span className={styles.required}>*</span> 상품 수거지 상세 주소</label>
                                 <textarea 
                                     type="text" 
                                     name="pickupAddrDetail"
