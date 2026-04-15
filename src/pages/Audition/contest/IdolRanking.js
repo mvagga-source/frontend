@@ -131,9 +131,12 @@ export default function IdolRanking() {
       .then((res) => {
         const list = res.data;
         setAuditions(list);
-        // 기본 선택: 가장 최근 ended/ongoing 회차
+        // 기본 선택: ended 중 가장 최근 회차를 기본 선택하거나, 없으면 전체 중 가장 최근 회차
         if (list.length > 0) {
-          const defaultRound = list[list.length - 1];
+          const endedList = list.filter(a => a.status === "ended");
+          const defaultRound = endedList.length > 0
+            ? endedList[endedList.length - 1]
+            : list[list.length - 1]; // ended가 없으면 마지막 회차라도
           setActiveRound(defaultRound);
         }
       })
@@ -217,7 +220,7 @@ export default function IdolRanking() {
               className={`ir-tab${activeRound?.auditionId === a.auditionId ? " on" : ""}`}
               onClick={() => setActiveRound(a)}
             >
-              {a.round}차
+              {a.round}차 {a.status !== "ended" ? "🔒" : ""}
             </button>
           ))}
         </div>
@@ -228,21 +231,21 @@ export default function IdolRanking() {
       <div className="ir-summary">
         <div className="ir-sc">
           <p className="ir-sc-lbl">총 투표수</p>
-          <p className="ir-sc-val">{loading ? "-" : total.toLocaleString()}</p>
+          <p className="ir-sc-val">{loading || activeRound?.status !== "ended" ? "-" : total.toLocaleString()}</p>
           <p className="ir-sc-sub">해당 회차 누적</p>
         </div>
         <div className="ir-sc">
           <p className="ir-sc-lbl">참가자 수</p>
-          <p className="ir-sc-val">{loading ? "-" : `${totalCount}명`}</p>
-          <p className="ir-sc-sub">탈락 {loading ? "-" : `${eliminated}명`}</p>
+          <p className="ir-sc-val">{loading || activeRound?.status !== "ended" ? "-" : `${totalCount}명`}</p>
+          <p className="ir-sc-sub">탈락 {loading || activeRound?.status !== "ended" ? "-" : `${eliminated}명`}</p>
         </div>
         <div className="ir-sc">
           <p className="ir-sc-lbl">1위 득표율</p>
           <p className="ir-sc-val">
-            {loading || !rankingData[0] ? "-" : `${(Number(rankingData[0][4]) / total * 100).toFixed(1)}%`}
+            {loading || activeRound?.status !== "ended" || !rankingData[0] ? "-" : `${(Number(rankingData[0][4]) / total * 100).toFixed(1)}%`}
           </p>
           <p className="ir-sc-sub">
-            {loading || !rankingData[0] ? "" : rankingData[0][1]}
+            {loading || activeRound?.status !== "ended" || !rankingData[0] ? "" : rankingData[0][1]}
           </p>
         </div>
       </div>
@@ -251,6 +254,12 @@ export default function IdolRanking() {
         {loading ? (
           <div style={{ padding: "40px 0", textAlign: "center", color: "rgba(232,244,248,0.35)" }}>
             불러오는 중...
+          </div>
+        ) : activeRound?.status !== "ended" ? (
+          <div style={{ padding: "60px 0", textAlign: "center", color: "rgba(232,244,248,0.4)", fontSize: "1.1rem" }}>
+            <p style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</p>
+            <p>{activeRound?.round}차 오디션 결과는 아직 준비중이에요.</p>
+            <p style={{ fontSize: "0.85rem", marginTop: "8px", opacity: 0.6 }}>종료 후 공개됩니다.</p>
           </div>
         ) : (
           <div className="ir-two-col">
