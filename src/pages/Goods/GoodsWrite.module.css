@@ -248,3 +248,32 @@
   gap: 16px;
   margin-top: 40px;
 }
+.textarea {
+    width: 100%;
+    min-height: 120px;
+    max-height: 200px;
+    resize: none; /* 핵심: 크기 고정 */
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    line-height: 1.4;
+}
+.textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 255, 0.5);
+    border-radius: 10px;
+}
+
+.textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 255, 0.8);
+}

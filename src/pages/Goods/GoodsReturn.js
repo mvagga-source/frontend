@@ -74,10 +74,6 @@ function GoodsReturn() {
                 setAvailableQty(remaining);
                 setReturnQty(1); // 초기 수량 설정 (서버 필드명이 cnt인 경우)
                 setLoading(false);
-            })
-            .catch(err => {
-                alert("주문 정보를 불러오지 못했습니다.");
-                navigate(-1);
             }).finally(() => setLoading(false));
     }, [gono, navigate]);
 
@@ -182,12 +178,6 @@ function GoodsReturn() {
                                 placeholder="상품 불량의 경우 자세한 내용을 적어주시면 처리가 빠릅니다."
                                 value={reasonDetail}
                                 onChange={(e) => setReasonDetail(e.target.value)} // 상태 업데이트 연결
-                                style={{ 
-                                    width: '100%', height: '150px', 
-                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                    border: '1px solid rgba(0, 242, 255, 0.2)',
-                                    borderRadius: '8px', color: '#fff'
-                                }}
                             />
                         </div>
 
@@ -262,32 +252,28 @@ function GoodsReturn() {
                                 />
                                 <SearchBtn type="button" style={{marginLeft:'2%'}} onClick={handleAddressSearch}>주소 검색</SearchBtn>
                                 </div>
-                                <label className={styles.label}><span className={styles.required}>*</span> 상품 수거지 상세 주소</label>
-                                <textarea 
-                                    type="text" 
-                                    name="pickupAddrDetail"
-                                    className={styles.input}
-                                    placeholder="상세 주소를 입력하세요"
-                                    style={{ 
-                                        width: '100%', height: '150px', 
-                                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                        border: '1px solid rgba(0, 242, 255, 0.2)',
-                                        borderRadius: '8px', color: '#fff'
-                                    }}
-                                >
-                                    {orderDetail?.detailAddress}
-                                </textarea>
-                                <div className={styles.formGroup}>
-                                    <label className={styles.label}>기사님 확인 요청사항</label>
-                                    <SaveInput 
-                                        type="text" 
-                                        name="orderRequest" 
-                                        placeholder="문 앞에 두었습니다." 
-                                        className={styles.input}
-                                        style={{minWidth:'100%'}} 
-                                    />
-                                </div>
                             </div>
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}><span className={styles.required}>*</span> 상품 수거지 상세 주소</label>
+                            <textarea 
+                                type="text" 
+                                name="pickupAddrDetail"
+                                className={styles.textarea}
+                                placeholder="상세 주소를 입력하세요"
+                            >
+                                {orderDetail?.detailAddress}
+                            </textarea>
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>기사님 확인 요청사항</label>
+                            <SaveInput 
+                                type="text" 
+                                name="orderRequest" 
+                                placeholder="문 앞에 두었습니다." 
+                                className={styles.input}
+                                style={{minWidth:'100%'}} 
+                            />
                         </div>
 
                         {/* 5. 환불 예상 금액 안내 */}
