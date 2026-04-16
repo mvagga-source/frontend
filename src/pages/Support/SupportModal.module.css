@@ -1,0 +1,98 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modalContent h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.infoRow span {
+    color: #666;
+}
+
+.infoRow strong {
+    color: #222;
+}
+
+.infoRow input {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+.price {
+    color: #ff4d4f !important;
+    font-size: 18px;
+}
+
+.notice {
+    font-size: 12px;
+    color: #cacaca;
+    background: #9b9b9b;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.btnGroup {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 12px;
+    background: #eee;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.confirmBtn {
+    flex: 2;
+    padding: 12px;
+    background: #fee500; /* 카카오 노란색 */
+    color: #3c1e1e;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.confirmBtn:hover {
+    background: #fada0a;
+}
+

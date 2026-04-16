@@ -25,6 +25,7 @@ import TeamCompetition from "./pages/Audition/contest/TeamCompetition";
 
 // Support ㅠㅔ이지
 import Support from "./pages/Support/Support.js";
+import SupportSuccess from "./pages/Support/SupportSuccess.js";
 
 
 // My pages
@@ -108,6 +109,7 @@ function App() {
 
           <Route path="/Process" element={<Layout><Process/></Layout>}/>
           <Route path="/support/:id" element={<Layout><Support/></Layout>}/>
+          <Route path="/support/success" element={<Layout><SupportSuccess /></Layout>} />
 
           {/* 뮤직비디오 */}
           <Route path="/MVideo" element={<Layout><MVideo/></Layout>}/>

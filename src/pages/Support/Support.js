@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./Support.css"; 
 import axiosInstance from "../../api/axiosInstance";
+import SupportPaymentModal from "./SupportPaymentModal";
+import axios from "axios";
 
 export default function Support() {
   const { id } = useParams();
@@ -14,6 +16,9 @@ export default function Support() {
   const [isMvOpen, setIsMvOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [idol, setIdol] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태
+  const [amount, setAmount] = useState(""); // 입력할 후원 금액
+  const [realName, setRealName] = useState(""); // 본인 이름 상태 추가
   
   // 서포트 관련 통합 상태
   const [supportInfo, setSupportInfo] = useState({
@@ -28,6 +33,58 @@ export default function Support() {
     mvGoalPrice: 100000000,   // 초기값 1 (0으로 나누기 방지)
     logs: []
   });
+
+
+  // 카카오페이 결제 시작 함수
+const handleKakaoPay = async () => {
+  if (!amount || amount < 100) {
+    alert("최소 후원 금액은 100원입니다.");
+    return;
+  }
+
+  try {
+    // 1. 서버에 결제 준비(Ready) 요청
+    const res = await axiosInstance.post("/support/pay/ready", {
+      supportProject: { supportId: id },
+      nickname: user?.nickname || "익명의 서포터",
+      realName: realName, // [추가] 모달에서 입력받은 실명 전송
+      amount: parseInt(amount),
+      status: "READY"
+    });
+    console.log("백엔드 응답 데이터:", res.data);
+    // 2. 서버에서 받은 tid와 관련 정보 저장
+    localStorage.setItem("tid", res.data.tid);
+    localStorage.setItem("supportId", id);
+
+    // 3. 결제 페이지 이동
+    if (res.data && res.data.next_redirect_pc_url) {
+      window.location.href = res.data.next_redirect_pc_url; 
+    } else {
+      alert("결제 페이지 주소를 받아오지 못했습니다.");
+    }
+  } catch (err) {
+    console.error("결제 에러:", err);
+    alert("결제 준비 중 오류가 발생했습니다.");
+  }
+};
+
+  // 1. 카카오페이 이미지 클릭 시 모달 열기
+  const handleOpenModal = () => {
+    setIsModalOpen(true); // 조건 없이 일단 창을 띄움
+  };
+
+  // 2. 모달 안에서 '결제하기' 눌렀을 때 실제 실행될 함수
+  const handleFinalPayment = () => {
+  if (!amount || amount < 100) {
+    alert("최소 후원 금액은 100원입니다.");
+    return;
+  }
+  if (!realName) {
+    alert("입금자 성함을 입력해주세요.");
+    return;
+  }
+  handleKakaoPay(); 
+};
 
 
   useEffect(() => {
@@ -148,7 +205,26 @@ export default function Support() {
               </div>
               <div className="account-btn-side">
                 <div className="paypal-btn-styled"><img src="/images/paypal.png" alt="PAYPAL" /></div>
-                <div className="kakaopay-img-btn"><img src="/images/kakao.png" alt="Kakaopay" /></div>
+                 {/* 카카오페이 버튼 클릭 시 함수 호출 */}
+                <div className="kakaopay-img-btn" onClick={handleOpenModal} style={{cursor: 'pointer'}}>
+                  <img src="/images/kakao.png" alt="Kakaopay" />
+                </div>
+
+                {/* 서포트 전용 확인 모달 */}
+                <SupportPaymentModal 
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                  onConfirm={handleFinalPayment}
+                  data={{
+                    idolName: idol.name,
+                    nickname: user?.nickname || "익명",
+                    amount: amount,
+                    setAmount: setAmount, // 금액 수정을 위해 추가
+                    realName: realName,
+                    setRealName: setRealName
+                  }}
+                />
+
               </div>
             </div>
           </div>
