@@ -74,10 +74,6 @@ function GoodsReturn() {
                 setAvailableQty(remaining);
                 setReturnQty(1); // 초기 수량 설정 (서버 필드명이 cnt인 경우)
                 setLoading(false);
-            })
-            .catch(err => {
-                alert("주문 정보를 불러오지 못했습니다.");
-                navigate(-1);
             }).finally(() => setLoading(false));
     }, [gono, navigate]);
 
