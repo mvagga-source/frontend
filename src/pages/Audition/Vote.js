@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -17,11 +18,12 @@ const AVATAR_COLORS = [
   "#1a2a2c","#2c1a2a","#2a2c1a","#1e2a1e",
 ];
 
-const rankColor = (rank) => {
+const rankColor = (rank, survivorCount) => {
   if (rank === 1) return "#ffd700";
   if (rank === 2) return "#c0c0c0";
   if (rank === 3) return "#cd7f32";
-  return "rgba(232,244,248,0.38)";
+  if (survivorCount && rank <= survivorCount) return "#7dd3fc"; // 커트라인 이내: 연파랑
+  return "rgba(232,244,248,0.38)";    // 커트라인 밖: 회색
 };
 
 export default function Vote() {
@@ -342,7 +344,7 @@ export default function Vote() {
       )}
 
       {/* ── 검색 모달 ── */}
-      {showSearch && (
+      {showSearch && createPortal (
         <div className="av-modal-overlay" onClick={() => setShowSearch(false)}>
           <div className="av-modal" onClick={(e) => e.stopPropagation()}>
             <div className="av-modal-header">
@@ -366,11 +368,12 @@ export default function Vote() {
               </p>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── 순위표 모달 (LeaderBoard 기능 흡수) ── */}
-      {showRanking && (
+      {showRanking && createPortal (
         <div className="av-modal-overlay" onClick={() => setShowRanking(false)}>
           <div className="av-modal av-modal-ranking" onClick={(e) => e.stopPropagation()}>
             <div className="av-modal-header">
@@ -387,34 +390,46 @@ export default function Vote() {
                   const name       = row[1];
                   const finalVotes = row[4] ?? 0;
                   const n          = idx + 1;
-                  const rc         = rankColor(n);
+                  const survivorCount = auditionInfo?.survivorCount ?? null;
+                  const rc         = rankColor(n, survivorCount);
                   const maxFinal   = rankingIdols[0]?.[4] ?? 1;
                   const pct        = Math.round((finalVotes / maxFinal) * 100);
 
+                  // 커트라인 바로 아래(survivorCount+1위)에 구분선 삽입
+                  const showCutline = survivorCount && n === survivorCount + 1;
+
                   return (
-                    <li key={idolId} className="av-ranking-row">
-                      <span className="av-ranking-num" style={{ color: rc }}>
-                        {String(n).padStart(2, "0")}
-                      </span>
-                      <div className="av-ranking-info">
-                        <span className="av-ranking-name">{name ?? `참가자 #${idolId}`}</span>
-                      </div>
-                      <div className="av-ranking-bar-bg">
-                        <div
-                          className="av-ranking-bar-fill"
-                          style={{ width: `${pct}%`, background: rc }}
-                        />
-                      </div>
-                      <span className="av-ranking-votes" style={{ color: rc }}>
-                        {Number(finalVotes).toLocaleString()}
-                      </span>
-                    </li>
+                    <>
+                      {showCutline && (
+                        <li key={`cutline-${n}`} className="av-ranking-cutline">
+                          <span>— 커트라인 —</span>
+                        </li>
+                      )}
+                      <li key={idolId} className="av-ranking-row">
+                        <span className="av-ranking-num" style={{ color: rc }}>
+                          {String(n).padStart(2, "0")}
+                        </span>
+                        <div className="av-ranking-info">
+                          <span className="av-ranking-name">{name ?? `참가자 #${idolId}`}</span>
+                        </div>
+                        <div className="av-ranking-bar-bg">
+                          <div
+                            className="av-ranking-bar-fill"
+                            style={{ width: `${pct}%`, background: rc }}
+                          />
+                        </div>
+                        <span className="av-ranking-votes" style={{ color: rc }}>
+                          {Number(finalVotes).toLocaleString()}
+                        </span>
+                      </li>
+                    </>
                   );
                 })
               )}
             </ul>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
     </div>

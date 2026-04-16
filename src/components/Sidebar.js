@@ -128,12 +128,12 @@ function Sidebar({ isOpen, onClose }) {
                         </div>
 
                         {a.status === "ongoing" && (
-                          <Link to="/Audition" className="sb-action-btn sb-action-vote" onClick={onClose}>
+                          <Link to="/Audition/vote" className="sb-action-btn sb-action-vote" onClick={onClose}>
                             투표참여하기 →
                           </Link>
                         )}
                         {a.status === "ended" && (
-                          <Link to="/AuditionResult" className="sb-action-btn sb-action-result" onClick={onClose}>
+                          <Link to="/Audition/contest/ranking" className="sb-action-btn sb-action-result" onClick={onClose}>
                             결과보기 →
                           </Link>
                         )}
