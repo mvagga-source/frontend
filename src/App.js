@@ -72,6 +72,7 @@ import GoodsUpdate from "./pages/Goods/GoodsUpdate";
 import GoodsList from "./pages/Goods/GoodsList";
 import GoodsPreview from "./pages/Goods/GoodsPreview";
 import GoodsReturn from "./pages/Goods/GoodsReturn.js";
+import GoodsReturnView from "./pages/Goods/GoodsReturnView.js";
 import GoodsOrderSale from "./pages/Goods/GoodsOrderSale.js";
 import GoodsSaleReturn from "./pages/Goods/GoodsSaleReturn.js";
 import PaymentResult from "./components/kakaoPay/PaymentResult";
@@ -169,6 +170,7 @@ function App() {
           <Route path="/GoodsUpdate/:gno" element={<ProtectedRoute><Layout><GoodsUpdate/></Layout></ProtectedRoute>} />
           <Route path="/GoodsOrderSale/:gono" element={<ProtectedRoute><Layout><GoodsOrderSale /></Layout></ProtectedRoute>} />
           <Route path="/GoodsReturn/:gono" element={<ProtectedRoute><Layout><GoodsReturn /></Layout></ProtectedRoute>} />
+          <Route path="/GoodsReturnView/:rno" element={<ProtectedRoute><Layout><GoodsReturnView /></Layout></ProtectedRoute>} />
           <Route path="/GoodsSaleReturn/:rno" element={<ProtectedRoute><Layout><GoodsSaleReturn /></Layout></ProtectedRoute>} />
           <Route path="/GoodsPreview" element={<ProtectedRoute><Layout><GoodsPreview /></Layout></ProtectedRoute>} />
 

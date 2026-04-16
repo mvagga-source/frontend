@@ -64,11 +64,11 @@ const DeliveryModal = ({ isOpen, onClose, totalPrice, goods, count }) => {
                 <h2 className={styles.title}>배송 정보 입력</h2>
                 <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.inputGroup}>
-                    <label>받는 사람</label>
+                    <label><span className={styles.required}>*</span> 받는 사람</label>
                     <SaveInput name="receiverName" maxLength="50" placeholder="이름을 입력하세요" required />
                 </div>
                 <div className={styles.inputGroup}>
-                    <label>연락처</label>
+                    <label><span className={styles.required}>*</span> 연락처</label>
                     <SaveInput name="receiverPhone" 
                     maxLength="13"
                     onInput={(e) => {
@@ -78,7 +78,7 @@ const DeliveryModal = ({ isOpen, onClose, totalPrice, goods, count }) => {
                     }} placeholder="010-0000-0000" required />
                 </div>
                 <div className={styles.inputGroup}>
-                    <label>배송 주소</label>
+                    <label><span className={styles.required}>*</span> 배송 주소</label>
                     <div className={styles.addressRow}>
                     <SaveInput 
                         placeholder="주소를 검색하세요" 
@@ -96,6 +96,9 @@ const DeliveryModal = ({ isOpen, onClose, totalPrice, goods, count }) => {
                 </div>
                 <div className={styles.paymentBox}>
                     <p>최종 결제 금액 : <span>{totalPrice.toLocaleString()}원</span></p>
+                    {/* <p style={{fontSize:'12px'}}>※ 제주도 외 기타 도서지역은 배송비가 추가로 청구될 수 있습니다.</p> */}
+                    {/* 추가배송비는 사용자가 입력가능하게 진행(카카오 페이 결제취소시 수수료 반환) */}
+                    {/* 한 컬럼에 json형태로 저장이나 상세정보처럼 위지윅으로 산간지역 테이블이나 이미지로 보여주기 상품등록시 산간지역 배송가능한지 체크 json은 테이블만 가능하며 자동계산이 가능한지 고려(일단 기능X) */}
                 </div>
                 <div className={styles.actionButtons}>
                     <button type="submit" className={styles.completeBtn}>주문완료</button>

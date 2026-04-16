@@ -50,9 +50,7 @@ function GoodsSaleReturn() {
                 returnStatus: nextStatus,
                 gdelPrice: gdelPrice,
                 gdelType: gdelType,
-                returnReasonDetail: nextStatus === "거부" 
-                    ? `[판매자 거부 사유] ${rejectReason}\n(기존사유: ${returnDetail.returnReasonDetail})` 
-                    : returnDetail.returnReasonDetail
+                returnSaleReasonDetail: nextStatus === "거부"?`${rejectReason}`:""
             };
 
             updateReturnStatusApi(updateData).then(res => {
@@ -144,6 +142,7 @@ function GoodsSaleReturn() {
                                 <NumberInput
                                     type="number"
                                     value={gdelPrice}
+                                    style={{ width: '100%' }}
                                     onChange={(e) => setGdelPrice(e.target.value)}
                                 />
                             </div>
@@ -153,9 +152,23 @@ function GoodsSaleReturn() {
                                     type="text"
                                     placeholder="예: CJ대한통운"
                                     value={gdelType}
+                                    style={{ width: '100%' }}
                                     onChange={(e) => setGdelType(e.target.value)}
                                 />
                             </div>
+                        </div>
+                        {/* 판매자 처리 결과 및 거절 사유 표시 */}
+                        <div style={{ marginTop: '15px', padding: '15px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', color: '#fff', border: status === '거부' ? '1px solid rgba(255, 77, 77, 0.3)' : 'none' }}>
+                            <p>현재 처리 상태: <strong style={{ color: status === '거부' ? '#ff4d4d' : '#00f2ff' }}>{status}</strong></p>
+                            
+                            {status === "거부" && (
+                                <div style={{ marginTop: '10px', borderTop: '1px solid rgba(255,77,77,0.2)', paddingTop: '10px' }}>
+                                    <p style={{ color: '#ff4d4d', fontSize: '13px', fontWeight: 'bold' }}>🚫 판매자 거절 사유</p>
+                                    <p style={{ marginTop: '5px', fontSize: '14px', whiteSpace: 'pre-wrap', color: '#eee' }}>
+                                        {returnDetail.returnSaleReasonDetail || "등록된 거절 사유가 없습니다."}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -166,12 +179,12 @@ function GoodsSaleReturn() {
                             {status === "접수" && (
                                 <>
                                     <SaveBtn onClick={() => handleStatusUpdate("회수중")} style={{ flex: 1 }}>반품 승인 (회수 시작)</SaveBtn>
-                                    <button 
+                                    <SaveBtn 
                                         onClick={() => setStatus("거부_입력")} 
                                         style={{ flex: 1, background: 'transparent', border: '1px solid #ff4d4d', color: '#ff4d4d', borderRadius: '8px', cursor: 'pointer' }}
                                     >
                                         반품 거부
-                                    </button>
+                                    </SaveBtn>
                                 </>
                             )}
                             {status === "회수중" && (
@@ -189,21 +202,18 @@ function GoodsSaleReturn() {
                             <div style={{ marginTop: '20px', padding: '15px', border: '1px solid #ff4d4d', borderRadius: '8px' }}>
                                 <p style={{ color: '#ff4d4d', marginBottom: '10px' }}>거부 사유를 입력해주세요.</p>
                                 <textarea 
-                                    style={{ width: '100%', height: '80px', background: '#222', color: '#fff', border: '1px solid #444', padding: '10px' }}
+                                    className={styles.textarea}
+                                    style={{ width: '100%', height: '80px', background: '#222', color: '#fff', border: '1px solid #444'}}
                                     value={rejectReason}
                                     onChange={(e) => setRejectReason(e.target.value)}
                                     placeholder="구매자에게 전달될 거절 사유"
                                 />
                                 <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                                    <button onClick={() => handleStatusUpdate("거부")} style={{ background: '#ff4d4d', border: 'none', color: '#fff', padding: '5px 15px', borderRadius: '4px' }}>거부 확정</button>
-                                    <button onClick={() => setStatus("접수")} style={{ background: '#444', border: 'none', color: '#fff', padding: '5px 15px', borderRadius: '4px' }}>취소</button>
+                                    <button onClick={() => handleStatusUpdate("거부")} style={{ background: '#ff4d4d', border: 'none', color: '#fff', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}>거부 확정</button>
+                                    <button onClick={() => setStatus("접수")} style={{ background: '#444', border: 'none', color: '#fff', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}>취소</button>
                                 </div>
                             </div>
                         )}
-                    </div>
-
-                    <div className={styles.btnWrapper} style={{ marginTop: '40px' }}>
-                        <MoveBtn type="button" onClick={() => navigate(-1)}>목록으로</MoveBtn>
                     </div>
                 </div>
             </div>

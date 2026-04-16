@@ -99,15 +99,28 @@ export const GoodsOrderCancelApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/cancel`, commentData);
 };
 
+//구매자 반품등록 페이지
 export const getReturnDetailApi = (gono) => {
   return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/detail`, {
     params: { gono: gono }
   });
 };
 
-//반품처리
+//구매자 반품수정 및 상세 페이지
+export const getReturnViewApi = (rno) => {
+  return axiosInstance.get(`${process.env.REACT_APP_API_URL}/goodsReturn/view`, {
+    params: { rno: rno }
+  });
+};
+
+//반품처리(구매자)
 export const GoodsReturnApi = (commentData) => {
   return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/save`, commentData);
+};
+
+//반품수정처리(구매자)
+export const GoodsReturnUpdateApi = (commentData) => {
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/update`, commentData);
 };
 
 //반품리스트(구매자)
@@ -132,11 +145,10 @@ export const getReturnDetailByRnoApi = (rno) => {
 };
 
 
-//반품 상태변경
-export const updateReturnStatusApi = (rno, data) => {
+//반품 상태변경(판매자)
+export const updateReturnStatusApi = (data) => {
   // data 예시: { delivStatus: "배송중" }
-  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsOrders/updateStatus`, {
-    rno: rno,
+  return axiosInstance.post(`${process.env.REACT_APP_API_URL}/goodsReturn/updateStatus`, {
     ...data
   });
 };

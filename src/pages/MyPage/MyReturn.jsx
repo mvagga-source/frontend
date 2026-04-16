@@ -156,6 +156,12 @@ function MyReturn() {
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <button 
+                    className="co-button-status co-ongoing-all"
+                    onClick={() => navigate(`/GoodsReturnView/${item.rno}`)}
+                  >
+                    상세
+                  </button>
+                  <button 
                     className="my-status_btn my-upcoming-all"
                     onClick={() => handleCancelReturn(item.rno, item.returnStatus)}
                   >
