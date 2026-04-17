@@ -121,7 +121,11 @@ export default function TeamCompetition() {
         const teamRounds = res.data.filter((a) => a.hasTeamMatch);
         setAuditions(teamRounds);
         if (teamRounds.length > 0) {
-          setActiveRound(teamRounds[teamRounds.length - 1]);
+          const doneRounds = teamRounds.filter((a) => a.hasMatchDone === true);
+          const defaultRound = doneRounds.length > 0
+            ? doneRounds[doneRounds.length - 1]
+            : teamRounds[teamRounds.length - 1];
+          setActiveRound(defaultRound);
         } else {
           setLoading(false);
         }

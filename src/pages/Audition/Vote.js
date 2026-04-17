@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
   getIdolsApi,
@@ -28,6 +28,7 @@ const rankColor = (rank, survivorCount) => {
 
 export default function Vote() {
   const { user } = useAuth();
+  const location = useLocation();
 
   /* ── API 상태 ── */
   const [idols,        setIdols]        = useState([]);   // 투표 대상 아이돌 목록
@@ -252,7 +253,7 @@ export default function Vote() {
       {!user && (
         <div className="av-login-notice">
           <span>로그인 후 투표에 참여할 수 있어요</span>
-          <Link to="/UserLogin" className="av-login-link">로그인하기 →</Link>
+          <Link to="/UserLogin" state={{ from: location.pathname }} className="av-login-link">로그인하기 →</Link>
         </div>
       )}
 
