@@ -134,7 +134,7 @@ function GoodsSaleReturn() {
                     <hr style={{ border: '0.5px solid rgba(0, 242, 255, 0.1)', margin: '30px 0' }} />
 
                     {/* 3. 판매자 관리 영역 (수정 가능) */}
-                    <div className={styles.formGroup}>
+                    {/* <div className={styles.formGroup}>
                         <label className={styles.label}>배송비 및 택배사 설정</label>
                         <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                             <div style={{ flex: 1 }}>
@@ -157,6 +157,24 @@ function GoodsSaleReturn() {
                                 />
                             </div>
                         </div>
+                    </div> */}
+                    {/* 판매자 회수지(반품지) 정보 (DB에 저장된 값) */}
+                    <div className={styles.formGroup}>
+                        {/* <label className={styles.label}>🏠 판매자 반품지(회수지) 정보</label>
+                        <div style={{ padding: '15px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#fff' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '10px' }}>
+                                <span style={{ color: '#aaa' }}>반품지 주소</span>
+                                <span>
+                                    [{returnDetail.gdelivAddrReturn}] {returnDetail.gdelivAddrReturnDetail}
+                                </span>
+                                <span style={{ color: '#aaa' }}>기본 배송비</span>
+                                <span>{returnDetail.gdelPrice?.toLocaleString()}원 ({returnDetail.gdelType || "미지정"})</span>
+                            </div>
+                        </div>
+                        <p style={{ fontSize: '12px', color: '#888', marginTop: '5px' }}>
+                            * 구매자가 상품을 보낼 주소입니다. 택배사에 회수 요청 시 위 주소로 입고되도록 설정해 주세요.
+                        </p> */}
+
                         {/* 판매자 처리 결과 및 거절 사유 표시 */}
                         <div style={{ marginTop: '15px', padding: '15px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', color: '#fff', border: status === '거부' ? '1px solid rgba(255, 77, 77, 0.3)' : 'none' }}>
                             <p>현재 처리 상태: <strong style={{ color: status === '거부' ? '#ff4d4d' : '#00f2ff' }}>{status}</strong></p>
