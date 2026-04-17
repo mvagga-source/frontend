@@ -78,6 +78,7 @@ function BoardCommentItem({ comment: c, bno, onRefresh, setComments, getList, ..
       const handleReport = (comment) => {
         if (!user) {
           alert("로그인 후 이용 가능합니다.");
+          navigate("/UserLogin", { state: { from: window.location.pathname } });
           return;
         }
         

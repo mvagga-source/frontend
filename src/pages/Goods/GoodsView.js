@@ -81,6 +81,7 @@ function GoodsView() {
     const handleBookmark = () => {
         if (!user) {
             alert("로그인 후 이용 가능합니다.");
+            navigate("/UserLogin", { state: { from: window.location.pathname } });
             return;
         }
         toggleBookmarkApi(user.id, gno, "GOODS").then((res) => {
@@ -93,6 +94,7 @@ function GoodsView() {
     const handleOpenModal = () => {
         if (!user) {
             alert("로그인 후 구매가 가능합니다.");
+            navigate("/UserLogin", { state: { from: window.location.pathname } });
             return;
         }
         setIsModalOpen(true);

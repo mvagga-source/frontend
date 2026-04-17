@@ -28,7 +28,6 @@ const GoodsReviewItem = memo(({ r, user, sellerId, editingId, setEditingId, setR
 
     // 도움돼요
     const handleLike = () => {
-        if (!user) return alert("로그인 후 이용 가능합니다.");
         const formData = new FormData();
         formData.append("grno", r.grno);
         GoodsReviewLikeSaveApi(formData).then((res) => {
