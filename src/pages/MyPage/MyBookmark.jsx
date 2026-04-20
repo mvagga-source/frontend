@@ -61,6 +61,7 @@ function MyBookmark () {
 
           // 지역변수 선언
           const { list, maxPage, startPage, endPage, totalCount } = res.data;
+          console.log("list : ",list);
           setLists(list || []);
           setMaxPage(maxPage || 1);
           setStartPage(startPage || 1);
@@ -80,7 +81,7 @@ function MyBookmark () {
 
     try {
       await deleteBookmarkApi(id);
-      setLists(prev => prev.filter(event => event.id !== id));
+      setLists(prev => prev.filter(event => event.ID !== id));
       alert("삭제 되었습니다.")
     } catch(e){
       console.error("데이터 삭제실패 :",e);

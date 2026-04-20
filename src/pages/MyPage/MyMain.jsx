@@ -33,7 +33,7 @@ const MyMain = () => {
         </div>
         <div className="my-main-menu">
 
-            <ul>
+            <ul className='my-main-menu__ul'>
                 {tabs.map((tab) => (
                 <li
                     key={tab.id}
