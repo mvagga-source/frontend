@@ -165,10 +165,10 @@ function MyVote () {
                         <div className="my-iodl-round">{round}차 경연</div>
                         {grouped[date][voteId][round].map(idol => ( 
 
-                            <ul className={`av-card ${idol.STATUS === "eliminated" ? "voted-dim" : "voted-selected"}`} 
+                            <ul className={`my-av-card ${idol.STATUS === "eliminated" ? "voted-dim" : "voted-selected"}`} 
                                 onClick={() => goToProfile(idol.PROFILEID)}
                             >
-                              <li>
+                              <li className="my-idol-wrap__li">
                                 <img 
                                   key={idol.PROFILEID}
                                   src={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/upload/action profile/${idol.MAIN_IMG_URL}`}
@@ -177,7 +177,7 @@ function MyVote () {
                                         }}
                                 />
                               </li>
-                              <li>
+                              <li className="my-idol-wrap__li my-idol-wrap_lilast">
                                 {idol.NAME}
                               </li>
                             </ul>
