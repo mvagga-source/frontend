@@ -120,6 +120,17 @@ function MySale () {
       <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
       <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
       <button onClick={handleSearch}>검색</button>
+
+      <span style={{margin:"0 10px 0 15px"}}>/</span>
+
+      <button className="co-button-status co-ongoing-all" 
+              onClick={()=>{
+                navigate("/GoodsWrite",{
+                    state: {
+                      from: location.pathname
+                }});
+              }}
+      >상품등록</button>
     </div>
 
     <table className="my-table">
