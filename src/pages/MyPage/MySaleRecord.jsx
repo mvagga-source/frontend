@@ -127,7 +127,7 @@ function MySaleRecord() {
         </thead>
         <tbody>
           {lists.length === 0 ? (
-            <tr><td colSpan="10" style={{textAlign:"center"}}>데이터가 없습니다.</td></tr>
+            <tr><td colSpan="10" style={{ textAlign: "center", height:"50px" }}>데이터가 없습니다.</td></tr>
           ) : (
             lists.map((item, index) => (
               <tr key={item.gono} className={item.status === 'CANCEL' ? 'row-muted' : ''}>
