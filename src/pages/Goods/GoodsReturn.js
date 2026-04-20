@@ -89,8 +89,13 @@ function GoodsReturn() {
 
         // 사유가 '변심'일 때만 배송비 차감
         if (reason === "변심") {
-            const refund = totalItemPrice - deliveryFee;
-            return refund < 0 ? 0 : refund;
+            if(returnType === "교환") {
+                const refund = totalItemPrice - (deliveryFee * 2);
+                return refund < 0 ? 0 : refund;
+            } else {
+                const refund = totalItemPrice - deliveryFee;
+                return refund < 0 ? 0 : refund;
+            }
         }
 
         // 그 외(파손, 오배송 등)는 상품 가격 전액 환불
@@ -100,7 +105,7 @@ function GoodsReturn() {
     const handleReturnSubmit = async () => {
         if (!reason) return alert("반품 사유를 선택해주세요.");
 
-        if (window.confirm(`반품 수량 ${returnQty}개로 신청하시겠습니까?`)) {
+        if (window.confirm(`반품/교환 수량 ${returnQty}개로 신청하시겠습니까?`)) {
             const formData = new FormData(formRef.current);
             // 추가 데이터 삽입 (ref에 없는 값들)
             formData.append("order.gono", gono);
@@ -124,9 +129,9 @@ function GoodsReturn() {
             <div className={styles.header}>
                 <h2 className={styles.title}>반품/교환 요청</h2>
                 <div className={styles.infoBox}>
-                    <p className={styles.infoTitle}>⚠️ 반품 신청 전 확인해 주세요</p>
+                    <p className={styles.infoTitle}>⚠️ 반품/교환 신청 전 확인해 주세요</p>
                     <ul className={styles.infoList}>
-                        <li>단순 변심으로 인한 반품은 <strong>왕복 배송비가 차감</strong>된 후 환불됩니다.</li>
+                        <li>단순 변심으로 인한 반품/교환은 <strong>왕복 배송비가 차감</strong>된 후 환불됩니다.</li>
                         <li>교환은 불량 또는 주문한 것과 다른 상품이 왔거나 구성품이 빠진 경우만 <strong>왕복 배송비가 차감</strong>됩니다.</li>
                         <li>상품 택 제거, 사용 흔적, 포장 훼손 시 반품이 거부될 수 있습니다.</li>
                         <li><strong>허위 반품 접수:</strong> 고의로 상품을 훼손하여 반품을 시도할 경우 서비스 이용이 제한될 수 있습니다.</li>
@@ -185,7 +190,7 @@ function GoodsReturn() {
 
                         {/* 4. 수량 선택 */}
                         <div className={styles.formGroup}>
-                            <label className={styles.label}><span className={styles.required}>*</span> 반품 수량 선택</label>
+                            <label className={styles.label}><span className={styles.required}>*</span> 반품/교환 수량 선택</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                 {availableQty > 0 ? (
                                     <select 
@@ -290,10 +295,17 @@ function GoodsReturn() {
                                 </div>
 
                                 {/* 변심일 때만 차감 내역 표시 */}
-                                {reason === "변심" && (
+                                {reason === "변심" && returnType === "반품" && (
                                     <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ff4d4d', marginBottom: '10px' }}>
-                                        <span>반품/교환 배송비 (변심 차감)</span>
+                                        <span>반품 배송비 (변심 차감)</span>
                                         <span>- {(orderDetail?.gdelPrice || orderDetail?.goods?.gdelPrice || 0).toLocaleString()}원</span>
+                                    </div>
+                                )}
+
+                                {reason === "변심" && returnType === "교환" && (
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ff4d4d', marginBottom: '10px' }}>
+                                        <span>교환 배송비 (변심 차감)</span>
+                                        <span>- {((orderDetail?.gdelPrice || orderDetail?.goods?.gdelPrice || 0) * 2).toLocaleString()}원</span>
                                     </div>
                                 )}
                                 
