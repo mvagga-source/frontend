@@ -9,7 +9,7 @@ import { GoodsOrderCancelApi } from "../Goods/GoodsApi";
 
 import "./MyMain.css";
 
-function MyPurchase () {
+function MyOrder () {
 
   const date = new Date();
   const today = formatDate(date);  
@@ -277,4 +277,4 @@ function MyPurchase () {
 
 }
 
-export default MyPurchase;
+export default MyOrder;

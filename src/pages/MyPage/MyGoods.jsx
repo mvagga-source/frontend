@@ -2,13 +2,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GoodsDeleteApi } from "../Goods/GoodsApi";
-import { getMySalePageApi } from "./MyMainApi";
+import { getMyGoodsPageApi } from "./MyMainApi";
 import { formatDate, formatDateTime } from "../Admin/ACommon";
 import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css"
 
-function MySale () {
+function MyGoods () {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,7 +43,7 @@ function MySale () {
   const getGoodsList = async (searchParams) => {
 
         try {
-            const res = await getMySalePageApi(searchParams);
+            const res = await getMyGoodsPageApi(searchParams);
 
             if (res.data) {
                 const { list, maxPage, startPage, endPage, totalCount } = res.data; // AjaxResponse 구조 확인
@@ -120,6 +120,17 @@ function MySale () {
       <input type="date" value={startDate} name="startDate" onChange={(e)=>setStartDate(e.target.value)} /> -
       <input type="date" value={endDate} name="endDate" onChange={(e)=>setEndDate(e.target.value)}/>
       <button onClick={handleSearch}>검색</button>
+
+      <span style={{margin:"0 10px 0 15px"}}>/</span>
+
+      <button className="co-button-status co-ongoing-all" 
+              onClick={()=>{
+                navigate("/GoodsWrite",{
+                    state: {
+                      from: location.pathname
+                }});
+              }}
+      >상품등록</button>
     </div>
 
     <table className="my-table">
@@ -169,7 +180,7 @@ function MySale () {
 
               <button className="co-button-status co-ongoing-all"
                 onClick={()=>{
-                  localStorage.setItem("mySaleDate",JSON.stringify({ startDate, endDate }));
+                  localStorage.setItem("myGoodsDate",JSON.stringify({ startDate, endDate }));
                   navigate(`/GoodsView/${list.gno}`,{
                     state: {from: location.pathname}
                   })
@@ -233,4 +244,4 @@ function MySale () {
   );
 }
 
-export default MySale;
+export default MyGoods;
