@@ -38,7 +38,6 @@ function GoodsReturnView() {
         setLoading(true);
         getReturnViewApi(rno)
             .then(res => {
-                console.log(res);
                 const data = res.data.data;
                 setReturnData(data);
                 setReturnType(data.returnType);
@@ -80,7 +79,9 @@ function GoodsReturnView() {
 
         const formData = new FormData(formRef.current);
         formData.append("rno", rno);
-        formData.append("refundPrice", calculateRefund());
+        const itemPrice = returnData.order.goods?.price || 0;
+        const totalItemPrice = itemPrice * returnQty;
+        formData.append("refundPrice", totalItemPrice);
 
         GoodsReturnUpdateApi(formData).then(res => {
             if (res.data.success) {

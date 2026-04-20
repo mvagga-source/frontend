@@ -104,7 +104,9 @@ function GoodsReturn() {
             const formData = new FormData(formRef.current);
             // 추가 데이터 삽입 (ref에 없는 값들)
             formData.append("order.gono", gono);
-            formData.append("refundPrice", calculateRefund());
+            const itemPrice = orderDetail.goods?.price || 0;
+            const totalItemPrice = itemPrice * returnQty;
+            formData.append("refundPrice", totalItemPrice);
 
             GoodsReturnApi(formData).then(res => {
                 if (res.data.success) {
