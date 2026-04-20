@@ -136,7 +136,12 @@ function MySaleReturn() {
                 </td>
                 <td style={{ textAlign: "center" }}>{item.returnReason}</td>
                 <td style={{ textAlign: "right" }}>
-                  {item.returnType === '반품' ? `${Number(item.refundPrice || 0).toLocaleString()}원` : '-'}
+                  {item.returnType === '반품'
+                  ? (
+                      Number(item.refundPrice || 0) -
+                      (item.returnReason !== "변심" ? Number(item.gdelivPrice || 0) : 0)
+                    ).toLocaleString() + "원"
+                  : '-'}
                 </td>
                 <td style={{ textAlign: "center" }}>
                   <strong>{item.returnStatus}</strong>
