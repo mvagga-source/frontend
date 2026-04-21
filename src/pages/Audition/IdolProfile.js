@@ -233,7 +233,7 @@ function MiniCalendar() {
 
           /* 3. 클릭 시 이동 */
           eventClick={(info) => {
-            navigate('/Schedule'); 
+            navigate('/Event'); 
             // 특정 날짜로 이동하고 싶다면: navigate(`/Schedule?date=${info.event.startStr}`);
           }}
 
