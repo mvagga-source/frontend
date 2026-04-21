@@ -133,7 +133,7 @@ function GoodsList() {
         query.set("maxPrice", maxPrice || "");
         query.set("sortDir", sortDirection);
 
-        // 주소창을 변경 (이동) 시킵니다. 
+        // 주소창을 변경 (이동)
         navigate(`?${query.toString()}`);
     };
 

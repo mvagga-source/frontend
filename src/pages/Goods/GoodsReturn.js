@@ -116,7 +116,7 @@ function GoodsReturn() {
             GoodsReturnApi(formData).then(res => {
                 if (res.data.success) {
                     alert("반품 접수가 완료되었습니다.");
-                    navigate("/MyMain/MyReturn");
+                    navigate("/MyMain/MyPurchaseReturn");
                 }
             });
         }
