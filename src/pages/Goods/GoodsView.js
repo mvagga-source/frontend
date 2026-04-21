@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./GoodsView.module.css";
 import commonStyles from "../Board/BoardView.module.css"; // 기존 게시판 스타일 재사용
@@ -12,6 +12,7 @@ import GoodsContent from "./GoodsComponent/GoodsContent";
 import { toggleBookmarkApi } from "../Common/BookmarkApi";
 import { getMyPageBookmarskApi } from "../MyPage/MyMainApi";
 import LoadingScreen from "../../components/LoadingBar/LoadingBar";
+import { useToast } from "../../context/ToastMsg/ToastContext";
 
 /**
  * 굿즈 구매(상세)페이지
@@ -21,6 +22,7 @@ function GoodsView() {
     const { gno } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { showToast } = useToast();
     
     const [goods, setGoods] = useState(null);
     const [activeTab, setActiveTab] = useState("detail"); // 탭 상태: detail, review, info
@@ -48,7 +50,10 @@ function GoodsView() {
 
         // 로그인 상태라면 북마크 여부 확인
         if (user && user.id) {
-            getMyPageBookmarskApi(user.id,"GOODS")
+            getMyPageBookmarskApi({
+                memberId : user.id,
+                pageType : "GOODS"
+            })
             .then((res) => {
                 // 내 북마크 리스트 중 현재 상품(gno)이 있는지 확인
                 const exists = res.data.some(bookmark => String(bookmark.pageId) === String(gno));
@@ -87,6 +92,11 @@ function GoodsView() {
         toggleBookmarkApi(user.id, gno, "GOODS").then((res) => {
             // 기존 다른 사람이 만든 북마크 사용
             setIsBookmarked(res.data); 
+            if(res.data){
+                showToast("북마크에 추가되었습니다.");
+            }else{
+                showToast("북마크가 삭제되었습니다.");
+            }
         });
     };
 
