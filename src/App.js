@@ -32,9 +32,9 @@ import MyMain from "./pages/MyPage/MyMain";
 import MyBookmark from "./pages/MyPage/MyBookmark";
 import MyVote from "./pages/MyPage/MyVote";
 import MyGoods from "./pages/MyPage/MyGoods";
-import MyPurchase from "./pages/MyPage/MyPurchase";
+import MyPurchase from "./pages/MyPage/MyPurchase.jsx";
 import MySale from "./pages/MyPage/MySale.jsx";
-import MyReturn from "./pages/MyPage/MyReturn.jsx";
+import MyPurchaseReturn from "./pages/MyPage/MyPurchaseReturn.jsx";
 import MySaleReturn from "./pages/MyPage/MySaleReturn.jsx";
 
 
@@ -127,7 +127,7 @@ function App() {
             <Route path="MyPurchase" element={<MyPurchase />} />
             <Route path="MySale" element={<MySale />} />
             <Route path="MyGoods" element={<MyGoods />} />
-            <Route path="MyReturn" element={<MyReturn />} />
+            <Route path="MyPurchaseReturn" element={<MyPurchaseReturn />} />
             <Route path="MySaleReturn" element={<MySaleReturn />} />
           </Route>
 
