@@ -316,6 +316,39 @@ console.log("실제 유저 데이터 구조:", user);
   };
 
 
+  // --- [공유 기능 함수] ---
+
+// 1. X(Twitter) 공유
+const shareToX = () => {
+  const text = `Action 101의 ${idol.profile.name}님을 응원합니다! 💙`;
+  const url = window.location.href; // 현재 페이지 주소
+  const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  window.open(xUrl, "_blank", "width=600,height=400");
+};
+
+// 2. 일반 링크 복사 공유
+const shareLink = () => {
+  const url = window.location.href;
+  
+  // 최신 브라우저 클립보드 API 사용
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url)
+      .then(() => alert("프로필 주소가 복사되었습니다! 원하는 곳에 붙여넣으세요. 😊"))
+      .catch(() => alert("복사에 실패했습니다."));
+  } else {
+    // 구형 브라우저 대응
+    const textArea = document.createElement("textarea");
+    textArea.value = url;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    alert("프로필 주소가 복사되었습니다!");
+  }
+};
+
+
+
   // 1. 사진 삭제 기능 (실제 서버 연동)
   const handleImageDelete = async () => {
     if (!window.confirm("정말 프로필 사진을 삭제하시겠습니까?")) return;
@@ -543,8 +576,8 @@ fetchIdolData();
 
                 {/* 오른쪽: 공유 버튼 묶음 */}
                 <div className="id-p-share">
-                  <button>𝕏</button> 
-                  <button>공유</button>
+                  <button onClick={shareToX} title="X(트위터)에 공유">𝕏</button> 
+                  <button onClick={shareLink} title="링크 복사">공유</button>
                 </div>
               </div>
               <table className="id-info-table">
