@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css"
 
-function MySale () {
+function MyGoods () {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -244,4 +244,4 @@ function MySale () {
   );
 }
 
-export default MySale;
+export default MyGoods;

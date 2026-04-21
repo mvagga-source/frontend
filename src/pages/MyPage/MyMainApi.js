@@ -54,8 +54,8 @@ export const getMySaleRecordPageApi = (searchParams={}) => {
 };
 
 // 판매내역 (리스트 가져오기)
-export const getMySalePageApi = (searchParams={}) => {
-  return axiosInstance.get(`/mypage/getMySalePage`, {
+export const getMyGoodsPageApi = (searchParams={}) => {
+  return axiosInstance.get(`/mypage/getMyGoodsPage`, {
     params: { ...searchParams }
   });
 };

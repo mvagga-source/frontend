@@ -14,11 +14,11 @@ const MyMain = () => {
   const tabs = [
     { id: 'bookmark', label: '북마크 관리', url:'/MyMain/Mybookmark' },
     { id: 'vote', label: '투표 관리', url:'/MyMain/MyVote' },
-    { id: 'purchase', label: '구매내역', url:'/MyMain/MyPurchase' },
+    { id: 'goods', label: '상품내역', url:'/MyMain/MyGoods' },    
     { id: 'saleRecord', label: '판매내역', url:'/MyMain/MySaleRecord' },
-    { id: 'sale', label: '상품내역', url:'/MyMain/MySale' },
+    { id: 'saleReturn', label: '반품/교환내역(판매)', url:'/MyMain/MySaleReturn' },    
+    { id: 'purchase', label: '구매내역', url:'/MyMain/MyPurchase' },        
     { id: 'return', label: '반품/교환내역(구매)', url:'/MyMain/MyReturn' },
-    { id: 'saleReturn', label: '반품/교환내역(판매)', url:'/MyMain/MySaleReturn' },
   ];
   const actived  = location.pathname === "/MyMain" ? "/MyMain/Mybookmark" : location.pathname;
 
@@ -40,7 +40,7 @@ const MyMain = () => {
                     className={`my-tab-btn ${actived === tab.url ? 'active' : ''}`}
                     onClick={() => {
                       if(tab.id === 'bookmark') localStorage.removeItem("myBookMarkDate");
-                      if(tab.id === 'sale') localStorage.removeItem("mySaleDate");
+                      if(tab.id === 'goods') localStorage.removeItem("myGoodsDate");
                       navigate(tab.url)
                     }}
                 >
