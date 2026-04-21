@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMySaleRecordPageApi } from "./MyMainApi"; // 판매자 전용 API 가정
+import { getMySalePageApi } from "./MyMainApi"; // 판매자 전용 API 가정
 import { formatDate, formatDateTime, getWeekRange, getMonthRange, getYearRange } from "../Admin/ACommon";
 import { useAuth } from "../../context/AuthContext";
 import "./MyMain.css";
 
-function MySaleRecord() {
+function MySale() {
   const navigate = useNavigate();
   const date = new Date();
   const today = formatDate(date);
@@ -41,7 +41,7 @@ function MySaleRecord() {
   // 판매 내역 조회 API 호출
   const getSaleOrderList = async (searchParams) => {
     try {
-      const res = await getMySaleRecordPageApi(searchParams);
+      const res = await getMySalePageApi(searchParams);
       if (res.data) {
         const { list, maxPage, startPage, endPage, totalCount } = res.data;
         setLists(list || []);
@@ -197,4 +197,4 @@ function MySaleRecord() {
   );
 }
 
-export default MySaleRecord;
+export default MySale;

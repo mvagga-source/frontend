@@ -11,7 +11,6 @@ import Home from "./pages/Home/Home";
 import UserLogin from "./pages/Home/UserLogin";
 import UserSignUp from "./pages/Home/UserSignUp";
 
-
 import Schedule from "./pages/Schedule/Schedule";
 import Event from "./pages/Schedule/Event";
 import MVideo from "./pages/Video/MVideo";
@@ -34,7 +33,7 @@ import MyBookmark from "./pages/MyPage/MyBookmark";
 import MyVote from "./pages/MyPage/MyVote";
 import MyGoods from "./pages/MyPage/MyGoods";
 import MyPurchase from "./pages/MyPage/MyPurchase";
-import MySaleRecord from "./pages/MyPage/MySaleRecord.jsx";
+import MySale from "./pages/MyPage/MySale.jsx";
 import MyReturn from "./pages/MyPage/MyReturn.jsx";
 import MySaleReturn from "./pages/MyPage/MySaleReturn.jsx";
 
@@ -126,7 +125,7 @@ function App() {
             <Route path="MyBookmark" element={<MyBookmark />} />
             <Route path="MyVote" element={<MyVote />} />
             <Route path="MyPurchase" element={<MyPurchase />} />
-            <Route path="MySaleRecord" element={<MySaleRecord />} />
+            <Route path="MySale" element={<MySale />} />
             <Route path="MyGoods" element={<MyGoods />} />
             <Route path="MyReturn" element={<MyReturn />} />
             <Route path="MySaleReturn" element={<MySaleReturn />} />
