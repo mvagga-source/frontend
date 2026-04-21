@@ -262,7 +262,7 @@
   padding: 18px 14px 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   /* gap: 7px; */
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, transform 0.2s;
@@ -286,7 +286,7 @@
 
 .my-idol-wrap{
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
 

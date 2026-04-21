@@ -54,7 +54,7 @@ function MyBookmark () {
   const getMyBookmarkPage = async (searchParams) => {
 
     try {
-        // console.log("searchParams : ",searchParams);
+        console.log("searchParams : ",searchParams);
         const res = await getMyBookmarkPageApi(searchParams);
         // console.log("res : ",res.data.list);
         if(res.data){
@@ -179,7 +179,7 @@ function MyBookmark () {
           const pathMap = {
             GOODS: `/GoodsView/${list.PAGEID}`,
             VIDEO: `/Mvideo/${list.PAGEID}`,
-            EVENT: `/Schedule`,
+            EVENT: `/Event`,
           };
           const path = pathMap[list.PAGETYPE];
 

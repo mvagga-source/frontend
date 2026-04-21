@@ -22,6 +22,12 @@ const MyMain = () => {
   ];
   const actived  = location.pathname === "/MyMain" ? "/MyMain/Mybookmark" : location.pathname;
 
+  useEffect(()=>{
+    console.log("removeItem");
+    localStorage.removeItem("myBookMarkDate");
+    localStorage.removeItem("myGoodsDate");
+  },[actived]);
+
   return (
 
     // <Content TitleName="마이페이지">
@@ -35,12 +41,11 @@ const MyMain = () => {
 
             <ul className='my-main-menu__ul'>
                 {tabs.map((tab) => (
+
                 <li
                     key={tab.id}
                     className={`my-tab-btn ${actived === tab.url ? 'active' : ''}`}
                     onClick={() => {
-                      if(tab.id === 'bookmark') localStorage.removeItem("myBookMarkDate");
-                      if(tab.id === 'goods') localStorage.removeItem("myGoodsDate");
                       navigate(tab.url)
                     }}
                 >
