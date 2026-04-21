@@ -160,7 +160,7 @@ function MyOrder () {
           <th>결재상태</th>
           <th>주문수량</th>          
           <th>주문금액</th>
-          <th>배송상태</th>
+          <th>상태</th>
           <th>리뷰작성</th>          
           <th>처리</th>
         </tr>

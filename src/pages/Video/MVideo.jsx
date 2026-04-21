@@ -73,7 +73,7 @@ function MVideo() {
 
         const getMyLikes = async () => {
             try {
-            // 나의 좋아요 리스트
+                // 나의 좋아요 리스트
                 const res = await getMyLikesApi(user.id);
                 if (res.data) {
                     const data = await res.data.map(l=> l.video.id);

@@ -57,7 +57,7 @@ function GoodsBanner({}) {
                             
                             <div className={styles.topStatus}>
                             <span className={styles.rankBadge}>TOP {index + 1}</span>
-                            <span className={styles.statusText}>평점 기준 베스트</span>
+                            <span className={styles.statusText}>추천 베스트</span>
                             </div>
 
                             <span className={styles.ratingBadge}>
@@ -71,7 +71,7 @@ function GoodsBanner({}) {
                             <h2>{banner.GNAME || banner.gname}</h2>
 
                             <p className={styles.priceText}>
-                            지금 가장 사랑받는 굿즈
+                            오늘의 추천 베스트
                             <strong>
                                 {(banner.PRICE || banner.price)?.toLocaleString()}원
                             </strong>

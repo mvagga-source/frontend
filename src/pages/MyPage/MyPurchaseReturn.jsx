@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import "./MyMain.css"
 
-function MyReturn() {
+function MyPurchaseReturn() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -214,4 +214,4 @@ function MyReturn() {
   );
 }
 
-export default MyReturn;
+export default MyPurchaseReturn;

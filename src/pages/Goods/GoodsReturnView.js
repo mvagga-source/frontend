@@ -68,8 +68,13 @@ function GoodsReturnView() {
         const deliveryFee = returnData.gdelPrice || 0;
 
         if (reason === "변심") {
-            const refund = totalItemPrice - deliveryFee;
-            return refund < 0 ? 0 : refund;
+            if(returnType === "교환") {
+                const refund = totalItemPrice - (deliveryFee * 2);
+                return refund < 0 ? 0 : refund;
+            } else {
+                const refund = totalItemPrice - deliveryFee;
+                return refund < 0 ? 0 : refund;
+            }
         }
         return totalItemPrice;
     };
@@ -129,9 +134,9 @@ function GoodsReturnView() {
 
                 {/* 주의사항 유지 */}
                 <div className={styles.infoBox}>
-                    <p className={styles.infoTitle}>⚠️ 반품 신청 전 확인해 주세요</p>
+                    <p className={styles.infoTitle}>⚠️ 반품/교환 신청 전 확인해 주세요</p>
                     <ul className={styles.infoList}>
-                        <li>단순 변심으로 인한 반품은 <strong>왕복 배송비가 차감</strong>된 후 환불됩니다.</li>
+                        <li>단순 변심으로 인한 반품/교환은 <strong>왕복 배송비가 차감</strong>된 후 환불됩니다.</li>
                         <li>교환은 불량 또는 주문한 것과 다른 상품이 왔거나 구성품이 빠진 경우만 가능합니다.</li>
                         <li>상품 택 제거, 사용 흔적, 포장 훼손 시 반품이 거부될 수 있습니다.</li>
                         <li><strong>접수 상태에서만 정보 수정이 가능합니다.</strong></li>
@@ -185,7 +190,7 @@ function GoodsReturnView() {
 
                         {/* 5. 수량 선택 */}
                         <div className={styles.formGroup}>
-                            <label className={styles.label}>반품 수량</label>
+                            <label className={styles.label}>반품/교환 수량</label>
                             <span style={{color: '#fff', fontSize: '1rem', fontWeight: 'bold'}}>
                                 {returnQty} 개
                             </span>
@@ -242,10 +247,18 @@ function GoodsReturnView() {
                                         <span>{((returnData?.order?.goods?.price || 0) * returnQty).toLocaleString()}원</span>
                                     </div>
 
-                                    {reason === "변심" && (
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', color: '#ff4d4d' }}>
-                                            <span>반품/교환 배송비 (변심 차감)</span>
-                                            <span>-{(returnData?.gdelPrice || 0).toLocaleString()}원</span>
+                                    {/* 변심일 때만 차감 내역 표시 */}
+                                    {reason === "변심" && returnType === "반품" && (
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ff4d4d', marginBottom: '10px' }}>
+                                            <span>반품 배송비 (변심 차감)</span>
+                                            <span>- {(returnData?.gdelPrice || returnData?.goods?.gdelPrice || 0).toLocaleString()}원</span>
+                                        </div>
+                                    )}
+
+                                    {reason === "변심" && returnType === "교환" && (
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ff4d4d', marginBottom: '10px' }}>
+                                            <span>교환 배송비 (변심 차감)</span>
+                                            <span>- {((returnData?.gdelPrice || returnData?.goods?.gdelPrice || 0) * 2).toLocaleString()}원</span>
                                         </div>
                                     )}
 
