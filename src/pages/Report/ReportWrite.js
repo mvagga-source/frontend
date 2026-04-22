@@ -18,7 +18,9 @@ function ReportWrite() {
 
     const options = [
         { value: "비방/욕설", label: "비방/욕설" },
-        { value: "도배/스팸", label: "도배/스팸" },
+        { value: "명예훼손/루머", label: "명예훼손/루머" },
+        { value: "사생활 침해", label: "사생활 침해" },
+        //{ value: "도배/스팸", label: "도배/스팸" },
         { value: "부적절한 콘텐츠", label: "부적절한 콘텐츠" },
         { value: "성희롱", label: "성희롱" },
         { value: "기타", label: "기타" }

@@ -9,10 +9,10 @@ function IdeaSave() {
     const formRef = useRef();
 
     const categoryOptions = [
-        { value: "기능제안", label: "기능 제안" },
-        { value: "컨텐츠", label: "신규 컨텐츠" },
-        { value: "디자인", label: "UI/UX 개선" },
-        { value: "이벤트", label: "이벤트 아이디어" },
+        { value: "기능 제안", label: "기능 제안" },
+        { value: "신규 컨텐츠", label: "신규 컨텐츠" },
+        { value: "UI/UX 개선", label: "UI/UX 개선" },
+        { value: "이벤트 아이디어", label: "이벤트 아이디어" },
         { value: "기타", label: "기타" }
     ];
 

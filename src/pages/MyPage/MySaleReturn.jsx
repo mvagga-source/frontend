@@ -151,7 +151,7 @@ function MySaleReturn() {
                     className="my-status_btn my-ongoing-all" // 상세보기 버튼 (파란색 계열 클래스 가정)
                     onClick={() => handleDetail(item.rno)}
                   >
-                    상세페이지
+                    상세
                   </button>
                 </td>
               </tr>

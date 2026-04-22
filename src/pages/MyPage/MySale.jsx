@@ -155,7 +155,7 @@ function MySale() {
                     className="co-button-status co-ongoing-all"
                     onClick={() => navigate(`/GoodsOrderSale/${item.gono}`)}
                   >
-                    상세관리
+                    상세
                   </button>
                 </td>
               </tr>

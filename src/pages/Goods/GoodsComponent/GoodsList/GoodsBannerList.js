@@ -115,8 +115,8 @@ function GoodsBanner({}) {
                     <SwiperSlide>
                         <div className={styles.mainSlide}>
                             <div className={styles.leftContent}>
-                            <h2>인기 굿즈를 만나보세요</h2>
-                            <p>리뷰가 증명하는 베스트 아이템</p>
+                            <h2>서로를 존중하는 따뜻한 거래</h2>
+                            <p>매너 있는 대화와 정직한 나눔이 우리 샵의 신뢰를 만듭니다.</p>
                         </div>
                         </div>
                     </SwiperSlide>
