@@ -3,6 +3,7 @@
   --glass-bg: rgba(255, 255, 255, 0.05);
   --neon-blue: #00f2ff;
   --border-color: rgba(0, 242, 255, 0.2);
+  background: linear-gradient(180deg, #0d1535 0%, #0a1228 60%, #060d1e 100%);
 }
 
 body {
