@@ -676,7 +676,7 @@ function Process() {
         )}
 
         {/* 기존 하단 버튼 출력부 수정 */}
-          {(currentTab.result || currentTab.result2) && (
+          {/* {(currentTab.result || currentTab.result2) && (
             <div className="ps-result-container">
               {currentTab.result && (
                 <div className="process-result">
@@ -689,7 +689,7 @@ function Process() {
                 </div>
               )}
             </div>
-          )}
+          )} */}
       </div>
     </div>
   );
