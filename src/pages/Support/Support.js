@@ -157,10 +157,10 @@ const handleKakaoPay = async () => {
             />
             <h3>{idol.name}</h3>
             <p className="sp-one-line">"{idol.name} 연습생에게 응원을 보내보세요!"</p>
-            <div className="sp-pr-video">
+            {/* <div className="sp-pr-video">
               <img src="/default_profile.png" alt="PR" />
-              <span>1 MIN PR 영상 보러가기</span>
-            </div>
+              <span>영상 보러가기</span>
+            </div> */}
           </div>
 
           <div className="sp-live-logs">
