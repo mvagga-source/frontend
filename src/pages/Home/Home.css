@@ -364,3 +364,129 @@
   background: #fff;
   flex-shrink: 0;
 }
+
+
+
+.hm-container {
+  overflow: hidden;
+  padding: 30px 0;
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.hm-container img{
+  border-radius: 10px;
+  width:100px;
+  height:130px;
+}
+
+.hm-idol-card {
+  border-radius: 10px;
+  position: relative;
+  display: inline-block;
+
+  padding:10px;
+
+  border:1px solid var(--border-color);
+  background: rgba(0, 242, 255, 0.04);
+
+}
+
+.hm-idol-card:hover{
+  transform: translateY(-3px);
+  transition: 0.2s;  
+}
+
+.hm-idol-name {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+
+  background: rgba(0,0,0,0.5);
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  width:50px;
+  text-align: center;
+}
+
+.hm-idol-rank {
+  position: absolute;
+  top: 10px;
+  
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+
+  background: rgba(0,0,0,0.5);
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  width:50px;
+  text-align: center;
+}
+
+
+.hm-slide-in {
+  transform: translateX(100vw);
+  animation: slideInBounce 0.8s ease-out forwards;
+}
+
+/* 순차 등장 */
+.delay1 {
+  animation-delay: 0.3s;
+}
+.delay2 {
+  animation-delay: 0.6s;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInBounce {
+  0% {
+    transform: translateX(100%);
+  }
+  80% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+/* 🔥 임팩트 애니메이션 */
+.pop-in {
+  opacity: 0;
+  transform: translateY(80px) scale(0.6) rotate(-5deg);
+  animation: popIn 0.6s cubic-bezier(0.2, 1.4, 0.3, 1) forwards;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.6) rotate(-5deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.05) rotate(2deg);
+  }
+
+  100% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}

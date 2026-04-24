@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { faHeadset, faUserCheck, faMicrophoneLines } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getAllAuditionListApi } from "../../api/auditionApi";
+import { getAllAuditionListApi, getAuditionListApi, getRankingApi } from "../../api/auditionApi";
 
 import "./Home.css";
 import "../../assets/images/bg_02.jpg";
@@ -12,6 +12,7 @@ const Home = () => {
   const [ongoingTitle, setOngoingTitle] = useState(null); // ongoing 회차 제목
   const [targetDate, setTargetDate] = useState(null);     // 투표 마감일 (Date 객체)
   const [timeLeft, setTimeLeft] = useState(null);
+  const [idols, setIdols] = useState([]);
  
   // endDate 배열 [y, m, d] or 문자열 → Date 객체 변환 (endDate 당일 자정 기준)
   const parseEndDate = (endDate) => {
@@ -50,6 +51,24 @@ const Home = () => {
         }
       })
       .catch((err) => console.error("타이머 데이터 로드 실패:", err));
+
+    const fetchData = async () => {
+
+      // 최종차수 가져오기
+      const ALres = await getAuditionListApi();
+      const ALdata = ALres.data;
+      const activeRound = ALdata[ALdata.length - 1];
+      // 최종랭커 가져오기      
+      const RKres = await getRankingApi(activeRound.auditionId);
+      const result = RKres.data.slice(0, 7).map(([id, name]) => ({
+        id,
+        name,
+      }));
+      setIdols(result);
+    };
+
+    fetchData(); 
+
   }, []);
  
   // 1초마다 타이머 갱신
@@ -61,6 +80,8 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [targetDate]);
 
+  // const images = ["/images/1.jpg", "/images/2.jpg", "/images/3.jpg", "/images/4.jpg", "/images/5.jpg", "/images/6.jpg", "/images/7.jpg"];
+
   return (
     <div className="hm-content">
 
@@ -71,9 +92,27 @@ const Home = () => {
           <strong>"디렉터 여러분"</strong> 당신의 선택이 아이돌을 만듭니다.
         </div>
 
-        {/* <div className="hm-sidebar-divider"></div> */}
+        <div className="hm-container">
+          {idols?.map((item, index) => (
+            <div key={item.id} className="hm-idol-card hm-slide-in" style={{ animationDelay: `${index * 0.15}s`}}>
+              <img
+                key={item.id}
+                src={`http://localhost:8181/profile/${item.id}.jpg`}
+              />
+
+              <div className="hm-idol-rank">
+                {index+1}
+              </div>              
+
+              <div className="hm-idol-name">
+                {item.name}
+              </div>
+            </div>
+          ))}
+        </div>        
 
         <div className="hm-section-outline">        
+
           <div className="hm-section">
 
             {/* left */}
