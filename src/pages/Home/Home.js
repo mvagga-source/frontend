@@ -92,26 +92,25 @@ const Home = () => {
           <strong>"디렉터 여러분"</strong> 당신의 선택이 아이돌을 만듭니다.
         </div>
 
-        <div className="hm-container">
-          {idols?.map((item, index) => (
-            <div key={item.id} className="hm-idol-card hm-slide-in" style={{ animationDelay: `${index * 0.15}s`}}>
-              <img
-                key={item.id}
-                src={`http://localhost:8181/profile/${item.id}.jpg`}
-              />
-
-              <div className="hm-idol-rank">
-                {index+1}
-              </div>              
-
-              <div className="hm-idol-name">
-                {item.name}
-              </div>
-            </div>
-          ))}
-        </div>        
-
         <div className="hm-section-outline">        
+
+          <div className="hm-container">
+            {idols?.map((item, index) => (
+              <div key={item.id} className="hm-idol-card hm-slide-in" style={{ animationDelay: `${index * 0.15}s`}}>
+                <img
+                  key={item.id}
+                  src={`http://localhost:8181/profile/${item.id}.jpg`}
+                />
+                <div className="hm-idol-rank">
+                  {index+1}
+                </div>                              
+                <div className="hm-idol-name">
+                  {item.name}
+                </div>
+              </div>
+            ))}
+          </div>  
+
 
           <div className="hm-section">
 
