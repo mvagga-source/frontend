@@ -60,9 +60,13 @@ const Home = () => {
       const activeRound = ALdata[ALdata.length - 1];
       // 최종랭커 가져오기      
       const RKres = await getRankingApi(activeRound.auditionId);
-      const result = RKres.data.slice(0, 7).map(([id, name]) => ({
+      const result = RKres.data.slice(0, 7).map(([id, name, rawVotes, totalBonus, finalVotes, idolProfileId]) => ({
         id,
         name,
+        rawVotes,
+        totalBonus,
+        finalVotes,
+        idolProfileId
       }));
       setIdols(result);
     };
@@ -98,8 +102,8 @@ const Home = () => {
             {idols?.map((item, index) => (
               <div key={item.id} className="hm-idol-card hm-slide-in" style={{ animationDelay: `${index * 0.15}s`}}>
                 <img
-                  key={item.id}
-                  src={`http://localhost:8181/profile/${item.id}.jpg`}
+                  key={item.idolProfileId}
+                  src={`http://localhost:8181/profile/${item.idolProfileId}.jpg`}
                 />
                 <div className="hm-idol-rank">
                   {index+1}
