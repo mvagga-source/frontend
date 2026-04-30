@@ -33,7 +33,7 @@ export default function Vote() {
   /* ── API 상태 ── */
   const [idols,        setIdols]        = useState([]);   // 투표 대상 아이돌 목록
   const [rankingIdols, setRankingIdols] = useState([]);   // 순위표 모달용 랭킹 데이터
-  const [loading,      setLoading]      = useState(true); // 아이돌 목록 로딩
+  const [loading,      setLoading]      = useState(false); // 아이돌 목록 로딩
   const [isDone,       setIsDone]       = useState(false);// 오늘 이미 투표했는지
   const [auditionId,   setAuditionId]   = useState(null); // 동적 회차 ID
   const [auditionInfo, setAuditionInfo] = useState(null); // 회차 정보 (제목, 기간 등)
@@ -191,7 +191,32 @@ export default function Vote() {
   if (!auditionId && !loading) {
     return (
       <div className="av-wrap">
-        <div className="av-loading">현재 진행 중인 투표가 없어요.</div>
+        <div className="action101-logo-section">
+          <div className="binary-pattern">
+            101001001011011101101010111101110101011011101101011010101
+            101110101011011101101010111101110101011011101101011010101
+          </div>
+          
+          <div className="logo-glass-card">
+            <div className="logo-header-text">
+              <span className="left-tag">PICK YOUR IDOL</span>
+              <span className="right-tag">2026 SURVIVAL</span>
+            </div>
+
+            <h1 className="main-logo-text">ACTION 101</h1>
+            
+            <p className="sub-logo-text">
+              현재 진행 중인 투표가 없어요.
+            </p>
+
+            <div className="logo-footer-link">WWW.ACTION101.COM</div>
+
+            <div className="corner-dot top-left"></div>
+            <div className="corner-dot top-right"></div>
+            <div className="corner-dot bottom-left"></div>
+            <div className="corner-dot bottom-right"></div>
+          </div>
+        </div>
       </div>
     );
   }
